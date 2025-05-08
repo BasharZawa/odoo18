@@ -1,0 +1,42 @@
+<odoo>
+    <record id="view_x_request_form" model="ir.ui.view">
+        <field name="name">x_request.form</field>
+        <field name="model">x.request</field> <!-- Updated to use the correct technical name -->
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                        <field name="request_type"/>
+                        <field name="state"/>
+                        <field name="task_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_x_request_list" model="ir.ui.view">
+        <field name="name">x_request.list</field>
+        <field name="model">x.request</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="request_type"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <menuitem id="menu_request_root" name="Requests" sequence="10"/>
+
+    <record id="action_request" model="ir.actions.act_window">
+        <field name="name">Requests</field>
+        <field name="res_model">x.request</field> <!-- Updated to reflect the new technical name -->
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_request" name="All Requests" parent="menu_request_root" action="action_request" sequence="10"/>
+</odoo>

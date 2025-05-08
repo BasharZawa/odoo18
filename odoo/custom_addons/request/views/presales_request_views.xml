@@ -1,0 +1,51 @@
+<odoo>
+    <record id="view_presales_request_form" model="ir.ui.view">
+        <field name="name">presales.request.form</field>
+        <field name="model">presales.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="customer_name"/>
+                        <field name="customer_email"/>
+                        <field name="customer_phone"/>
+                        <field name="project_scope"/>
+                        <field name="budget"/>
+                        <field name="deadline"/>
+                        <field name="priority"/>
+                        <field name="state" widget="statusbar" options="{'clickable': True}"/>
+                        <field name="x_request_id"/>
+                    </group>
+                    <footer>
+                        <button name="action_submit" type="object" string="Submit" class="btn-primary"/>
+                        <button name="action_approve" type="object" string="Approve" class="btn-success" modifiers="{'invisible': [('state', '!=', 'submitted')]}"/>
+                        <button name="action_reject" type="object" string="Reject" class="btn-danger" modifiers="{'invisible': [('state', '!=', 'submitted')]}"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_presales_request_list" model="ir.ui.view">
+        <field name="name">presales.request.list</field>
+        <field name="model">presales.request</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="customer_name"/>
+                <field name="priority"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_presales_request" model="ir.actions.act_window">
+        <field name="name">Presales Requests</field>
+        <field name="res_model">presales.request</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_presales_request_root" name="Presales Requests" sequence="10"/>
+
+    <menuitem id="menu_presales_request" name="All Presales Requests" parent="menu_presales_request_root" action="action_presales_request" sequence="10"/>
+</odoo>
