@@ -9,6 +9,7 @@
                         <group>
                             <field name="name"/>
                             <field name="age"/>
+                            <field name="gender"/>
                         </group>
                     </group>
                 </sheet>
@@ -24,6 +25,7 @@
             <list string="Patient List">
                 <field name="name"/>
                 <field name="age"/>
+                <field name="gender"/>
             </list>
         </field>
     </record>
@@ -37,26 +39,8 @@
             <p class="oe_view_nocontent_create">
                 Create the first patient
             </p>
-            <p>
-                Click to create a new patient.
-            </p>
         </field>
     </record>
 
-    <!-- menu -->
-
-    <menuitem 
-        id="menu_sedco_root"
-        name="Sedco Management"
-        sequence="1"
-        web_icon="sedco_management/static/img/icon.jpeg"
-    />
-     
-    <menuitem 
-        id="menu_patient_view"
-        name="Patients"
-        parent="menu_sedco_root"
-        action="action_patient_views"
-    />
         
 </odoo>

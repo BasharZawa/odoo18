@@ -12,3 +12,4 @@ class Patient(models.Model):
         ('male', 'Male'),
         ('female', 'Female'),
         ], string='Gender', required=True)
+    appointment_ids = fields.One2many('appointment', 'patient_id', string='Appointments')

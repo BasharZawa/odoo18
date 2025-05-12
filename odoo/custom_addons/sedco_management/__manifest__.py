@@ -20,6 +20,8 @@
     'data': [
         'security/ir.model.access.csv',
         'views/patient_view.xml',
+        'views/appointment_view.xml',
+        'views/menus.xml',
     ],
     'installable': True,
     'application': True,

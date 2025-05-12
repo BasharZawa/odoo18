@@ -39,7 +39,8 @@ class XRequest(models.Model):
         }
         task = self.env['task'].create(task_vals)
         vals['task_id'] = task.id
-        return super(XRequest, self).create(vals)
+        records= super(XRequest, self).create(vals)
+        return records
 
     def _create_initial_tasks(self):
         # Example: Create parallel tasks
