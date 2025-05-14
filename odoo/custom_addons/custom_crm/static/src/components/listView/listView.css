@@ -1,0 +1,6 @@
+.table-container {
+    max-height: 90vh    ; /* Adjust height as needed */
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid #ddd; /* Optional: Add a border for better visibility */
+}

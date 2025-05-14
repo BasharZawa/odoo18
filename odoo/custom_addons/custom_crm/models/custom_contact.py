@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
+
 
 
 class custom_contact(models.Model):
@@ -10,13 +12,24 @@ class custom_contact(models.Model):
     # Override the create method to add custom logic
     @api.model
     def create(self, vals):
-        # Show a confirmation message on the front
-        if 'x_bashar_test' in vals:
-            # Custom logic to show a confirmation message
-            # This is just a placeholder; actual implementation may vary
-            print("Confirmation: A new contact is being created with the test field.")
-            #confirm message = "Are you sure you want to create this contact?"
-            if confirm(message):
-                raise UserError("Contact creation cancelled by user.")
+        if 'x_bashar_test' in vals and vals['x_bashar_test']:
+            # Custom logic 
+            vals['x_bashar_test']= vals['x_bashar_test'].upper()
         return super(custom_contact, self).create(vals)
 
+    def action_test_raise(self):
+        # Custom action method
+        raise UserError('This is a test action method')
+
+    def action_test(self):
+        # Custom action method to show a success notification
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+            'title': 'Success!',
+            'message': 'Testing notification',
+            'type': 'success',  # Types: success, warning, danger
+            'sticky': False,    # If True, the notification will not disappear automatically
+            },
+        }

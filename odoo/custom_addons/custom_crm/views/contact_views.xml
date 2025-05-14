@@ -1,0 +1,71 @@
+<odoo>
+    <data>
+
+        <!-- Inherited Form View for Contacts -->
+       <record id="view_res_partner_form_inherited_custom" model="ir.ui.view">
+            <field name="name">res.partner.form.inheritedcustom</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <!-- Insert the field into the same group as email -->
+                <xpath expr="//field[@name='phone']/.." position="after">
+                    <field name="email" class="oe_inline"/>
+
+                    <button name="action_test" type="object" string="Test Client Action" class="oe_highlight"/>
+                   
+                    <button name="action_test_raise" type="object" string="Test Raise Action" class="oe_highlight"/>
+
+                    
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_contact_custom_form" model="ir.ui.view">
+            <field name="name">res.partner.custom.custom.form</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <form string="Contact Form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="email"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="view_res_partner_list_custom" model="ir.ui.view">
+            <field name="name">res.partner.list.custom</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                </list>
+            </field>
+        </record>
+
+
+        <record id="list_view_action" model="ir.actions.client">
+            <field name="name">List View</field>
+            <field name="tag">custom_crm.ListView</field>
+        </record>
+
+        <menuitem id="res_partner_menu_contacts_contacts"
+        name="Contacts"
+        action="contacts.action_contacts"
+        parent="contacts.res_partner_menu_contacts"
+        sequence="2"/>
+
+        <menuitem id="list_view_action_menu" 
+          name="List View" 
+          parent="contacts.res_partner_menu_contacts" 
+          action="list_view_action"/>
+
+    </data>
+</odoo>

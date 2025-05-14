@@ -14,7 +14,16 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/contact_views.xml',
+
     ],
+    'assets': {
+        'web.assets_backend': [
+            'custom_crm/static/src/components/listView/listView.js',
+            'custom_crm/static/src/components/listView/listView.css',
+            'custom_crm/static/src/components/listView/listView.xml',
+        ],
+    },
     'license': 'LGPL-3',
     'installable': True,
     'application': True,
