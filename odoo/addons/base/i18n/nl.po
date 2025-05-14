@@ -2719,7 +2719,7 @@ msgid ""
 "When creating invoices from picking, the system is able to add and compute the shipping line.\n"
 msgstr ""
 "\n"
-"Staat je toe om verzendwijzes toe te voegen aan je pickings.\n"
+"Staat je toe om verzendmethoden toe te voegen aan je pickings.\n"
 "===============================================\n"
 "\n"
 "Bij het maken van facturen vanuit leveringen kan het systeem de verzendregel toevoegen en berekenen.\n"
@@ -2734,7 +2734,7 @@ msgid ""
 "The system is able to add and compute the shipping line.\n"
 msgstr ""
 "\n"
-"Staat je toe om verzendwijzes toe te voegen aan je verkooporders.\n"
+"Staat je toe om verzendmethoden toe te voegen aan je verkooporders.\n"
 "==================================================\n"
 "Je kunt je eigen vervoerder voor prijzen bepalen.\n"
 "Het systeem kan de verzendlijn toevoegen en berekenen.\n"
@@ -6376,7 +6376,7 @@ msgstr ""
 "\n"
 "Stap 1: Eerst moet je een API-gebruikersnaam en -wachtwoord aanmaken in het E-factuurportaal.\n"
 "Stap 2: Schakel over naar bedrijf gerelateerd aan dat GST-nummer\n"
-"Stap 3: Stel die gebruikersnaam en dat wachtwoord in in Odoo (Ga naar: Facturering/Boekhouding -> Configuratie -> Instellingen -> Klantenfacturen of zoek \"E-factuur\" in de zoekbalk)\n"
+"Stap 3: Stel die gebruikersnaam en dat wachtwoord in in Odoo (Ga naar: Facturering/Boekhouding -> Configuratie -> Instellingen -> Klantfacturen of zoek \"E-factuur\" in de zoekbalk)\n"
 "Stap 4: Herhaal stappen 1,2,3 voor alle GSTIN die je in odoo heeft. Heb je meerdere bedrijven met hetzelfde GST-nummer, voer stap 1 dan alleen uit voor het eerste bedrijf.\n"
 "\n"
 "Raadpleeg dit document voor het aanmaken van een API-gebruikersnaam en -wachtwoord: <https://service.odoo.co.in/einvoice_create_api_user>\n"
@@ -20785,7 +20785,7 @@ msgstr "Configuratie"
 #: model:ir.model,name:base.model_ir_actions_todo
 #: model:ir.ui.menu,name:base.menu_ir_actions_todo_form
 msgid "Configuration Wizards"
-msgstr "Configuratie wizard"
+msgstr "Configuratiewizards"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_partner_commission
@@ -35684,7 +35684,7 @@ msgstr "Partner"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_partner_autocomplete
 msgid "Partner Autocomplete"
-msgstr "Partner automatisch aanvullen"
+msgstr "Partner Autocomplete"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_sales_commissions
@@ -43542,7 +43542,7 @@ msgstr "Soort:"
 #. module: base
 #: model:res.country,name:base.tr
 msgid "Türkiye"
-msgstr "Turkjije"
+msgstr "Turkije"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_tr

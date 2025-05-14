@@ -6231,7 +6231,7 @@ msgstr ""
 "\n"
 "Tính năng Chính\n"
 "------------\n"
-"* Nhập đơn đặt hàng từ nhiều tài khoản và marketplace.\n"
+"* Nhập đơn đặt hàng từ nhiều tài khoản và sàn thương mại điện tử.\n"
 "* Các đơn đặt hàng được so khớp với các sản phẩm Odoo dựa trên tham chiếu nội bộ của chúng (SKU trong Amazon).\n"
 "* Việc giao hàng được xác nhận trong Odoo được đồng bộ hóa vào Amazon.\n"
 "* Hỗ trợ cho cả tuỳ chọn Xử lý bởi Amazon (FBA) và Xử lý bởi Người bán (FBM):\n"
@@ -25788,7 +25788,7 @@ msgstr "Từ báo giá thành hóa đơn"
 #: model:ir.module.category,name:base.module_category_human_resources_frontdesk
 #: model:ir.module.module,shortdesc:base.module_frontdesk
 msgid "Frontdesk"
-msgstr "Bàn đăng ký"
+msgstr "Quầy lễ tân"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.ir_access_view_search

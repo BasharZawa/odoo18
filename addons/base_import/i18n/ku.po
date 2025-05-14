@@ -29,7 +29,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/base_import/models/base_import.py:0
 msgid "%(property_string)s (%(parent_name)s)"
-msgstr ""
+msgstr "(%(parent_name)s)%(property_string)s"
 
 #. module: base_import
 #. odoo-javascript
@@ -253,7 +253,7 @@ msgstr ""
 #: code:addons/base_import/static/src/import_action/import_action.xml:0
 #: code:addons/base_import/static/src/import_data_sidepanel/import_data_sidepanel.xml:0
 msgid "Download"
-msgstr ""
+msgstr "دابەزاندن"
 
 #. module: base_import
 #. odoo-javascript

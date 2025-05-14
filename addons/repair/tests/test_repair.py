@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command
-from odoo.exceptions import UserError
+from odoo.exceptions import AccessError, UserError
 from odoo.tests import tagged, common, Form
 from odoo.tools import float_compare, float_is_zero
 
@@ -910,3 +910,59 @@ class TestRepair(common.TransactionCase):
             'quantity': 1.0,
         })]
         self.assertEqual(repair_order.lot_id, sn_1)
+        # duplicate the move and check that the link to the repair order is not copied
+        copied_move = repair_order.move_ids.copy()
+        self.assertFalse(copied_move.repair_id)
+
+    def test_missing_production_location_raises_user_error(self):
+        """
+        Test that a missing production location raises a UserError when creating a warehouse.
+        """
+        company = Form(self.env['res.company'])
+        company.name = "ELCT Co."
+        company = company.save()
+        # mimic missing production location with intentional misconfiguration
+        prod_location = self.env['stock.location'].search([('usage', '=', 'production'), ('company_id', '=', company.id)], limit=1)
+        if prod_location:
+            prod_location.usage = "internal"
+        with self.assertRaises(UserError):
+            self.env['stock.warehouse'].create({
+                'name': 'ELCT',
+                'code': 'ET',
+                'company_id': company.id,
+            })
+
+    def test_add_product_from_catalog(self):
+        """Check that only consumable products are available in the catalog."""
+        catalog_action = self.repair0.action_add_from_catalog()
+        domain = catalog_action.get('domain')
+        self.assertEqual(self.product_service_order_repair.type, 'service')
+        self.assertEqual(self.product_consu_order_repair.type, 'consu')
+        self.assertTrue(self.product_consu_order_repair.filtered_domain(domain))
+        self.assertFalse(self.product_service_order_repair.filtered_domain(domain))
+
+    def test_copy_repair_product_with_different_groups(self):
+        """
+            This test checks if the product can be copied with users that don't have access on the Inventory app
+        """
+        product_templ = self.env['product.template'].create({
+            'name': "Repair Consumable",
+            'type': 'consu',
+            'create_repair': True,
+        })
+        mitchell_user = self.env['res.users'].create({
+            'name': "Mitchell not Admin",
+            'login': "m_user",
+            'email': "m@user.com",
+            'groups_id': [Command.set(self.env.ref('sales_team.group_sale_manager').ids)],
+        })
+        product_templ.invalidate_recordset(['create_repair'])
+        with self.assertRaises(AccessError):
+            product_templ.with_user(mitchell_user).create_repair
+        copied_without_access = product_templ.with_user(mitchell_user).copy()
+        mitchell_user.write({
+            'groups_id': [Command.link(self.env.ref('stock.group_stock_user').id)]
+        })
+        self.assertFalse(copied_without_access.create_repair)
+        copied_with_access = product_templ.copy().with_user(mitchell_user)
+        self.assertTrue(copied_with_access.create_repair)
