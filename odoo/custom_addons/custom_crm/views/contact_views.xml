@@ -2,23 +2,18 @@
     <data>
 
         <!-- Inherited Form View for Contacts -->
-       <record id="view_res_partner_form_inherited_custom" model="ir.ui.view">
+       <!-- <record id="view_res_partner_form_inherited_custom" model="ir.ui.view">
             <field name="name">res.partner.form.inherited.custom</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <!-- Insert the field into the same group as email -->
-                <xpath expr="//field[@name='phone']/.." position="after">
-                    <field name="email" class="oe_inline"/>
-
+                <xpath expr="//field[@name='x_IsValidated']/.." position="after">
+                    <field name="x_bashar_test" class="oe_inline"/>
                     <button name="action_test" type="object" string="Test Client Action" class="oe_highlight"/>
-                   
                     <button name="action_test_raise" type="object" string="Test Raise Action" class="oe_highlight"/>
-
-                    
                 </xpath>
             </field>
-        </record>
+        </record> -->
 
 
         <record id="view_contact_custom_form" model="ir.ui.view">

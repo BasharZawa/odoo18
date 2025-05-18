@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+import logging
 
 
 
@@ -10,12 +11,23 @@ class custom_contact(models.Model):
     x_bashar_test = fields.Text(string='Test Field')
 
     # Override the create method to add custom logic
+    @api.model_create_multi
+    def create(self, vals_list):
+        _logger = logging.getLogger(__name__)
+        for vals in vals_list:
+            _logger.info("Creating a new contact with values: %s", vals)
+            if 'email' in vals and vals['email']:
+                vals['email'] = vals['email'].lower()
+        return super(custom_contact, self).create(vals_list)
+    
+    # Override the write method to add custom logic
     @api.model
-    def create(self, vals):
-        if 'x_bashar_test' in vals and vals['x_bashar_test']:
-            # Custom logic 
-            vals['x_bashar_test']= vals['x_bashar_test'].upper()
-        return super(custom_contact, self).create(vals)
+    def write(self, vals):
+        _logger = logging.getLogger(__name__)
+        _logger.info("Updating a contact with values: %s", vals)
+        if 'email' in vals and vals['email']:
+            vals['email'] = vals['email'].lower()
+        return super(custom_contact, self).write(vals)
 
     def action_test_raise(self):
         # Custom action method
