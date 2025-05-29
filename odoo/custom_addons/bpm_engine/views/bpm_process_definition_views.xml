@@ -1,0 +1,38 @@
+<odoo>
+    <record id="view_bpm_process_definition_form" model="ir.ui.view">
+        <field name="name">bpm.process.definition.form</field>
+        <field name="model">bpm.process.definition</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <div class="oe_bpmn_editor" style="height: 500px; border: 1px solid #ccc;" data-bpmn-editor="true"></div>
+                        <field name="bpmn_xml" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_bpm_process_definition_tree" model="ir.ui.view">
+        <field name="name">bpm.process.definition.tree</field>
+        <field name="model">bpm.process.definition</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_bpm_process_definition" model="ir.actions.act_window">
+        <field name="name">Process Definitions</field>
+        <field name="res_model">bpm.process.definition</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_bpm_root" name="BPM Engine"/>
+    <menuitem id="menu_bpm_definitions" name="Process Definitions" parent="menu_bpm_root" action="action_bpm_process_definition"/>
+</odoo>

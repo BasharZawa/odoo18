@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="bpm_engine.list">
+      <field name="name">bpm_engine list</field>
+      <field name="model">bpm_engine.bpm_engine</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </list>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="bpm_engine.action_window">
+      <field name="name">bpm_engine window</field>
+      <field name="res_model">bpm_engine.bpm_engine</field>
+      <field name="view_mode">list,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="bpm_engine.action_server">
+      <field name="name">bpm_engine server</field>
+      <field name="model_id" ref="model_bpm_engine_bpm_engine"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="bpm_engine" id="bpm_engine.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="bpm_engine.menu_1" parent="bpm_engine.menu_root"/>
+    <menuitem name="Menu 2" id="bpm_engine.menu_2" parent="bpm_engine.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="bpm_engine.menu_1_list" parent="bpm_engine.menu_1"
+              action="bpm_engine.action_window"/>
+    <menuitem name="Server to list" id="bpm_engine" parent="bpm_engine.menu_2"
+              action="bpm_engine.action_server"/>
+-->
+  </data>
+</odoo>

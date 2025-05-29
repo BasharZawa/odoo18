@@ -1,0 +1,7 @@
+.oe_bpmn_editor {
+    position: relative;
+}
+.oe_bpmn_editor svg {
+    width: 100%;
+    height: 100%;
+}
