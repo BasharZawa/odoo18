@@ -7,13 +7,14 @@
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2024
 # Chill Liao <chill421@qq.com>, 2024
 # Wil Odoo, 2025
+# Pak Wai Ho, 2025
 # Tony Ng, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 20:48+0000\n"
+"POT-Creation-Date: 2025-05-23 18:39+0000\n"
 "PO-Revision-Date: 2024-09-25 09:42+0000\n"
 "Last-Translator: Tony Ng, 2025\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -1011,6 +1012,12 @@ msgstr "全天"
 #: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
 msgid "All users"
 msgstr "所有使用者"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/domain/domain_field.js:0
+msgid "Allow expressions"
+msgstr "允許表達式"
 
 #. module: web
 #. odoo-javascript
@@ -3333,7 +3340,6 @@ msgstr "若勾選，使用者將完全無法利用下拉式選單的自動填寫
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "If true, non-literals are accepted"
 msgstr ""
 
@@ -4253,7 +4259,7 @@ msgstr "一"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/monetary/monetary_field.js:0
 msgid "Monetary"
-msgstr "貨幣的"
+msgstr "貨幣金額"
 
 #. module: web
 #. odoo-javascript
@@ -4351,7 +4357,7 @@ msgstr "聖誕老人太太"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/text/text_field.js:0
 msgid "Multiline Text"
-msgstr "多行文本"
+msgstr "多行文字"
 
 #. module: web
 #. odoo-javascript
@@ -6512,14 +6518,12 @@ msgstr "此儲存格的內容對於 XLSX 檔來說太長（超過 %s  字元）�
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "The domain involves non-literals. Their evaluation might fail."
 msgstr ""
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "The domain should not involve non-literals"
 msgstr ""
 
@@ -7396,7 +7400,7 @@ msgstr "填寫你的電話、電郵、銀行賬戶、稅務編號等"
 #. odoo-python
 #: code:addons/web/controllers/home.py:0
 msgid "Wrong login/password"
-msgstr "錯誤的登入名/密碼"
+msgstr "登入名稱或密碼錯誤"
 
 #. module: web
 #. odoo-javascript

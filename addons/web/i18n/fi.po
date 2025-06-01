@@ -44,7 +44,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 20:48+0000\n"
+"POT-Creation-Date: 2025-05-23 18:39+0000\n"
 "PO-Revision-Date: 2024-09-25 09:42+0000\n"
 "Last-Translator: Jessica Jakara, 2025\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
@@ -1046,6 +1046,12 @@ msgstr "Koko päivä"
 #: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
 msgid "All users"
 msgstr "Kaikki käyttäjät"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/domain/domain_field.js:0
+msgid "Allow expressions"
+msgstr "Salli lausekkeet"
 
 #. module: web
 #. odoo-javascript
@@ -3418,9 +3424,8 @@ msgstr ""
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "If true, non-literals are accepted"
-msgstr ""
+msgstr "Jos tosi, myös muut kuin literaalit hyväksytään"
 
 #. module: web
 #. odoo-javascript
@@ -6622,16 +6627,16 @@ msgstr ""
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "The domain involves non-literals. Their evaluation might fail."
 msgstr ""
+"Hakualue sisältää muita kuin literaaleja. Niiden arviointi saattaa "
+"epäonnistua."
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "The domain should not involve non-literals"
-msgstr ""
+msgstr "Hakualue ei saa sisältää muita kuin literaaleja"
 
 #. module: web
 #. odoo-javascript

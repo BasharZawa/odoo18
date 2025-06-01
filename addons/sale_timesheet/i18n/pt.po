@@ -221,6 +221,11 @@ msgid ""
 "  - Timesheet: the quantity is the sum of hours recorded on tasks linked to this sale line\n"
 "  - Stock Moves: the quantity comes from confirmed pickings\n"
 msgstr ""
+"De acordo com a configuração do artigo, a quantidade entregue pode ser calculada automaticamente pelo mecanismo:\n"
+"- Manual: a quantidade é definida manualmente na linha\n"
+"- Analítico das despesas: a quantidade é a soma da quantidade das despesas lançadas\n"
+"- Folha de horas: a quantidade é a soma das horas registadas nas tarefas vinculadas a essa linha de venda\n"
+"- Movimentações de stock: a quantidade vem de transferências de armazém  confirmadas\n"
 
 #. module: sale_timesheet
 #: model_terms:hr.job,website_description:sale_timesheet.job_engineer
@@ -495,7 +500,7 @@ msgstr "Descartar"
 #: model_terms:hr.job,website_description:sale_timesheet.job_interior_designer
 #: model_terms:hr.job,website_description:sale_timesheet.job_labour
 msgid "Discover our products."
-msgstr "Descubra os nossos produtos."
+msgstr "Descubra os nossos artigos."
 
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_project_create_invoice__display_name
@@ -922,7 +927,7 @@ msgstr ""
 #: model_terms:hr.job,website_description:sale_timesheet.job_interior_designer
 #: model_terms:hr.job,website_description:sale_timesheet.job_labour
 msgid "Our Product"
-msgstr "Nosso produto"
+msgstr "Nosso Produto"
 
 #. module: sale_timesheet
 #: model_terms:hr.job,website_description:sale_timesheet.job_engineer

@@ -1341,7 +1341,7 @@ msgstr ""
 #: code:addons/html_editor/static/src/main/link/link_popover.xml:0
 #: code:addons/html_editor/static/src/main/media/media_dialog/video_selector.xml:0
 msgid "Preview"
-msgstr ""
+msgstr "پێشبینی"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1474,7 +1474,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/media/image_description.xml:0
 msgid "Save"
-msgstr ""
+msgstr "هەڵگرتن"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1789,7 +1789,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/font/gradient_picker.xml:0
 msgid "Type"
-msgstr ""
+msgstr "جۆر"
 
 #. module: html_editor
 #. odoo-javascript

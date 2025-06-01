@@ -1277,7 +1277,7 @@ msgstr "Lista numerada"
 #. odoo-python
 #: code:addons/html_editor/controllers/main.py:0
 msgid "Oops, it looks like our AI is unreachable!"
-msgstr "¡Uy! parece ser que no podemos acceder a nuestra IA"
+msgstr "¡Uy! Parece ser que no podemos acceder a nuestra IA."
 
 #. module: html_editor
 #. odoo-javascript
@@ -1383,7 +1383,7 @@ msgstr "Barra de progreso"
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/font/font_plugin.js:0
 msgid "Quote"
-msgstr "Cita"
+msgstr "Cita textual"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1606,7 +1606,7 @@ msgstr "Sólido"
 #. odoo-python
 #: code:addons/html_editor/controllers/main.py:0
 msgid "Sorry, we could not generate a response. Please try again later."
-msgstr "No pudimos generar un respuesta. Inténtelo de nuevo mas tarde. "
+msgstr "No pudimos generar una respuesta. Inténtelo de nuevo más tarde."
 
 #. module: html_editor
 #. odoo-python
@@ -1648,7 +1648,7 @@ msgstr "Cambiar la dirección del texto."
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/table/table_ui_plugin.js:0
 msgid "Table"
-msgstr "Mesa"
+msgstr "Tabla"
 
 #. module: html_editor
 #. odoo-javascript
@@ -1793,7 +1793,7 @@ msgstr "Traducir"
 #: code:addons/html_editor/static/src/main/chatgpt/chatgpt_plugin.js:0
 #: code:addons/html_editor/static/src/main/chatgpt/chatgpt_translate_dialog.xml:0
 msgid "Translate with AI"
-msgstr "Traducir con inteligencia artificial"
+msgstr "Traducir con IA"
 
 #. module: html_editor
 #. odoo-javascript
