@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="camunda_user_task_view_form" model="ir.ui.view">
+        <field name="name">camunda.user.task.form</field>
+        <field name="model">camunda.user.task</field>
+        <field name="arch" type="xml">
+            <form string="User Task" create="false" edit="false"> <!-- Tasks are created by the system -->
+                 <header>
+                    <button name="action_complete_task" string="Complete Task" type="object" class="oe_highlight" attrs="{&#39;invisible&#39;: [(&#39;state&#39;, &#39;!=&#39;, &#39;active&#39;)]}"/>
+                    <button name="action_fetch_variables" string="Fetch Variables" type="object" help="Fetch latest variables from Camunda for this task."/>
+                    <field name="state" widget="statusbar" statusbar_visible="active,completed"/>
+                </header>
+                <sheet>
+                     <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Task Details">
+                            <field name="camunda_task_id" readonly="1"/>
+                            <field name="assignee_user_id" readonly="1" widget="many2one_avatar_user"/>
+                            <field name="candidate_groups_str" readonly="1"/>
+                            <field name="create_time" readonly="1"/>
+                            <field name="due_date" readonly="1"/>
+                        </group>
+                        <group string="Process Context">
+                            <field name="camunda_instance_id" readonly="1"/>
+                            <field name="camunda_definition_key" readonly="1"/>
+                            <!-- <field name="instance_link_id" readonly="1"/> --> <!-- Add link to Odoo record if implemented -->
+                            <field name="form_key" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Variables" name="variables">
+                            <field name="variables_json" readonly="1" nolabel="1" widget="ace" options="{&#39;mode&#39;: &#39;json&#39;}"/>
+                            <!-- TODO: Consider a nicer way to display variables -->
+                        </page>
+                        <!-- Add page for related Odoo document if instance_link_id is used -->
+                    </notebook>
+                </sheet>
+                 <!-- Add chatter integration if needed -->
+                 <!-- <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div> -->
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="camunda_user_task_view_tree" model="ir.ui.view">
+        <field name="name">camunda.user.task.tree</field>
+        <field name="model">camunda.user.task</field>
+        <field name="arch" type="xml">
+            <tree string="User Tasks" create="false" edit="false">
+                <field name="name"/>
+                <field name="assignee_user_id" widget="many2one_avatar_user"/>
+                <field name="camunda_definition_key"/>
+                <field name="create_time"/>
+                <field name="due_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="camunda_user_task_view_search" model="ir.ui.view">
+        <field name="name">camunda.user.task.search</field>
+        <field name="model">camunda.user.task</field>
+        <field name="arch" type="xml">
+            <search string="Search User Tasks">
+                <field name="name"/>
+                <field name="camunda_definition_key"/>
+                <field name="assignee_user_id"/>
+                <filter string="My Tasks" name="my_tasks" domain="[(&#39;assignee_user_id&#39;, &#39;=&#39;, uid)]"/>
+                <filter string="Active" name="active" domain="[(&#39;state&#39;, &#39;=&#39;, &#39;active&#39;)]"/>
+                <filter string="Completed" name="completed" domain="[(&#39;state&#39;, &#39;=&#39;, &#39;completed&#39;)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Assignee" name="groupby_assignee" context="{&#39;group_by&#39;: &#39;assignee_user_id&#39;}"/>
+                    <filter string="Process Definition" name="groupby_definition" context="{&#39;group_by&#39;: &#39;camunda_definition_key&#39;}"/>
+                    <filter string="Status" name="groupby_state" context="{&#39;group_by&#39;: &#39;state&#39;}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="camunda_user_task_action" model="ir.actions.act_window">
+        <field name="name">My Workflow Tasks</field>
+        <field name="res_model">camunda.user.task</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{&#39;search_default_my_tasks&#39;: 1, &#39;search_default_active&#39;: 1}</field>
+        <field name="domain">[(&#39;state&#39;, &#39;=&#39;, &#39;active&#39;)]</field> <!-- Show only active by default -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No active workflow tasks assigned to you.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

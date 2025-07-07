@@ -2,20 +2,43 @@
     <data>
 
         <!-- Inherited Form View for Contacts -->
-        <record id="view_res_partner_form_inherited_custom" model="ir.ui.view">
+      <!--    <record id="view_res_partner_form_inherited_custom" model="ir.ui.view">
             <field name="name">res.partner.form.inherited.custom</field>
             <field name="model">res.partner</field>
-            <field name="inherit_id" ref="studio_customization.odoo_studio_res_part_ef874f8b-02d1-4ee1-a878-91c2b1c3f41a"/>
+            <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='x_IsValidated']" position="after">
-                    <!-- <field name="status" widget="statusbar" 
+                <xpath expr="//field[@name='email']" position="after">
+                   <field name="status" widget="statusbar" 
                                 statusbar_visible="new,scheduled,completed,canceled" 
                             options="{'clickable': '1'}"
-                    /> -->
+                    /> 
                     <field name="x_bashar_test" class="oe_inline"/>
                     <button name="action_test" type="object" string="Test Client Action" class="oe_highlight"/>
-                    <button name="action_test_raise" type="object" string="Test Raise Action" class="oe_highlight"/>
+                    <button name="action_test_raise" type="object" string="Test Raise Action" class="oe_highlight"/> 
                 </xpath>
+            </field>
+        </record>
+
+        <record id="view_res_partner_kanban" model="ir.ui.view">
+            <field name="name">res.partner.kanban</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <field name="email"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div>
+                                    <strong><field name="name"/></strong>
+                                </div>
+                                <div>
+                                    <field name="email"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
             </field>
         </record>
 
@@ -23,6 +46,7 @@
         <record id="view_contact_custom_form" model="ir.ui.view">
             <field name="name">res.partner.custom.form</field>
             <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <form string="Contact Form">
                     <sheet>
@@ -43,13 +67,11 @@
         <menuitem id="res_partner_menu_contacts_contacts"
         name="Contacts"
         action="contacts.action_contacts"
-        parent="contacts.res_partner_menu_contacts"
         sequence="2"/>
 
         <menuitem id="list_view_action_menu" 
           name="List View" 
-          parent="contacts.res_partner_menu_contacts" 
           action="list_view_action"/>
-
+-->
     </data>
 </odoo>

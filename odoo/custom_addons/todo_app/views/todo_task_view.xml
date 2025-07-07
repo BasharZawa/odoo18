@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_todo_task_list" model="ir.ui.view">
+        <field name="name">todo.task.list</field>
+        <field name="model">todo.task</field>
+        <field name="arch" type="xml">
+            <list string="Tasks">
+                <field name="name"/>
+                <field name="due_date"/>
+                <field name="assigned_to"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_todo_task_form" model="ir.ui.view">
+        <field name="name">todo.task.form</field>
+        <field name="model">todo.task</field>
+        <field name="arch" type="xml">
+            <form string="Task">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="due_date"/>
+                        <field name="assigned_to"/>
+                        <field name="state"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_todo_task_search" model="ir.ui.view">
+        <field name="name">todo.task.search</field>
+        <field name="model">todo.task</field>
+        <field name="arch" type="xml">
+            <search string="Search Tasks">
+                <field name="name"/>
+                <field name="assigned_to"/>
+                <filter string="New" name="state_new" domain="[('state','=','new')]"/>
+                <filter string="In Progress" name="state_in_progress" domain="[('state','=','in_progress')]"/>
+                <filter string="Completed" name="state_completed" domain="[('state','=','completed')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_todo_task" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">todo.task</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first task!
+            </p>
+            <p>
+                Click the "New" button to create a new task.
+            </p>
+        </field>
+    </record>
+</odoo>

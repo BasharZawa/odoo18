@@ -1,0 +1,7 @@
+<odoo>
+  <template id="BpmnEditor" name="BPMN Editor">
+    <div class="bpmn-editor-component">
+        <iframe src="/bpm_engine/static/src/bpmn_editor.html" style="width: 100%; height: 600px; border: none;"></iframe>
+    </div>
+  </template>
+</odoo>

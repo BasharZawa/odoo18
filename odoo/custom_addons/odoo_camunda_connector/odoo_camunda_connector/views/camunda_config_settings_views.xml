@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_camunda" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.camunda</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="90"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass(&#39;settings&#39;)]" position="inside">
+                <div class="app_settings_block" data-string="Camunda Integration" string="Camunda Integration" data-key="odoo_camunda_connector">
+                    <h2>Camunda Engine Connection</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="camunda_rest_url"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="camunda_rest_url"/>
+                                <div class="text-muted">
+                                    Base URL of the Camunda REST API (e.g., http://localhost:8080/engine-rest)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="camunda_auth_type" widget="radio"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="camunda_auth_type"/>
+                                <div class="text-muted">
+                                    Authentication method for Camunda REST API.
+                                </div>
+                                <div attrs="{&#39;invisible&#39;: [(&#39;camunda_auth_type&#39;, &#39;!=&#39;, &#39;basic&#39;)]}">
+                                    <label for="camunda_rest_username" class="col-lg-4 o_light_label"/>
+                                    <field name="camunda_rest_username"/>
+                                    <label for="camunda_rest_password" class="col-lg-4 o_light_label"/>
+                                    <field name="camunda_rest_password" password="True"/>
+                                </div>
+                                <div attrs="{&#39;invisible&#39;: [(&#39;camunda_auth_type&#39;, &#39;!=&#39;, &#39;bearer&#39;)]}">
+                                    <label for="camunda_bearer_token" class="col-lg-4 o_light_label"/>
+                                    <field name="camunda_bearer_token"/>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="camunda_worker_id"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="camunda_worker_id"/>
+                                <div class="text-muted">
+                                    Unique ID for this Odoo instance when acting as an External Task Worker.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                             <div class="o_setting_left_pane">
+                                <button name="test_camunda_connection" string="Test Connection" type="object" class="oe_link oe_inline"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="fa fa-lg fa-info-circle" title="Test Connection" role="img" aria-label="Test Connection"/>
+                                <div class="text-muted">
+                                    Click to verify connection to the configured Camunda instance.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

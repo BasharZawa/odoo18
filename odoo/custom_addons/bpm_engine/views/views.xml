@@ -56,5 +56,12 @@
     <menuitem name="Server to list" id="bpm_engine" parent="bpm_engine.menu_2"
               action="bpm_engine.action_server"/>
 -->
+
+    <record id="action_bpmn_editor" model="ir.actions.client">
+      <field name="name">BPMN Editor</field>
+      <field name="tag">BpmnEditor</field>
+    </record>
+
+    <menuitem id="menu_bpmn_editor" name="BPMN Editor" parent="base.menu_custom" action="action_bpmn_editor"/>
   </data>
 </odoo>

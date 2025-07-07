@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BPMN Editor</title>
+    <link rel="stylesheet" href="../lib/bpmn-js/dist/assets/diagram-js.css">
+    <link rel="stylesheet" href="../lib/bpmn-js/dist/assets/bpmn-font/css/bpmn.css">
+    <style>
+        #canvas {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas"></div>
+    <script src="../lib/bpmn-js/dist/bpmn-modeler.development.js"></script>
+    <script>
+        const bpmnModeler = new BpmnJS({
+            container: '#canvas'
+        });
+
+        // Example: Load an empty diagram
+        const emptyDiagram = `<?xml version="1.0" encoding="UTF-8"?>
+        <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+          <bpmn:process id="Process_1" isExecutable="false">
+          </bpmn:process>
+        </bpmn:definitions>`;
+
+        bpmnModeler.importXML(emptyDiagram).then(() => {
+            console.log('BPMN diagram loaded');
+        }).catch(err => {
+            console.error('Error loading diagram:', err);
+        });
+    </script>
+</body>
+</html>

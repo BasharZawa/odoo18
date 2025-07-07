@@ -6,31 +6,31 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name"/>
+                         <field name="name"/>
                     </group>
                     <group>
-                        <div class="oe_bpmn_editor" style="height: 500px; border: 1px solid #ccc;" data-bpmn-editor="true"></div>
-                        <field name="bpmn_xml" invisible="1"/>
+                        <field name="bpmn_xml" widget="bpmn_editor"/>
                     </group>
                 </sheet>
             </form>
+
         </field>
     </record>
 
-    <record id="view_bpm_process_definition_tree" model="ir.ui.view">
-        <field name="name">bpm.process.definition.tree</field>
+    <record id="view_bpm_process_definition_list" model="ir.ui.view">
+        <field name="name">bpm.process.definition.list</field>
         <field name="model">bpm.process.definition</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="action_bpm_process_definition" model="ir.actions.act_window">
         <field name="name">Process Definitions</field>
         <field name="res_model">bpm.process.definition</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="menu_bpm_root" name="BPM Engine"/>
