@@ -35,6 +35,7 @@
 # Wil Odoo, 2025
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2025
 # Cengiz Cokay Global Nonwoven, 2025
+# Betul Ogmen, 2025
 # Deniz Guvener_Odoo <degu@odoo.com>, 2025
 # 
 msgid ""
@@ -3334,6 +3335,7 @@ msgstr ""
 msgid ""
 "If checked, the record will be saved immediately when the field is modified."
 msgstr ""
+"İşaretlendiğinde, alan değiştirildiğinde kayıt anında kaydedilecektir."
 
 #. module: web
 #. odoo-javascript
@@ -7266,7 +7268,7 @@ msgstr "Görüntüle"
 #. odoo-javascript
 #: code:addons/web/static/src/views/list/list_renderer.xml:0
 msgid "View Button"
-msgstr ""
+msgstr "Butonu Gör"
 
 #. module: web
 #. odoo-javascript

@@ -252,7 +252,7 @@ msgstr "全ての許可済支払方法"
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet__amount_residual
 msgid "Amount Due"
-msgstr "未消込額"
+msgstr "未精算金額"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_view_form
@@ -296,7 +296,7 @@ msgstr "分析用配分"
 #. module: hr_expense
 #: model:ir.model,name:hr_expense.model_account_analytic_applicability
 msgid "Analytic Plan's Applicabilities"
-msgstr "分析計画の適用範囲"
+msgstr "分析プランの適用範囲"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__analytic_precision

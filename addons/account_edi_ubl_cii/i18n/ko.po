@@ -4,16 +4,16 @@
 # 
 # Translators:
 # Daye Jeong, 2025
-# Sarah Park, 2025
 # Wil Odoo, 2025
+# Sarah Park, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-30 18:36+0000\n"
+"POT-Creation-Date: 2025-06-27 18:39+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: Wil Odoo, 2025\n"
+"Last-Translator: Sarah Park, 2025\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,6 +28,8 @@ msgid ""
 "%s should have a KVK or OIN number set in Company ID field or as Peppol "
 "e-address (EAS code 0106 or 0190)."
 msgstr ""
+"%s에는 회사 ID 필드에 KVK 또는 OIN 번호를 입력하거나 Peppol 이메일 주소(EAS 코드 0106 또는 0190)를 입력해야"
+" 합니다."
 
 #. module: account_edi_ubl_cii
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
@@ -49,6 +51,11 @@ msgstr "%s 결제가 확인되었습니다."
 #: model:ir.model,name:account_edi_ubl_cii.model_account_edi_xml_ubl_a_nz
 msgid "A-NZ BIS Billing 3.0"
 msgstr "A-NZ BIS Billing 3.0"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__as
+msgid "AS2 exchange"
+msgstr "AS2 전환"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model,name:account_edi_ubl_cii.model_account_move_send
@@ -303,6 +310,11 @@ msgid "Each invoice line should have at least one tax."
 msgstr "각 청구서에는 최소 하나의 세금 항목이 포함되어야 합니다."
 
 #. module: account_edi_ubl_cii
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__em
+msgid "Electronic mail"
+msgstr "전자 메일"
+
+#. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_move_send.py:0
 msgid "Errors occurred while creating the EDI document (format: %s):"
@@ -321,6 +333,12 @@ msgstr "에스토니아 VAT"
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+msgid "Exempt from tax"
+msgstr ""
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
 msgid "Export outside the EU"
 msgstr "EU 외부로 내보내기"
 
@@ -333,6 +351,11 @@ msgstr "팩터-X (CII)"
 #: model:ir.model,name:account_edi_ubl_cii.model_account_edi_xml_cii
 msgid "Factur-x/XRechnung CII 2.2.0"
 msgstr "Factur-x/XRechnung CII 2.2.0"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__au
+msgid "File Transfer Protocol"
+msgstr "파일 전송 프로토콜"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0037
@@ -563,6 +586,11 @@ msgstr "xml 항목에서 총 금액, 순 금액 또는 항목 소계 금액을 �
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0192
 msgid "Norway Org.nr."
 msgstr "노르웨이 Org.nr."
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__an
+msgid "O.F.T.P. (ODETTE File Transfer Protocol)"
+msgstr "O.F.T.P. (ODETTE 파일 전송 프로토콜)"
 
 #. module: account_edi_ubl_cii
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
@@ -850,6 +878,11 @@ msgid ""
 "When the Canary Island General Indirect Tax (IGIC) applies, the tax rate on "
 "each invoice line should be greater than 0."
 msgstr "카나리아 제도 일반 간접세 (IGIC)가 적용되는 경우 청구서 각 항목의 세율은 0보다 커야 합니다."
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__aq
+msgid "X.400 address for mail text"
+msgstr "X.400 메일 주소"
 
 #. module: account_edi_ubl_cii
 #. odoo-python

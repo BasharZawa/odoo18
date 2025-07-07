@@ -70,7 +70,7 @@ msgstr "Çalışma Çizelgeleri Oluştur"
 #. module: project_timesheet_holidays
 #: model_terms:ir.ui.view,arch_db:project_timesheet_holidays.hr_holiday_status_view_form_inherit
 msgid "Generate timesheets when validating time off requests of this type"
-msgstr ""
+msgstr "Bu tür izin talepleri onaylandığında çalışma çizelgeleri oluştur"
 
 #. module: project_timesheet_holidays
 #: model:ir.model.fields,help:project_timesheet_holidays.field_hr_leave_type__timesheet_generate
@@ -78,8 +78,8 @@ msgid ""
 "If checked, when validating a time off, timesheet will be generated in the "
 "Vacation Project of the company."
 msgstr ""
-"Eğer işaretli ise, bir izin onaylandığında, şirketin İzin Projesi içinde "
-"çalışma çizelgesi oluşturulacak."
+"İşaretlendiğinde, izin onaylanırken şirketin Tatil Projesi'nde çalışma "
+"çizelgesi oluşturulur."
 
 #. module: project_timesheet_holidays
 #. odoo-python

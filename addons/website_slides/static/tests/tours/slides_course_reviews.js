@@ -13,6 +13,7 @@ registry.category("web_tour.tours").add("course_reviews", {
         {
             trigger: "a:contains(Basics of Gardening - Test)",
             run: "click",
+            expectUnloadPage: true,
         },
         {
             trigger: "a[id=review-tab]",
@@ -37,13 +38,10 @@ registry.category("web_tour.tours").add("course_reviews", {
         },
         {
             trigger: ".o_wslides_course_header_nav_review",
-            run() {
-                const a = document.querySelector("a[id=review-tab]");
-                if (a.textContent !== "Reviews (1)") {
-                    throw Error("Text should be 'Reviews (1)'.")
-                }
-                a.click();
-            },
+        },
+        {
+            trigger: "a[id=review-tab]:contains('Reviews (1)')",
+            run: "click",
         },
         {
             trigger: "#chatterRoot:shadow .o-mail-Message-textContent:contains(Great course!)",
@@ -58,13 +56,9 @@ registry.category("web_tour.tours").add("course_reviews", {
             run: "edit Mid course!",
         },
         {
-            trigger: ".modal.modal_shown.show button.o_portal_chatter_composer_btn",
-            run() {
-                if (this.anchor.textContent !== "Update review") {
-                    throw Error("Button text should be 'Update review'.")
-                }
-                this.anchor.click();
-            },
+            trigger:
+                ".modal.modal_shown.show button.o_portal_chatter_composer_btn:contains(update review)",
+            run: "click",
         },
         {
             content: "Reload page (fetch message)",
@@ -72,6 +66,7 @@ registry.category("web_tour.tours").add("course_reviews", {
             run() {
                 location.reload();
             },
+            expectUnloadPage: true,
         },
         {
             trigger: "a[id=review-tab]",
@@ -90,11 +85,24 @@ registry.category("web_tour.tours").add("course_reviews", {
             run: "click",
         },
         {
-            trigger: "#chatterRoot:shadow .o-mail-Message .o-mail-MessageReactions-add:not(:visible)",
+            trigger:
+                "#chatterRoot:shadow .o-mail-Message .o-mail-MessageReactions-add:not(:visible)",
         },
         {
             trigger: "#chatterRoot:shadow .o-mail-Message .o-mail-MessageReaction",
             run: "click",
+        },
+        { trigger: '#chatterRoot:shadow .o-mail-Message button:contains("Comment")', run: "click" },
+        {
+            trigger: "#chatterRoot:shadow .o-mail-Message .o-mail-Composer textarea",
+            run: "edit Thanks for enjoying my 'mid' course, you mid student",
+        },
+        {
+            trigger: "#chatterRoot:shadow .o-mail-Message .o-mail-Composer textarea",
+            run: "press Enter",
+        },
+        {
+            trigger: `#chatterRoot:shadow .o_wrating_publisher_comment:contains("Thanks for enjoying my 'mid' course, you mid student")`,
         },
     ],
 });

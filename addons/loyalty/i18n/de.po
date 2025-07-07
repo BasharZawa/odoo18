@@ -381,7 +381,7 @@ msgstr ""
 "            Herzlichen Glückwusch <t t-out=\"object._get_mail_partner().name or ''\">Brandon Freeman</t>,<br/>\n"
 "        </t>\n"
 "\n"
-"        hier ist Ihre Belohnung von <t t-out=\"object.program_id.company_id.name or ''\">YourCompany</t>.<br/>\n"
+"        hier ist Ihre Belohnung von <t t-out=\"object.program_id.company_id.name or ''\">IhrUnternehmen</t>.<br/>\n"
 "\n"
 "        <t t-foreach=\"object.program_id.reward_ids\" t-as=\"reward\">\n"
 "            <t t-if=\"reward.required_points &lt;= object.points\">\n"
@@ -2325,7 +2325,7 @@ msgstr "Verwendungen"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_program_view_form
 msgid "used)"
-msgstr ""
+msgstr "verwendet)"
 
 #. module: loyalty
 #. odoo-python

@@ -77,6 +77,7 @@ export class LinkPopover extends Component {
             buttonSize: this.props.linkEl.className.match(/btn-(sm|lg)/)?.[1] || "",
             buttonStyle: this.initButtonStyle(this.props.linkEl.className),
             isImage: this.props.isImage,
+            showLabel: !this.props.linkEl.childElementCount,
         });
 
         this.editingWrapper = useRef("editing-wrapper");
@@ -108,8 +109,12 @@ export class LinkPopover extends Component {
         this.state.url = deducedUrl
             ? this.correctLink(deducedUrl)
             : this.correctLink(this.state.url);
-        this.loadAsyncLinkPreview();
-        this.props.onApply(this.state.url, this.state.label, this.state.classes);
+        this.props.onApply(
+            this.state.url,
+            this.state.label,
+            this.state.classes,
+            this.state.attachmentId
+        );
     }
     onClickEdit() {
         this.state.editing = true;
@@ -304,6 +309,7 @@ export class LinkPopover extends Component {
         this.props.onUpload?.(attachment);
         this.state.url = getURL(attachment, { download: true, unique: true, accessToken: true });
         this.state.label ||= attachment.name;
+        this.state.attachmentId = attachment.id;
     }
 
     isAttachmentUrl() {

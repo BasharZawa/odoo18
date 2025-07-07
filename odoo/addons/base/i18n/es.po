@@ -6,9 +6,9 @@
 # Martin Trigaux, 2024
 # Iran Villalobos López, 2024
 # Braulio D. López Vázquez <bdl@odoo.com>, 2024
-# Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2025
 # Fernanda Alvarez, 2025
 # Wil Odoo, 2025
+# Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2025
 # Larissa Manderfeld, 2025
 # 
 msgid ""
@@ -2020,7 +2020,7 @@ msgstr ""
 "\n"
 "Informes contables para Zambia\n"
 "================================\n"
-"    - Informes financieros (balance de situación, estado de resultados y informe fiscal)\n"
+"    - Informes financieros (balance de situación, estado de resultados e informe fiscal)\n"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_ph_reports
@@ -5037,7 +5037,7 @@ msgstr ""
 "IVA para One Stop Shop (OSS) en UE\n"
 "==========================\n"
 "\n"
-"A partir del 1 de julio, 2021, los negocios de la UE que venden bienes dentro de la UE cuyo coste es mayor que 10.000 EUR y cuando el comprador está ubicado en otro estado miembro de la UE deben registrarse y pagar el IVA dentro del estado miembro en el que viva el comprador.\n"
+"A partir del 1 de julio, 2021, los negocios de la UE que venden bienes dentro de la UE cuyo coste es mayor que 10.000 EUR y cuando el comprador está situado en otro estado miembro de la UE deben registrarse y pagar el IVA dentro del estado miembro en el que viva el comprador.\n"
 "Bajo esta medida que cubra a toda la UE, puede continuar aplicando las reglas locales para el IVA en sus ventas transfronterizas. Para simplificar la aplicación de esta directiva de la UE, el esquema de registro para puntos únicos de compra permite que los negocios hagan una única declaración de impuestos.\n"
 "\n"
 "Este módulo funciona ya que ayuda a la creación de las posiciones fiscales requeridas en la UE y los impuestos para aplicarlos automáticamente y registrar los impuestos requeridos.\n"
@@ -6630,7 +6630,7 @@ msgstr ""
 "    * Prestaciones y deducciones \n"
 "    * Integrado con la gestión de las ausencias \n"
 "    * Gastos médicos, de viajes, por cuidado de niños... \n"
-"    - Asesoramiento y informes sobre la nómina\n"
+"    - Asesoramiento e informes sobre la nómina\n"
 "    - Salarios anuales por informe de empleado\n"
 
 #. module: base
@@ -10970,7 +10970,7 @@ msgid ""
 "This module allows ecommerce users to book an order with the shiprocket using cash on delivery feature.\n"
 msgstr ""
 "\n"
-"Este módulo permite que los usuarios del comercio electrónico reserven un pedido con la función Pago a contra reembolso de Shiprocket.\n"
+"Este módulo permite que los usuarios del comercio electrónico reserven un pedido con la función Pago contra reembolso de Shiprocket.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_sale_ups
@@ -19884,7 +19884,7 @@ msgstr "Bulgaria - Informes contables"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_bg_reports_ledger
 msgid "Bulgaria - Accounting Reports Ledger"
-msgstr "Bulgaria - Libro mayor y informes contables"
+msgstr "Bulgaria - Libro mayor e informes contables"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_bg_ledger
@@ -27383,7 +27383,7 @@ msgid ""
 msgstr ""
 "Le ayuda a gestionar sus facturas y acciones contables.\n"
 "\n"
-"        Facturación: facturas, pagos y informes básicos de facturas.\n"
+"        Facturación: facturas, pagos e informes básicos de facturas.\n"
 "        Facturación y bancos: añade el tablero de Contabilidad, la gestión bancaria y los informes de seguimiento.\n"
 "        Asesor fiscal: acceso a todas las funciones de Contabilidad, incluyendo informes, gestión de activos, contabilidad analítica, sin permisos de configuración.\n"
 "        Administrador: acceso completo, incluidos los permisos de configuración y la gestión de datos contables.\n"
@@ -29227,7 +29227,7 @@ msgstr "Facturas, pagos, seguimientos y sincronización bancaria (enterprise)"
 #: model:ir.module.module,shortdesc:base.module_account
 #: model:ir.module.module,shortdesc:base.module_account_accountant
 msgid "Invoicing"
-msgstr "Facturación"
+msgstr "Facturación / Contabilidad"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hw_posbox_homepage
@@ -33809,7 +33809,7 @@ msgstr ""
 "\n"
 "Obtenga su planificación de recursos de fabricación precisa con su integración completa\n"
 "con aplicaciones de ventas y compras. La integración contable permite\n"
-"valoración contable y informes más profundos sobre los costes e ingresos de su\n"
+"valoración contable e informes más profundos sobre los costes e ingresos de su\n"
 "operaciones de fabricación.\n"
 "\n"
 
@@ -35902,7 +35902,7 @@ msgstr "RR. HH. de TPV para restaurante "
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_pos_iot_six
 msgid "POS IoT Six"
-msgstr "TPV IoT Six"
+msgstr "TPV – IoT Six"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_pos_mercado_pago
@@ -37877,7 +37877,7 @@ msgstr "Prospectos"
 #. module: base
 #: model:ir.module.module,summary:base.module_website_sale_shiprocket
 msgid "Provide cash on delivery for website users"
-msgstr "Ofrezca pago a contra reembolso para usuarios del sitio web"
+msgstr "Ofrezca pago contra reembolso para usuarios del sitio web"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_mail_mobile
@@ -40515,7 +40515,7 @@ msgstr "Envío por Shiprocket"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_sale_shiprocket
 msgid "Shiprocket: Cash on Delivery"
-msgstr "Shiprocket: pago a contra reembolso"
+msgstr "Shiprocket: pago contra reembolso"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_shoe_maker
@@ -42180,17 +42180,17 @@ msgstr "Prueba de Suscripción de ventas"
 #. module: base
 #: model:ir.module.module,summary:base.module_test_marketing_automation
 msgid "Test Suite for Automated Marketing Campaigns"
-msgstr "Suite de prueba para campañas de marketing automatizadas"
+msgstr "Conjunto de pruebas para las campañas de marketing automatizadas"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_test_data_cleaning
 msgid "Test Suite for Data Cleaning"
-msgstr "Suite de pruebas para la limpieza de datos"
+msgstr "Conjunto de pruebas para la limpieza de datos"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_test_discuss_full_enterprise
 msgid "Test Suite for Discuss Enterprise"
-msgstr "Suite de prueba para Conversaciones en Enterprise"
+msgstr "Conjunto de pruebas para Conversaciones en Enterprise"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_test_rental_product_configurators

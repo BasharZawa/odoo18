@@ -30,6 +30,7 @@
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2024
 # Lilach Gilliam <lilach.gilliam@gmail.com>, 2025
 # Hed Shefer <hed@laylinetech.com>, 2025
+# Yoram Lavi, 2025
 # or balmas, 2025
 # 
 msgid ""
@@ -808,7 +809,7 @@ msgstr "חסום"
 #: model:ir.model.fields,field_description:hr_recruitment.field_applicant_send_mail__body_has_template_value
 #: model:ir.model.fields,field_description:hr_recruitment.field_candidate_send_mail__body_has_template_value
 msgid "Body content is the same as the template"
-msgstr ""
+msgstr "תוכן הגוף זהה לתבנית."
 
 #. module: hr_recruitment
 #: model:ir.model.fields,field_description:hr_recruitment.field_hr_candidate__message_bounce
@@ -1790,7 +1791,7 @@ msgstr ""
 #. module: hr_recruitment
 #: model:ir.model.fields,help:hr_recruitment.field_hr_applicant__duration_tracking
 msgid "JSON that maps ids from a many2one field to seconds spent"
-msgstr ""
+msgstr "JSON that maps ids from a many2one field to seconds spent"
 
 #. module: hr_recruitment
 #. odoo-python

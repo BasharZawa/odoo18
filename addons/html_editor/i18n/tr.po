@@ -1608,7 +1608,7 @@ msgstr "Katı"
 #. odoo-python
 #: code:addons/html_editor/controllers/main.py:0
 msgid "Sorry, we could not generate a response. Please try again later."
-msgstr ""
+msgstr "Üzgünüz, yanıt oluşturamadık. Lütfen daha sonra tekrar deneyin."
 
 #. module: html_editor
 #. odoo-python
@@ -1946,6 +1946,7 @@ msgid ""
 "You have reached the maximum number of requests for this service. Try again "
 "later."
 msgstr ""
+"Bu hizmet için maksimum istek sayısına ulaştınız. Daha sonra tekrar deneyin."
 
 #. module: html_editor
 #. odoo-javascript

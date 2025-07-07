@@ -416,6 +416,8 @@ class AccountMove(models.Model):
 
     @api.model
     def _l10n_it_edi_grouping_function_base_lines(self, base_line, tax_data):
+        if not tax_data:
+            return None
         tax = tax_data['tax']
         return {
             'tax_amount_field': -23.0 if tax.amount == -11.5 else tax.amount,
@@ -425,6 +427,8 @@ class AccountMove(models.Model):
 
     @api.model
     def _l10n_it_edi_grouping_function_tax_lines(self, base_line, tax_data):
+        if not tax_data:
+            return None
         tax = tax_data['tax']
 
         if tax._l10n_it_is_split_payment():
@@ -447,8 +451,26 @@ class AccountMove(models.Model):
 
     @api.model
     def _l10n_it_edi_grouping_function_total(self, base_line, tax_data):
+        if not tax_data:
+            return None
         skip = tax_data['is_reverse_charge'] or self._l10n_it_edi_is_neg_split_payment(tax_data)
         return not skip
+
+    def _prepare_product_base_line_for_taxes_computation(self, product_line):
+        """
+            Prepares tax base line. Rounding lines must appear in the XML,
+            so they are converted to regular lines with tax exemption code ('N2.2').
+        """
+        base_line = super()._prepare_product_base_line_for_taxes_computation(product_line)
+
+        if product_line.display_type == 'rounding':
+            base_line.update({
+                'quantity': 1,
+                'price_unit': -product_line.amount_currency,
+                'tax_ids': self._l10n_it_edi_search_tax_for_import(self.company_id, 0.0, l10n_it_exempt_reason='N2.2'),
+            })
+
+        return base_line
 
     def _l10n_it_edi_get_values(self, pdf_values=None):
         self.ensure_one()
@@ -464,7 +486,7 @@ class AccountMove(models.Model):
         convert_to_euros = self.currency_id.name != 'EUR'
 
         # Base lines.
-        base_amls = self.line_ids.filtered(lambda x: x.display_type == 'product')
+        base_amls = self.line_ids.filtered(lambda x: x.display_type == 'product' or x.display_type == 'rounding')
         base_lines = [self._prepare_product_base_line_for_taxes_computation(x) for x in base_amls]
         tax_amls = self.line_ids.filtered(lambda x: x.display_type == 'tax')
         tax_lines = [self._prepare_tax_line_for_taxes_computation(x) for x in tax_amls]
@@ -538,7 +560,7 @@ class AccountMove(models.Model):
             importo_totale_documento += values['base_amount_currency']
             importo_totale_documento += values['tax_amount_currency']
 
-        company = self.company_id.root_id
+        company = self.company_id._l10n_it_get_edi_company()
         partner = self.commercial_partner_id
         sender = company
         buyer = partner if not is_self_invoice else company
@@ -716,8 +738,8 @@ class AccountMove(models.Model):
                      'import_type': 'in_refund',
                      'self_invoice': False,
                      'simplified': False},
-            'TD05': {'move_types': ['out_refund'],
-                     'import_type': 'in_refund',
+            'TD05': {'move_types': ['in_invoice', 'out_invoice'],
+                     'import_type': 'in_invoice',
                      'self_invoice': False,
                      'simplified': False},
             'TD06': {'move_types': ['out_invoice'],
@@ -1525,15 +1547,15 @@ class AccountMove(models.Model):
            See ES documentation 2.2
         '''
         a = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-        # Each company should have its own filename sequence. If it does not exist, create it
-        n = self.env['ir.sequence'].with_company(self.company_id).next_by_code('l10n_it_edi.fattura_filename')
+        company = self.company_id._l10n_it_get_edi_company()
+        n = self.env['ir.sequence'].with_company(company).next_by_code('l10n_it_edi.fattura_filename')
         if not n:
             # The offset is used to avoid conflicts with existing filenames
             offset = 62 ** 4
             sequence = self.env['ir.sequence'].sudo().create({
                 'name': 'FatturaPA Filename Sequence',
                 'code': 'l10n_it_edi.fattura_filename',
-                'company_id': self.company_id.id,
+                'company_id': company.id,
                 'number_next': offset,
             })
             n = sequence._next()
@@ -1546,8 +1568,8 @@ class AccountMove(models.Model):
             progressive_number = a[m] + progressive_number
 
         return '%(country_code)s%(codice)s_%(progressive_number)s.xml' % {
-            'country_code': self.company_id.country_id.code,
-            'codice': self.company_id.partner_id._l10n_it_edi_normalized_codice_fiscale(),
+            'country_code': company.country_id.code,
+            'codice': company.partner_id._l10n_it_edi_normalized_codice_fiscale(),
             'progressive_number': progressive_number.zfill(5),
         }
 

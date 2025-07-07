@@ -31,7 +31,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/hr_presence/models/hr_employee.py:0
 msgid "%(name)s has been noted as %(state)s today"
-msgstr ""
+msgstr "Bugün %(state)s olarak kaydedilenler: %(name)s"
 
 #. module: hr_presence
 #: model:mail.template,body_html:hr_presence.mail_template_presence
@@ -65,7 +65,7 @@ msgstr "Mevcut Değil"
 #. module: hr_presence
 #: model:ir.actions.server,name:hr_presence.action_hr_employee_presence_log
 msgid "Add a log note"
-msgstr ""
+msgstr "Kayıt notu ekleyin"
 
 #. module: hr_presence
 #: model:ir.model,name:hr_presence.model_hr_employee_base
@@ -90,7 +90,7 @@ msgstr "Kullanıcı Kimliği Oluştur"
 #. module: hr_presence
 #: model:ir.actions.server,name:hr_presence.action_hr_employee_presence_time_off
 msgid "Create a Time Off"
-msgstr ""
+msgstr "İzin oluşturun"
 
 #. module: hr_presence
 #: model:ir.model.fields,field_description:hr_presence.field_hr_employee__email_sent
@@ -121,6 +121,9 @@ msgid ""
 "an oversight from us, we apologize. Please contact your manager or HR ASAP. "
 "Thanks"
 msgstr ""
+"Merhaba, iş yerinde olmadığınızı ve izin talebinde bulunmadığınızı fark "
+"ettik. Bu bizim hatamızsa özür dileriz. Lütfen en kısa sürede yöneticinize "
+"veya İK departmanına başvurun. Teşekkürler."
 
 #. module: hr_presence
 #: model:ir.model.fields,field_description:hr_presence.field_res_company__hr_presence_last_compute_date
@@ -151,7 +154,7 @@ msgstr "IP Bağlantılı"
 #: model:ir.model.fields,field_description:hr_presence.field_hr_employee_base__manually_set_presence
 #: model:ir.model.fields,field_description:hr_presence.field_hr_employee_public__manually_set_presence
 msgid "Manually Set Presence"
-msgstr ""
+msgstr "Manuel Olarak Ayarlanmış Mevcudiyet"
 
 #. module: hr_presence
 #: model:ir.model.fields,field_description:hr_presence.field_hr_employee__manually_set_present
@@ -166,7 +169,7 @@ msgstr "Manuel olarak Ayarla"
 #: model:ir.model.fields.selection,name:hr_presence.selection__hr_employee_public__hr_presence_state_display__out_of_working_hour
 #: model_terms:ir.ui.view,arch_db:hr_presence.hr_employee_view_search
 msgid "Out of Working Hours"
-msgstr ""
+msgstr "Çalışma Saatleri Dışında"
 
 #. module: hr_presence
 #: model_terms:ir.ui.view,arch_db:hr_presence.hr_employee_view_tree
@@ -177,12 +180,12 @@ msgstr "Hazır Bulunma"
 #. odoo-javascript
 #: code:addons/hr_presence/static/src/search/hr_presence_cog_menu/hr_presence_cog_menu.xml:0
 msgid "Presence Control"
-msgstr ""
+msgstr "Çalışan Mevcudiyet Kontrolü"
 
 #. module: hr_presence
 #: model_terms:ir.ui.view,arch_db:hr_presence.hr_employee_view_search
 msgid "Presence/Absence"
-msgstr ""
+msgstr "Varlık/Yokluk"
 
 #. module: hr_presence
 #: model:ir.model.fields.selection,name:hr_presence.selection__hr_employee__hr_presence_state_display__present
@@ -200,7 +203,7 @@ msgstr "SMS Gönder"
 #. module: hr_presence
 #: model:ir.actions.server,name:hr_presence.action_hr_employee_presence_sms
 msgid "Send a SMS"
-msgstr ""
+msgstr "SMS Gönderin"
 
 #. module: hr_presence
 #: model:mail.template,description:hr_presence.mail_template_presence
@@ -208,18 +211,18 @@ msgid ""
 "Sent manually in presence module when an employee wasn't working despite not"
 " being off"
 msgstr ""
-"Bir çalışan izinli olmamasına rağmen çalışmadığında varlık modülünde manuel "
-"olarak gönderilir"
+"Çalışanın izinli olmamasına rağmen çalışmadığı durumlarda, 'mevcudiyet' "
+"modülünde manuel olarak gönderilir."
 
 #. module: hr_presence
 #: model:ir.actions.server,name:hr_presence.action_hr_employee_presence_absent
 msgid "Set Absent"
-msgstr ""
+msgstr "'Mevcut Değil' olarak ayarlayın"
 
 #. module: hr_presence
 #: model:ir.actions.server,name:hr_presence.action_hr_employee_presence_present
 msgid "Set Present"
-msgstr ""
+msgstr "'Mevcut' olarak ayarlayın"
 
 #. module: hr_presence
 #: model:mail.template,subject:hr_presence.mail_template_presence
@@ -230,7 +233,7 @@ msgstr "Beklenmedik Devamsızlık"
 #. odoo-python
 #: code:addons/hr_presence/models/hr_employee.py:0
 msgid "Unplanned Absence"
-msgstr ""
+msgstr "Önceden Planlanmamış Devamsızlık"
 
 #. module: hr_presence
 #: model:ir.model,name:hr_presence.model_res_users_log

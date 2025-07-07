@@ -863,7 +863,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/form/form_controller.js:0
 msgid "Add Properties"
-msgstr ""
+msgstr "Dodaj lastnosti"
 
 #. module: web
 #. odoo-javascript
@@ -1358,7 +1358,7 @@ msgstr ""
 #: code:addons/web/static/src/views/fields/image/image_field.js:0
 #: code:addons/web/static/src/views/fields/signature/signature_field.xml:0
 msgid "Binary file"
-msgstr ""
+msgstr "Binarna datoteka"
 
 #. module: web
 #. odoo-javascript
@@ -1706,7 +1706,7 @@ msgstr "Zaključi"
 #. odoo-javascript
 #: code:addons/web/static/src/core/file_viewer/file_viewer.xml:0
 msgid "Close (Esc)"
-msgstr ""
+msgstr "Zapri (Esc)"
 
 #. module: web
 #. odoo-javascript
@@ -1913,7 +1913,7 @@ msgstr "Naprej"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/x2many/x2many_field.xml:0
 msgid "Control panel buttons"
-msgstr ""
+msgstr "Gumbi nadzorne plošče"
 
 #. module: web
 #. odoo-javascript
@@ -5316,25 +5316,25 @@ msgstr "Škrlatna"
 #. odoo-javascript
 #: code:addons/web/static/src/search/utils/dates.js:0
 msgid "Q1"
-msgstr ""
+msgstr "Q1"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/search/utils/dates.js:0
 msgid "Q2"
-msgstr ""
+msgstr "Q2"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/search/utils/dates.js:0
 msgid "Q3"
-msgstr ""
+msgstr "Q3"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/search/utils/dates.js:0
 msgid "Q4"
-msgstr ""
+msgstr "Q4"
 
 #. module: web
 #. odoo-javascript
@@ -6246,7 +6246,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/form/form_error_dialog/form_error_dialog.xml:0
 msgid "Stay here"
-msgstr ""
+msgstr "Ostani tukaj"
 
 #. module: web
 #. odoo-javascript
@@ -10622,7 +10622,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "computer"
-msgstr ""
+msgstr "računalnik"
 
 #. module: web
 #. odoo-javascript
@@ -13411,7 +13411,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "folder"
-msgstr ""
+msgstr "mapa"
 
 #. module: web
 #. odoo-javascript
@@ -13555,7 +13555,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "frame"
-msgstr ""
+msgstr "okvir"
 
 #. module: web
 #. odoo-javascript
@@ -16099,7 +16099,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "large"
-msgstr ""
+msgstr "velik"
 
 #. module: web
 #. odoo-javascript
@@ -17419,7 +17419,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "medium"
-msgstr ""
+msgstr "srednji"
 
 #. module: web
 #. odoo-javascript
@@ -20476,7 +20476,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "purple"
-msgstr ""
+msgstr "vijolična"
 
 #. module: web
 #. odoo-javascript
@@ -20801,7 +20801,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "red"
-msgstr ""
+msgstr "rdeča"
 
 #. module: web
 #. odoo-javascript
@@ -21690,7 +21690,7 @@ msgstr "sekunda"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "secure"
-msgstr ""
+msgstr "varno"
 
 #. module: web
 #. odoo-javascript
@@ -22352,7 +22352,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "small"
-msgstr ""
+msgstr "mali"
 
 #. module: web
 #. odoo-javascript
@@ -22916,7 +22916,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "sports"
-msgstr ""
+msgstr "športi"
 
 #. module: web
 #. odoo-javascript
@@ -23324,7 +23324,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "sunglasses"
-msgstr ""
+msgstr "sončna očala"
 
 #. module: web
 #. odoo-javascript
@@ -25196,7 +25196,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "wedding"
-msgstr ""
+msgstr "poroka"
 
 #. module: web
 #. odoo-javascript
@@ -26192,7 +26192,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "yellow"
-msgstr ""
+msgstr "rumena"
 
 #. module: web
 #. odoo-javascript

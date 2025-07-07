@@ -839,8 +839,7 @@ class AccountChartTemplate(models.AbstractModel):
                 company[company_attr_name] = account
 
         # No fields on company
-        is_accounting_installed_next = self.env["ir.module.module"].search([('name', '=', 'accountant')]).state in ('to install', 'installed')
-        if not company.parent_id and not is_accounting_installed_next:
+        if not company.parent_id:
             accounts_data_no_fields = {
                 'account_journal_payment_debit_account_id': {
                     'name': _("Outstanding Receipts"),
@@ -1135,7 +1134,7 @@ class AccountChartTemplate(models.AbstractModel):
                 "match_partner": True,
             },
             "reconcile_bill": {
-                "name": 'Create Bill',
+                "name": _('Create Bill'),
                 "sequence": 5,
                 "rule_type": 'writeoff_button',
                 'counterpart_type': 'purchase',
