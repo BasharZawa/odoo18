@@ -164,7 +164,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:marketing_card.cards_card_action
 #: model:ir.model.fields,field_description:marketing_card.field_card_campaign__card_ids
 msgid "Card"
-msgstr ""
+msgstr "कार्ड"
 
 #. module: marketing_card
 #: model:ir.actions.act_window,name:marketing_card.card_campaign_action
@@ -894,7 +894,7 @@ msgstr ""
 #. module: marketing_card
 #: model:ir.model.fields,help:marketing_card.field_card_campaign__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "रिकॉर्ड में जो अलग तरह की गतिविधि हुई है, वह किस तरह की है."
 
 #. module: marketing_card
 #: model:ir.model,name:marketing_card.model_utm_source
@@ -920,12 +920,12 @@ msgstr ""
 #. module: marketing_card
 #: model:ir.model.fields,field_description:marketing_card.field_card_campaign__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "वेबसाइट मैसेज"
 
 #. module: marketing_card
 #: model:ir.model.fields,help:marketing_card.field_card_campaign__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "वेबसाइट कम्यूनिकेशन हिस्ट्री"
 
 #. module: marketing_card
 #: model:ir.model.fields,help:marketing_card.field_card_card__requires_sync

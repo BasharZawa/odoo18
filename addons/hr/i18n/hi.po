@@ -2068,7 +2068,7 @@ msgstr ""
 #. module: hr
 #: model:ir.model,name:hr.model_ir_ui_menu
 msgid "Menu"
-msgstr ""
+msgstr "मेन्यू"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_department__message_has_error
@@ -2649,7 +2649,7 @@ msgstr ""
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__employee_properties
 msgid "Properties"
-msgstr ""
+msgstr "प्रॉपर्टीज़"
 
 #. module: hr
 #: model:ir.model,name:hr.model_hr_employee_public
@@ -3198,7 +3198,7 @@ msgstr ""
 msgid ""
 "The user will have access to the human resources configuration as well as "
 "statistic reports."
-msgstr ""
+msgstr "उपयोगकर्ता एचआर की सेटिंग और आंकड़ों वाली रिपोर्ट देख और बदल पाएगा."
 
 #. module: hr
 #. odoo-python
@@ -3267,11 +3267,14 @@ msgid ""
 " leaves, ...), you should create another employee in the new company "
 "instead."
 msgstr ""
+"अगर आप अलग-अलग कंपनियों में काम कर रहे हैं और आप नहीं चाहते कि आपको अपने "
+"पुराने कॉन्ट्रैक्ट, छुट्टियों या बाकी चीज़ों तक पहुंचने में दिक्कत हो, तो "
+"सबसे अच्छा होगा कि आप नई कंपनी में एक नया कर्मचारी रिकॉर्ड बना लें."
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_filter
 msgid "Today Activities"
-msgstr ""
+msgstr "आज की गतिविधियां"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_job__expected_employees
@@ -3299,7 +3302,7 @@ msgstr ""
 #: model:ir.model.fields,help:hr.field_hr_department__activity_exception_decoration
 #: model:ir.model.fields,help:hr.field_hr_employee__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "रिकॉर्ड में जो अलग तरह की गतिविधि हुई है, वह किस तरह की है."
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_department_view_kanban
@@ -3378,7 +3381,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/hr/models/hr_employee.py:0
 msgid "Warning"
-msgstr ""
+msgstr "चेतावनी"
 
 #. module: hr
 #: model_terms:hr.job,description:hr.job_consultant
@@ -3398,14 +3401,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr.field_hr_employee__website_message_ids
 #: model:ir.model.fields,field_description:hr.field_hr_job__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "वेबसाइट मैसेज"
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_department__website_message_ids
 #: model:ir.model.fields,help:hr.field_hr_employee__website_message_ids
 #: model:ir.model.fields,help:hr.field_hr_job__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "वेबसाइट कम्यूनिकेशन हिस्ट्री"
 
 #. module: hr
 #: model_terms:hr.job,website_description:hr.job_ceo
@@ -3636,7 +3639,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr.res_users_view_form_profile
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_form
 msgid "ZIP"
-msgstr ""
+msgstr "जिप"
 
 #. module: hr
 #. odoo-python
@@ -3663,7 +3666,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_form
 #: model_terms:ir.ui.view,arch_db:hr.view_hr_job_form
 msgid "e.g. Sales Manager"
-msgstr ""
+msgstr "जैसे, सेल्स मैनेजर"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.view_hr_job_form

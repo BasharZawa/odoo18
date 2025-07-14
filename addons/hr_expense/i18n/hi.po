@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-27 13:02+0000\n"
+"POT-Creation-Date: 2025-07-11 18:38+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: Ujjawal Pathak, 2025\n"
 "Language-Team: Hindi (https://app.transifex.com/odoo/teams/41243/hi/)\n"
@@ -1859,12 +1859,6 @@ msgid "Show all records which has next action date is before today"
 msgstr ""
 
 #. module: hr_expense
-#. odoo-python
-#: code:addons/hr_expense/models/hr_expense_sheet.py:0
-msgid "Show missing work email employees"
-msgstr ""
-
-#. module: hr_expense
 #: model:ir.model.fields,help:hr_expense.field_hr_expense__accounting_date
 #: model:ir.model.fields,help:hr_expense.field_hr_expense_sheet__accounting_date
 msgid "Specify the bill date of the related vendor bill."
@@ -2028,6 +2022,9 @@ msgid ""
 "The first word of the email subject did not correspond to any category code."
 " You'll have to set the category manually on the expense."
 msgstr ""
+"ईमेल के सब्जेक्ट लाइन का जो पहला शब्द था, वह किसी भी पहले से बनी हुई खर्च की"
+" कैटेगरी से नहीं मिल रहा था. इसलिए, आपको खुद ही उस खर्च की कैटेगरी तय करनी "
+"पड़ेगी."
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_approve_duplicate_view_form
@@ -2036,6 +2033,9 @@ msgid ""
 "than some expenses of this report. Please verify this report does not "
 "contain duplicates."
 msgstr ""
+"इस रिपोर्ट में कुछ ऐसे खर्च हैं जो पहले से मंजूर किए गए खर्चों जैसे ही लग "
+"रहे हैं, क्योंकि उनमें कर्मचारी, रकम और कैटगरी एक जैसी है. कृपया जांच लें कि"
+" इस रिपोर्ट में कोई भी खर्च दो बार तो नहीं लिखा गया है."
 
 #. module: hr_expense
 #: model:ir.model.constraint,message:hr_expense.constraint_hr_expense_sheet_journal_id_required_posted
@@ -2061,14 +2061,6 @@ msgstr ""
 #. module: hr_expense
 #: model:ir.model.fields,help:hr_expense.field_hr_expense_split_wizard__split_possible
 msgid "The sum of after split shut remain the same"
-msgstr ""
-
-#. module: hr_expense
-#. odoo-python
-#: code:addons/hr_expense/models/hr_expense_sheet.py:0
-msgid ""
-"The work email of some employees is missing. Please add it on the employee "
-"form"
 msgstr ""
 
 #. module: hr_expense
@@ -2127,7 +2119,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_sheet_view_search
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_view_search
 msgid "Today Activities"
-msgstr ""
+msgstr "आज की गतिविधियां"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__total_amount
@@ -2135,14 +2127,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_view_form
 #: model_terms:ir.ui.view,arch_db:hr_expense.report_expense_sheet
 msgid "Total"
-msgstr ""
+msgstr "कुल"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_split_wizard__total_amount_currency
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_view_expenses_analysis_tree
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_sheet_tree
 msgid "Total Amount"
-msgstr ""
+msgstr "कुल राशइ"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__total_amount_currency
@@ -2179,7 +2171,7 @@ msgstr ""
 #: model:ir.model.fields,help:hr_expense.field_hr_expense__activity_exception_decoration
 #: model:ir.model.fields,help:hr_expense.field_hr_expense_sheet__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "रिकॉर्ड में जो अलग तरह की गतिविधि हुई है, वह किस तरह की है."
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_view_search
@@ -2191,7 +2183,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_view_expenses_analysis_tree
 #: model_terms:ir.ui.view,arch_db:hr_expense.report_expense_sheet
 msgid "Unit Price"
-msgstr ""
+msgstr "यूनिट प्राइस"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__product_uom_id
@@ -2202,7 +2194,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet__untaxed_amount
 #: model_terms:ir.ui.view,arch_db:hr_expense.report_expense_sheet
 msgid "Untaxed Amount"
-msgstr ""
+msgstr "बिना टैक्स वाली राशि"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__product_uom_category_id
@@ -2214,7 +2206,7 @@ msgstr ""
 #: code:addons/hr_expense/static/src/views/kanban.xml:0
 #: code:addons/hr_expense/static/src/views/list.xml:0
 msgid "Upload"
-msgstr ""
+msgstr "अपलोड करें"
 
 #. module: hr_expense
 #: model_terms:ir.actions.act_window,help:hr_expense.hr_expense_actions_my_all
@@ -2240,7 +2232,7 @@ msgstr ""
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__vendor_id
 msgid "Vendor"
-msgstr ""
+msgstr "वेंडर"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_sheet_form
@@ -2261,13 +2253,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__website_message_ids
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "वेबसाइट मैसेज"
 
 #. module: hr_expense
 #: model:ir.model.fields,help:hr_expense.field_hr_expense__website_message_ids
 #: model:ir.model.fields,help:hr_expense.field_hr_expense_sheet__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "वेबसाइट कम्यूनिकेशन हिस्ट्री"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.product_product_expense_form_view
@@ -2291,7 +2283,7 @@ msgstr ""
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_split__wizard_id
 msgid "Wizard"
-msgstr ""
+msgstr "विज़ार्ड"
 
 #. module: hr_expense
 #. odoo-python
@@ -2455,6 +2447,21 @@ msgstr ""
 
 #. module: hr_expense
 #. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+msgid ""
+"You don't have the rights to bypass the validation process of this expense "
+"report."
+msgstr ""
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense.py:0
+msgid ""
+"You don't have the rights to bypass the validation process of this expense."
+msgstr ""
+
+#. module: hr_expense
+#. odoo-python
 #: code:addons/hr_expense/models/hr_expense.py:0
 msgid "You have no expense to report"
 msgstr ""
@@ -2486,7 +2493,7 @@ msgstr ""
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.res_config_settings_view_form
 msgid "alias"
-msgstr ""
+msgstr "उपनाम"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.product_product_expense_form_view
@@ -2511,7 +2518,7 @@ msgstr ""
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.res_config_settings_view_form
 msgid "e.g. mycompany.com"
-msgstr ""
+msgstr "जैसे, mycompany.com"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_view_form

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-25 08:39+0000\n"
+"POT-Creation-Date: 2025-07-11 18:38+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: Ujjawal Pathak, 2025\n"
 "Language-Team: Hindi (https://app.transifex.com/odoo/teams/41243/hi/)\n"
@@ -139,6 +139,11 @@ msgstr "ऐक्टिविटी एक्सेप्शन डेकोर�
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_model__activity_state
 msgid "Activity State"
 msgstr "ऐक्टिविटी स्टेट"
+
+#. module: fleet
+#: model:ir.model,name:fleet.model_mail_activity_type
+msgid "Activity Type"
+msgstr ""
 
 #. module: fleet
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle__activity_type_icon
@@ -1280,7 +1285,7 @@ msgstr ""
 #. module: fleet
 #: model:ir.model.fields.selection,name:fleet.selection__fleet_vehicle__contract_state__futur
 msgid "Incoming"
-msgstr ""
+msgstr "इनकमिंग"
 
 #. module: fleet
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_log_contract_view_form
@@ -1872,7 +1877,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle__vehicle_properties
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_view_search
 msgid "Properties"
-msgstr ""
+msgstr "प्रॉपर्टीज़"
 
 #. module: fleet
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle__net_car_value
@@ -2106,7 +2111,7 @@ msgstr ""
 #. module: fleet
 #: model:ir.model,name:fleet.model_fleet_vehicle_log_services
 msgid "Services for vehicles"
-msgstr ""
+msgstr "व्हीकल के लिए सर्विस"
 
 #. module: fleet
 #: model:ir.actions.act_window,name:fleet.fleet_config_settings_action
@@ -2290,18 +2295,18 @@ msgstr ""
 #. module: fleet
 #: model:ir.model.fields.selection,name:fleet.selection__fleet_vehicle__service_activity__today
 msgid "Today"
-msgstr ""
+msgstr "आज"
 
 #. module: fleet
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_log_contract_view_search
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_view_search
 msgid "Today Activities"
-msgstr ""
+msgstr "आज की गतिविधियां"
 
 #. module: fleet
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_log_services_view_tree
 msgid "Total"
-msgstr ""
+msgstr "कुल"
 
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_service_13
@@ -2368,7 +2373,7 @@ msgstr "प्रकार"
 #: model:ir.model.fields,help:fleet.field_fleet_vehicle_log_services__activity_exception_decoration
 #: model:ir.model.fields,help:fleet.field_fleet_vehicle_model__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "रिकॉर्ड में जो अलग तरह की गतिविधि हुई है, वह किस तरह की है."
 
 #. module: fleet
 #: model:ir.actions.act_window,name:fleet.fleet_vehicle_service_types_action
@@ -2385,7 +2390,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_log_services__odometer_unit
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_odometer__unit
 msgid "Unit"
-msgstr ""
+msgstr "यूनिट"
 
 #. module: fleet
 #. odoo-python
@@ -2405,7 +2410,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_view_search
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_view_tree
 msgid "Vehicle"
-msgstr ""
+msgstr "व्हीकल"
 
 #. module: fleet
 #: model:ir.model,name:fleet.model_fleet_vehicle_log_contract
@@ -2499,7 +2504,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_log_services__vendor_id
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_log_contract_view_search
 msgid "Vendor"
-msgstr ""
+msgstr "वेंडर"
 
 #. module: fleet
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_log_services__inv_ref
@@ -2510,7 +2515,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_model__vendors
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_model_view_form
 msgid "Vendors"
-msgstr ""
+msgstr "वेंडर"
 
 #. module: fleet
 #: model:fleet.vehicle.state,name:fleet.fleet_vehicle_state_waiting_list
@@ -2590,7 +2595,7 @@ msgstr ""
 #. module: fleet
 #: model:ir.model.fields.selection,name:fleet.selection__fleet_vehicle_log_contract__cost_frequency__yearly
 msgid "Yearly"
-msgstr ""
+msgstr "सालान"
 
 #. module: fleet
 #: model_terms:ir.actions.act_window,help:fleet.fleet_vehicle_odometer_action

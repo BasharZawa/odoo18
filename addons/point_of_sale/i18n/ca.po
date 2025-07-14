@@ -2012,12 +2012,12 @@ msgstr "Combinació"
 #. module: point_of_sale
 #: model:ir.ui.menu,name:point_of_sale.menu_product_combo
 msgid "Combo Choices"
-msgstr ""
+msgstr "Opcions de combinacions"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__combo_item_id
 msgid "Combo Item"
-msgstr ""
+msgstr "Element de la combinació"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__combo_line_ids
@@ -3846,7 +3846,7 @@ msgstr "Idiomes"
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
 msgid "Laptop"
-msgstr ""
+msgstr "Portàtil"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
@@ -7427,7 +7427,7 @@ msgstr "Mostrar Impostos"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__price_subtotal
 msgid "Tax Excl."
-msgstr ""
+msgstr "Impostos no inclosos"
 
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_account_tax_group
@@ -8369,7 +8369,7 @@ msgstr "Total:"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/utils/money_details_popup/money_details_popup.js:0
 msgid "Total: %s"
-msgstr ""
+msgstr "Total: %s"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__order_edit_tracking

@@ -1001,7 +1001,7 @@ msgstr "Языки"
 #: model:ir.model.fields,field_description:hr_skills.field_hr_skill_level__write_uid
 #: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__write_uid
 msgid "Last Updated by"
-msgstr "Последнее обновление"
+msgstr "Последнее обновление:"
 
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_employee_cv_wizard__write_date
@@ -1013,7 +1013,7 @@ msgstr "Последнее обновление"
 #: model:ir.model.fields,field_description:hr_skills.field_hr_skill_level__write_date
 #: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__write_date
 msgid "Last Updated on"
-msgstr "Последнее обновление"
+msgstr "Дата последнего обновления:"
 
 #. module: hr_skills
 #: model:hr.resume.line,name:hr_skills.employee_resume_jep_lawson_public_school
@@ -1261,7 +1261,7 @@ msgstr "Пресвятая Дева Звезда Морской школы"
 #. module: hr_skills
 #: model:hr.skill,name:hr_skills.hr_skill_php
 msgid "PHP"
-msgstr ""
+msgstr "PHP"
 
 #. module: hr_skills
 #: model:hr.resume.line,name:hr_skills.employee_resume_admin_park_lake_state_school
@@ -1286,7 +1286,7 @@ msgstr "Перес-Морган"
 #. module: hr_skills
 #: model:hr.skill,name:hr_skills.hr_skill_perl
 msgid "Perl"
-msgstr ""
+msgstr "Perl"
 
 #. module: hr_skills
 #: model_terms:hr.resume.line,description:hr_skills.employee_resume_jve_arnoldcohen
@@ -1442,7 +1442,7 @@ msgstr "Рамирес Инк"
 #. module: hr_skills
 #: model:hr.skill,name:hr_skills.hr_skill_react
 msgid "React"
-msgstr ""
+msgstr "React"
 
 #. module: hr_skills
 #: model:hr.skill,name:hr_skills.hr_skill_resourcefulness
@@ -1507,7 +1507,7 @@ msgstr "Робинсон, Кроуфорд и Норман"
 #. module: hr_skills
 #: model:hr.skill,name:hr_skills.hr_skill_ruby
 msgid "Ruby"
-msgstr ""
+msgstr "Ruby"
 
 #. module: hr_skills
 #: model:hr.resume.line,name:hr_skills.employee_resume_fme_russellwebster
@@ -1522,7 +1522,7 @@ msgstr "Русский"
 #. module: hr_skills
 #: model:hr.skill,name:hr_skills.hr_skill_rust
 msgid "Rust"
-msgstr ""
+msgstr "Rust"
 
 #. module: hr_skills
 #: model:hr.resume.line,name:hr_skills.employee_resume_line_admin_2
@@ -1537,7 +1537,7 @@ msgstr "Сондерс-Адкинс"
 #. module: hr_skills
 #: model:hr.skill,name:hr_skills.hr_skill_scala
 msgid "Scala"
-msgstr ""
+msgstr "Scala"
 
 #. module: hr_skills
 #: model:hr.resume.line,name:hr_skills.employee_resume_admin_schultz_inc
@@ -1842,6 +1842,8 @@ msgid ""
 "There are no resume lines on this employee.\n"
 "                        Why not add a new one?"
 msgstr ""
+"У сотрудника нет строк резюме. \n"
+"                        Почему бы не добавить новую?"
 
 #. module: hr_skills
 #. odoo-javascript
@@ -1855,6 +1857,8 @@ msgid ""
 "This report will give you an overview of the skills per Employee.\n"
 "                Create them in configuration and add them on the Employee."
 msgstr ""
+"Этот отчет показывает навыки по каждому сотруднику. \n"
+"                Создайте навыки в настройках и добавьте их сотрудникам."
 
 #. module: hr_skills
 #: model:hr.resume.line,name:hr_skills.employee_resume_vad_thomas_chirnside_primary_school
@@ -1926,7 +1930,7 @@ msgstr "Тип строки резюме"
 #. module: hr_skills
 #: model:hr.skill,name:hr_skills.hr_skill_typescript
 msgid "TypeScript"
-msgstr ""
+msgstr "TypeScript"
 
 #. module: hr_skills
 #: model:hr.resume.line,name:hr_skills.employee_resume_jod_umbakumba_school
@@ -1951,7 +1955,7 @@ msgstr "Пользователь"
 #. module: hr_skills
 #: model:hr.skill,name:hr_skills.hr_skill_virtualization_containerization
 msgid "Virtualization and Containerization"
-msgstr ""
+msgstr "Виртуализация и контейнеризация"
 
 #. module: hr_skills
 #: model:hr.skill,name:hr_skills.hr_skill_web_development
@@ -2012,7 +2016,7 @@ msgstr "Государственная школа Вудриджа"
 #. module: hr_skills
 #: model:hr.skill,name:hr_skills.hr_skill_wu_chinese
 msgid "Wu Chinese"
-msgstr ""
+msgstr "Диалект китайского языка У"
 
 #. module: hr_skills
 #: model:hr.resume.line,name:hr_skills.employee_resume_vad_wycheproof_p12_college

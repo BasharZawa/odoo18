@@ -3349,7 +3349,7 @@ msgstr "Zameglitev"
 #. odoo-javascript
 #: code:addons/website/static/src/xml/website.editor.xml:0
 msgid "Bold"
-msgstr ""
+msgstr "Krepko"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_call_to_action_menu
@@ -14428,7 +14428,7 @@ msgstr "Nespremenljiv enolični identifikator"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_tabs_options
 msgid "Underline"
-msgstr ""
+msgstr "Podčrtano"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
