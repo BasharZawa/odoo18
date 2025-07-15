@@ -5,7 +5,7 @@
         <field name="name">todo.task.list</field>
         <field name="model">todo.task</field>
         <field name="arch" type="xml">
-            <list string="Tasks">
+<list string="Tasks" decoration-danger="is_due_today"> 
                 <field name="name"/>
                 <field name="due_date"/>
                 <field name="assigned_to"/>
@@ -20,17 +20,52 @@
         <field name="model">todo.task</field>
         <field name="arch" type="xml">
             <form string="Task">
+                <header>
+                    <button name="action_set_closed" type="object" string="Close" invisible="state == 'completed'" 
+                        class="oe_highlight"
+                        confirm="Are you sure you want to close this task? This action cannot be undone."
+                        title="Close Task"
+                    ></button>
+                    <button name="action_set_in_progress" type="object" string="Set In Progress" invisible="state != 'new'" class="oe_highlight"/>
+                    <button name="action_set_completed" type="object" string="Set Completed" invisible="state != 'in_progress'" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,in_progress,completed"/>
+                </header>
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="due_date"/>
-                        <field name="assigned_to"/>
-                        <field name="state"/>
-                        <field name="description"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="due_date"/>
+                            <field name="assigned_to"/>
+                            <field name="state"/>
+                            <field name="description"/>
+                            <field name="estimated_hours"/>
+                            <field name="actual_hours" readonly="1"/>
+                        </group>
+                        <notebook>
+                            <page name="Timesheets" string="Timesheets">
+                                <field name="timesheet_ids" context="{'default_task_id': id}">
+                                    <list editable="bottom">
+                                        <field name="date"/>
+                                        <field name="hours_spent"/>
+                                        <field name="description"/>
+                                    </list>
+                                    <form>
+                                        <group>
+                                            <field name="date"/>
+                                            <field name="hours_spent"/>
+                                            <field name="description"/>
+                                        </group>
+                                    </form>
+                                </field>
+                                
+                            </page>
+                        </notebook>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
+
     </record>
 
     <!-- Search View -->

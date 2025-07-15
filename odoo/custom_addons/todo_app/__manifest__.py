@@ -25,6 +25,7 @@
     'license': 'LGPL-3',
     'depends': [
         'base',
+        'mail'
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -41,7 +42,6 @@
         # ],
     },
     'images': [
-        'static/description/icon.png',
     ],
     'installable': True,
     'auto_install': False,
