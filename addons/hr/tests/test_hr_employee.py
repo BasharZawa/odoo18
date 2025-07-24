@@ -1,4 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from datetime import datetime
 from psycopg2.errors import UniqueViolation
 
 from odoo.tests import Form, users, HttpCase, tagged
@@ -459,6 +460,34 @@ class TestHrEmployee(TestHrCommon):
         self.assertTrue(employee.is_flexible)
         self.assertTrue(employee.is_fully_flexible)
 
+    def test_flexible_working_hours(self):
+        """
+        Test to verifie that get_unusual_days() return false for flexible work schedule
+        """
+
+        # Creating a flexible working schedule
+        calendar_flex = self.env['resource.calendar'].create([
+            {
+                'tz': "Europe/Brussels",
+                'name': 'flexible hours',
+                'flexible_hours': "True",
+            },
+        ])
+        employeeA = self.env['hr.employee'].create({
+            'name': 'Employee',
+        })
+
+        # Testing employeA on regular working schedule
+        days = employeeA._get_unusual_days(datetime(2025, 1, 1), datetime(2025, 12, 31))
+        self.assertTrue(days)
+        self.assertTrue(days['2025-01-04'])
+
+        # Assigning flexible work hours to employeeA
+        employeeA.resource_calendar_id = calendar_flex.id
+        days = employeeA._get_unusual_days(datetime(2025, 1, 1), datetime(2025, 12, 31))
+        self.assertTrue(days)
+        self.assertFalse(days['2025-01-04'])
+
 
 @tagged('-at_install', 'post_install')
 class TestHrEmployeeWebJson(HttpCase):
@@ -475,3 +504,13 @@ class TestHrEmployeeWebJson(HttpCase):
         }
         res = self.url_open(url, headers=CSRF_USER_HEADERS)
         self.assertEqual(res.status_code, 200)
+
+    def test_candidate_view_error(self):
+        """Run the hr_candidate_tour UI tour."""
+
+        self.env['hr.candidate'].create({
+            'partner_name': "Extended Test Candidate",
+        })
+
+        # Start the tour
+        self.start_tour("/odoo", 'hr_candidate_tour', login="admin")

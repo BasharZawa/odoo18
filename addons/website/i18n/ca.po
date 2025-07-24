@@ -30,15 +30,15 @@
 # marcescu, 2024
 # Josep Anton Belchi, 2024
 # Wil Odoo, 2025
-# EstudiTIC - estuditic.com <odoo@estuditic.com>, 2025
 # Santiago Payà <santiagopim@gmail.com>, 2025
+# EstudiTIC - estuditic.com <odoo@estuditic.com>, 2025
 # Noemi Pla, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 20:46+0000\n"
+"POT-Creation-Date: 2025-06-27 18:38+0000\n"
 "PO-Revision-Date: 2024-09-25 09:42+0000\n"
 "Last-Translator: Noemi Pla, 2025\n"
 "Language-Team: Catalan (https://app.transifex.com/odoo/teams/41243/ca/)\n"
@@ -223,7 +223,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
 msgid "$25.00"
-msgstr ""
+msgstr "25,00 €"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
@@ -356,7 +356,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_contact_info
 msgid "+1555-555-5556"
-msgstr ""
+msgstr "+1555-555-5556"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_charts
@@ -388,22 +388,22 @@ msgstr "/contacte"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_key_images
 msgid "01"
-msgstr ""
+msgstr "01"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_key_images
 msgid "02"
-msgstr ""
+msgstr "02"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_key_images
 msgid "03"
-msgstr ""
+msgstr "03"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_key_images
 msgid "04"
-msgstr ""
+msgstr "4"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_map_options
@@ -514,7 +514,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_features_wave
 msgid "24/7 Customer Support"
-msgstr ""
+msgstr "Assistència al client 24/7"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_key_benefits
@@ -577,7 +577,7 @@ msgstr "Redirecció 308 / Reescriptura d'URL"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_contact_info
 msgid "3575 Fake Buena Vista Avenue"
-msgstr ""
+msgstr "3575 Fake Buena Vista Avenue"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_map_options
@@ -614,7 +614,7 @@ msgstr "5"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_showcase
 msgid "45%"
-msgstr ""
+msgstr "45 %"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_map_options
@@ -818,17 +818,17 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_detail
 msgid "<br/>Alexander Rivera"
-msgstr ""
+msgstr "<br/>Alexander Rivera"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_references_social
 msgid "<br/>Amsterdam"
-msgstr ""
+msgstr "<br/>Amsterdam"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_detail
 msgid "<br/>Daniel Foster"
-msgstr ""
+msgstr "<br/>Daniel Foster"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_empowerment
@@ -841,7 +841,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_detail
 msgid "<br/>Emily Carter"
-msgstr ""
+msgstr "<br/>Emily Carter"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_sidegrid
@@ -867,22 +867,22 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_detail
 msgid "<br/>James Mitchell"
-msgstr ""
+msgstr "<br/>James Mitchell"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_references_social
 msgid "<br/>Madrid"
-msgstr ""
+msgstr "<br/>Madrid"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_references_social
 msgid "<br/>Nairobi"
-msgstr ""
+msgstr "<br/>Nairobi"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_detail
 msgid "<br/>Olivia Reed"
-msgstr ""
+msgstr "<br/>Olivia Reed"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_shape_image
@@ -902,7 +902,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_company_team_detail
 msgid "<br/>Sophia Benett"
-msgstr ""
+msgstr "<br/>Sophia Benett"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_faq_horizontal
@@ -939,6 +939,9 @@ msgid ""
 "                            87%\n"
 "                        </font>"
 msgstr ""
+"<font class=\"text-gradient\" style=\"background-image: linear-gradient(0deg, rgb(222, 222, 222) 25%, rgb(29, 32, 48) 80%);\">\n"
+"                            87 %\n"
+"                        </font>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.contactus
@@ -965,31 +968,35 @@ msgid ""
 "<i class=\"fa fa-1x fa-fw fa-phone me-1\"/>\n"
 "                        <span class=\"o_force_ltr\"><small>+1 555-555-5556</small></span>"
 msgstr ""
+"<i class=\"fa fa-1x fa-fw fa-phone me-1\"/>\n"
+"                        <span class=\"o_force_ltr\"><small>+1 555-555-5556</small></span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.header_text_element
 msgid "<i class=\"fa fa-1x fa-fw fa-phone me-1\"/>͏"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-fw fa-phone me-1\"/>͏"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_controller_pages_kanban_view
 msgid "<i class=\"fa fa-2x fa-arrow-right text-primary\" title=\"URL\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-2x fa-arrow-right text-primary\" title=\"URL\"/>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_cta_card
 msgid "<i class=\"fa fa-check text-o-color-1\" role=\"img\"/>  Complete access"
-msgstr ""
+msgstr "<i class=\"fa fa-check text-o-color-1\" role=\"img\"/>  Accés complet"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_cta_card
 msgid "<i class=\"fa fa-check text-o-color-1\" role=\"img\"/>  Quick support"
-msgstr ""
+msgstr "<i class=\"fa fa-check text-o-color-1\" role=\"img\"/>  Suport ràpid"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_cta_card
 msgid "<i class=\"fa fa-check text-o-color-1\" role=\"img\"/>  Wonderful experience"
 msgstr ""
+"<i class=\"fa fa-check text-o-color-1\" role=\"img\"/>  Una experiència "
+"meravellosa"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
@@ -999,12 +1006,12 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
 msgid "<i class=\"fa fa-check text-success\" role=\"img\"/>  Access all modules"
-msgstr ""
+msgstr "<i class=\"fa fa-check text-success\" role=\"img\"/>  Accés a tots els mòduls"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
 msgid "<i class=\"fa fa-check text-success\" role=\"img\"/>  Account management"
-msgstr ""
+msgstr "<i class=\"fa fa-check text-success\" role=\"img\"/>  Gestió de comptes"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
@@ -1012,6 +1019,8 @@ msgid ""
 "<i class=\"fa fa-check text-success\" role=\"img\"/>  All modules &amp; "
 "features"
 msgstr ""
+"<i class=\"fa fa-check text-success\" role=\"img\"/>  Tots els mòduls i "
+"funcionalitats"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
@@ -1019,16 +1028,22 @@ msgid ""
 "<i class=\"fa fa-check text-success\" role=\"img\"/>  Complete CRM for any "
 "team"
 msgstr ""
+"<i class=\"fa fa-check text-success\" role=\"img\"/>  Un CRM complet per a "
+"tota mena d'equips"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
 msgid "<i class=\"fa fa-check text-success\" role=\"img\"/>  Email support"
 msgstr ""
+"<i class=\"fa fa-check text-success\" role=\"img\"/>  Compatible amb correu "
+"electrònic"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
 msgid "<i class=\"fa fa-check text-success\" role=\"img\"/>  Limited customization"
 msgstr ""
+"<i class=\"fa fa-check text-success\" role=\"img\"/>  Personalització "
+"limitada"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
@@ -1036,6 +1051,8 @@ msgid ""
 "<i class=\"fa fa-check text-success\" role=\"img\"/>  Sales &amp; marketing "
 "for 2"
 msgstr ""
+"<i class=\"fa fa-check text-success\" role=\"img\"/>  Vendes i màrqueting "
+"per a 2"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
@@ -1053,6 +1070,8 @@ msgid ""
 "<i class=\"fa fa-fw fa-building-o\" role=\"presentation\"/>\n"
 "                        Office"
 msgstr ""
+"<i class=\"fa fa-fw fa-building-o\" role=\"presentation\"/>\n"
+"                        Oficina"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
@@ -1065,6 +1084,8 @@ msgid ""
 "<i class=\"fa fa-fw fa-envelope-o\" role=\"presentation\"/>\n"
 "                        Email"
 msgstr ""
+"<i class=\"fa fa-fw fa-envelope-o\" role=\"presentation\"/>\n"
+"                        Correu electrònic"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
@@ -1174,7 +1195,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
 msgid "<i class=\"fa fa-times text-danger\" role=\"img\"/>  No customization"
-msgstr ""
+msgstr "<i class=\"fa fa-times text-danger\" role=\"img\"/>  Sense personalització"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
@@ -1308,6 +1329,12 @@ msgid ""
 "                                                            <option value=\"3\">Three</option>\n"
 "                                                        </select>"
 msgstr ""
+"<select id=\"exampleSelect\" class=\"form-select\">\n"
+"                                                            <option selected=\"true\">Obrir aquest menú de selecció</option>\n"
+"                                                            <option value=\"1\">Un</option>\n"
+"                                                            <option value=\"2\">Dos</option>\n"
+"                                                            <option value=\"3\">Tres</option>\n"
+"                                                        </select>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.header_text_element
@@ -1351,22 +1378,22 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "<small class=\"text-muted\">(rounded-0)</small>"
-msgstr ""
+msgstr "<small class=\"text-muted\">(arrodonit-0)</small>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "<small class=\"text-muted\">(rounded-1)</small>"
-msgstr ""
+msgstr "<small class=\"text-muted\">⁣(arrodonit-1)</small>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "<small class=\"text-muted\">(rounded-2)</small>"
-msgstr ""
+msgstr "<small class=\"text-muted\">(arrodonit-2)</small>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "<small class=\"text-muted\">(rounded-3)</small>"
-msgstr ""
+msgstr "<small class=\"text-muted\">(arrodonit-3)</small>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -1386,22 +1413,22 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_timeline
 msgid "<small class=\"text-muted\">13/06/2019</small>"
-msgstr ""
+msgstr "<small class=\"text-muted\">13/06/2019</small>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_timeline
 msgid "<small class=\"text-muted\">21/03/2021</small>"
-msgstr ""
+msgstr "<small class=\"text-muted\">21/03/2021</small>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_timeline
 msgid "<small class=\"text-muted\">25/12/2024</small>"
-msgstr ""
+msgstr "<small class=\"text-muted\">25/12/2024</small>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "<small class=\"text-muted\">Last updated 3 mins ago</small>"
-msgstr ""
+msgstr "<small class=\"text-muted\">Última actualització fa 3 minuts</small>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.color_combinations_debug_view
@@ -1429,6 +1456,10 @@ msgid ""
 "                            info@yourcompany.example.com\n"
 "                        </small>"
 msgstr ""
+"<small>\n"
+"                            <i class=\"fa fa-1x fa-fw fa-envelope me-1\"/>\n"
+"                            info@yourcompany.example.com\n"
+"                        </small>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.header_text_element
@@ -1436,6 +1467,8 @@ msgid ""
 "<small><i class=\"fa fa-1x fa-fw fa-envelope me-1\"/> "
 "info@yourcompany.example.com</small>"
 msgstr ""
+"<small><i class=\"fa fa-1x fa-fw fa-envelope me-1\"/> "
+"info@yourcompany.example.com</small>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.header_text_element
@@ -1450,7 +1483,7 @@ msgstr "<small>TABS</small>"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "<span class=\"badge bg-primary\">14</span>"
-msgstr ""
+msgstr "<span class=\"badge bg-primary\">14</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_carousel_intro
@@ -1458,6 +1491,8 @@ msgid ""
 "<span class=\"carousel-control-next-icon\" aria-hidden=\"true\"/>\n"
 "                            <span class=\"visually-hidden\">Next</span>"
 msgstr ""
+"<span class=\"carousel-control-next-icon\" aria-hidden=\"true\"/>\n"
+"                            <span class=\"visually-hidden\">Següent</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_image_gallery
@@ -1465,6 +1500,8 @@ msgid ""
 "<span class=\"carousel-control-next-icon\" aria-hidden=\"true\"/>\n"
 "                        <span class=\"visually-hidden\">Next</span>"
 msgstr ""
+"<span class=\"carousel-control-next-icon\" aria-hidden=\"true\"/>\n"
+"                        <span class=\"visually-hidden\">Següent</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -1474,6 +1511,8 @@ msgid ""
 "<span class=\"carousel-control-next-icon\" aria-hidden=\"true\"/>\n"
 "                <span class=\"visually-hidden\">Next</span>"
 msgstr ""
+"<span class=\"carousel-control-next-icon\" aria-hidden=\"true\"/>\n"
+"                <span class=\"visually-hidden\">Següent</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_carousel_intro
@@ -1481,6 +1520,8 @@ msgid ""
 "<span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"/>\n"
 "                            <span class=\"visually-hidden\">Previous</span>"
 msgstr ""
+"<span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"/>\n"
+"                            <span class=\"visually-hidden\">Anterior</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_image_gallery
@@ -1488,6 +1529,8 @@ msgid ""
 "<span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"/>\n"
 "                        <span class=\"visually-hidden\">Previous</span>"
 msgstr ""
+"<span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"/>\n"
+"                        <span class=\"visually-hidden\">Anterior</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_quotes_carousel
@@ -1496,6 +1539,8 @@ msgid ""
 "<span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"/>\n"
 "                    <span class=\"visually-hidden\">Previous</span>"
 msgstr ""
+"<span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"/>\n"
+"                    <span class=\"visually-hidden\">Anterior</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -1503,6 +1548,8 @@ msgid ""
 "<span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"/>\n"
 "                <span class=\"visually-hidden\">Previous</span>"
 msgstr ""
+"<span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"/>\n"
+"                <span class=\"visually-hidden\">Anterior</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_thumbnails
@@ -1511,21 +1558,24 @@ msgid ""
 "                            <b>Discover our new products</b>\n"
 "                        </span>"
 msgstr ""
+"<span class=\"d-block p-2 small\">\n"
+"                            <b>Descobreix els nostres nous productes</b>\n"
+"                        </span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_key_benefits
 msgid "<span class=\"display-3-fs text-o-color-1\">1</span>"
-msgstr ""
+msgstr "<span class=\"display-3-fs text-o-color-1\">1</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_key_benefits
 msgid "<span class=\"display-3-fs text-o-color-1\">2</span>"
-msgstr ""
+msgstr "<span class=\"display-3-fs text-o-color-1\">2</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_key_benefits
 msgid "<span class=\"display-3-fs text-o-color-1\">3</span>"
-msgstr ""
+msgstr "<span class=\"display-3-fs text-o-color-1\">3</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_adventure
@@ -1567,12 +1617,12 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "<span class=\"display-5\">54%</span>"
-msgstr ""
+msgstr "<span class=\"display-5\">54 %</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_grid
 msgid "<span class=\"display-5\">85%</span>"
-msgstr ""
+msgstr "<span class=\"display-5\">85 %</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_accordion
@@ -1602,7 +1652,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
 msgid "<span class=\"h2-fs\">15%</span>"
-msgstr ""
+msgstr "<span class=\"h2-fs\">15 %</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_list
@@ -1699,7 +1749,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.header_text_element
 msgid "<span class=\"o_force_ltr\">+1 555-555-5556</span>"
-msgstr ""
+msgstr "<span class=\"o_force_ltr\">+1 555-555-5556</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_quotes_carousel
@@ -1798,6 +1848,16 @@ msgid ""
 msgstr ""
 
 #. module: website
+#: model_terms:ir.ui.view,arch_db:website.s_numbers_charts
+msgid "<span class=\"s_progress_bar_text small d-none\">25%</span>"
+msgstr ""
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.s_numbers_charts
+msgid "<span class=\"s_progress_bar_text small d-none\">80%</span>"
+msgstr ""
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_progress_bar
 msgid "<span class=\"s_progress_bar_text small\">80%</span>"
 msgstr ""
@@ -1818,6 +1878,8 @@ msgid ""
 "<span class=\"s_website_form_label_content\">Email</span>\n"
 "                                                        <span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
+"<span class=\"s_website_form_label_content\">Correu electrònic</span>\n"
+"                                                        <span class=\"s_website_form_mark\"> *</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.contactus
@@ -1825,6 +1887,8 @@ msgid ""
 "<span class=\"s_website_form_label_content\">Name</span>\n"
 "                                                        <span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
+"<span class=\"s_website_form_label_content\">Nom</span>\n"
+"                                                        <span class=\"s_website_form_mark\"> *</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.contactus
@@ -2008,7 +2072,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_opening_hours
 msgid "<u>info@yourcompany.example.com</u>"
-msgstr ""
+msgstr "<u>info@yourcompany.example.com</u>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
@@ -2728,9 +2792,9 @@ msgid ""
 "do. She mentors 100+ in-house developers and looks after the community of "
 "thousands of developers."
 msgstr ""
-"Una línia és una de les persones icràctiques de la vida que poden dir que "
-"els encanta el que fan. Els mentors de 100+ a l'equip de casa tenen cura de "
-"la comunitat de milers de desenvolupadors."
+"L'Aline és una persona que pot afirmar que l'apassiona el que fa. "
+"S'encarrega d'un equip de més de 100 desenvolupadors interns i vetlla per "
+"una comunitat formada per milers d'experts en programació."
 
 #. module: website
 #. odoo-javascript
@@ -2752,7 +2816,7 @@ msgstr "Tots els llocs web"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_three_columns_menu
 msgid "All You Can Eat"
-msgstr ""
+msgstr "Tot el que puguis menjar"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_big_icons_subtitles
@@ -2871,7 +2935,7 @@ msgstr "Pàgines increïbles"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_map
 msgid "An address must be specified for a map to be embedded"
-msgstr "S'ha d'especificar una direcció perquè un mapa sigui incrustat"
+msgstr "S'ha d'especificar una adreça perquè un mapa sigui incrustat"
 
 #. module: website
 #. odoo-javascript
@@ -3254,7 +3318,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_three_columns_menu
 msgid "Beef Carpaccio, Filet Mignon 8oz and Cheesecake"
-msgstr ""
+msgstr "Carpaccio de vedella, filet Mignon 8 oz i pastís de formatge"
 
 #. module: website
 #: model:ir.model.fields.selection,name:website.selection__theme_ir_asset__directive__before
@@ -3307,7 +3371,7 @@ msgstr "Llista negra en formularis web"
 #. odoo-javascript
 #: code:addons/website/static/src/components/dialog/add_page_dialog.xml:0
 msgid "Blank Page"
-msgstr ""
+msgstr "Pàgina en blanc"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_menus_logos
@@ -3789,7 +3853,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_quotes_carousel
 #: model_terms:ir.ui.view,arch_db:website.s_quotes_carousel_minimal
 msgid "Carousel indicator"
-msgstr ""
+msgstr "Indicador de carrusel"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
@@ -5920,7 +5984,7 @@ msgstr "Màrqueting per correu"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Email address"
-msgstr "Direcció de correu electrònic"
+msgstr "Adreça de correu electrònic"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_about_full_s_image_text
@@ -7254,7 +7318,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_s_carousel
 msgid "Happy Hour"
-msgstr ""
+msgstr "Hora feliç"
 
 #. module: website
 #. odoo-javascript
@@ -9148,6 +9212,7 @@ msgstr "Widget de Livechat"
 #: code:addons/website/static/src/client_actions/website_preview/website_preview.xml:0
 #: code:addons/website/static/src/components/dialog/add_page_dialog.js:0
 #: code:addons/website/static/src/components/dialog/seo.xml:0
+#: code:addons/website/static/src/js/editor/html_editor.js:0
 #: code:addons/website/static/src/xml/web_editor.xml:0
 #: code:addons/website/static/src/xml/website.background.video.xml:0
 msgid "Loading..."
@@ -9353,6 +9418,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_three_columns_menu
 msgid "Mediterranean buffet of starters, main dishes and desserts"
 msgstr ""
+"Bufet mediterrani amb una selecció d'entrants, plats principals i postres."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_alert_options
@@ -9449,7 +9515,7 @@ msgstr "Element del menú %s"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_three_columns_menu
 msgid "Menu One"
-msgstr ""
+msgstr "Menú 1"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_configurator_feature__menu_sequence
@@ -9459,7 +9525,7 @@ msgstr "Seqüència del menú"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_three_columns_menu
 msgid "Menu Two"
-msgstr ""
+msgstr "Menú 2"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_theme_website_menu__copy_ids
@@ -9712,7 +9778,7 @@ msgstr "Més detalls"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_showcase
 msgid "More details"
-msgstr ""
+msgstr "Més informació"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_showcase
@@ -10509,7 +10575,7 @@ msgstr "Els nostres menús"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_about_s_three_columns
 msgid "Our Mission"
-msgstr ""
+msgstr "La nostra missió"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_3_s_text_block_h2
@@ -10525,7 +10591,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_2_s_text_block_h2
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_services_s_text_block_h1
 msgid "Our Services"
-msgstr ""
+msgstr "Els nostres serveis"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_about_full_s_image_text
@@ -10696,7 +10762,7 @@ msgstr "El nostre equip"
 #. odoo-javascript
 #: code:addons/website/static/src/xml/website_form_editor.xml:0
 msgid "Our team will message you back as soon as possible."
-msgstr "El nostre equip us enviarà un missatge al més aviat possible."
+msgstr "El nostre equip us enviarà un missatge el més aviat possible."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_references_social
@@ -10995,7 +11061,7 @@ msgstr "Contrasenya"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
 msgid "Pastries"
-msgstr ""
+msgstr "Rebosteria"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_theme_ir_asset__path
@@ -11103,12 +11169,12 @@ msgstr "Pla"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__has_plausible_shared_key
 msgid "Plausible Analytics"
-msgstr "Analítica plasible"
+msgstr "Analítica Plausible"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website__plausible_shared_key
 msgid "Plausible Shared Key"
-msgstr "Clau compartida plasible"
+msgstr "Clau compartida Plausible"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website__plausible_site
@@ -11123,7 +11189,7 @@ msgstr "Lloc pla (p. ex. domini.com)"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__plausible_shared_key
 msgid "Plausible auth Key"
-msgstr "Clau d'autenticació plasible"
+msgstr "Clau d'autenticació Plausible"
 
 #. module: website
 #. odoo-javascript
@@ -11487,6 +11553,11 @@ msgstr "Pols"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Punchy Image"
+msgstr ""
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_website__domain_punycode
+msgid "Punycode Domain"
 msgstr ""
 
 #. module: website
@@ -11902,7 +11973,7 @@ msgstr "Restaurar la versió anterior (soft reset)."
 #: model:ir.model.fields,help:website.field_website_published_multi_mixin__website_id
 #: model:ir.model.fields,help:website.field_website_snippet_filter__website_id
 msgid "Restrict to a specific website."
-msgstr ""
+msgstr "Restringir a un lloc web específic."
 
 #. module: website
 #: model:res.groups,name:website.group_website_restricted_editor
@@ -14386,6 +14457,12 @@ msgstr ""
 "    "
 
 #. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/xml/html_editor.xml:0
+msgid "Type your URL"
+msgstr ""
+
+#. module: website
 #: model:ir.model.fields,field_description:website.field_website_controller_page__name_slugified
 #: model_terms:ir.ui.view,arch_db:website.s_countdown_options
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -14406,6 +14483,12 @@ msgid "URL matching those filters will be rewritten using the CDN Base URL"
 msgstr ""
 "L'URL que coincideixi amb aquests filtres s'escriurà a través de la URL CDN "
 "Base"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/website_rewrite.py:0
+msgid "URL must not start with '#'."
+msgstr ""
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_rewrite__url_to
@@ -14758,7 +14841,7 @@ msgstr "Valor"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_three_columns_menu
 msgid "Vegetable Salad, Beef Burger and Mango Ice Cream"
-msgstr ""
+msgstr "Amanida de verdures, hamburguesa de vedella i gelat de mango."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_options
@@ -15837,6 +15920,10 @@ msgid ""
 "chat on our website. Our dedicated team is available 24/7 to assist with any"
 " inquiries or issues."
 msgstr ""
+"Pots contactar amb el nostre equip de suport per mitjà del següent correu: "
+"info@yourcompany.example.com. També pots trucar al +1 555-555-5556, o "
+"utilitzar el xat en directe del lloc web. El nostre equip està disponible "
+"24/7 per ajudar-te amb qualsevol consulta o incidència."
 
 #. module: website
 #. odoo-javascript
@@ -15937,6 +16024,8 @@ msgid ""
 "Your Dynamic Snippet will be displayed here... This message is displayed "
 "because you did not provide both a filter and a template to use.<br/>"
 msgstr ""
+"El teu fragment dinàmic apareixerà aquí... Aquest missatge es mostra perquè "
+"no has proporcionat un filtre ni una plantilla a utilitzar.<br/>"
 
 #. module: website
 #. odoo-javascript
@@ -16138,6 +16227,12 @@ msgstr "una botiga en línia"
 #: code:addons/website/static/src/client_actions/configurator/configurator.xml:0
 msgid "and"
 msgstr "i"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/website_rewrite.py:0
+msgid "base URL of 'URL to' should not be same as 'URL from'."
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets

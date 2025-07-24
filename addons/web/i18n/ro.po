@@ -13,14 +13,15 @@
 # Dorin Hongu <dhongu@gmail.com>, 2025
 # Wil Odoo, 2025
 # Camille Dantinne <cmd@odoo.com>, 2025
+# Larisa_nexterp, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 20:48+0000\n"
+"POT-Creation-Date: 2025-05-23 18:39+0000\n"
 "PO-Revision-Date: 2024-09-25 09:42+0000\n"
-"Last-Translator: Camille Dantinne <cmd@odoo.com>, 2025\n"
+"Last-Translator: Larisa_nexterp, 2025\n"
 "Language-Team: Romanian (https://app.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1019,6 +1020,12 @@ msgstr "Toți utilizatorii"
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/views/fields/domain/domain_field.js:0
+msgid "Allow expressions"
+msgstr ""
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/core/colorlist/colorlist.js:0
 msgid "Almond"
 msgstr "Almond"
@@ -1749,7 +1756,7 @@ msgstr "Închide meniul"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/kanban_color_picker/kanban_color_picker_field.js:0
 msgid "Color Picker"
-msgstr ""
+msgstr "Selector de culoare"
 
 #. module: web
 #. odoo-javascript
@@ -2440,7 +2447,7 @@ msgstr "Abandonează"
 #. odoo-javascript
 #: code:addons/web/static/src/views/form/form_status_indicator/form_status_indicator.xml:0
 msgid "Discard all changes"
-msgstr ""
+msgstr "Renunță la toate modificările"
 
 #. module: web
 #. odoo-javascript
@@ -2616,7 +2623,7 @@ msgstr "Duplicare"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/char/char_field.js:0
 msgid "Dynamic Placeholder"
-msgstr ""
+msgstr "Substituent dinamic"
 
 #. module: web
 #. odoo-javascript
@@ -3386,7 +3393,6 @@ msgstr ""
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "If true, non-literals are accepted"
 msgstr ""
 
@@ -5995,7 +6001,7 @@ msgstr "Selectare implicită"
 #. odoo-javascript
 #: code:addons/web/static/src/core/model_field_selector/model_field_selector_popover.js:0
 msgid "Select a field"
-msgstr ""
+msgstr "Selectează un câmp"
 
 #. module: web
 #. odoo-javascript
@@ -6588,14 +6594,12 @@ msgstr ""
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "The domain involves non-literals. Their evaluation might fail."
 msgstr ""
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "The domain should not involve non-literals"
 msgstr ""
 
@@ -7605,6 +7609,8 @@ msgstr ""
 msgid ""
 "You need to select a model before opening the dynamic placeholder selector."
 msgstr ""
+"Trebuie să selectați un model înainte de a deschide selectorul de "
+"substituenți dinamici."
 
 #. module: web
 #. odoo-javascript
@@ -13167,7 +13173,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "file"
-msgstr ""
+msgstr "fișier"
 
 #. module: web
 #. odoo-javascript
@@ -13545,7 +13551,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "folder"
-msgstr ""
+msgstr "folder"
 
 #. module: web
 #. odoo-javascript
@@ -13593,7 +13599,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "forever"
-msgstr ""
+msgstr "pentru totdeauna"
 
 #. module: web
 #. odoo-javascript
@@ -16233,7 +16239,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "large"
-msgstr ""
+msgstr "mare"
 
 #. module: web
 #. odoo-javascript
@@ -17553,7 +17559,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "medium"
-msgstr ""
+msgstr "mediu"
 
 #. module: web
 #. odoo-javascript
@@ -18105,7 +18111,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/debug/profiling/profiling_qweb.xml:0
 msgid "ms"
-msgstr ""
+msgstr "ms"
 
 #. module: web
 #. odoo-javascript
@@ -20526,7 +20532,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/many2many_tags_avatar/many2many_tags_avatar_field.xml:0
 msgid "props.placeholder"
-msgstr ""
+msgstr "placeholder"
 
 #. module: web
 #. odoo-javascript
@@ -20610,7 +20616,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "purple"
-msgstr ""
+msgstr "mov"
 
 #. module: web
 #. odoo-javascript
@@ -20935,7 +20941,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "red"
-msgstr ""
+msgstr "roșu"
 
 #. module: web
 #. odoo-javascript
@@ -21878,7 +21884,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "sent"
-msgstr ""
+msgstr "trimisă"
 
 #. module: web
 #. odoo-javascript
@@ -22486,7 +22492,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "small"
-msgstr ""
+msgstr "mic"
 
 #. module: web
 #. odoo-javascript
@@ -25330,7 +25336,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "wedding"
-msgstr ""
+msgstr "nuntă"
 
 #. module: web
 #. odoo-javascript
@@ -26326,7 +26332,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "yellow"
-msgstr ""
+msgstr "galben"
 
 #. module: web
 #. odoo-javascript

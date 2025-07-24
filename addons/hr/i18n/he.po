@@ -128,19 +128,19 @@ msgstr ""
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_department_view_kanban
 msgid "<i class=\"fa fa-building-o\" role=\"img\" aria-label=\"Company\" title=\"Company\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-building-o\" role=\"img\" aria-label=\"Company\" title=\"Company\"/>"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_employee_public_view_kanban
 #: model_terms:ir.ui.view,arch_db:hr.hr_kanban_view_employees
 msgid "<i class=\"fa fa-fw me-2 fa-envelope text-primary\" title=\"Email\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw me-2 fa-envelope text-primary\" title=\"Email\"/>"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_employee_public_view_kanban
 #: model_terms:ir.ui.view,arch_db:hr.hr_kanban_view_employees
 msgid "<i class=\"fa fa-fw me-2 fa-phone text-primary\" title=\"Phone\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw me-2 fa-phone text-primary\" title=\"Phone\"/>"
 
 #. module: hr
 #: model_terms:hr.job,website_description:hr.job_ceo
@@ -313,6 +313,7 @@ msgstr "נדרשת פעולה"
 msgid ""
 "Activate Remote Work to let Employees specify where they are working from."
 msgstr ""
+"הפעל את אפשרות העבודה מרחוק כדי לאפשר לעובדים להגדיר את מיקום העבודה שלהם."
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_department__active
@@ -340,7 +341,7 @@ msgstr "סימון פעילות חריגה"
 #: model:ir.model,name:hr.model_mail_activity_plan
 #: model:ir.ui.menu,name:hr.menu_config_plan_plan
 msgid "Activity Plan"
-msgstr ""
+msgstr "תוכנית פעילות"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_department__activity_state
@@ -374,7 +375,7 @@ msgstr ""
 #. module: hr
 #: model:ir.model,name:hr.model_mail_activity_schedule
 msgid "Activity schedule plan Wizard"
-msgstr ""
+msgstr "אשף תכנון פעילויות "
 
 #. module: hr
 #: model_terms:ir.actions.act_window,help:hr.hr_employee_public_action
@@ -1039,11 +1040,13 @@ msgid ""
 "Define the allowed IP to be displayed as Present. In case of multiple "
 "addresses, separate them by a coma."
 msgstr ""
+"הגדר את כתובת ה-IP המותרים שתיחשב כנוכח. במקרה של מספר כתובות, הפרד ביניהן "
+"באמצעות פסיק."
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "Define the minimum number of sent emails to be displayed as Present."
-msgstr ""
+msgstr "הגדר את המספר המינימלי של הודעות דוא\"ל שנשלחו כדי להיחשב כנוכח."
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__resource_calendar_id
@@ -1567,7 +1570,7 @@ msgstr "הפק"
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_departure_wizard_view_form
 msgid "Give more details about the reason of archiving the employee."
-msgstr ""
+msgstr "נא לציין פרטים נוספים לגבי הסיבה הכנסת העובד לארכיון."
 
 #. module: hr
 #: model_terms:hr.job,website_description:hr.job_ceo
@@ -1849,7 +1852,7 @@ msgstr "עוקב"
 #: model:ir.model.fields,field_description:hr.field_hr_employee_base__is_fully_flexible
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__is_fully_flexible
 msgid "Is Fully Flexible"
-msgstr ""
+msgstr "האם גמיש "
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__is_manager
@@ -2349,7 +2352,7 @@ msgstr "משרד"
 #. module: hr
 #: model:res.groups,name:hr.group_hr_user
 msgid "Officer: Manage all employees"
-msgstr "משרד: נהל את כל העובדים"
+msgstr "משתמש: נהל את כל העובדים"
 
 #. module: hr
 #. odoo-python
@@ -2360,6 +2363,8 @@ msgid ""
 "that loop is linked to a user.                        Please double-check "
 "that everyone reports to the correct manager."
 msgstr ""
+"אופס! נראה שיש בעיה במבנה הצוות שלך.             זוהתה לולאת דיווח מעגלית, "
+"ואף אחד מהמעגל הזה לא מקושר למשתמש. אנא בדוק שוב שכל עובד מדווח למנהל הנכון."
 
 #. module: hr
 #. odoo-javascript
@@ -2535,6 +2540,8 @@ msgid ""
 "Plan %(plan_names)s cannot use a department as it is used only for some HR "
 "plans."
 msgstr ""
+"לא ניתן להשתמש במחלקה בתכנית%(plan_names)s זו, שכן היא מיועדת לשימוש רק בכמה"
+" תכניות משאבי אנוש."
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_mail_activity_schedule__plan_department_filterable
@@ -2589,7 +2596,7 @@ msgstr ""
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "Presence Condition"
-msgstr ""
+msgstr "תנאי נוכחות"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
@@ -3103,6 +3110,8 @@ msgid ""
 "Structure Employees per department and have an overview of e.g.\n"
 "                    expenses, timesheets, time off, recruitment, etc."
 msgstr ""
+"מבנה עובדים לפי מחלקה וקבלת סקירה של, לדוגמה:\n"
+"           הוצאות, גיליונות שעות, חופשות, גיוס עובדים ועוד."
 
 #. module: hr
 #: model:hr.contract.type,name:hr.contract_type_student
@@ -3147,12 +3156,12 @@ msgstr "התמחויות טכניות"
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_res_users__create_employee_id
 msgid "Technical field, bind user to this employee on create"
-msgstr ""
+msgstr "שדה טכני, קשר משתמש לעובד זה בעת יצירה."
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_res_users__create_employee
 msgid "Technical field, whether to create an employee"
-msgstr ""
+msgstr "שדה טכני, האם לייצר עובד"
 
 #. module: hr
 #: model:hr.contract.type,name:hr.contract_type_temporary
@@ -3221,6 +3230,7 @@ msgid ""
 "The fields “%s”, which you are trying to read, are not available for "
 "employee public profiles."
 msgstr ""
+"השדות “%s”, אותם אתה מנסה לקרוא, אינם זמינים לפרופילים ציבוריים של עובדים."
 
 #. module: hr
 #. odoo-python
@@ -3243,7 +3253,7 @@ msgstr "שם המשרה חייב להיות ייחודי לכל מחלקה בח�
 #. odoo-python
 #: code:addons/hr/models/mail_activity_plan_template.py:0
 msgid "The user of %s's coach is not set."
-msgstr ""
+msgstr "המדריך של %s אינו מוגדר."
 
 #. module: hr
 #: model:res.groups,comment:hr.group_hr_user
@@ -3261,7 +3271,7 @@ msgstr "למשתמש תהיה גישה לתצורת משאבי אנוש כמו �
 #. odoo-python
 #: code:addons/hr/models/hr_employee.py:0
 msgid "The work permit of %(employee)s expires at %(date)s."
-msgstr ""
+msgstr "האשרת עבודה של %(employee)s פגת תוקף בעוד %(date)s."
 
 #. module: hr
 #: model:hr.contract.type,name:hr.contract_type_thesis
@@ -3295,13 +3305,13 @@ msgstr "דוח זה נותן לך סקירה כללית של העובדים של
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "This setting block is utilized to manage the frontend design."
-msgstr ""
+msgstr "בלוק ההגדרות הזה משמש לניהול עיצוב הממשק הקדמי."
 
 #. module: hr
 #. odoo-python
 #: code:addons/hr/models/mail_activity_plan_template.py:0
 msgid "Those responsible types are limited to Employee plans."
-msgstr ""
+msgstr "סוגי האחראים הללו מוגבלים לשימוש בתוכניות עובדים בלבד."
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__tz
@@ -3636,7 +3646,7 @@ msgstr "לוחות זמנים לעבודה"
 msgid ""
 "You are not allowed to create an employee because the user does not have "
 "access rights for %s"
-msgstr ""
+msgstr "אינך מורשה ליצור עובד כי למשתמש אין הרשאות גישה עבור %s"
 
 #. module: hr
 #. odoo-python

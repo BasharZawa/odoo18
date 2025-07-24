@@ -104,6 +104,7 @@ class AccountAccount(models.Model):
         context={'append_type_to_tax_name': True})
     note = fields.Text('Internal Notes', tracking=True)
     company_ids = fields.Many2many('res.company', string='Companies', required=True, readonly=False,
+        depends_context=('uid',),  # To avoid cache pollution between sudo / non-sudo uses of the field
         default=lambda self: self.env.company)
     code_mapping_ids = fields.One2many(comodel_name='account.code.mapping', inverse_name='account_id')
     # Ensure `code_mapping_ids` is written before `company_ids` so we don't trigger the `_ensure_code_is_unique`
@@ -147,29 +148,35 @@ class AccountAccount(models.Model):
         if fname == 'code':
             return self.with_company(self.env.company.root_id).sudo()._field_to_sql(alias, 'code_store', query, flush)
         if fname == 'placeholder_code':
-            # The placeholder_code is defined as the account's code in the first active company to
-            # which the account belongs.
-            query.add_join(
-                'LEFT JOIN',
-                'account_first_company',
-                SQL(
-                    """(
-                        SELECT DISTINCT ON (rel.account_account_id)
-                               rel.account_account_id AS account_id,
-                               rel.res_company_id AS company_id,
-                               SPLIT_PART(res_company.parent_path, '/', 1) AS root_company_id,
-                               res_company.name AS company_name
-                          FROM account_account_res_company_rel rel
-                          JOIN res_company
-                            ON res_company.id = rel.res_company_id
-                         WHERE rel.res_company_id IN %(authorized_company_ids)s
-                      ORDER BY rel.account_account_id, company_id
-                    )""",
-                    authorized_company_ids=self.env.user._get_company_ids(),
-                    to_flush=self._fields['company_ids'],
-                ),
-                SQL('account_first_company.account_id = %(account_id)s', account_id=SQL.identifier(alias, 'id')),
-            )
+            if 'account_first_company' not in query._joins:
+                # When multiple accounts are selected, ``placeholder_code`` is used for all of them
+                # as it is in the default ``_order`` (e.g., for ``account_asset_id`` and
+                # ``account_depreciation_id`` in ``account_assets``).
+
+                # As ``placeholder_code`` represents the account's code in the first active company
+                # to which the account belongs in the hierarchy, we must ensure that we do not introduce
+                # a second ``JOIN`` to the account-company relation to avoid redundancy in joins.
+                query.add_join(
+                    'LEFT JOIN',
+                    'account_first_company',
+                    SQL(
+                        """(
+                            SELECT DISTINCT ON (rel.account_account_id)
+                                rel.account_account_id AS account_id,
+                                rel.res_company_id AS company_id,
+                                SPLIT_PART(res_company.parent_path, '/', 1) AS root_company_id,
+                                res_company.name AS company_name
+                            FROM account_account_res_company_rel rel
+                            JOIN res_company
+                                ON res_company.id = rel.res_company_id
+                            WHERE rel.res_company_id IN %(authorized_company_ids)s
+                        ORDER BY rel.account_account_id, company_id
+                        )""",
+                        authorized_company_ids=self.env.user._get_company_ids(),
+                        to_flush=self._fields['company_ids'],
+                    ),
+                    SQL('account_first_company.account_id = %(account_id)s', account_id=SQL.identifier(alias, 'id')),
+                )
 
             return SQL(
                 """
@@ -183,6 +190,11 @@ class AccountAccount(models.Model):
                 account_first_company_name=SQL.identifier('account_first_company', 'company_name'),
                 account_first_company_root_id=SQL.identifier('account_first_company', 'root_company_id'),
                 to_flush=self._fields['code_store'],
+            )
+        if fname == 'root_id':
+            return SQL(
+                "SUBSTRING(%(placeholder_code)s, 1, 2)",
+                placeholder_code=self._field_to_sql(alias, 'placeholder_code', query, flush),
             )
 
         return super()._field_to_sql(alias, fname, query, flush)
@@ -916,6 +928,7 @@ class AccountAccount(models.Model):
         '''
         if not self.ids:
             return None
+        self.env['account.move.line'].invalidate_model(['amount_residual', 'amount_residual_currency', 'reconciled'])
         query = """
             UPDATE account_move_line SET
                 reconciled = CASE WHEN debit = 0 AND credit = 0 AND amount_currency = 0
@@ -925,7 +938,6 @@ class AccountAccount(models.Model):
             WHERE full_reconcile_id IS NULL and account_id IN %s
         """
         self.env.cr.execute(query, [tuple(self.ids)])
-        self.env['account.move.line'].invalidate_model(['amount_residual', 'amount_residual_currency', 'reconciled'])
 
     def _toggle_reconcile_to_false(self):
         '''Toggle the `reconcile´ boolean from True -> False
@@ -944,6 +956,8 @@ class AccountAccount(models.Model):
         if partial_lines_count > 0:
             raise UserError(_('You cannot switch an account to prevent the reconciliation '
                               'if some partial reconciliations are still pending.'))
+
+        self.env['account.move.line'].invalidate_model(['amount_residual', 'amount_residual_currency'])
         query = """
             UPDATE account_move_line
                 SET amount_residual = 0, amount_residual_currency = 0
@@ -1019,9 +1033,13 @@ class AccountAccount(models.Model):
         if vals.get('deprecated') and self.env["account.tax.repartition.line"].search_count([('account_id', 'in', self.ids)], limit=1):
             raise UserError(_("You cannot deprecate an account that is used in a tax distribution."))
 
-        res = super(AccountAccount, self.with_context(defer_account_code_checks=True)).write(vals)
+        res = super(AccountAccount, self.with_context(defer_account_code_checks=True, prefetch_fields=any(field in vals for field in ['code', 'account_type']))).write(vals)
 
         if not self.env.context.get('defer_account_code_checks') and {'company_ids', 'code', 'code_mapping_ids'} & vals.keys():
+            if 'company_ids' in vals:
+                # Because writing on the field without sudo won't update the sudo cache (and vice versa)
+                # we need to invalidate so that the sudo cache is up-to-date
+                self.invalidate_recordset(fnames=['company_ids'])
             self._ensure_code_is_unique()
 
         return res

@@ -69,7 +69,7 @@ patch(PosStore.prototype, {
     },
     async _getSaleOrder(id) {
         const sale_order = (await this.data.read("sale.order", [id]))[0];
-        const orderlines = this.models["sale.order.line"].readMany(sale_order.raw.order_line);
+        const orderlines = await this.data.read("sale.order.line", sale_order.raw.order_line);
         sale_order.order_line = orderlines;
         return sale_order;
     },
@@ -85,8 +85,7 @@ patch(PosStore.prototype, {
             sale_order.order_line.map((l) => l.id),
         ]);
 
-        for (let i = 0; i < sale_order.order_line.length; ++i) {
-            const line = sale_order.order_line[i];
+        for (const line of sale_order.order_line) {
             if (line.display_type === "line_note") {
                 if (previousProductLine) {
                     const previousNote = previousProductLine.customer_note;
@@ -122,7 +121,7 @@ patch(PosStore.prototype, {
             const newLine = await this.addLineToCurrentOrder(newLineValues, {}, false);
             previousProductLine = newLine;
 
-            const converted_line = converted_lines[i];
+            const converted_line = converted_lines.find((l) => l.id === line.id);
             if (
                 newLine.get_product().tracking !== "none" &&
                 (this.pickingType.use_create_lots || this.pickingType.use_existing_lots) &&
@@ -145,13 +144,13 @@ patch(PosStore.prototype, {
                 }
             }
 
-            line.has_valued_move_ids = await this.data.call(
+            converted_line.has_valued_move_ids = await this.data.call(
                 "sale.order.line",
                 "has_valued_move_ids",
-                [line.id]
+                [converted_line.id]
             );
-            newLine.setQuantityFromSOL(line);
-            newLine.set_unit_price(line.price_unit);
+            newLine.setQuantityFromSOL(converted_line);
+            newLine.set_unit_price(converted_line.price_unit);
             newLine.set_discount(line.discount);
 
             const product_unit = line.product_id.uom_id;

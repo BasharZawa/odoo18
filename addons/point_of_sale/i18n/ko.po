@@ -6,8 +6,8 @@
 # JH CHOI <hwangtog@gmail.com>, 2024
 # Tiffany Chang, 2024
 # Daye Jeong, 2025
-# Sarah Park, 2025
 # Wil Odoo, 2025
+# Sarah Park, 2025
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-14 20:46+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: Wil Odoo, 2025\n"
+"Last-Translator: Sarah Park, 2025\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -7965,7 +7965,7 @@ msgstr ""
 msgid ""
 "This order has already been paid. You cannot set it back to draft or edit "
 "it."
-msgstr ""
+msgstr "이 주문은 이미 결제가 완료되었습니다. 초안으로 되돌리거나 수정할 수 없습니다."
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -8078,7 +8078,7 @@ msgstr "마감 대기"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt/order_receipt.xml:0
 msgid "To Pay"
-msgstr "지불하기"
+msgstr "결제 대기 중"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -8115,7 +8115,7 @@ msgstr "적절한 잔액 후속 조치를 위해 청구서를 생성하거나 �
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order__to_invoice
 msgid "To invoice"
-msgstr "발행할 청구서"
+msgstr "청구서 발행 대기"
 
 #. module: point_of_sale
 #: model_terms:ir.actions.act_window,help:point_of_sale.action_pos_payment_form

@@ -8,13 +8,14 @@
 # Wil Odoo, 2025
 # Tadej Lupšina <tadej@hbs.si>, 2025
 # Thoma Schillebeeckx, 2025
+# Jan Zorko, 2025
 # Aleš Pipan, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 20:48+0000\n"
+"POT-Creation-Date: 2025-05-23 18:39+0000\n"
 "PO-Revision-Date: 2024-09-25 09:42+0000\n"
 "Last-Translator: Aleš Pipan, 2025\n"
 "Language-Team: Slovenian (https://app.transifex.com/odoo/teams/41243/sl/)\n"
@@ -205,13 +206,13 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "100"
-msgstr ""
+msgstr "100"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "10:00"
-msgstr ""
+msgstr "10:00"
 
 #. module: web
 #. odoo-javascript
@@ -856,13 +857,13 @@ msgstr "Dodaj skupino po meri"
 #. odoo-javascript
 #: code:addons/web/static/src/core/tree_editor/tree_editor.xml:0
 msgid "Add New Rule"
-msgstr ""
+msgstr "Dodaj novo pravilo"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/form/form_controller.js:0
 msgid "Add Properties"
-msgstr ""
+msgstr "Dodaj lastnosti"
 
 #. module: web
 #. odoo-javascript
@@ -997,6 +998,12 @@ msgstr "Cel dan"
 #: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
 msgid "All users"
 msgstr "Vsi uporabniki"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/domain/domain_field.js:0
+msgid "Allow expressions"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -1153,14 +1160,14 @@ msgstr ""
 #: code:addons/web/static/src/core/tree_editor/tree_editor_components.xml:0
 #: code:addons/web/static/src/views/fields/datetime/datetime_field.xml:0
 msgid "Arrow"
-msgstr ""
+msgstr "Puščica"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/tree_editor/tree_editor_components.xml:0
 #: code:addons/web/static/src/views/fields/datetime/datetime_field.xml:0
 msgid "Arrow icon"
-msgstr ""
+msgstr "Ikona puščice"
 
 #. module: web
 #. odoo-javascript
@@ -1351,7 +1358,7 @@ msgstr ""
 #: code:addons/web/static/src/views/fields/image/image_field.js:0
 #: code:addons/web/static/src/views/fields/signature/signature_field.xml:0
 msgid "Binary file"
-msgstr ""
+msgstr "Binarna datoteka"
 
 #. module: web
 #. odoo-javascript
@@ -1428,7 +1435,7 @@ msgstr ""
 #: code:addons/web/static/src/views/kanban/kanban_controller.js:0
 #: code:addons/web/static/src/views/list/list_controller.js:0
 msgid "Bye-bye, record!"
-msgstr ""
+msgstr "Adijo, ta zapis!"
 
 #. module: web
 #. odoo-javascript
@@ -1699,7 +1706,7 @@ msgstr "Zaključi"
 #. odoo-javascript
 #: code:addons/web/static/src/core/file_viewer/file_viewer.xml:0
 msgid "Close (Esc)"
-msgstr ""
+msgstr "Zapri (Esc)"
 
 #. module: web
 #. odoo-javascript
@@ -1797,6 +1804,8 @@ msgid ""
 "Company tagline, which is included in a printed document's header or footer "
 "(depending on the selected layout)."
 msgstr ""
+"Slogan podjetja, ki je vključen v glavo ali nogo natisnjenega dokumenta "
+"(odvisno od izbrane postavitve)."
 
 #. module: web
 #. odoo-javascript
@@ -1904,7 +1913,7 @@ msgstr "Naprej"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/x2many/x2many_field.xml:0
 msgid "Control panel buttons"
-msgstr ""
+msgstr "Gumbi nadzorne plošče"
 
 #. module: web
 #. odoo-javascript
@@ -2216,7 +2225,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/properties/property_definition.js:0
 msgid "Decimal"
-msgstr ""
+msgstr "Decimalno"
 
 #. module: web
 #. odoo-javascript
@@ -2290,7 +2299,7 @@ msgstr "Izbriši"
 #. odoo-javascript
 #: code:addons/web/static/src/search/search_bar_menu/search_bar_menu.js:0
 msgid "Delete Filter"
-msgstr ""
+msgstr "Izbriši filter"
 
 #. module: web
 #. odoo-javascript
@@ -2571,7 +2580,7 @@ msgstr "Podvoji"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/char/char_field.js:0
 msgid "Dynamic Placeholder"
-msgstr ""
+msgstr "Dinamični nadomestni znak"
 
 #. module: web
 #. odoo-javascript
@@ -2658,7 +2667,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/debug/profiling/profiling_item.xml:0
 msgid "Enable profiling"
-msgstr ""
+msgstr "Omogoči profiliranje"
 
 #. module: web
 #. odoo-javascript
@@ -3023,7 +3032,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "French"
-msgstr ""
+msgstr "Francoščina"
 
 #. module: web
 #. odoo-javascript
@@ -3142,7 +3151,7 @@ msgstr ""
 #. module: web
 #: model:ir.model.fields,help:web.field_base_document_layout__company_details
 msgid "Header text displayed at the top of all reports."
-msgstr ""
+msgstr "Besedilo glave, prikazano na vrhu vseh poročil."
 
 #. module: web
 #. odoo-javascript
@@ -3309,7 +3318,6 @@ msgstr ""
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "If true, non-literals are accepted"
 msgstr ""
 
@@ -3374,7 +3382,7 @@ msgstr ""
 #: code:addons/web/static/src/webclient/actions/action_install_kiosk_pwa.xml:0
 #: code:addons/web/static/src/webclient/user_menu/user_menu_items.js:0
 msgid "Install App"
-msgstr ""
+msgstr "Namestite aplikacijo"
 
 #. module: web
 #. odoo-javascript
@@ -3489,7 +3497,7 @@ msgstr ""
 #: code:addons/web/static/src/views/fields/field_tooltip.xml:0
 #: code:addons/web/static/src/views/view_button/view_button.xml:0
 msgid "Invisible:"
-msgstr ""
+msgstr "Nevidno:"
 
 #. module: web
 #. odoo-javascript
@@ -3555,7 +3563,7 @@ msgstr "Japonska"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "Japanese"
-msgstr ""
+msgstr "Japonščina"
 
 #. module: web
 #. odoo-javascript
@@ -4395,13 +4403,13 @@ msgstr "Nov dogodek"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/properties/properties_field.xml:0
 msgid "New Property"
-msgstr ""
+msgstr "Nova lastnost"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/tree_editor/tree_editor.xml:0
 msgid "New Rule"
-msgstr ""
+msgstr "Novo pravilo"
 
 #. module: web
 #. odoo-javascript
@@ -4420,7 +4428,7 @@ msgstr "Nova predloga"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/relational_utils.js:0
 msgid "New:"
-msgstr ""
+msgstr "Novo:"
 
 #. module: web
 #. odoo-javascript
@@ -4609,7 +4617,7 @@ msgstr ""
 #: code:addons/web/static/src/views/kanban/kanban_controller.js:0
 #: code:addons/web/static/src/views/list/list_controller.js:0
 msgid "No, keep it"
-msgstr ""
+msgstr "Ne, obdrži"
 
 #. module: web
 #. odoo-javascript
@@ -5144,7 +5152,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/kanban/kanban_column_quick_create.xml:0
 msgid "Press"
-msgstr ""
+msgstr "Press"
 
 #. module: web
 #. odoo-javascript
@@ -5172,7 +5180,7 @@ msgstr "Predogled internega poročila"
 #: code:addons/web/static/src/views/fields/image/image_field.js:0
 #: code:addons/web/static/src/views/fields/pdf_viewer/pdf_viewer_field.js:0
 msgid "Preview image"
-msgstr ""
+msgstr "Predogled slike"
 
 #. module: web
 #. odoo-javascript
@@ -5272,7 +5280,7 @@ msgstr "Vrstica napredka"
 #. odoo-javascript
 #: code:addons/web/static/src/views/view_components/column_progress.xml:0
 msgid "Progress bar"
-msgstr ""
+msgstr "Vrstica napredka"
 
 #. module: web
 #. odoo-javascript
@@ -5308,25 +5316,25 @@ msgstr "Škrlatna"
 #. odoo-javascript
 #: code:addons/web/static/src/search/utils/dates.js:0
 msgid "Q1"
-msgstr ""
+msgstr "Q1"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/search/utils/dates.js:0
 msgid "Q2"
-msgstr ""
+msgstr "Q2"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/search/utils/dates.js:0
 msgid "Q3"
-msgstr ""
+msgstr "Q3"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/search/utils/dates.js:0
 msgid "Q4"
-msgstr ""
+msgstr "Q4"
 
 #. module: web
 #. odoo-javascript
@@ -5382,14 +5390,14 @@ msgstr "Območje"
 #. odoo-javascript
 #: code:addons/web/static/src/core/colorlist/colorlist.js:0
 msgid "Raspberry"
-msgstr ""
+msgstr "Malina"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/field_tooltip.xml:0
 #: code:addons/web/static/src/views/view_button/view_button.xml:0
 msgid "Readonly:"
-msgstr ""
+msgstr "Samo za branje:"
 
 #. module: web
 #. odoo-javascript
@@ -5576,7 +5584,7 @@ msgstr ""
 #: code:addons/web/static/src/views/fields/field_tooltip.xml:0
 #: code:addons/web/static/src/views/view_button/view_button.xml:0
 msgid "Required:"
-msgstr ""
+msgstr "Obvezno:"
 
 #. module: web
 #. odoo-javascript
@@ -5835,7 +5843,7 @@ msgstr ""
 #. module: web
 #: model:ir.model.fields,field_description:web.field_base_document_layout__secondary_color
 msgid "Secondary Color"
-msgstr ""
+msgstr "Sekundarna barva"
 
 #. module: web
 #. odoo-javascript
@@ -6238,7 +6246,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/form/form_error_dialog/form_error_dialog.xml:0
 msgid "Stay here"
-msgstr ""
+msgstr "Ostani tukaj"
 
 #. module: web
 #. odoo-javascript
@@ -6482,14 +6490,12 @@ msgstr ""
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "The domain involves non-literals. Their evaluation might fail."
 msgstr ""
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.js:0
-#, python-format
 msgid "The domain should not involve non-literals"
 msgstr ""
 
@@ -6604,7 +6610,7 @@ msgstr "Ta datoteka je neveljavna. Izberite sliko."
 #. odoo-javascript
 #: code:addons/web/static/src/search/search_bar_menu/search_bar_menu.js:0
 msgid "This filter is global and will be removed for everyone."
-msgstr ""
+msgstr "Ta filter je globalen in bo odstranjen za vse."
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.preview_externalreport
@@ -7469,6 +7475,7 @@ msgstr ""
 msgid ""
 "You need to select a model before opening the dynamic placeholder selector."
 msgstr ""
+"Preden odprete dinamični izbirnik nadomestnih besedil, morate izbrati model."
 
 #. module: web
 #. odoo-javascript
@@ -10616,7 +10623,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "computer"
-msgstr ""
+msgstr "računalnik"
 
 #. module: web
 #. odoo-javascript
@@ -13027,7 +13034,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "file"
-msgstr ""
+msgstr "datoteka"
 
 #. module: web
 #. odoo-javascript
@@ -13405,7 +13412,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "folder"
-msgstr ""
+msgstr "mapa"
 
 #. module: web
 #. odoo-javascript
@@ -13549,7 +13556,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "frame"
-msgstr ""
+msgstr "okvir"
 
 #. module: web
 #. odoo-javascript
@@ -15487,7 +15494,7 @@ msgstr "je med"
 #. odoo-javascript
 #: code:addons/web/static/src/core/tree_editor/tree_editor_operator_editor.js:0
 msgid "is in"
-msgstr ""
+msgstr "je med"
 
 #. module: web
 #. odoo-javascript
@@ -15499,7 +15506,7 @@ msgstr "ni"
 #. odoo-javascript
 #: code:addons/web/static/src/core/tree_editor/tree_editor_operator_editor.js:0
 msgid "is not in"
-msgstr ""
+msgstr "ni vsebovano v"
 
 #. module: web
 #. odoo-javascript
@@ -16093,7 +16100,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "large"
-msgstr ""
+msgstr "velik"
 
 #. module: web
 #. odoo-javascript
@@ -17413,7 +17420,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "medium"
-msgstr ""
+msgstr "srednji"
 
 #. module: web
 #. odoo-javascript
@@ -17641,7 +17648,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/calendar/calendar_common/calendar_common_popover.js:0
 msgid "minute"
-msgstr ""
+msgstr "minuta"
 
 #. module: web
 #. odoo-javascript
@@ -20386,7 +20393,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/many2many_tags_avatar/many2many_tags_avatar_field.xml:0
 msgid "props.placeholder"
-msgstr ""
+msgstr "props.placeholder"
 
 #. module: web
 #. odoo-javascript
@@ -20470,7 +20477,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "purple"
-msgstr ""
+msgstr "vijolična"
 
 #. module: web
 #. odoo-javascript
@@ -20795,7 +20802,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "red"
-msgstr ""
+msgstr "rdeča"
 
 #. module: web
 #. odoo-javascript
@@ -21678,13 +21685,13 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "second"
-msgstr ""
+msgstr "sekunda"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "secure"
-msgstr ""
+msgstr "varno"
 
 #. module: web
 #. odoo-javascript
@@ -22346,7 +22353,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "small"
-msgstr ""
+msgstr "mali"
 
 #. module: web
 #. odoo-javascript
@@ -22910,7 +22917,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "sports"
-msgstr ""
+msgstr "športi"
 
 #. module: web
 #. odoo-javascript
@@ -23318,7 +23325,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "sunglasses"
-msgstr ""
+msgstr "sončna očala"
 
 #. module: web
 #. odoo-javascript
@@ -25190,7 +25197,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "wedding"
-msgstr ""
+msgstr "poroka"
 
 #. module: web
 #. odoo-javascript
@@ -26126,7 +26133,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "write"
-msgstr ""
+msgstr "pisati"
 
 #. module: web
 #. odoo-javascript
@@ -26186,7 +26193,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "yellow"
-msgstr ""
+msgstr "rumena"
 
 #. module: web
 #. odoo-javascript

@@ -40,7 +40,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 20:46+0000\n"
+"POT-Creation-Date: 2025-06-27 18:38+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
 "Last-Translator: Noemi Pla, 2025\n"
 "Language-Team: Catalan (https://app.transifex.com/odoo/teams/41243/ca/)\n"
@@ -138,7 +138,6 @@ msgstr "# Valoracions"
 #. module: project
 #. odoo-javascript
 #: code:addons/project/static/src/views/burndown_chart/burndown_chart_model.js:0
-#: model:ir.model.fields,field_description:project.field_project_milestone__task_count
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__nbr
 msgid "# of Tasks"
 msgstr "# de tasques"
@@ -478,6 +477,19 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"    Benvolgut <t t-out=\"object.partner_id.name or 'customer'\">Brandon Freeman</t>,<br/><br/>\n"
+"    Gràcies per posar-se en contacte amb nosaltres. Agraïm el seu interès en els nostres productes/serveis.<br/>\n"
+"    El nostre equip està revisant la seva sol·licitud i respondrà al seu correu al més aviat possible.<br/>\n"
+"    Si té més preguntes o desitja consultar alguna cosa, si us plau, no dubti a contactar amb nosaltres. Estem aquí per ajudar-lo.<br/><br/>\n"
+"    Gràcies per la seva paciència.<br/>\n"
+"    Salutacions cordials,\n"
+"    <t t-if=\"user.signature\" data-o-mail-quote-container=\"1\">\n"
+"        <br/>\n"
+"        <t t-out=\"user.signature or ''\" data-o-mail-quote=\"1\">--<br data-o-mail-quote=\"1\"/>Mitchell Admin</t>\n"
+"    </t>\n"
+"</div>\n"
+"        "
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_task_form2
@@ -1181,7 +1193,7 @@ msgstr "Avaluació Mitjana (%)"
 #. module: project
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__rating_avg
 msgid "Average Rating (1-5)"
-msgstr ""
+msgstr "Valoració mitjana (1-5)"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_project_kanban
@@ -1346,7 +1358,7 @@ msgstr "Tasques tancades"
 #: model:ir.model.fields,field_description:project.field_project_task__is_closed
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__is_closed
 msgid "Closed state"
-msgstr ""
+msgstr "Estat tancat"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task_burndown_chart_report__is_closed__closed
@@ -2568,7 +2580,7 @@ msgstr ""
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_project__privacy_visibility__portal
 msgid "Invited portal users and all internal users (public)"
-msgstr ""
+msgstr "Usuaris del portal convidats i tots els usuaris interns (públic) "
 
 #. module: project
 #. odoo-javascript
@@ -2654,7 +2666,7 @@ msgstr "Últim mes"
 #. module: project
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__rating_last_value
 msgid "Last Rating (1-5)"
-msgstr ""
+msgstr "Última valoració (1-5)"
 
 #. module: project
 #. odoo-python
@@ -3097,7 +3109,7 @@ msgstr "Tipus de la següent activitat"
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.portal_tasks_list
 msgid "No Customer"
-msgstr ""
+msgstr "Sense client"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.portal_tasks_list
@@ -3496,7 +3508,7 @@ msgid ""
 "Portal users will be removed from the followers of the project and its "
 "tasks."
 msgstr ""
-"Els usuaris portuaris seran retirats dels seguidors del projecte i de les "
+"Els usuaris del portal seran retirats dels seguidors del projecte i de les "
 "seves tasques."
 
 #. module: project
@@ -3830,7 +3842,7 @@ msgstr "Valoració (/5)"
 #: model_terms:ir.ui.view,arch_db:project.rating_rating_view_graph
 #: model_terms:ir.ui.view,arch_db:project.rating_rating_view_pivot
 msgid "Rating (1-5)"
-msgstr ""
+msgstr "Valoració (1-5)"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task__rating_avg_text
@@ -4130,7 +4142,7 @@ msgstr "Actualització de la cerca"
 #. odoo-python
 #: code:addons/project/controllers/portal.py:0
 msgid "Search in Customer"
-msgstr ""
+msgstr "Cercar en Client"
 
 #. module: project
 #. odoo-python
@@ -4548,7 +4560,7 @@ msgstr "Tasca cancelada"
 #. module: project
 #: model:mail.message.subtype,name:project.mt_task_canceled
 msgid "Task Cancelled"
-msgstr ""
+msgstr "Tasca cancel·lada"
 
 #. module: project
 #. odoo-python
@@ -5329,6 +5341,14 @@ msgid ""
 "\n"
 "        Make sure to use the right format and order e.g. Improve the configuration screen 5h #feature #v16 @Mitchell !"
 msgstr ""
+"Utilitza aquestes paraules clau al títol per crear noves tasques:\n"
+"\n"
+"        30 h Assigna 30 hores a la tasca\n"
+"        #etiquetes Afegeix etiquetes a la tasca\n"
+"        @usuari Assigna la tasca a un usuari\n"
+"        ! Marca la tasca com a prioritària\n"
+"\n"
+"        Assegura't d'utilitzar el forma i l'ordre correctes. Exemple: millorar la pantalla de configuració 5 h #funcionalitat #v16 @Mitchell !"
 
 #. module: project
 #: model:res.groups,name:project.group_project_user
