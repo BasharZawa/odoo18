@@ -1756,7 +1756,7 @@ msgstr "Închide meniul"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/kanban_color_picker/kanban_color_picker_field.js:0
 msgid "Color Picker"
-msgstr ""
+msgstr "Selector de culoare"
 
 #. module: web
 #. odoo-javascript
@@ -2447,7 +2447,7 @@ msgstr "Abandonează"
 #. odoo-javascript
 #: code:addons/web/static/src/views/form/form_status_indicator/form_status_indicator.xml:0
 msgid "Discard all changes"
-msgstr ""
+msgstr "Renunță la toate modificările"
 
 #. module: web
 #. odoo-javascript
@@ -6001,7 +6001,7 @@ msgstr "Selectare implicită"
 #. odoo-javascript
 #: code:addons/web/static/src/core/model_field_selector/model_field_selector_popover.js:0
 msgid "Select a field"
-msgstr ""
+msgstr "Selectează un câmp"
 
 #. module: web
 #. odoo-javascript
@@ -18111,7 +18111,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/debug/profiling/profiling_qweb.xml:0
 msgid "ms"
-msgstr ""
+msgstr "ms"
 
 #. module: web
 #. odoo-javascript
@@ -21884,7 +21884,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "sent"
-msgstr ""
+msgstr "trimisă"
 
 #. module: web
 #. odoo-javascript

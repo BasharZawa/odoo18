@@ -594,7 +594,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/mail_composer_chatgpt.js:0
 msgid "AI"
-msgstr ""
+msgstr "UI"
 
 #. module: mail
 #. odoo-javascript
@@ -2076,6 +2076,9 @@ msgid ""
 "Chat is private and unique between 2 persons. Group is private among invited"
 " persons. Channel can be freely joined (depending on its configuration)."
 msgstr ""
+"Klepet je zaseben in edinstven med dvema osebama. Skupina je zasebna med "
+"povabljenimi osebami. Kanalu se je mogoče prosto pridružiti (odvisno od "
+"njegove konfiguracije)."
 
 #. module: mail
 #. odoo-javascript
@@ -2671,7 +2674,7 @@ msgstr "Datum nastanka"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_alias_view_search
 msgid "Creator"
-msgstr ""
+msgstr "Ustvarjalec"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_ice_server__credential
@@ -2943,7 +2946,7 @@ msgstr "Izbriši e-pošto"
 #: code:addons/mail/static/src/core/web/mail_composer_template_selector.js:0
 #: code:addons/mail/static/src/core/web/mail_composer_template_selector.xml:0
 msgid "Delete Template"
-msgstr ""
+msgstr "Izbriši predlogo"
 
 #. module: mail
 #. odoo-javascript
@@ -3586,7 +3589,7 @@ msgstr "Elektronska pošta"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/gif_picker/common/picker_content_patch.xml:0
 msgid "Emoji"
-msgstr ""
+msgstr "Emoji"
 
 #. module: mail
 #. odoo-javascript
@@ -4996,7 +4999,7 @@ msgstr "Povabi"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/core/common/thread_actions.js:0
 msgid "Invite People"
-msgstr ""
+msgstr "Povabi ljudi"
 
 #. module: mail
 #. odoo-javascript
@@ -5934,13 +5937,13 @@ msgstr "ID sporočila"
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/message_model.js:0
 msgid "Message Link Copied!"
-msgstr ""
+msgstr "Povezava do sporočila je bila kopirana!"
 
 #. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/message_model.js:0
 msgid "Message Link Copy Failed (Permission denied?)!"
-msgstr ""
+msgstr "Kopiranje povezave do sporočila ni uspelo (dovoljenje zavrnjeno?)!"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_notification
@@ -5950,7 +5953,7 @@ msgstr "Obvestila o sporočilih"
 #. module: mail
 #: model:ir.model,name:mail.model_mail_message_reaction
 msgid "Message Reaction"
-msgstr ""
+msgstr "Odziv na sporočilo"
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.mail_message_reaction_action
@@ -9242,7 +9245,7 @@ msgstr "Kategorija predloge"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_template__description
 msgid "Template Description"
-msgstr ""
+msgstr "Opis predloge"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_template__template_fs
@@ -10914,7 +10917,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/mail/controllers/attachment.py:0
 msgid "You are not allowed to upload attachments on this channel."
-msgstr ""
+msgstr "Na ta kanal ne smete nalagati prilog."
 
 #. module: mail
 #. odoo-javascript

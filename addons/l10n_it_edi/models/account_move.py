@@ -613,7 +613,7 @@ class AccountMove(models.Model):
             'document_type': document_type,
             'payment_method': 'MP05',
             'downpayment_moves': downpayment_moves,
-            'reconciled_moves': self._get_reconciled_invoices(),
+            'reconciled_moves': self._get_reconciled_invoices().filtered(lambda move: move.date <= self.date),
             'rc_refund': reverse_charge_refund,
             'conversion_rate': conversion_rate,
             'balance_multiplicator': -1 if self.is_inbound() else 1,
@@ -1316,12 +1316,16 @@ class AccountMove(models.Model):
                 percentage = round(tax_amount / (amount - tax_amount) * 100)
             move_line.price_unit = amount / (1 + percentage / 100)
 
-        move_line.tax_ids = []
+        move_line.tax_ids = [Command.clear()]
         if percentage is not None:
             l10n_it_exempt_reason = get_text(element, './/Natura').upper() or False
             extra_domain = extra_info.get('type_tax_use_domain', [('type_tax_use', '=', 'purchase')])
+            if move_line.product_id:
+                extra_domain = list(extra_domain)
+                tax_scope = 'service' if move_line.product_id.type == 'service' else 'consu'
+                extra_domain += [('tax_scope', 'in', [tax_scope, False])]
             if tax := self._l10n_it_edi_search_tax_for_import(company, percentage, extra_domain, l10n_it_exempt_reason=l10n_it_exempt_reason):
-                move_line.tax_ids += tax
+                move_line.tax_ids |= tax
             else:
                 message = Markup("<br/>").join((
                     _("Tax not found for line with description '%s'", move_line.name),
@@ -1336,7 +1340,7 @@ class AccountMove(models.Model):
                 move_line.tax_ids = [Command.set(fitting_taxes)]
 
         # Discounts
-        if discounts := element.xpath('.//ScontoMaggiorazione'):
+        if (discounts := element.xpath('.//ScontoMaggiorazione')) and not float_is_zero(move_line.price_unit, precision_rounding=move_line.currency_id.rounding):
             current_unit_price = move_line.price_unit
             # We apply the discounts in the order they are found in the XML.
             # The first discount is applied to the unit price, the second to the result of the first, etc.
@@ -1346,7 +1350,7 @@ class AccountMove(models.Model):
             for discount in discounts:
                 discount_type = get_text(discount, './/Tipo')
                 discount_sign = -1 if discount_type == 'MG' else 1
-                if discount_percentage := get_float(discount, './/Percentuale'):
+                if (discount_percentage := get_float(discount, './/Percentuale')) and not float_is_zero(discount_percentage, precision_rounding=move_line.currency_id.rounding):
                     current_unit_price *= discount_sign * (100 - discount_percentage) / 100
                 elif discount_amount := get_float(discount, './/Importo'):
                     current_unit_price -= discount_sign * discount_amount

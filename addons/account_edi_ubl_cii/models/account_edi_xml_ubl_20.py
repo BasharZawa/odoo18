@@ -348,6 +348,10 @@ class AccountEdiXmlUBL20(models.AbstractModel):
             'name': product.name or description,
             'sellers_item_identification_vals': {'id': product.code},
             'classified_tax_category_vals': tax_category_vals_list,
+            'standard_item_identification_vals': {
+                'id': product.barcode,
+                'id_attrs': {'schemeID': '0160'},  # GTIN
+            } if product.barcode else {},
         }
 
     def _get_document_allowance_charge_vals_list(self, invoice, taxes_vals=None):
@@ -858,6 +862,13 @@ class AccountEdiXmlUBL20(models.AbstractModel):
             'reason': './{*}AllowanceChargeReason',
             'percentage': './{*}MultiplierFactorNumeric',
             'tax_percentage': './{*}TaxCategory/{*}Percent',
+        }
+
+    def _get_invoice_line_xpaths(self, document_type=False, qty_factor=1):
+        return {
+            'deferred_start_date': './{*}InvoicePeriod/{*}StartDate',
+            'deferred_end_date': './{*}InvoicePeriod/{*}EndDate',
+            'date_format': '%Y-%m-%d',
         }
 
     def _get_line_xpaths(self, document_type=False, qty_factor=1):
@@ -1733,7 +1744,10 @@ class AccountEdiXmlUBL20(models.AbstractModel):
             'cbc:Description': {'_text': product.description_sale},
             'cbc:Name': {'_text': product.name},
             'cac:StandardItemIdentification': {
-                'cbc:ID': {'_text': product.barcode},
+                'cbc:ID': {
+                    '_text': product.barcode,
+                    'schemeID': '0160',  # GTIN
+                },
             },
             'cac:AdditionalItemProperty': [
                 {

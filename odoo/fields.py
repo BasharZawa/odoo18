@@ -3112,7 +3112,7 @@ class _Relational(Field[M], typing.Generic[M]):
                 _logger.warning(env._(
                     "Couldn't generate a company-dependent domain for field %s. "
                     "The model doesn't have a 'company_id' or 'company_ids' field, and isn't company-dependent either.",
-                    f'{self.model_name}.{self.name}'
+                    self.model_name + '.' + self.name,
                 ))
                 return domain
             company_domain = env[self.comodel_name]._check_company_domain(companies=unquote(cids))
@@ -3728,7 +3728,7 @@ class Properties(Field):
 
     def _compute(self, records):
         """Add the default properties value when the container is changed."""
-        for record in records:
+        for record in records.sudo():
             record[self.name] = self._add_default_values(
                 record.env,
                 {self.name: record[self.name], self.definition_record: record[self.definition_record]},

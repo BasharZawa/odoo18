@@ -446,12 +446,17 @@ def download_iot_handlers(auto=True):
         server = server + '/iot/get_handlers'
         try:
             resp = pm.request('POST', server, fields={'mac': get_mac_address(), 'auto': auto}, timeout=8)
+            if resp.status != 200:
+                _logger.error('Bad IoT handlers response received: status %s', resp.status)
+                return
             if resp.data:
+                zip_file = zipfile.ZipFile(io.BytesIO(resp.data))
                 delete_iot_handlers()
+                path = path_file('odoo', 'addons', 'hw_drivers', 'iot_handlers')
                 with writable():
-                    path = path_file('odoo', 'addons', 'hw_drivers', 'iot_handlers')
-                    zip_file = zipfile.ZipFile(io.BytesIO(resp.data))
                     zip_file.extractall(path)
+        except zipfile.BadZipFile:
+            _logger.exception('Bad IoT handlers response received: not a zip file')
         except Exception:
             _logger.exception('Could not reach configured server to download IoT handlers')
 
@@ -586,18 +591,20 @@ def update_conf(values, section='iot.box'):
     :param values: The dictionary of key-value pairs to update the config with.
     :param section: The section to update the key-value pairs in (Default: iot.box).
     """
-    _logger.debug("Updating odoo.conf with values: %s", values)
-    conf = get_conf()
-    get_conf.cache_clear()  # Clear the cache to get the updated config
+    with writable():
+        _logger.debug("Updating odoo.conf with values: %s", values)
+        conf = get_conf()
+        get_conf.cache_clear()  # Clear the cache to get the updated config
 
-    if not conf.has_section(section):
-        _logger.debug("Creating new section '%s' in odoo.conf", section)
-        conf.add_section(section)
+        if not conf.has_section(section):
+            _logger.debug("Creating new section '%s' in odoo.conf", section)
+            conf.add_section(section)
 
-    for key, value in values.items():
-        conf.set(section, key, value) if value else conf.remove_option(section, key)
+        for key, value in values.items():
+            conf.set(section, key, value) if value else conf.remove_option(section, key)
 
-    write_file("odoo.conf", conf)
+        with open(path_file("odoo.conf"), "w", encoding='utf-8') as f:
+            conf.write(f)
 
 
 @cache

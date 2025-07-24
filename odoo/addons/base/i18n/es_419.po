@@ -19162,7 +19162,7 @@ msgstr "Pago por lotes"
 #. module: base
 #: model:ir.module.module,summary:base.module_delivery_stock_picking_batch
 msgid "Batch Transfer, Carrier"
-msgstr "Translado por lotes, transportista"
+msgstr "Traslado por lotes, transportista"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_ar_website_sale
@@ -31951,7 +31951,7 @@ msgstr "Varios"
 #: model_terms:ir.ui.view,arch_db:base.view_model_fields_form
 #: model_terms:ir.ui.view,arch_db:base.view_model_form
 msgid "Miscellaneous"
-msgstr "Varios"
+msgstr "Misceláneo"
 
 #. module: base
 #: model:res.partner.title,name:base.res_partner_title_miss

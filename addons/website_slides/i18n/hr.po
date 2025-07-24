@@ -4,13 +4,13 @@
 # 
 # Translators:
 # Antonijo Kovacevic, 2024
+# Vladimir Vrgoč, 2024
 # Ivica Dimjašević <ivica.dimjasevic@storm.hr>, 2024
 # Davor Bojkić <davor.bojkic@storm.hr>, 2024
 # Carlo Štefanac, 2024
 # Mario Jureša <mario.juresa@uvid.hr>, 2024
 # Matej Mijoč, 2024
 # hrvoje sić <hrvoje.sic@gmail.com>, 2024
-# Vladimir Vrgoč, 2024
 # Kristina Palaš, 2024
 # Milan Tribuson <one.mile.code@gmail.com>, 2024
 # Đurđica Žarković <durdica.zarkovic@storm.hr>, 2024
@@ -22,14 +22,16 @@
 # Tina Milas, 2024
 # Zvonimir Galic, 2025
 # Karolina Tonković <karolina.tonkovic@storm.hr>, 2025
+# Ivica Dimjašević, 2025
+# Luka Carević <luka@uvid.hr>, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-20 18:39+0000\n"
+"POT-Creation-Date: 2025-06-27 18:38+0000\n"
 "PO-Revision-Date: 2024-09-25 09:42+0000\n"
-"Last-Translator: Karolina Tonković <karolina.tonkovic@storm.hr>, 2025\n"
+"Last-Translator: Luka Carević <luka@uvid.hr>, 2025\n"
 "Language-Team: Croatian (https://app.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -692,7 +694,9 @@ msgstr ""
 
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.course_card_information_arrow
-msgid "<span class=\"o_wslides_arrow\">New Content</span>"
+msgid ""
+"<span class=\"o_wslides_arrow badge bg-secondary mt-2 ms-2\">New "
+"Content</span>"
 msgstr ""
 
 #. module: website_slides
@@ -1418,7 +1422,7 @@ msgstr ""
 #. module: website_slides
 #: model:ir.model.fields,field_description:website_slides.field_slide_channel__rating_avg
 msgid "Average Rating"
-msgstr ""
+msgstr "Prosječna ocjena"
 
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.slide_channel_view_tree_report
@@ -2030,7 +2034,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website_slides/static/src/js/public/components/slide_share_dialog/slide_share_dialog.js:0
 msgid "Copy Link"
-msgstr ""
+msgstr "Kopiraj link"
 
 #. module: website_slides
 #: model:slide.answer,comment:website_slides.slide_slide_demo_1_4_question_0_0
@@ -2389,7 +2393,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_slides.course_slides_list_slide
 #: model_terms:ir.ui.view,arch_db:website_slides.slide_channel_view_kanban
 msgid "Delete"
-msgstr "Briši"
+msgstr "Obriši"
 
 #. module: website_slides
 #. odoo-javascript
@@ -6470,7 +6474,7 @@ msgstr ""
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.mail_notification_channel_invite
 msgid "Your"
-msgstr " "
+msgstr "Vaš(a)"
 
 #. module: website_slides
 #: model:slide.channel.tag.group,name:website_slides.slide_channel_tag_group_level

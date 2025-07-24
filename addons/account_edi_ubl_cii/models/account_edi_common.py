@@ -7,6 +7,7 @@ from odoo.tools import float_is_zero, float_repr, format_list
 from odoo.tools.float_utils import float_round
 from odoo.tools.misc import clean_context, formatLang, html_escape
 from odoo.tools.xml_utils import find_xml_value
+from datetime import datetime
 
 # -------------------------------------------------------------------------
 # UNIT OF MEASURE
@@ -45,6 +46,7 @@ UOM_TO_UNECE_CODE = {
 # -------------------------------------------------------------------------
 EAS_MAPPING = {
     'AD': {'9922': 'vat'},
+    'AE': {'0235': 'vat'},
     'AL': {'9923': 'vat'},
     'AT': {'9915': 'vat'},
     'AU': {'0151': 'vat'},
@@ -72,7 +74,7 @@ EAS_MAPPING = {
     'LI': {'9936': 'vat'},
     'LT': {'9937': 'vat'},
     'LU': {'9938': 'vat'},
-    'LV': {'9939': 'vat'},
+    'LV': {'0218': 'company_registry', '9939': 'vat'},
     'MC': {'9940': 'vat'},
     'ME': {'9941': 'vat'},
     'MK': {'9942': 'vat'},
@@ -562,14 +564,15 @@ class AccountEdiCommon(models.AbstractModel):
 
     def _retrieve_invoice_line_vals(self, tree, document_type=False, qty_factor=1):
         # Start and End date (enterprise fields)
+        xpath_dict = self._get_invoice_line_xpaths(document_type, qty_factor)
         deferred_values = {}
         start_date = end_date = None
         if self.env['account.move.line']._fields.get('deferred_start_date'):
-            start_date_node = tree.find('./{*}InvoicePeriod/{*}StartDate')
-            end_date_node = tree.find('./{*}InvoicePeriod/{*}EndDate')
+            start_date_node = tree.find(xpath_dict['deferred_start_date'])
+            end_date_node = tree.find(xpath_dict['deferred_end_date'])
             if start_date_node is not None and end_date_node is not None:  # there is a constraint forcing none or the two to be set
-                start_date = start_date_node.text
-                end_date = end_date_node.text
+                start_date = datetime.strptime(start_date_node.text.strip(), xpath_dict['date_format'])
+                end_date = datetime.strptime(end_date_node.text.strip(), xpath_dict['date_format'])
             deferred_values = {
                 'deferred_start_date': start_date,
                 'deferred_end_date': end_date,

@@ -65,6 +65,8 @@ class Page(models.Model):
 
     @api.depends_context('uid')
     def _compute_can_publish(self):
+        # Note: this `if`'s purpose it to optimize the way this is computed for
+        # multiple records.
         if self.env.user.has_group('website.group_website_designer'):
             for record in self:
                 record.can_publish = True

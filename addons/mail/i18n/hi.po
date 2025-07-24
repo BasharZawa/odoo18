@@ -664,7 +664,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/attachment_list.xml:0
 msgid "Actions"
-msgstr ""
+msgstr "ऐक्शन"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_activity__activity_category
@@ -743,7 +743,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_kanban_open_target
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
 msgid "Activity"
-msgstr ""
+msgstr "ऐक्टिविटी"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_exception_decoration
@@ -796,7 +796,7 @@ msgstr "ऐक्टिविटी स्टेट"
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_plan_view_form
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
 msgid "Activity Type"
-msgstr ""
+msgstr "ऐक्टिविटी टाइप"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_type_icon
@@ -979,7 +979,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.view_email_server_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
 msgid "Advanced"
-msgstr ""
+msgstr "एडवांस"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_email_server_form
@@ -2403,7 +2403,7 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_partner_view_activity
 msgid "Contacts"
-msgstr ""
+msgstr "कॉन्टैक्ट"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_alias_view_search
@@ -2759,7 +2759,7 @@ msgstr "दिन"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
 msgid "Deadline"
-msgstr ""
+msgstr "डेडलाइन"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.message_activity_assigned
@@ -2907,7 +2907,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__delay_unit
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__delay_unit
 msgid "Delay units"
-msgstr ""
+msgstr "देरी को मापने की इकाई"
 
 #. module: mail
 #. odoo-javascript
@@ -3159,7 +3159,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity__res_name
 msgid "Document Name"
-msgstr ""
+msgstr "दस्तावेज़ का नाम"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.message_activity_assigned
@@ -3261,7 +3261,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/activity_list_popover_item.js:0
 msgid "Due in %s days"
-msgstr ""
+msgstr "%s दिनों में चुकाना है"
 
 #. module: mail
 #. odoo-javascript
@@ -3457,7 +3457,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_ir_actions_server__template_id
 #: model:ir.model.fields,field_description:mail.field_ir_cron__template_id
 msgid "Email Template"
-msgstr ""
+msgstr "ईमेल टेंप्लेट"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_template_preview
@@ -3680,7 +3680,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_resend_partner__message
 msgid "Error message"
-msgstr ""
+msgstr "गड़बड़ी का मैसेज"
 
 #. module: mail
 #. odoo-python
@@ -3755,7 +3755,7 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_search
 msgid "Failed"
-msgstr ""
+msgstr "असफल"
 
 #. module: mail
 #. odoo-javascript
@@ -4189,7 +4189,7 @@ msgstr "इन्होंने ग्रुप किया"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.discuss_channel_view_form
 msgid "Group Name"
-msgstr ""
+msgstr "ग्रुप का नाम"
 
 #. module: mail
 #: model:ir.model.constraint,message:mail.constraint_discuss_channel_group_public_id_check
@@ -5738,7 +5738,7 @@ msgstr ""
 #: code:addons/mail/static/src/core/web/activity.xml:0
 #: code:addons/mail/static/src/core/web/activity_markasdone_popover.xml:0
 msgid "Mark Done"
-msgstr ""
+msgstr "'पूरा हो गया' के तौर पर मार्क करें"
 
 #. module: mail
 #. odoo-javascript
@@ -6556,7 +6556,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.mail_notification_view_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_search
 msgid "Notification"
-msgstr ""
+msgstr "नोटिफ़िकेशन"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__is_notification
@@ -6726,7 +6726,7 @@ msgstr "ऐसे मैसेज की संख्या जिनमें �
 #: model_terms:ir.ui.view,arch_db:mail.mail_notification_layout
 #: model_terms:ir.ui.view,arch_db:mail.mail_notification_light
 msgid "Odoo"
-msgstr ""
+msgstr "Odoo"
 
 #. module: mail
 #. odoo-javascript
@@ -6979,7 +6979,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/mail/static/src/core/public_web/discuss_sidebar.xml:0
 msgid "Options"
-msgstr ""
+msgstr "विकल्प"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_compose_message__reply_to_mode
@@ -7263,7 +7263,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_res_partner__phone
 #: model:ir.model.fields,field_description:mail.field_res_users__phone
 msgid "Phone"
-msgstr ""
+msgstr "फ़ोन"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_activity_type__category__phonecall
@@ -7806,7 +7806,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_wizard_invite__partner_ids
 #: model_terms:ir.ui.view,arch_db:mail.mail_message_view_form
 msgid "Recipients"
-msgstr ""
+msgstr "रसीद"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form_popup
@@ -8252,7 +8252,7 @@ msgstr ""
 #: code:addons/mail/static/src/core/web/store_service_patch.js:0
 #: code:addons/mail/wizard/mail_activity_schedule.py:0
 msgid "Schedule Activity"
-msgstr ""
+msgstr "ऐक्टिविटी शेड्यूल करें"
 
 #. module: mail
 #. odoo-javascript
@@ -8444,7 +8444,7 @@ msgstr ""
 #: code:addons/mail/static/src/core/web/mention_list.xml:0
 #: code:addons/mail/static/src/discuss/gif_picker/common/gif_picker.xml:0
 msgid "Search..."
-msgstr ""
+msgstr "खोजें..."
 
 #. module: mail
 #. odoo-javascript
@@ -9095,7 +9095,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__summary
 #: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__summary
 msgid "Summary"
-msgstr ""
+msgstr "पूरी जानकारी"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.message_activity_assigned
@@ -10092,7 +10092,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/mail/models/mail_tracking_value.py:0
 msgid "Unknown"
-msgstr ""
+msgstr "अज्ञात"
 
 #. module: mail
 #. odoo-python
@@ -10473,7 +10473,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_alias__alias_status__valid
 msgid "Valid"
-msgstr ""
+msgstr "मान्य"
 
 #. module: mail
 #. odoo-python
@@ -10718,7 +10718,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.email_compose_message_wizard_form
 #: model_terms:ir.ui.view,arch_db:mail.mail_scheduled_message_view_form
 msgid "Write your message here..."
-msgstr ""
+msgstr "अपना मैसेज यहां लिखें..."
 
 #. module: mail
 #. odoo-python

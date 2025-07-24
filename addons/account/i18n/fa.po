@@ -22,16 +22,16 @@
 # Thomas Becquevort, 2025
 # Naser mars, 2025
 # akadesign117, 2025
-# ebrahim khorami, 2025
 # Tiffany Chang, 2025
+# ebrahim khorami, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-11 18:38+0000\n"
+"POT-Creation-Date: 2025-07-18 18:38+0000\n"
 "PO-Revision-Date: 2024-09-25 09:41+0000\n"
-"Last-Translator: Tiffany Chang, 2025\n"
+"Last-Translator: ebrahim khorami, 2025\n"
 "Language-Team: Persian (https://app.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13207,6 +13207,13 @@ msgid "Reversed"
 msgstr "معکوس"
 
 #. module: account
+#. odoo-javascript
+#: code:addons/account/static/src/components/account_payment_field/account_payment.xml:0
+#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
+msgid "Reversed on"
+msgstr ""
+
+#. module: account
 #. odoo-python
 #: code:addons/account/wizard/account_secure_entries_wizard.py:0
 #: model:onboarding.onboarding.step,button_text:account.onboarding_onboarding_step_chart_of_accounts
@@ -17037,7 +17044,7 @@ msgstr "بی نام"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Unpaid"
-msgstr "مرخصی بدون حقوق"
+msgstr "پرداخت نشده"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_filter

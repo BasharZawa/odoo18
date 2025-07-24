@@ -2081,7 +2081,7 @@ msgstr "Paypal"
 #. module: payment
 #: model:payment.method,name:payment.payment_method_paytm
 msgid "Paytm"
-msgstr ""
+msgstr "Paytm"
 
 #. module: payment
 #: model:payment.method,name:payment.payment_method_paytrail
@@ -2882,7 +2882,7 @@ msgstr ""
 #. module: payment
 #: model:payment.method,name:payment.payment_method_upi
 msgid "UPI"
-msgstr ""
+msgstr "UPI"
 
 #. module: payment
 #: model:payment.method,name:payment.payment_method_ussd
