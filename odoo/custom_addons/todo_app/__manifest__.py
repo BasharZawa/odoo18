@@ -31,6 +31,7 @@
         'security/ir.model.access.csv',
         'views/todo_task_view.xml',
         'views/todo_menus.xml',
+        'reports/todo_report.xml',
     ],
     'demo': [
         # 'demo/todo_demo.xml',
