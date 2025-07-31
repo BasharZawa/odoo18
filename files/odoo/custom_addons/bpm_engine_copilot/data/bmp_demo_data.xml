@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Demo Process Definition -->
+        <record id="demo_process_simple_approval" model="bmp.process.definition">
+            <field name="name">Simple Approval Process</field>
+            <field name="version">1.0</field>
+            <field name="description">A simple approval process demonstration</field>
+            <field name="is_active">True</field>
+            <field name="xml_data"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="simple_approval" name="Simple Approval Process" isExecutable="true">
+    <bpmn:startEvent id="start_event" name="Start">
+      <bpmn:outgoing>flow_start_to_review</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="review_task" name="Review Request">
+      <bpmn:incoming>flow_start_to_review</bpmn:incoming>
+      <bpmn:outgoing>flow_review_to_decision</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="decision_gateway" name="Approved?">
+      <bpmn:incoming>flow_review_to_decision</bpmn:incoming>
+      <bpmn:outgoing>flow_approved</bpmn:outgoing>
+      <bpmn:outgoing>flow_rejected</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="approve_task" name="Process Approval">
+      <bpmn:incoming>flow_approved</bpmn:incoming>
+      <bpmn:outgoing>flow_approve_to_end</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="reject_task" name="Process Rejection">
+      <bpmn:incoming>flow_rejected</bpmn:incoming>
+      <bpmn:outgoing>flow_reject_to_end</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="end_event" name="End">
+      <bpmn:incoming>flow_approve_to_end</bpmn:incoming>
+      <bpmn:incoming>flow_reject_to_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="flow_start_to_review" sourceRef="start_event" targetRef="review_task" />
+    <bpmn:sequenceFlow id="flow_review_to_decision" sourceRef="review_task" targetRef="decision_gateway" />
+    <bpmn:sequenceFlow id="flow_approved" name="Approved" sourceRef="decision_gateway" targetRef="approve_task">
+      <bpmn:conditionExpression>approved == True</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="flow_rejected" name="Rejected" sourceRef="decision_gateway" targetRef="reject_task">
+      <bpmn:conditionExpression>approved == False</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="flow_approve_to_end" sourceRef="approve_task" targetRef="end_event" />
+    <bpmn:sequenceFlow id="flow_reject_to_end" sourceRef="reject_task" targetRef="end_event" />
+  </bpmn:process>
+</bpmn:definitions>]]></field>
+        </record>
+        
+        <!-- Demo SLA Rules -->
+        <record id="demo_sla_user_task" model="bmp.sla.rule">
+            <field name="name">User Task SLA</field>
+            <field name="task_type">user</field>
+            <field name="duration_hours">24</field>
+            <field name="warning_threshold">80</field>
+            <field name="escalation_enabled">True</field>
+            <field name="escalation_action">notify</field>
+            <field name="is_active">True</field>
+        </record>
+        
+        <record id="demo_sla_high_priority" model="bmp.sla.rule">
+            <field name="name">High Priority Task SLA</field>
+            <field name="task_type">user</field>
+            <field name="duration_hours">4</field>
+            <field name="warning_threshold">75</field>
+            <field name="escalation_enabled">True</field>
+            <field name="escalation_action">reassign</field>
+            <field name="condition_expression">task.priority == 'high'</field>
+            <field name="priority">20</field>
+            <field name="is_active">True</field>
+        </record>
+        
+    </data>
+</odoo>

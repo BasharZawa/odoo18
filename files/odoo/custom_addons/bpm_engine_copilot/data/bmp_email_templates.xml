@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Email Template for Task Assignment -->
+        <record id="email_template_task_assignment" model="mail.template">
+            <field name="name">BPMN Task Assignment</field>
+            <field name="model_id" ref="model_bmp_task_instance"/>
+            <field name="subject">Task Assigned: ${object.task_name}</field>
+            <field name="email_to">${object.assigned_user_id.email}</field>
+            <field name="body_html"><![CDATA[
+<div style="margin: 0px; padding: 0px;">
+    <p>Dear ${object.assigned_user_id.name},</p>
+    
+    <p>A new task has been assigned to you:</p>
+    
+    <table border="1" style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <td><strong>Task:</strong></td>
+            <td>${object.task_name}</td>
+        </tr>
+        <tr>
+            <td><strong>Process:</strong></td>
+            <td>${object.process_instance_id.display_name}</td>
+        </tr>
+        <tr>
+            <td><strong>Priority:</strong></td>
+            <td>${object.priority.title()}</td>
+        </tr>
+        <tr>
+            <td><strong>Due Date:</strong></td>
+            <td>${object.due_date or 'Not set'}</td>
+        </tr>
+    </table>
+    
+    <p>
+        <a href="/web#id=${object.id}&view_type=form&model=bmp.task.instance" 
+           style="background-color: #007cba; color: white; padding: 10px 15px; text-decoration: none; border-radius: 3px;">
+            View Task
+        </a>
+    </p>
+    
+    <p>Best regards,<br/>
+    ${user.signature | safe}</p>
+</div>
+            ]]></field>
+        </record>
+        
+        <!-- Email Template for SLA Warning -->
+        <record id="email_template_sla_warning" model="mail.template">
+            <field name="name">BPMN SLA Warning</field>
+            <field name="model_id" ref="model_bmp_task_instance"/>
+            <field name="subject">SLA Warning: ${object.task_name}</field>
+            <field name="email_to">${object.assigned_user_id.email}</field>
+            <field name="body_html"><![CDATA[
+<div style="margin: 0px; padding: 0px;">
+    <p>Dear ${object.assigned_user_id.name},</p>
+    
+    <p style="color: orange;"><strong>Warning:</strong> The following task is approaching its SLA deadline:</p>
+    
+    <table border="1" style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <td><strong>Task:</strong></td>
+            <td>${object.task_name}</td>
+        </tr>
+        <tr>
+            <td><strong>Process:</strong></td>
+            <td>${object.process_instance_id.display_name}</td>
+        </tr>
+        <tr>
+            <td><strong>Due Date:</strong></td>
+            <td style="color: orange;"><strong>${object.due_date}</strong></td>
+        </tr>
+        <tr>
+            <td><strong>Status:</strong></td>
+            <td>${object.status.title()}</td>
+        </tr>
+    </table>
+    
+    <p>Please take action to complete this task before the SLA deadline.</p>
+    
+    <p>
+        <a href="/web#id=${object.id}&view_type=form&model=bmp.task.instance" 
+           style="background-color: #ff9500; color: white; padding: 10px 15px; text-decoration: none; border-radius: 3px;">
+            Complete Task
+        </a>
+    </p>
+    
+    <p>Best regards,<br/>
+    ${user.signature | safe}</p>
+</div>
+            ]]></field>
+        </record>
+        
+        <!-- Email Template for SLA Breach -->
+        <record id="email_template_sla_breach" model="mail.template">
+            <field name="name">BPMN SLA Breach</field>
+            <field name="model_id" ref="model_bmp_task_instance"/>
+            <field name="subject">SLA BREACH: ${object.task_name}</field>
+            <field name="email_to">${object.assigned_user_id.email}</field>
+            <field name="body_html"><![CDATA[
+<div style="margin: 0px; padding: 0px;">
+    <p>Dear ${object.assigned_user_id.name},</p>
+    
+    <p style="color: red;"><strong>ALERT:</strong> The following task has breached its SLA:</p>
+    
+    <table border="1" style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <td><strong>Task:</strong></td>
+            <td>${object.task_name}</td>
+        </tr>
+        <tr>
+            <td><strong>Process:</strong></td>
+            <td>${object.process_instance_id.display_name}</td>
+        </tr>
+        <tr>
+            <td><strong>Due Date:</strong></td>
+            <td style="color: red;"><strong>${object.due_date}</strong></td>
+        </tr>
+        <tr>
+            <td><strong>Overdue By:</strong></td>
+            <td style="color: red;">${object.duration - (object.due_date - object.created_at).total_seconds() / 3600} hours</td>
+        </tr>
+        <tr>
+            <td><strong>Status:</strong></td>
+            <td>${object.status.title()}</td>
+        </tr>
+    </table>
+    
+    <p style="color: red;"><strong>IMMEDIATE ACTION REQUIRED</strong></p>
+    
+    <p>
+        <a href="/web#id=${object.id}&view_type=form&model=bmp.task.instance" 
+           style="background-color: #dc3545; color: white; padding: 10px 15px; text-decoration: none; border-radius: 3px;">
+            Handle Immediately
+        </a>
+    </p>
+    
+    <p>Best regards,<br/>
+    ${user.signature | safe}</p>
+</div>
+            ]]></field>
+        </record>
+        
+        <!-- Email Template for Process Completion -->
+        <record id="email_template_process_completion" model="mail.template">
+            <field name="name">BPMN Process Completion</field>
+            <field name="model_id" ref="model_bmp_process_instance"/>
+            <field name="subject">Process Completed: ${object.display_name}</field>
+            <field name="email_to">${object.created_by.email}</field>
+            <field name="body_html"><![CDATA[
+<div style="margin: 0px; padding: 0px;">
+    <p>Dear ${object.created_by.name},</p>
+    
+    <p style="color: green;">Your process has been completed successfully:</p>
+    
+    <table border="1" style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <td><strong>Process:</strong></td>
+            <td>${object.display_name}</td>
+        </tr>
+        <tr>
+            <td><strong>Definition:</strong></td>
+            <td>${object.process_definition_id.name}</td>
+        </tr>
+        <tr>
+            <td><strong>Started:</strong></td>
+            <td>${object.started_at}</td>
+        </tr>
+        <tr>
+            <td><strong>Completed:</strong></td>
+            <td>${object.ended_at}</td>
+        </tr>
+        <tr>
+            <td><strong>Duration:</strong></td>
+            <td>${object.duration} hours</td>
+        </tr>
+        <tr>
+            <td><strong>Total Tasks:</strong></td>
+            <td>${object.total_tasks}</td>
+        </tr>
+    </table>
+    
+    <p>
+        <a href="/web#id=${object.id}&view_type=form&model=bmp.process.instance" 
+           style="background-color: #28a745; color: white; padding: 10px 15px; text-decoration: none; border-radius: 3px;">
+            View Process Details
+        </a>
+    </p>
+    
+    <p>Best regards,<br/>
+    ${user.signature | safe}</p>
+</div>
+            ]]></field>
+        </record>
+        
+    </data>
+</odoo>
