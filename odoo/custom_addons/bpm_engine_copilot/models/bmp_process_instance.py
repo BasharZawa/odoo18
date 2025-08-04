@@ -148,13 +148,13 @@ class BmpProcessInstance(models.Model):
         help='Duration of the process instance in hours'
     )
     
-    @api.depends('process_definition_id.name', 'id')
+    @api.depends('process_definition_id.name')
     def _compute_display_name(self):
         for record in self:
             if record.process_definition_id:
-                record.display_name = f"{record.process_definition_id.name} #{record.id}"
+                record.display_name = f"{record.process_definition_id.name} #{record.id or 'New'}"
             else:
-                record.display_name = f"Process Instance #{record.id}"
+                record.display_name = f"Process Instance #{record.id or 'New'}"
     
     @api.depends('related_record_model', 'related_record_id')
     def _compute_related_record_name(self):

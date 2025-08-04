@@ -26,7 +26,6 @@ for task in active_tasks:
             </field>
             <field name="interval_number">15</field>
             <field name="interval_type">minutes</field>
-            <field name="numbercall">-1</field>
             <field name="active">True</field>
         </record>
         
@@ -37,9 +36,7 @@ for task in active_tasks:
             <field name="state">code</field>
             <field name="code">
 # Clean up old completed processes (older than 30 days)
-from datetime import datetime, timedelta
-
-cutoff_date = datetime.now() - timedelta(days=30)
+cutoff_date = fields.Datetime.now() - relativedelta(days=30)
 old_processes = env['bmp.process.instance'].search([
     ('state', 'in', ['completed', 'failed', 'cancelled']),
     ('ended_at', '&lt;', cutoff_date)
@@ -54,7 +51,6 @@ for process in old_processes:
             </field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
-            <field name="numbercall">-1</field>
             <field name="active">True</field>
         </record>
         
@@ -71,7 +67,6 @@ pass
             </field>
             <field name="interval_number">5</field>
             <field name="interval_type">minutes</field>
-            <field name="numbercall">-1</field>
             <field name="active">False</field>
         </record>
         

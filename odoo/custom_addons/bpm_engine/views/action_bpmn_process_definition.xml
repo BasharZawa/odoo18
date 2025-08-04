@@ -1,0 +1,7 @@
+<odoo>
+    <record id="action_bpmn_process_definition" model="ir.actions.act_window">
+        <field name="name">Process Definitions</field>
+        <field name="res_model">bpmn.process.definition</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

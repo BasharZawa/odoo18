@@ -1,0 +1,7 @@
+<odoo>
+    <menuitem id="menu_bpmn_root" name="BPMN Engine"/>
+    <menuitem id="menu_bpmn_process_def" name="Process Definitions" parent="menu_bpmn_root" action="action_bpmn_process_definition"/>
+    <menuitem id="menu_bpmn_my_tasks" name="My Tasks" parent="menu_bpmn_root" action="action_bpmn_my_tasks"/>
+    <menuitem id="menu_bpmn_logs" name="Activity Logs" parent="menu_bpmn_root" action="action_bpmn_logs"/>
+    <menuitem id="menu_bpmn_proc_instance" name="Process Instances" parent="menu_bpmn_root" action="action_bpmn_process_instance"/>
+</odoo>

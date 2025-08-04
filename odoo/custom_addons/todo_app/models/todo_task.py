@@ -36,11 +36,12 @@ class TodoTask(models.Model):
         for task in self:
             task.is_due_today = (task.due_date == today)
 
-    @api.model
-    def create(self, vals):
-        task = super(TodoTask, self).create(vals)
-        task.state = 'new'
-        return task
+    @api.model_create_multi
+    def create(self, vals_list):
+        tasks = super(TodoTask, self).create(vals_list)
+        for task in tasks:
+            task.state = 'new'
+        return tasks
     
     def action_set_in_progress(self):
         for task in self:

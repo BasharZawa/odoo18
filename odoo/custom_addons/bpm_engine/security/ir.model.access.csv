@@ -1,2 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_bpm_process_definition_user,bpm.process.definition,model_bpm_process_definition,base.group_user,1,1,1,1
+access_bpmn_process_definition_user,bpmn.process.definition,model_bpmn_process_definition,base.group_user,1,1,1,0
+access_bpmn_process_instance_user,bpmn.process.instance,model_bpmn_process_instance,base.group_user,1,0,0,0
+access_bpmn_task_instance_user,bpmn.task.instance,model_bpmn_task_instance,base.group_user,1,1,0,0
+access_bpmn_activity_log_user,bpmn.activity.log,model_bpmn_activity_log,base.group_user,1,0,0,0
+access_bpmn_process_variable_user,bpmn.process.variable,model_bpmn_process_variable,base.group_user,1,1,1,0

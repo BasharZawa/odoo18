@@ -3,11 +3,11 @@
     <data>
         
         <!-- Process Definition Views -->
-        <record id="view_bmp_process_definition_tree" model="ir.ui.view">
-            <field name="name">bmp.process.definition.tree</field>
+        <record id="view_bmp_process_definition_list" model="ir.ui.view">
+            <field name="name">bmp.process.definition.list</field>
             <field name="model">bmp.process.definition</field>
             <field name="arch" type="xml">
-                <tree string="Process Definitions">
+                <list string="Process Definitions">
                     <field name="name"/>
                     <field name="version"/>
                     <field name="is_active"/>
@@ -15,7 +15,7 @@
                     <field name="active_instance_count"/>
                     <field name="created_at"/>
                     <field name="created_by"/>
-                </tree>
+                </list>
             </field>
         </record>
         
@@ -64,13 +64,13 @@
                             </page>
                             <page string="Process Instances">
                                 <field name="process_instances" readonly="1">
-                                    <tree>
+                                    <list>
                                         <field name="id"/>
                                         <field name="state"/>
                                         <field name="started_at"/>
                                         <field name="progress_percentage"/>
                                         <field name="created_by"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                         </notebook>
@@ -101,7 +101,7 @@
         <record id="action_bmp_process_definition" model="ir.actions.act_window">
             <field name="name">Process Definitions</field>
             <field name="res_model">bmp.process.definition</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="search_view_id" ref="view_bmp_process_definition_search"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

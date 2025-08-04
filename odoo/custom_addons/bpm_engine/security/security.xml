@@ -1,0 +1,5 @@
+<odoo>
+    <record id="group_bpmn_admin" model="res.groups">
+        <field name="name">BPMN Admin</field>
+    </record>
+</odoo>

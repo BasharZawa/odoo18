@@ -123,6 +123,7 @@ class BmpTaskInstance(models.Model):
     is_overdue = fields.Boolean(
         string='Overdue',
         compute='_compute_overdue',
+        store=True,
         help='Whether this task is overdue'
     )
     

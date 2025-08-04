@@ -3,11 +3,11 @@
     <data>
         
         <!-- Task Instance Views -->
-        <record id="view_bmp_task_instance_tree" model="ir.ui.view">
-            <field name="name">bmp.task.instance.tree</field>
+        <record id="view_bmp_task_instance_list" model="ir.ui.view">
+            <field name="name">bmp.task.instance.list</field>
             <field name="model">bmp.task.instance</field>
             <field name="arch" type="xml">
-                <tree string="Task Instances">
+                <list string="Task Instances">
                     <field name="task_name"/>
                     <field name="process_instance_id"/>
                     <field name="task_type"/>
@@ -22,7 +22,7 @@
                     <field name="is_overdue" widget="boolean"/>
                     <field name="created_at"/>
                     <field name="duration"/>
-                </tree>
+                </list>
             </field>
         </record>
         
@@ -43,14 +43,6 @@
                         <field name="status" widget="statusbar" statusbar_visible="ready,claimed,in_progress,completed"/>
                     </header>
                     <sheet>
-                        <div class="oe_button_box" name="button_box">
-                            <button class="oe_stat_button" type="object" name="action_view_process" icon="fa-cogs">
-                                <div class="o_field_widget o_stat_info">
-                                    <span class="o_stat_text">View Process</span>
-                                </div>
-                            </button>
-                        </div>
-                        
                         <div class="oe_title">
                             <h1><field name="task_name" readonly="1"/></h1>
                         </div>
@@ -111,22 +103,22 @@
                             </page>
                             <page string="Variables">
                                 <field name="task_variables" readonly="1">
-                                    <tree>
+                                    <list>
                                         <field name="key"/>
                                         <field name="type"/>
                                         <field name="display_value"/>
                                         <field name="scope"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="Activity Log">
                                 <field name="activity_logs" readonly="1">
-                                    <tree>
+                                    <list>
                                         <field name="timestamp"/>
                                         <field name="action_type"/>
                                         <field name="actor_id"/>
                                         <field name="details"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="Error Details" invisible="status != 'failed'">
@@ -155,7 +147,6 @@
                     <filter string="In Progress" name="in_progress" domain="[('status', 'in', ['claimed', 'in_progress'])]"/>
                     <filter string="Completed" name="completed" domain="[('status', '=', 'completed')]"/>
                     <filter string="Failed" name="failed" domain="[('status', '=', 'failed')]"/>
-                    <filter string="Overdue" name="overdue" domain="[('is_overdue', '=', True)]"/>
                     <filter string="User Tasks" name="user_tasks" domain="[('task_type', '=', 'user')]"/>
                     <filter string="Service Tasks" name="service_tasks" domain="[('task_type', '=', 'service')]"/>
                     <group expand="0" string="Group By">
@@ -235,7 +226,7 @@
         <record id="action_bmp_task_instance" model="ir.actions.act_window">
             <field name="name">All Tasks</field>
             <field name="res_model">bmp.task.instance</field>
-            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_mode">list,form,kanban</field>
             <field name="search_view_id" ref="view_bmp_task_instance_search"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -251,7 +242,7 @@
         <record id="action_bmp_task_instance_my_tasks" model="ir.actions.act_window">
             <field name="name">My Tasks</field>
             <field name="res_model">bmp.task.instance</field>
-            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_mode">kanban,list,form</field>
             <field name="search_view_id" ref="view_bmp_task_instance_search"/>
             <field name="context">{'search_default_my_tasks': 1}</field>
             <field name="help" type="html">
