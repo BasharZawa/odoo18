@@ -1,0 +1,105 @@
+<odoo>
+  <record id="view_presales_request_form" model="ir.ui.view">
+    <field name="name">presales.request.form</field>
+    <field name="model">presales.request</field>
+    <field name="arch" type="xml">
+      <form string="Presales Request">
+        <header>
+          <button name="action_approve" type="object" string="Approve" invisible="state != 'requested'" 
+             group="presales_requests.group_presales_manager"/>
+          
+          <button name="action_reject" type="object" string="Reject" invisible="state != 'requested'"
+          group="presales_requests.group_presales_manager"/>
+
+          <button name="action_start" type="object" string="Start Work" invisible="state not in ('approved', 'amendment')" group="presales_requests.group_presales_employee"/>
+
+          <button name="action_submit_review" type="object" string="Submit for Review" invisible="state != 'in_progress'"/>
+          
+          <button name="action_request_amendment" type="object" string="Request Amendment" invisible="state != 'review'"/>
+
+          <button name="action_mark_complete" type="object" string="Complete" invisible="state not in ('review', 'amendment')"/>
+          
+          <field name="state" widget="statusbar" statusbar_visible="requested,approved,in_progress,review,completed"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="opportunity_id"/>
+            <field name="salesperson_id"/>
+            <field name="assigned_to"/>
+            <field name="deadline"/>
+          </group>
+          <notebook>
+            <page string="Details">
+              <field name="request_details"/>
+              <field name="manager_comment"/>
+              <field name="completion_notes"/>
+              <field name="salesperson_feedback"/>
+              <field name="attachment_ids" widget="many2many_binary"/>
+            </page>
+            <page string="Timesheets">
+              <field name="timesheet_ids">
+                <list editable="bottom">
+                  <field name="name"/>
+                  <field name="unit_amount"/>
+                  <field name="date"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+          <chatter/>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_presales_request_tree" model="ir.ui.view">
+    <field name="name">presales.request.list</field>
+    <field name="model">presales.request</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="opportunity_id"/>
+        <field name="salesperson_id"/>
+        <field name="assigned_to"/>
+        <field name="state"/>
+        <field name="deadline"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_presales_request_search" model="ir.ui.view">
+    <field name="name">presales.request.search</field>
+    <field name="model">presales.request</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="opportunity_id"/>
+        <field name="salesperson_id"/>
+        <field name="assigned_to"/>
+        <filter string="Requested" name="requested" domain="[('state', '=', 'requested')]"/>
+        <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+        <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+        <group expand="0" string="Group By">
+          <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+          <filter string="Salesperson" name="group_salesperson" context="{'group_by': 'salesperson_id'}"/>
+          <filter string="Assigned To" name="group_assigned" context="{'group_by': 'assigned_to'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="action_presales_request" model="ir.actions.act_window">
+    <field name="name">Presales Requests</field>
+    <field name="res_model">presales.request</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Create your first presales request
+      </p>
+    </field>
+  </record>
+
+  <menuitem id="menu_presales_root" name="Presales" sequence="10"/>
+  <menuitem id="menu_presales_requests" name="Requests" parent="menu_presales_root" action="action_presales_request" sequence="10"/>
+</odoo>

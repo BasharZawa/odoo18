@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_presales_request_admin,presales.request.admin,model_presales_request,base.group_system,1,1,1,1
+access_presales_request_manager,presales.request.manager,model_presales_request,presales_requests.group_presales_manager,1,1,1,1
+access_presales_request_employee,presales.request.employee,model_presales_request,presales_requests.group_presales_employee,1,1,1,1
