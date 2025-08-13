@@ -71,7 +71,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/hr_timesheet/static/src/components/time_hour_field/time_hour_field.js:0
 msgid "%(hours)sh"
-msgstr ""
+msgstr "%(hours)s h"
 
 #. module: hr_timesheet
 #. odoo-javascript
@@ -818,7 +818,7 @@ msgstr ""
 #. module: hr_timesheet
 #: model_terms:ir.ui.view,arch_db:hr_timesheet.portal_my_home_timesheet
 msgid "Review all timesheets related to your projects"
-msgstr ""
+msgstr "Reviseu tots els fulls d'hores relacionats amb els vostres projectes"
 
 #. module: hr_timesheet
 #. odoo-python

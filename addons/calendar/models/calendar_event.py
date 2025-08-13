@@ -263,7 +263,12 @@ class Meeting(models.Model):
             event.current_attendee = current_attendee and current_attendee[0]
 
     def _search_current_attendee(self, operator, value):
-        return [("id", operator, value)]
+        return [
+            ('attendee_ids', 'any', [
+                ('partner_id', '=', self.env.user.partner_id.id),
+                ('id', operator, value)
+            ])
+        ]
 
     @api.depends('attendee_ids', 'attendee_ids.state', 'partner_ids')
     def _compute_attendees_count(self):
@@ -549,7 +554,8 @@ class Meeting(models.Model):
                 'allday': vals.get('allday', defaults.get('allday')),
                 'description': vals.get('description', defaults.get('description')),
                 'name': vals.get('name', defaults.get('name')),
-                'res_id': vals.get('res_id', defaults.get('res_id')),
+                # when res_id is not defined or vals['res_id'] == 0, fallback on default
+                'res_id': vals.get('res_id') or defaults.get('res_id'),
                 'res_model': vals.get('res_model', defaults.get('res_model')),
                 'res_model_id': vals.get('res_model_id', defaults.get('res_model_id')),
                 'start': vals.get('start', defaults.get('start')),

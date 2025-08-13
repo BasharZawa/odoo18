@@ -1998,6 +1998,8 @@ msgid ""
 "This pricelist may not be archived. It is being used for active promotion "
 "programs: %s"
 msgstr ""
+"No puedes archivar esta lista de precios, alguno de los programas de "
+"promoción activos la utiliza: %s"
 
 #. module: loyalty
 #. odoo-python
@@ -2342,4 +2344,4 @@ msgstr "utilizado(s))"
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_reward.py:0
 msgid "your order"
-msgstr "su orden"
+msgstr "tu orden"
