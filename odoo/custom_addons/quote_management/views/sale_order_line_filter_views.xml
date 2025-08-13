@@ -1,0 +1,16 @@
+<odoo>
+  <record id="view_sale_order_line_filter_approval" model="ir.ui.view">
+    <field name="name">sale.order.line.search.approval</field>
+    <field name="model">sale.order.line</field>
+    <field name="arch" type="xml">
+      <search string="Order Lines Needing Approval">
+        <filter name="need_approval" string="Needs Approval" domain="[('approval_required','=',True), ('approved_by_manager','=',False)]"/>
+        <field name="product_id"/>
+        <field name="order_id"/>
+        <field name="discount"/>
+        <field name="approval_required"/>
+        <field name="approved_by_manager"/>
+      </search>
+    </field>
+  </record>
+</odoo>

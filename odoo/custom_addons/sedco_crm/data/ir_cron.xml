@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Daily SLA & escalation job for leads in early stages -->
+  <data noupdate="1">
+    <record id="ir_cron_lead_sla" model="ir.cron">
+      <field name="name">CRM Lead SLA and Escalations</field>
+      <field name="model_id" ref="crm.model_crm_lead"/>
+      <field name="state">code</field>
+      <field name="code">model._sedco_run_lead_sla()</field>
+      <field name="interval_type">days</field>
+      <field name="interval_number">1</field>
+      <field name="active">True</field>
+    </record>
+  </data>
+</odoo>

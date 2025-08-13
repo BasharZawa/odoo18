@@ -161,4 +161,13 @@ class PresalesRequest(models.Model):
         activities.action_feedback(feedback="Presales request completed.")
 
 
+    @api.depends('deadline')
+    def _compute_is_overdue(self):  
+        for record in self:
+            if record.deadline:
+                record.is_overdue = datetime.now() > record.deadline + timedelta(days=1)
+            else:
+                record.is_overdue = False
+
+
     

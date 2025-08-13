@@ -1,0 +1,6 @@
+<odoo>
+    <record id="group_sales_manager_approval" model="res.groups">
+        <field name="name">Sales Manager (Approvals)</field>
+    </record>
+</odoo>
+

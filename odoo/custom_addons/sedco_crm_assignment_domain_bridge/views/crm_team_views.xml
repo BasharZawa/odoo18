@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Views to expose Assignment Priority on Sales Teams.
+     NOTE: In Odoo 18 we use <list>, not <tree>. -->
+<odoo>
+  <!-- Form view inheritance: add the priority field in a new group -->
+  <record id="view_crm_team_form_inherit_sedco_priority" model="ir.ui.view">
+    <field name="name">crm.team.form.sedco.assignment.priority</field>
+    <field name="model">crm.team</field>
+    <field name="inherit_id" ref="crm.crm_team_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//sheet/group" position="after">
+        <group string="Lead Assignment">
+          <field name="sedco_assignment_priority"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+
+  <!-- List view inheritance: show the priority column -->
+  <record id="view_crm_team_list_inherit_sedco_priority" model="ir.ui.view">
+    <field name="name">crm.team.list.sedco.assignment.priority</field>
+    <field name="model">crm.team</field>
+    <field name="inherit_id" ref="crm.crm_team_view_tree"/>
+    <field name="arch" type="xml">
+      <xpath expr="//list" position="inside">
+        <field name="sedco_assignment_priority"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

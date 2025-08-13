@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_discount_approval_profile,discount.approval.profile,model_discount_approval_profile,,1,1,1,1
+access_discount_approval_profile_manager,discount.approval.profile.manager,model_discount_approval_profile,quote_management.group_sales_manager_approval,1,1,1,1
+access_sale_order_extension,sale.order extension,model_sale_order,,1,1,1,1
+access_sale_order_line_extension,sale.order.line extension,model_sale_order_line,,1,1,1,1
