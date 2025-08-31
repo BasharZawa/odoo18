@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="bpmn_editor_page" name="BPMN Editor">
+        <html>
+            <head>
+                <title>BPMN Editor</title>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <!-- Load bpmn-js CSS (local first, fallback to CDN). These are required for the palette, icons and canvas styling. -->
+                <link rel="stylesheet" href="/web/static/sedco_bpm_engine/lib/bpmn-js/dist/assets/diagram-js.css" />
+                <link rel="stylesheet" href="/web/static/sedco_bpm_engine/lib/bpmn-js/dist/assets/bpmn-font/css/bpmn.css" />
+                <!-- CDN fallbacks in case local assets are missing -->
+                <link rel="stylesheet" href="https://unpkg.com/bpmn-js@11.5.0/dist/assets/diagram-js.css" />
+                <link rel="stylesheet" href="https://unpkg.com/bpmn-js@11.5.0/dist/assets/bpmn-font/css/bpmn.css" />
+
+                <!-- Load local BPMN.js (served by Odoo). Place bpmn-modeler.development.js in this module's static/lib for offline use. -->
+                <script src="/web/static/sedco_bpm_engine/lib/bpmn-modeler.development.js" onerror="console.warn('Local bpmn-modeler not found, will use CDN');"></script>
+                <!-- CDN fallback if local asset missing -->
+                <script>
+                    (function(){
+                        // bpmn-js exposes window.BpmnJS in dist builds
+                        if (typeof window.BpmnJS === 'undefined') {
+                            var s = document.createElement('script');
+                            s.src = 'https://unpkg.com/bpmn-js@11.5.0/dist/bpmn-modeler.development.js';
+                            s.onload = function(){ console.log('Loaded BPMN.js from CDN'); };
+                            s.onerror = function(){ console.error('Failed to load BPMN.js from CDN'); };
+                            document.head.appendChild(s);
+                        }
+                    })();
+                </script>
+                <style>
+                    body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+                    #toolbar { background: #f8f9fa; padding: 10px; border-bottom: 1px solid #ddd; }
+                    #canvas { height: calc(100vh - 60px); position: relative; }
+                    .btn { padding: 8px 16px; margin-right: 10px; border: 1px solid #ddd; background: #fff; cursor: pointer; border-radius: 4px; }
+                    .btn:hover { background: #f0f0f0; }
+                    .btn-primary { background: #007bff; color: white; border-color: #007bff; }
+                    .btn-primary:hover { background: #0056b3; }
+                    #status { margin-left: 20px; color: #28a745; font-weight: bold; }
+                    
+                    /* Ensure BPMN.js palette is visible and styled */
+                    .djs-palette { 
+                        background: white !important; 
+                        border: 1px solid #ccc !important;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+                        z-index: 100 !important;
+                    }
+                    .djs-palette .entry { 
+                        cursor: pointer !important; 
+                    }
+                    .djs-palette .entry:hover {
+                        background: #f0f0f0 !important;
+                    }
+                    .bjs-powered-by { display: none !important; }
+                </style>
+            </head>
+            <body>
+                <div id="toolbar">
+                    <button class="btn btn-primary" onclick="saveBpmn()">Save</button>
+                    <button class="btn" onclick="compileAndSave()">Compile &amp; Save</button>
+                    <button class="btn" onclick="window.close()">Close</button>
+                    <span id="status">Loading BPMN Editor...</span>
+                </div>
+                <div id="canvas"></div>
+
+                <!-- Expose the current definition id and XML to client JS -->
+                <script type="text/javascript">
+                    window._bpmn_definition_id = <t t-esc="definition.id"/>;
+                    window._bpmn_existing_xml = <t t-esc="definition.bpmn_xml and repr(definition.bpmn_xml) or 'null'"/>;
+                </script>
+
+                <script><![CDATA[
+                    var modeler;
+
+                    // Simple initialization
+                    setTimeout(function() {
+                        initEditor();
+                    }, 2000);
+
+                    function initEditor() {
+                        console.log('Checking for BpmnJS:', typeof window.BpmnJS);
+
+                        if (typeof window.BpmnJS === 'undefined') {
+                            document.getElementById('status').textContent = 'Error: BPMN.js not loaded. Trying alternative...';
+                            loadAlternative();
+                            return;
+                        }
+
+                        try {
+                            document.getElementById('status').textContent = 'Creating BPMN editor...';
+                            modeler = new window.BpmnJS({ 
+                                container: '#canvas'
+                            });
+
+                            // Load existing BPMN XML from the definition, or use default
+                            var xml = window._bpmn_existing_xml;
+                            if (!xml || xml.trim() === '' || xml === 'null') {
+                                // Rich default BPMN XML with DI so the modeler can render a diagram
+                                xml = '<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:sedco="https://sedco.com/bpmn/extensions" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">'
+                                    + '<bpmn:process id="Process_1" isExecutable="true">'
+                                    + '<bpmn:startEvent id="StartEvent_1"/>'
+                                    + '</bpmn:process>'
+                                    + '<bpmndi:BPMNDiagram id="BPMNDiagram_1">'
+                                    + '<bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">'
+                                    + '<bpmndi:BPMNShape id="_BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">'
+                                    + '<dc:Bounds x="173" y="102" width="36" height="36"/>'
+                                    + '</bpmndi:BPMNShape>'
+                                    + '</bpmndi:BPMNPlane>'
+                                    + '</bpmndi:BPMNDiagram>'
+                                    + '</bpmn:definitions>';
+                            }
+
+                            console.log('BPMN XML length:', xml ? xml.length : 0);
+                            console.log('BPMN XML preview:', xml ? xml.slice(0,300) : '<empty>');
+                            modeler.importXML(xml).then(function() {
+                                document.getElementById('status').textContent = 'Editor ready! Use the palette on the left to add elements.';
+                                modeler.get('canvas').zoom('fit-viewport');
+                            }).catch(function(err) {
+                                console.error('Error importing XML:', err);
+                                try { console.error('Full XML:', xml); } catch(e){}
+                                document.getElementById('status').textContent = 'Error loading diagram: ' + (err && err.message ? err.message : err);
+                            });
+
+                        } catch (error) {
+                            console.error('Error creating modeler:', error);
+                            document.getElementById('status').textContent = 'Error creating editor: ' + error.message;
+                        }
+                    }
+
+                    function loadAlternative() {
+                        document.getElementById('status').textContent = 'Loading alternative BPMN.js...';
+                        var script = document.createElement('script');
+                        script.src = 'https://unpkg.com/bpmn-js@11.5.0/dist/bpmn-modeler.development.js';
+                        script.onload = function() {
+                            setTimeout(initEditor, 1000);
+                        };
+                        script.onerror = function() {
+                            document.getElementById('status').textContent = 'Error: Failed to load BPMN.js library';
+                        };
+                        document.head.appendChild(script);
+                    }
+
+                    function saveBpmn() {
+                        if (!modeler) {
+                            alert('Editor not initialized');
+                            return Promise.reject(new Error('Editor not initialized'));
+                        }
+                        var defId = window._bpmn_definition_id;
+                        if (!defId) {
+                            alert('Missing definition id');
+                            return Promise.reject(new Error('Missing definition id'));
+                        }
+
+                        document.getElementById('status').textContent = 'Saving BPMN...';
+                        return modeler.saveXML({ format: true }).then(function(result) {
+                            console.log('saveXML result:', result);
+                            var xml = result.xml;
+                            if (!xml || xml.trim() === "") {
+                                document.getElementById('status').textContent = 'Error: BPMN XML is empty';
+                                return Promise.reject(new Error('BPMN XML is empty'));
+                            }
+                            
+                            // Validate XML content
+                            if (typeof xml !== 'string') {
+                                console.error('XML is not a string:', typeof xml, xml);
+                                document.getElementById('status').textContent = 'Error: Invalid XML format';
+                                return Promise.reject(new Error('Invalid XML format'));
+                            }
+                            console.log('BPMN XML length:', xml ? xml.length : 0);
+                            console.log('Sending XML content:', xml ? xml.substring(0, 200) + '...' : 'empty');
+                            
+                            // For Odoo JSON routes, send parameters directly, not wrapped in an object
+                            var payload = {
+                                "jsonrpc": "2.0",
+                                "method": "call",
+                                "params": {
+                                    "xml_content": xml
+                                }
+                            };
+                            console.log('Payload to send:', JSON.stringify(payload).substring(0, 300) + '...');
+                            
+                            return fetch('/web/bpmn_editor/' + defId + '/save', {
+                                method: 'POST',
+                                credentials: 'same-origin',
+                                headers: { 
+                                    'Content-Type': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify(payload)
+                            }).then(function(resp) {
+                                console.log('Response status:', resp.status);
+                                console.log('Response headers:', resp.headers);
+                                if (!resp.ok) {
+                                    return resp.text().then(function(text) {
+                                        console.error('Error response body:', text);
+                                        var errMsg = 'HTTP ' + resp.status + ' ' + resp.statusText + ' - ' + text.slice(0,2000);
+                                        console.error('Save returned non-OK response:', errMsg);
+                                        document.getElementById('status').textContent = 'Save failed: server error';
+                                        return Promise.reject(new Error(errMsg));
+                                    });
+                                }
+                                return resp.json();
+                            }).then(function(json) {
+                                console.log('Full response:', json);
+                                // Handle Odoo JSON-RPC response format
+                                var result = json.result || json;
+                                if (result && result.success) {
+                                    document.getElementById('status').textContent = 'Saved!';
+                                    setTimeout(function(){ document.getElementById('status').textContent = 'Editor ready! Use the palette on the left to add elements.'; }, 2000);
+                                    return { saved: true };
+                                } else {
+                                    var msg = (result && result.error) ? result.error : 'Unknown error';
+                                    document.getElementById('status').textContent = 'Save failed: ' + msg;
+                                    return Promise.reject(new Error(msg));
+                                }
+                            });
+                        }).catch(function(err) {
+                            console.error('Error saving BPMN:', err);
+                            document.getElementById('status').textContent = 'Error saving: ' + (err && err.message ? err.message : err);
+                            return Promise.reject(err);
+                        });
+                    }
+
+                    function compileAndSave() {
+                        // Save first, then call compile endpoint
+                        document.getElementById('status').textContent = 'Saving and compiling...';
+                        var defId = window._bpmn_definition_id;
+                        return saveBpmn().then(function() {
+                            return fetch('/web/bpmn_editor/' + defId + '/compile', {
+                                method: 'POST',
+                                credentials: 'same-origin',
+                                headers: { 
+                                    'Content-Type': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify({
+                                    "jsonrpc": "2.0",
+                                    "method": "call",
+                                    "params": {}
+                                })
+                            }).then(function(resp){
+                                if (!resp.ok) {
+                                    return resp.text().then(function(text){
+                                        var errMsg = 'HTTP ' + resp.status + ' ' + resp.statusText + ' - ' + text.slice(0,2000);
+                                        console.error('Compile returned non-OK response:', errMsg);
+                                        document.getElementById('status').textContent = 'Compile failed: server error';
+                                        return Promise.reject(new Error(errMsg));
+                                    });
+                                }
+                                return resp.json();
+                            }).then(function(json){
+                                console.log('Compile response:', json);
+                                // Handle Odoo JSON-RPC response format
+                                var result = json.result || json;
+                                if (result && result.success) {
+                                        document.getElementById('status').textContent = 'Compiled and saved successfully.';
+                                        // If server returned the compiled JSON, log it and show a small preview
+                                        if (result.definition_json) {
+                                            console.log('Compiled definition JSON:', result.definition_json);
+                                            try {
+                                                var parsed = JSON.parse(result.definition_json);
+                                                var preview = JSON.stringify(parsed, null, 2).slice(0,800);
+                                                console.log('Definition preview:', preview);
+                                                var st = document.getElementById('status');
+                                                st.textContent = 'Compiled — JSON length: ' + result.definition_json.length;
+                                                setTimeout(function(){ st.textContent = 'Editor ready! Use the palette on the left to add elements.'; }, 4000);
+                                            } catch(e) {
+                                                console.warn('Failed to parse compiled JSON', e);
+                                            }
+                                        }
+                                        return { compiled: true };
+                                    } else {
+                                        var msg = (result && result.error) ? result.error : 'Compile failed';
+                                        document.getElementById('status').textContent = 'Compile error: ' + msg;
+                                        return Promise.reject(new Error(msg));
+                                    }
+                                });
+                        }).catch(function(err){
+                            console.error('Compile flow error:', err);
+                            // status already set by saveBpmn on error
+                        });
+                    }
+                ]]></script>
+            </body>
+        </html>
+    </template>
+</odoo>

@@ -1,0 +1,35 @@
+<odoo>
+  <record id="view_bpm_registry_list" model="ir.ui.view">
+    <field name="name">bpm.registry.list</field>
+    <field name="model">bpm.registry</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="dotted_path"/>
+        <field name="kind"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_bpm_registry_form" model="ir.ui.view">
+    <field name="name">bpm.registry.form</field>
+    <field name="model">bpm.registry</field>
+    <field name="arch" type="xml">
+      <form string="BPM Whitelist">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="dotted_path"/>
+            <field name="kind"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_bpm_registry" model="ir.actions.act_window">
+    <field name="name">Whitelist Registry</field>
+    <field name="res_model">bpm.registry</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

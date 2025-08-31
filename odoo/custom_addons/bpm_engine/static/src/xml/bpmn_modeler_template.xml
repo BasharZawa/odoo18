@@ -1,5 +1,0 @@
-<t t-name="bpmn_engine.BpmnModelerWidget">
-    <div class="bpmn-modeler-container" style="min-height:500px;width:100%">
-        <!-- bpmn-js modeler will be injected here -->
-    </div>
-</t>
