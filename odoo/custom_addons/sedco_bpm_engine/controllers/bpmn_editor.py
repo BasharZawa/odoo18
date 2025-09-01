@@ -1,5 +1,6 @@
 from odoo import http
 from odoo.http import request
+import json
 
 
 class BPMNEditorController(http.Controller):
@@ -13,6 +14,7 @@ class BPMNEditorController(http.Controller):
         
         return request.render('sedco_bpm_engine.bpmn_editor_page', {
             'definition': definition,
+            'json': json,  # Make json module available in template
         })
 
     @http.route('/web/bpmn_editor/<int:definition_id>/save', type='json', auth='user')

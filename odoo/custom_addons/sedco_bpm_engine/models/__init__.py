@@ -1,4 +1,5 @@
 from . import process_definition
+from . import process_definition_activity
 from . import process_instance
 from . import activity_instance
 from . import event_subscription

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Process Definition Activity Views -->
+    
+    <!-- list View -->
+    <record id="view_bpm_process_definition_activity_list" model="ir.ui.view">
+        <field name="name">bpm.process.definition.activity.list</field>
+        <field name="model">bpm.process.definition.activity</field>
+        <field name="arch" type="xml">
+            <list string="Process Activities" default_order="sequence">
+                <field name="sequence" widget="handle"/>
+                <field name="node_id"/>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="assignee_type" optional="hide"/>
+                <field name="assignee_id" optional="show"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="definition_id" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_bpm_process_definition_activity_form" model="ir.ui.view">
+        <field name="name">bpm.process.definition.activity.form</field>
+        <field name="model">bpm.process.definition.activity</field>
+        <field name="arch" type="xml">
+            <form string="Process Activity">
+                <header>
+                    <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" required="1" placeholder="Activity Name"/>
+                        </h1>
+                        <h3>
+                            <field name="node_id" required="1" placeholder="Node ID (e.g., Task_1)"/>
+                        </h3>
+                    </div>
+                    
+                    <group>
+                        <group name="basic_info">
+                            <field name="definition_id" readonly="1"/>
+                            <field name="sequence"/>
+                            <field name="type" required="1"/>
+                            <field name="description"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <!-- Flow Control Tab -->
+                        <page string="Flow Control" name="flow">
+                            <group>
+                                <group name="basic_flow" string="Basic Flow">
+                                    <field name="next_activity_id" 
+                                           context="{'default_definition_id': definition_id}"
+                                           domain="[('definition_id', '=', definition_id), ('id', '!=', id)]"/>
+                                </group>
+                                
+                                <group name="multiple_flow" string="Multiple Next Activities" invisible="type not in ['pbranch']">
+                                    <field name="next_activity_ids" widget="many2many_tags"
+                                           context="{'default_definition_id': definition_id}"
+                                           domain="[('definition_id', '=', definition_id), ('id', '!=', id)]"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <!-- Task Configuration Tab -->
+                        <page string="Task Configuration" name="task_config" invisible="type != 'task'">
+                            <group>
+                                <group name="assignee_config" string="Assignment">
+                                    <field name="assignee_type" required="1"/>
+                                    <field name="assignee_id" 
+                                           invisible="assignee_type != 'static'" 
+                                           required="assignee_type == 'static'"/>
+                                    <field name="assignee_resolver" 
+                                           invisible="assignee_type != 'resolver'" 
+                                           required="assignee_type == 'resolver'"/>
+                                    <field name="assignee_group_id" 
+                                           invisible="assignee_type != 'group'" 
+                                           required="assignee_type == 'group'"/>
+                                </group>
+                                
+                                <group name="approval_routing" string="Approval Routing">
+                                    <field name="next_approve_activity_id" 
+                                           context="{'default_definition_id': definition_id}"
+                                           domain="[('definition_id', '=', definition_id), ('id', '!=', id)]"/>
+                                    <field name="next_reject_activity_id" 
+                                           context="{'default_definition_id': definition_id}"
+                                           domain="[('definition_id', '=', definition_id), ('id', '!=', id)]"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <!-- Service Task Configuration -->
+                        <page string="Service Configuration" name="service_config" invisible="type != 'sys'">
+                            <group>
+                                <field name="service_action" required="1" placeholder="my_module.actions.my_function"/>
+                            </group>
+                        </page>
+                        
+                        <!-- Gateway Configuration -->
+                        <page string="Gateway Configuration" name="gateway_config" invisible="type != 'if'">
+                            <group>
+                                <group name="condition" string="Condition">
+                                    <field name="condition_expression" widget="text" required="1" 
+                                           placeholder="ctx.get('amount', 0) > 1000"/>
+                                </group>
+                                
+                                <group name="routing" string="Routing">
+                                    <field name="true_activity_id" 
+                                           context="{'default_definition_id': definition_id}"
+                                           domain="[('definition_id', '=', definition_id), ('id', '!=', id)]"/>
+                                    <field name="false_activity_id" 
+                                           context="{'default_definition_id': definition_id}"
+                                           domain="[('definition_id', '=', definition_id), ('id', '!=', id)]"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <!-- Parallel Gateway Configuration -->
+                        <page string="Parallel Configuration" name="parallel_config" invisible="type not in ['pbranch', 'pwait']">
+                            <group invisible="type != 'pbranch'">
+                                <group name="parallel_split" string="Parallel Split">
+                                    <field name="branch_activity_ids" widget="many2many_tags"
+                                           context="{'default_definition_id': definition_id}"
+                                           domain="[('definition_id', '=', definition_id), ('id', '!=', id)]"/>
+                                    <field name="join_activity_id" 
+                                           context="{'default_definition_id': definition_id}"
+                                           domain="[('definition_id', '=', definition_id), ('id', '!=', id), ('type', '=', 'pwait')]"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <!-- Timer Configuration -->
+                        <page string="Timer Configuration" name="timer_config" invisible="type != 'wtime'">
+                            <group>
+                                <group name="delay_config" string="Delay Configuration">
+                                    <field name="delay_days"/>
+                                    <field name="delay_hours"/>
+                                    <field name="delay_minutes"/>
+                                    <field name="delay_seconds"/>
+                                    <field name="total_delay_seconds" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <!-- Event Configuration -->
+                        <page string="Event Configuration" name="event_config" invisible="type != 'wevent'">>
+                            <group>
+                                <field name="event_name" required="1" placeholder="client.approved"/>
+                                <field name="correlation_key" required="1" placeholder="requestId"/>
+                            </group>
+                        </page>
+                        
+                        <!-- Advanced Configuration -->
+                        <page string="Advanced" name="advanced">
+                            <group>
+                                <field name="custom_data" widget="ace" options="{'mode': 'json'}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_bpm_process_definition_activity_search" model="ir.ui.view">
+        <field name="name">bpm.process.definition.activity.search</field>
+        <field name="model">bpm.process.definition.activity</field>
+        <field name="arch" type="xml">
+            <search string="Process Activities">
+                <field name="name"/>
+                <field name="node_id"/>
+                <field name="definition_id"/>
+                <field name="type"/>
+                <field name="assignee_id"/>
+                
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                
+                <separator/>
+                <filter string="User Tasks" name="user_tasks" domain="[('type', '=', 'task')]"/>
+                <filter string="Service Tasks" name="service_tasks" domain="[('type', '=', 'sys')]"/>
+                <filter string="Gateways" name="gateways" domain="[('type', 'in', ['if', 'pbranch', 'pwait'])]"/>
+                <filter string="Events" name="events" domain="[('type', 'in', ['start', 'end', 'wtime', 'wevent'])]"/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="Process Definition" name="group_definition" context="{'group_by': 'definition_id'}"/>
+                    <filter string="Type" name="group_type" context="{'group_by': 'type'}"/>
+                    <filter string="Assignee" name="group_assignee" context="{'group_by': 'assignee_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_bpm_process_definition_activity" model="ir.actions.act_window">
+        <field name="name">Process Activities</field>
+        <field name="res_model">bpm.process.definition.activity</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_bpm_process_definition_activity_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first process activity!
+            </p>
+            <p>
+                Activities define the individual steps in your business process workflow.
+                Each activity represents a node in your BPMN diagram.
+            </p>
+        </field>
+    </record>
+
+</odoo>

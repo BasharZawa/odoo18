@@ -13,12 +13,21 @@ class BpmProcessDefinition(models.Model):
     definition_json = fields.Text(help="Process definition in JSON DSL (nodes, transitions, options)")
     note = fields.Html()
     bpmn_xml = fields.Text(help="Raw BPMN 2.0 XML for this process (edited via the BPMN Modeler).")
+    
+    # Activity relationship
+    activity_ids = fields.One2many("bpm.process.definition.activity", "definition_id", string="Activities")
+    activity_count = fields.Integer(string="Activity Count", compute="_compute_activity_count")
 
     model_id = fields.Many2one('ir.model', string='Bind to Model')
     auto_apply = fields.Boolean(string='Auto-apply on Create', default=False)
     start_on_create_domain = fields.Char(string='Creation Domain', help="Python domain string to auto-start, e.g. [('type','=','Discount')]")
 
     _sql_constraints = [('key_version_unique', 'unique(key, version)', 'Key+Version must be unique.')]
+
+    @api.depends('activity_ids')
+    def _compute_activity_count(self):
+        for definition in self:
+            definition.activity_count = len(definition.activity_ids)
 
     def compile_definition(self):
         import json
@@ -247,4 +256,136 @@ class BpmProcessDefinition(models.Model):
             'type': 'ir.actions.act_url',
             'url': f'/web/bpmn_editor/{self.id}',
             'target': 'new',
+        }
+
+    def action_generate_definition_from_activities(self):
+        """Generate JSON definition from the activity records"""
+        self.ensure_one()
+        if not self.activity_ids:
+            raise UserError(_("No activities defined. Please add activities first."))
+        
+        nodes = []
+        for activity in self.activity_ids:
+            nodes.append(activity.to_json_node())
+        
+        self.definition_json = json.dumps({'nodes': nodes}, indent=2)
+        return True
+
+    def action_sync_activities_from_json(self):
+        """Sync activities from existing JSON definition (backward compatibility)"""
+        self.ensure_one()
+        if not self.definition_json:
+            raise UserError(_("No JSON definition found to sync from."))
+        
+        import json
+        try:
+            data = json.loads(self.definition_json)
+            nodes = data.get('nodes', [])
+        except Exception as e:
+            raise UserError(_("Invalid JSON definition: %s") % str(e))
+        
+        # Clear existing activities
+        self.activity_ids.unlink()
+        
+        # Create activities from JSON nodes
+        activity_vals = []
+        for i, node in enumerate(nodes):
+            vals = {
+                'definition_id': self.id,
+                'sequence': (i + 1) * 10,
+                'node_id': node.get('id', f'Node_{i}'),
+                'name': node.get('label', node.get('id', f'Activity {i+1}')),
+                'type': node.get('type', 'task'),
+                'custom_data': {k: v for k, v in node.items() if k not in ['id', 'type', 'label']}
+            }
+            
+            # Map specific fields based on type
+            if node.get('type') == 'task':
+                if 'assignee_id' in node:
+                    vals['assignee_type'] = 'static'
+                    vals['assignee_id'] = node['assignee_id']
+                elif 'assignee_resolver' in node:
+                    vals['assignee_type'] = 'resolver' 
+                    vals['assignee_resolver'] = node['assignee_resolver']
+                    
+            elif node.get('type') == 'sys':
+                vals['service_action'] = node.get('action')
+                
+            elif node.get('type') == 'if':
+                vals['condition_expression'] = node.get('expression')
+                
+            elif node.get('type') == 'wtime':
+                vals['total_delay_seconds'] = node.get('delay_seconds', 0)
+                
+            elif node.get('type') == 'wevent':
+                vals['event_name'] = node.get('event_name')
+                vals['correlation_key'] = node.get('correlation_key')
+            
+            activity_vals.append(vals)
+        
+        # Create all activities
+        activities = self.env['bpm.process.definition.activity'].create(activity_vals)
+        
+        # Second pass to set relationships (after all activities are created)
+        for activity, node in zip(activities, nodes):
+            updates = {}
+            
+            # Find next activity
+            if 'next' in node:
+                next_activity = activities.filtered(lambda a: a.node_id == node['next'])
+                if next_activity:
+                    updates['next_activity_id'] = next_activity[0].id
+            
+            # Task-specific relationships
+            if node.get('type') == 'task':
+                if 'next_approve' in node:
+                    approve_activity = activities.filtered(lambda a: a.node_id == node['next_approve'])
+                    if approve_activity:
+                        updates['next_approve_activity_id'] = approve_activity[0].id
+                        
+                if 'next_reject' in node:
+                    reject_activity = activities.filtered(lambda a: a.node_id == node['next_reject'])
+                    if reject_activity:
+                        updates['next_reject_activity_id'] = reject_activity[0].id
+            
+            # Gateway relationships
+            elif node.get('type') == 'if':
+                if 'on_true' in node:
+                    true_activity = activities.filtered(lambda a: a.node_id == node['on_true'])
+                    if true_activity:
+                        updates['true_activity_id'] = true_activity[0].id
+                        
+                if 'on_false' in node:
+                    false_activity = activities.filtered(lambda a: a.node_id == node['on_false'])
+                    if false_activity:
+                        updates['false_activity_id'] = false_activity[0].id
+            
+            # Parallel gateway relationships
+            elif node.get('type') == 'pbranch':
+                if 'branches' in node:
+                    branch_activities = activities.filtered(lambda a: a.node_id in node['branches'])
+                    if branch_activities:
+                        updates['branch_activity_ids'] = [(6, 0, branch_activities.ids)]
+                        
+                if 'join' in node:
+                    join_activity = activities.filtered(lambda a: a.node_id == node['join'])
+                    if join_activity:
+                        updates['join_activity_id'] = join_activity[0].id
+            
+            if updates:
+                activity.write(updates)
+        
+        return True
+
+    def action_open_activities(self):
+        """Open the activities view for this definition"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f'Activities - {self.name}',
+            'res_model': 'bpm.process.definition.activity',
+            'view_mode': 'tree,form',
+            'domain': [('definition_id', '=', self.id)],
+            'context': {'default_definition_id': self.id},
+            'target': 'current',
         }

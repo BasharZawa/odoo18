@@ -6,27 +6,14 @@
                 <title>BPMN Editor</title>
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-                <!-- Load bpmn-js CSS (local first, fallback to CDN). These are required for the palette, icons and canvas styling. -->
-                <link rel="stylesheet" href="/web/static/sedco_bpm_engine/lib/bpmn-js/dist/assets/diagram-js.css" />
-                <link rel="stylesheet" href="/web/static/sedco_bpm_engine/lib/bpmn-js/dist/assets/bpmn-font/css/bpmn.css" />
-                <!-- CDN fallbacks in case local assets are missing -->
+                <!-- Load bpmn-js CSS from CDN for now -->
                 <link rel="stylesheet" href="https://unpkg.com/bpmn-js@11.5.0/dist/assets/diagram-js.css" />
                 <link rel="stylesheet" href="https://unpkg.com/bpmn-js@11.5.0/dist/assets/bpmn-font/css/bpmn.css" />
 
-                <!-- Load local BPMN.js (served by Odoo). Place bpmn-modeler.development.js in this module's static/lib for offline use. -->
-                <script src="/web/static/sedco_bpm_engine/lib/bpmn-modeler.development.js" onerror="console.warn('Local bpmn-modeler not found, will use CDN');"></script>
-                <!-- CDN fallback if local asset missing -->
+                <!-- Load BPMN.js - try local first, fallback to CDN -->
                 <script>
-                    (function(){
-                        // bpmn-js exposes window.BpmnJS in dist builds
-                        if (typeof window.BpmnJS === 'undefined') {
-                            var s = document.createElement('script');
-                            s.src = 'https://unpkg.com/bpmn-js@11.5.0/dist/bpmn-modeler.development.js';
-                            s.onload = function(){ console.log('Loaded BPMN.js from CDN'); };
-                            s.onerror = function(){ console.error('Failed to load BPMN.js from CDN'); };
-                            document.head.appendChild(s);
-                        }
-                    })();
+                    window._bpmn_local_url = '/web/static/sedco_bpm_engine/lib/bpmn-modeler.development.js';
+                    window._bpmn_cdn_url = 'https://unpkg.com/bpmn-js@11.5.0/dist/bpmn-modeler.development.js';
                 </script>
                 <style>
                     body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
@@ -65,17 +52,57 @@
 
                 <!-- Expose the current definition id and XML to client JS -->
                 <script type="text/javascript">
-                    window._bpmn_definition_id = <t t-esc="definition.id"/>;
-                    window._bpmn_existing_xml = <t t-esc="definition.bpmn_xml and repr(definition.bpmn_xml) or 'null'"/>;
+                    <![CDATA[
+                    window._bpmn_definition_id = ]]><t t-esc="definition.id"/><![CDATA[;
+                    window._bpmn_existing_xml = ]]><t t-if="definition.bpmn_xml" t-raw="json.dumps(definition.bpmn_xml)"/><t t-else="">null</t><![CDATA[;
+                    console.log('Definition ID set to:', window._bpmn_definition_id);
+                    console.log('Existing XML set to:', window._bpmn_existing_xml ? 'present (' + (typeof window._bpmn_existing_xml === 'string' ? window._bpmn_existing_xml.length : 'not string') + ')' : 'null');
+                    ]]>
                 </script>
 
                 <script><![CDATA[
                     var modeler;
 
-                    // Simple initialization
+                    // Simple initialization with better library loading
                     setTimeout(function() {
-                        initEditor();
-                    }, 2000);
+                        loadBpmnJs().then(initEditor);
+                    }, 500);
+
+                    function loadBpmnJs() {
+                        return new Promise(function(resolve, reject) {
+                            if (typeof window.BpmnJS !== 'undefined') {
+                                console.log('BPMN.js already loaded');
+                                resolve();
+                                return;
+                            }
+
+                            // Try local first
+                            var localScript = document.createElement('script');
+                            localScript.src = window._bpmn_local_url;
+                            localScript.onload = function() {
+                                console.log('Loaded BPMN.js from local');
+                                resolve();
+                            };
+                            localScript.onerror = function() {
+                                console.warn('Local BPMN.js failed, trying CDN...');
+                                document.head.removeChild(localScript);
+                                
+                                // Try CDN
+                                var cdnScript = document.createElement('script');
+                                cdnScript.src = window._bpmn_cdn_url;
+                                cdnScript.onload = function() {
+                                    console.log('Loaded BPMN.js from CDN');
+                                    resolve();
+                                };
+                                cdnScript.onerror = function() {
+                                    console.error('Failed to load BPMN.js from CDN');
+                                    reject(new Error('Could not load BPMN.js'));
+                                };
+                                document.head.appendChild(cdnScript);
+                            };
+                            document.head.appendChild(localScript);
+                        });
+                    }
 
                     function initEditor() {
                         console.log('Checking for BpmnJS:', typeof window.BpmnJS);
@@ -141,13 +168,18 @@
                     }
 
                     function saveBpmn() {
+                        console.log('saveBpmn called, checking modeler and definition ID...');
+                        console.log('modeler:', modeler);
+                        console.log('window._bpmn_definition_id:', window._bpmn_definition_id);
+                        
                         if (!modeler) {
                             alert('Editor not initialized');
                             return Promise.reject(new Error('Editor not initialized'));
                         }
                         var defId = window._bpmn_definition_id;
                         if (!defId) {
-                            alert('Missing definition id');
+                            console.error('Missing definition id. window._bpmn_definition_id is:', window._bpmn_definition_id);
+                            alert('Missing definition id - please reload the page');
                             return Promise.reject(new Error('Missing definition id'));
                         }
 

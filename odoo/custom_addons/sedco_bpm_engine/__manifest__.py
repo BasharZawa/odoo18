@@ -11,6 +11,7 @@
         "security/ir.model.access.csv",
         "data/ir_cron.xml",
         "views/process_definition_views.xml",
+        "views/process_definition_activity_views.xml",
         "views/process_instance_views.xml",
         "views/activity_instance_views.xml",
         "views/outbox_views.xml",
