@@ -2,7 +2,7 @@ from odoo import models, fields, _
 from odoo.exceptions import UserError
 
 class BpmRegistry(models.Model):
-    _name = "bpm.registry"
+    _name = "registry"
     _description = "BPM Whitelist Registry"
 
     name = fields.Char(required=True)

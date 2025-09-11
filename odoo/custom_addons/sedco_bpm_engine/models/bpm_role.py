@@ -68,7 +68,7 @@ class BpmRole(models.Model):
 
             if role.user_id:
                 # Count activity instances assigned to this role that are active
-                count = self.env['bpm.activity.instance'].search_count([
+                count = self.env['activity.instance'].search_count([
                     ('assignee_role_id', '=', role.id),
                     ('status', 'in', ['ready', 'waiting', 'active'])
                 ])
@@ -146,7 +146,7 @@ class BpmRole(models.Model):
         self.write({'user_id': new_user_id})
         
         # Update all pending activity instances assigned to this role
-        pending_activities = self.env['bpm.activity.instance'].search([
+        pending_activities = self.env['activity.instance'].search([
             ('assignee_role_id', '=', self.id),
             ('status', 'in', ['ready', 'waiting'])
         ])
@@ -156,7 +156,7 @@ class BpmRole(models.Model):
             
             # Update related mail activities
             mail_activities = self.env['mail.activity'].search([
-                ('res_model', '=', 'bpm.process.instance'),
+                ('res_model', '=', 'process.instance'),
                 ('res_id', 'in', pending_activities.mapped('proc_id.id')),
                 ('user_id', '=', old_user.id if old_user else False)
             ])
@@ -174,7 +174,7 @@ class BpmRole(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': f'Tasks - {self.name}',
-            'res_model': 'bpm.activity.instance',
+            'res_model': 'activity.instance',
             'view_mode': 'tree,form',
             'domain': [('assignee_role_id', '=', self.id), ('status', 'in', ['ready', 'waiting'])],
             'context': {'default_assignee_role_id': self.id},

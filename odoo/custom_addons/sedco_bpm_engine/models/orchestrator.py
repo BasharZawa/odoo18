@@ -10,7 +10,7 @@ def _dedup_key(*parts):
     return '|'.join([str(p) for p in parts])
 
 class BpmOrchestratorHelper(models.TransientModel):
-    _name = "bpm.orchestrator.helper"
+    _name = "orchestrator.helper"
     _description = "BPM Orchestrator Helper"
 
     # Return approve/reject action URLs for a human task activity.
@@ -20,7 +20,7 @@ class BpmOrchestratorHelper(models.TransientModel):
 
     # Cron entry: pick a batch of 'ready' activities and execute them.
     def cron_tick(self, limit=20):
-        Activity = self.env['bpm.activity.instance'].sudo()
+        Activity = self.env['activity.instance'].sudo()
         acts = Activity.search([('status','=','ready')], limit=limit, order="id asc")
         for act in acts:
             self._execute_activity(act)
@@ -49,7 +49,7 @@ class BpmOrchestratorHelper(models.TransientModel):
                 notify = (act.data or {}).get('notify')
                 if notify:
                     dedup = _dedup_key(proc.id, act.node_id, 'if_notify')
-                    self.env['bpm.outbox'].sudo().create({'kind':'email','dedup_key': dedup,'payload': {'to': notify.get('to'), 'subject': notify.get('subject') or 'IF Notification', 'body': notify.get('body') or '<p>Branch taken.</p>'}})
+                    self.env['outbox'].sudo().create({'kind':'email','dedup_key': dedup,'payload': {'to': notify.get('to'), 'subject': notify.get('subject') or 'IF Notification', 'body': notify.get('body') or '<p>Branch taken.</p>'}})
                 act.write({'status':'done','ended_at': now})
                 self._on_branch_completed(proc, act)
                 if nxt: self._enqueue(proc, nxt, '')
@@ -71,7 +71,7 @@ class BpmOrchestratorHelper(models.TransientModel):
                            f"<a href='{self._task_links(act)['approve']}' class='btn btn-primary btn-sm'>Approve</a> " + \
                            f"<a href='{self._task_links(act)['reject']}' class='btn btn-secondary btn-sm'>Reject</a></div>"
                     self.env['mail.activity'].sudo().create({
-                        'res_model': 'bpm.process.instance','res_id': proc.id,
+                        'res_model': 'process.instance','res_id': proc.id,
                         'activity_type_id': self.env.ref('mail.mail_activity_data_todo').id,
                         'user_id': assignee_id or self.env.user.id,
                         'note': body,'date_deadline': fields.Date.today() + timedelta(days=2),
@@ -80,7 +80,7 @@ class BpmOrchestratorHelper(models.TransientModel):
             elif node_type == 'sys':
                 action = (act.data or {}).get('action')
                 dedup = _dedup_key(proc.id, act.node_id, 'sys', action or '')
-                self.env['bpm.outbox'].sudo().create({'kind':'sys', 'dedup_key': dedup,'payload': {'action': action, 'ctx': proc.ctx_json or {}}})
+                self.env['outbox'].sudo().create({'kind':'sys', 'dedup_key': dedup,'payload': {'action': action, 'ctx': proc.ctx_json or {}}})
                 act.write({'status':'done','ended_at': now})
                 self._on_branch_completed(proc, act)
                 nxt = (act.data or {}).get('next')
@@ -92,13 +92,13 @@ class BpmOrchestratorHelper(models.TransientModel):
                 self._on_branch_completed(proc, act)
                 for nid in branches:
                     self._enqueue(proc, nid, 'branch')
-                    created = self.env['bpm.activity.instance'].sudo().search([('proc_id','=',proc.id),('node_id','=',nid)], limit=1)
+                    created = self.env['activity.instance'].sudo().search([('proc_id','=',proc.id),('node_id','=',nid)], limit=1)
                     if created:
                         data = created.data or {}; data['join_node'] = join_node; created.write({'data': data})
                 if join_node:
-                    join = self.env['bpm.activity.instance'].sudo().search([('proc_id','=',proc.id),('node_id','=',join_node)], limit=1)
+                    join = self.env['activity.instance'].sudo().search([('proc_id','=',proc.id),('node_id','=',join_node)], limit=1)
                     if not join:
-                        self.env['bpm.activity.instance'].sudo().create({'proc_id': proc.id, 'node_id': join_node, 'type':'pwait', 'status':'waiting', 'data': {'remaining': len(branches), 'next': (act.data or {}).get('next')}})
+                        self.env['activity.instance'].sudo().create({'proc_id': proc.id, 'node_id': join_node, 'type':'pwait', 'status':'waiting', 'data': {'remaining': len(branches), 'next': (act.data or {}).get('next')}})
                     else:
                         join.write({'data': {'remaining': len(branches), 'next': (act.data or {}).get('next')}, 'status':'waiting'})
             elif node_type == 'pwait':
@@ -110,11 +110,11 @@ class BpmOrchestratorHelper(models.TransientModel):
             elif node_type == 'wtime':
                 delay_seconds = int((act.data or {}).get('delay_seconds', 0))
                 due = now + timedelta(seconds=delay_seconds)
-                self.env['bpm.timer'].sudo().create({'proc_id': proc.id, 'node_id': act.node_id, 'due_at': due, 'payload': {'next': (act.data or {}).get('next')}})
+                self.env['timer'].sudo().create({'proc_id': proc.id, 'node_id': act.node_id, 'due_at': due, 'payload': {'next': (act.data or {}).get('next')}})
                 act.write({'status':'waiting'})
             elif node_type == 'wevent':
                 ev = (act.data or {}).get('event_name'); corr = (act.data or {}).get('correlation_key')
-                self.env['bpm.event.subscription'].sudo().create({'proc_id': proc.id, 'node_id': act.node_id, 'event_name': ev, 'correlation_key': corr})
+                self.env['event.subscription'].sudo().create({'proc_id': proc.id, 'node_id': act.node_id, 'event_name': ev, 'correlation_key': corr})
                 act.write({'status':'waiting'})
             elif node_type == 'wcond':
                 expr = (act.data or {}).get('predicate') or 'False'
@@ -142,7 +142,7 @@ class BpmOrchestratorHelper(models.TransientModel):
     def _on_branch_completed(self, proc, act):
         join_node = (act.data or {}).get('join_node')
         if not join_node: return
-        join = self.env['bpm.activity.instance'].sudo().search([('proc_id','=',proc.id),('node_id','=',join_node),('type','=','pwait')], limit=1)
+        join = self.env['activity.instance'].sudo().search([('proc_id','=',proc.id),('node_id','=',join_node),('type','=','pwait')], limit=1)
         if not join: return
         data = join.data or {}; remaining = int(data.get('remaining', 0))
         if remaining > 0: remaining -= 1; data['remaining'] = remaining; join.write({'data': data})
@@ -153,7 +153,7 @@ class BpmOrchestratorHelper(models.TransientModel):
 
     # Create a new activity instance for the given node in 'ready' state.
     def _enqueue(self, proc, node_id, kind):
-        self.env['bpm.activity.instance'].sudo().create({'proc_id': proc.id, 'node_id': node_id, 'type': self._infer_type(proc, node_id), 'status':'ready', 'data': {}})
+        self.env['activity.instance'].sudo().create({'proc_id': proc.id, 'node_id': node_id, 'type': self._infer_type(proc, node_id), 'status':'ready', 'data': {}})
 
     # Look up the node type from the process definition JSON; fallback to 'sys'.
     def _infer_type(self, proc, node_id):
@@ -163,13 +163,13 @@ class BpmOrchestratorHelper(models.TransientModel):
             if n.get('id') == node_id: return n.get('type')
         return 'sys'
 
-    # Cron entry: dispatch pending outbox messages via bpm.outbox model.
+    # Cron entry: dispatch pending outbox messages via outbox model.
     def cron_dispatch_outbox(self):
-        return self.env['bpm.outbox'].sudo().dispatch_pending()
+        return self.env['outbox'].sudo().dispatch_pending()
 
     # Cron entry: fire due timers by enqueuing their next nodes and marking fired.
     def cron_fire_due_timers(self, limit=100):
-        Timer = self.env['bpm.timer'].sudo()
+        Timer = self.env['timer'].sudo()
         due = Timer.search([('status','=','scheduled'),('due_at','<=', fields.Datetime.now())], limit=limit, order='due_at asc')
         for t in due:
             nxt = (t.payload or {}).get('next')

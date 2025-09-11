@@ -2,13 +2,13 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 import json
 
-class BpmProcessDefinitionActivity(models.Model):
-    _name = "bpm.process.definition.activity"
+class ProcessDefinitionActivity(models.Model):
+    _name = "process.definition.activity"
     _description = "BPM Process Definition Activity"
     _order = "sequence, id"
 
     # Basic fields
-    definition_id = fields.Many2one("bpm.process.definition", required=True, ondelete="cascade", string="Process Definition")
+    definition_id = fields.Many2one("process.definition", required=True, ondelete="cascade", string="Process Definition")
     sequence = fields.Integer(default=10, help="Order of activities in the process")
     node_id = fields.Char(required=True, help="BPMN node identifier (e.g., Task_1, Gateway_1)")
     name = fields.Char(required=True, help="Activity name/label")
@@ -31,33 +31,21 @@ class BpmProcessDefinitionActivity(models.Model):
     active = fields.Boolean(default=True)
     
     # Flow control
-    next_activity_id = fields.Many2one("bpm.process.definition.activity", string="Next Activity", 
+    next_activity_id = fields.Many2one("process.definition.activity", string="Next Activity", 
                                       domain="[('definition_id', '=', definition_id)]")
-    next_activity_ids = fields.Many2many("bpm.process.definition.activity", 
+    next_activity_ids = fields.Many2many("process.definition.activity", 
                                         relation="bpm_activity_next_rel",
                                         column1="activity_id", column2="next_activity_id",
                                         string="Next Activities (Multiple)",
                                         domain="[('definition_id', '=', definition_id)]")
     
-    # Task-specific fields
-    assignee_type = fields.Selection([
-        ('static', 'Static User'),
-        ('resolver', 'Dynamic Resolver'),
-        ('group', 'User Group'),
-        ('role', 'BPM Role')
-    ], string="Assignee Type", default='static')
-    
-    assignee_id = fields.Many2one('res.users', string="Assigned User")
-    assignee_resolver = fields.Char(string="Assignee Resolver", 
-                                   help="Dotted path to resolver function (e.g., my_module.resolvers.get_manager)")
-    assignee_group_id = fields.Many2one('res.groups', string="Assigned Group")
     assignee_role_id = fields.Many2one('bpm.role', string="Assigned BPM Role")
     
     # Approval routing for user tasks
-    next_approve_activity_id = fields.Many2one("bpm.process.definition.activity", 
+    next_approve_activity_id = fields.Many2one("process.definition.activity", 
                                               string="Next on Approve",
                                               domain="[('definition_id', '=', definition_id)]")
-    next_reject_activity_id = fields.Many2one("bpm.process.definition.activity", 
+    next_reject_activity_id = fields.Many2one("process.definition.activity", 
                                              string="Next on Reject",
                                              domain="[('definition_id', '=', definition_id)]")
     
@@ -68,18 +56,18 @@ class BpmProcessDefinitionActivity(models.Model):
     # Gateway fields
     condition_expression = fields.Text(string="Gateway Condition", 
                                       help="Python expression for exclusive gateway (e.g., ctx.get('amount', 0) > 1000)")
-    true_activity_id = fields.Many2one("bpm.process.definition.activity", 
+    true_activity_id = fields.Many2one("process.definition.activity", 
                                       string="True Branch",
                                       domain="[('definition_id', '=', definition_id)]")
-    false_activity_id = fields.Many2one("bpm.process.definition.activity", 
+    false_activity_id = fields.Many2one("process.definition.activity", 
                                        string="False Branch", 
                                        domain="[('definition_id', '=', definition_id)]")
     
     # Parallel gateway fields
-    join_activity_id = fields.Many2one("bpm.process.definition.activity", 
+    join_activity_id = fields.Many2one("process.definition.activity", 
                                       string="Join Activity",
                                       domain="[('definition_id', '=', definition_id)]")
-    branch_activity_ids = fields.Many2many("bpm.process.definition.activity",
+    branch_activity_ids = fields.Many2many("process.definition.activity",
                                           relation="bpm_activity_branch_rel", 
                                           column1="split_activity_id", column2="branch_activity_id",
                                           string="Branch Activities",
@@ -127,7 +115,7 @@ class BpmProcessDefinitionActivity(models.Model):
         for activity in self:
             if activity.assignee_type == 'resolver' and activity.assignee_resolver:
                 # Check if resolver is registered in whitelist
-                registry = self.env['bpm.registry'].search([
+                registry = self.env['registry'].search([
                     ('dotted_path', '=', activity.assignee_resolver),
                     ('kind', '=', 'assignee')
                 ])
@@ -142,7 +130,7 @@ class BpmProcessDefinitionActivity(models.Model):
         for activity in self:
             if activity.type == 'sys' and activity.service_action:
                 # Check if service action is registered in whitelist
-                registry = self.env['bpm.registry'].search([
+                registry = self.env['registry'].search([
                     ('dotted_path', '=', activity.service_action),
                     ('kind', '=', 'system_action')
                 ])
@@ -164,7 +152,7 @@ class BpmProcessDefinitionActivity(models.Model):
             
         elif self.assignee_type == 'resolver' and self.assignee_resolver:
             # Call the registered resolver function
-            registry = self.env['bpm.registry'].search([
+            registry = self.env['registry'].search([
                 ('dotted_path', '=', self.assignee_resolver),
                 ('kind', '=', 'assignee')
             ], limit=1)

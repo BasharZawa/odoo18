@@ -1,7 +1,7 @@
 <odoo>
-  <record id="view_bpm_process_definition_form" model="ir.ui.view">
-    <field name="name">bpm.process.definition.form</field>
-    <field name="model">bpm.process.definition</field>
+  <record id="view_process_definition_form" model="ir.ui.view">
+    <field name="name">process.definition.form</field>
+    <field name="model">process.definition</field>
     <field name="arch" type="xml">
       <form string="Process Definition">
         <sheet>
@@ -37,8 +37,6 @@
                   <field name="node_id"/>
                   <field name="name"/>
                   <field name="type"/>
-                  <field name="assignee_type" optional="hide"/>
-                  <field name="assignee_id" optional="show"/>
                   <field name="next_activity_id" optional="hide"/>
                 </list>
               </field>
@@ -61,9 +59,9 @@
     </field>
   </record>
 
-  <record id="view_bpm_process_definition_list" model="ir.ui.view">
-    <field name="name">bpm.process.definition.list</field>
-    <field name="model">bpm.process.definition</field>
+  <record id="view_process_definition_list" model="ir.ui.view">
+    <field name="name">process.definition.list</field>
+    <field name="model">process.definition</field>
     <field name="arch" type="xml">
       <list string="Process Definitions">
         <field name="name"/>
@@ -75,9 +73,9 @@
     </field>
   </record>
 
-  <record id="action_bpm_process_definition" model="ir.actions.act_window">
+  <record id="action_process_definition" model="ir.actions.act_window">
     <field name="name">Process Definitions</field>
-    <field name="res_model">bpm.process.definition</field>
+    <field name="res_model">process.definition</field>
     <field name="view_mode">list,form</field>
   </record>
 </odoo>

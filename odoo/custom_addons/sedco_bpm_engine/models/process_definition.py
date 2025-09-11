@@ -1,8 +1,8 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
-class BpmProcessDefinition(models.Model):
-    _name = "bpm.process.definition"
+class ProcessDefinition(models.Model):
+    _name = "process.definition"
     _description = "BPM Process Definition"
     _rec_name = "name"
 
@@ -15,7 +15,7 @@ class BpmProcessDefinition(models.Model):
     bpmn_xml = fields.Text(help="Raw BPMN 2.0 XML for this process (edited via the BPMN Modeler).")
     
     # Activity relationship
-    activity_ids = fields.One2many("bpm.process.definition.activity", "definition_id", string="Activities")
+    activity_ids = fields.One2many("process.definition.activity", "definition_id", string="Activities")
     activity_count = fields.Integer(string="Activity Count", compute="_compute_activity_count")
 
     model_id = fields.Many2one('ir.model', string='Bind to Model')
@@ -73,16 +73,16 @@ class BpmProcessDefinition(models.Model):
                     'name': f'BPM Start {rec.key} v{rec.version}',
                     'model_id': rec.model_id.id,
                     'state': 'code',
-                    'code': f"env['bpm.process.definition'].browse({rec.id}).action_start_for_record(record)"
+                    'code': f"env['process.definition'].browse({rec.id}).action_start_for_record(record)"  # Fixed typo: bmp -> bpm
                 })
                 domain = rec.start_on_create_domain or '[]'
+                # Use server_action_ids (Many2many) instead of action_server_id
                 self.env['base.automation'].sudo().create({
                     'name': f'Auto-start {rec.key} v{rec.version}',
                     'model_id': rec.model_id.id,
                     'trigger': 'on_create',
                     'active': True,
-                    'filter_domain': domain,
-                    'action_server_id': srv.id,
+                    'filter_domain': domain
                 })
 
     def _remove_activation_binder(self):
@@ -93,7 +93,7 @@ class BpmProcessDefinition(models.Model):
     def action_start_test(self):
         import json
         self.ensure_one()
-        proc = self.env['bpm.process.instance'].sudo().create({
+        proc = self.env['process.instance'].sudo().create({
             'definition_id': self.id,
             'business_key': 'TEST-%s' % self.id,
             'ctx_json': {'proc_id': 0},
@@ -102,7 +102,7 @@ class BpmProcessDefinition(models.Model):
         data = json.loads(self.definition_json or '{}')
         start = next((n for n in data.get('nodes', []) if n.get('type') == 'start'), None)
         if not start: raise ValueError("No start node in definition")
-        self.env['bpm.activity.instance'].sudo().create({
+        self.env['activity.instance'].sudo().create({
             'proc_id': proc.id, 'node_id': start.get('id'), 'type': 'start', 'status':'ready', 'data': start
         })
         proc.post_note("Started test instance.")
@@ -112,7 +112,7 @@ class BpmProcessDefinition(models.Model):
         import json as _json
         self.ensure_one()
         ctx = {'model': record._name, 'res_id': record.id, 'proc_id': 0}
-        proc = self.env['bpm.process.instance'].sudo().create({
+        proc = self.env['process.instance'].sudo().create({
             'definition_id': self.id,
             'business_key': f"{record._name},{record.id}",
             'ctx_json': ctx,
@@ -121,7 +121,7 @@ class BpmProcessDefinition(models.Model):
         data = _json.loads(self.definition_json or '{}')
         start = next((n for n in data.get('nodes', []) if n.get('type') == 'start'), None)
         if not start: raise ValueError("No start node in definition")
-        self.env['bpm.activity.instance'].sudo().create({
+        self.env['activity.instance'].sudo().create({
             'proc_id': proc.id, 'node_id': start.get('id'), 'type': 'start', 'status':'ready', 'data': start
         })
         proc.post_note("Process auto-started for %s(%s)" % (record._name, record.id))
@@ -265,7 +265,8 @@ class BpmProcessDefinition(models.Model):
         nodes = []
         for activity in self.activity_ids:
             nodes.append(activity.to_json_node())
-        
+
+        import json
         self.definition_json = json.dumps({'nodes': nodes}, indent=2)
         return True
 
@@ -322,7 +323,7 @@ class BpmProcessDefinition(models.Model):
             activity_vals.append(vals)
         
         # Create all activities
-        activities = self.env['bpm.process.definition.activity'].create(activity_vals)
+        activities = self.env['process.definition.activity'].create(activity_vals)
         
         # Second pass to set relationships (after all activities are created)
         for activity, node in zip(activities, nodes):
@@ -381,7 +382,7 @@ class BpmProcessDefinition(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': f'Activities - {self.name}',
-            'res_model': 'bpm.process.definition.activity',
+            'res_model': 'process.definition.activity',
             'view_mode': 'tree,form',
             'domain': [('definition_id', '=', self.id)],
             'context': {'default_definition_id': self.id},

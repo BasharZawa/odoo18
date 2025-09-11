@@ -1,16 +1,16 @@
 from odoo import models, fields, api, _
 from odoo.tools import html_escape
 
-class BpmProcessInstance(models.Model):
-    _name = "bpm.process.instance"
+class ProcessInstance(models.Model):
+    _name = "process.instance"
     _description = "BPM Process Instance"
     _inherit = ['mail.thread']
 
-    definition_id = fields.Many2one("bpm.process.definition", required=True, ondelete="restrict")
+    definition_id = fields.Many2one("process.definition", required=True, ondelete="restrict")
     business_key = fields.Char(index=True)
     status = fields.Selection([('running','Running'),('done','Done'),('failed','Failed')], default='running', tracking=True)
     ctx_json = fields.Json(default=dict, help="Business context carried through the process.")
-    activity_ids = fields.One2many("bpm.activity.instance", "proc_id", string="Activities")
+    activity_ids = fields.One2many("activity.instance", "proc_id", string="Activities")
 
     def post_note(self, msg):
         for rec in self:

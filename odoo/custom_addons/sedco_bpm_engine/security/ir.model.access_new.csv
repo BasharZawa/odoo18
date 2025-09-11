@@ -1,9 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_bpm_def_user,access_bpm_def_user,model_bpm_process_definition,base.group_user,1,1,1,0
-access_bpm_def_activity_user,access_bpm_def_activity_user,model_bpm_process_definition_activity,base.group_user,1,1,1,0
-access_bpm_instance_user,access_bpm_instance_user,model_bpm_process_instance,base.group_user,1,1,1,0
-access_bpm_activity_user,access_bpm_activity_user,model_bpm_activity_instance,base.group_user,1,1,1,0
-access_bpm_event_user,access_bpm_event_user,model_bpm_event_subscription,base.group_user,1,1,1,0
-access_bpm_timer_user,access_bpm_timer_user,model_bpm_timer,base.group_user,1,1,1,0
-access_bpm_outbox_user,access_bpm_outbox_user,model_bpm_outbox,base.group_user,1,1,1,0
-access_bpm_registry_user,access_bpm_registry_user,model_bpm_registry,base.group_system,1,1,1,0

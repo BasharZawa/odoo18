@@ -2,7 +2,7 @@ from odoo import models, fields, _
 from odoo.exceptions import UserError
 
 class BpmOutbox(models.Model):
-    _name = "bpm.outbox"
+    _name = "outbox"
     _description = "BPM Outbox (exactly-once effects)"
 
     kind = fields.Selection([('email','Email'),('webhook','Webhook'),('sys','SystemAction')], required=True, index=True)
@@ -44,5 +44,5 @@ class BpmOutbox(models.Model):
     def _exec_system_action(self, payload):
         dotted = payload.get('action'); ctx = payload.get('ctx') or {}
         if not dotted: raise UserError(_("System action missing 'action'"))
-        reg = self.env['bpm.registry'].sudo()
+        reg = self.env['registry'].sudo()
         reg.call(dotted, ctx)

@@ -8,7 +8,7 @@ class BPMNEditorController(http.Controller):
     @http.route('/web/bpmn_editor/<int:definition_id>', type='http', auth='user')
     def bpmn_editor(self, definition_id, **kwargs):
         """Serve the BPMN editor page"""
-        definition = request.env['bpm.process.definition'].browse(definition_id)
+        definition = request.env['process.definition'].browse(definition_id)
         if not definition.exists():
             return request.not_found()
         
@@ -24,7 +24,7 @@ class BPMNEditorController(http.Controller):
         if not xml_content:
             return {'success': False, 'error': 'xml_content parameter is required'}
         
-        definition = request.env['bpm.process.definition'].browse(definition_id)
+        definition = request.env['process.definition'].browse(definition_id)
         if definition.exists():
             definition.sudo().write({'bpmn_xml': xml_content})
             return {'success': True}
@@ -33,7 +33,7 @@ class BPMNEditorController(http.Controller):
     @http.route('/web/bpmn_editor/<int:definition_id>/compile', type='json', auth='user')
     def compile_bpmn(self, definition_id, **kwargs):
         """Compile BPMN to JSON"""
-        definition = request.env['bpm.process.definition'].browse(definition_id)
+        definition = request.env['process.definition'].browse(definition_id)
         if definition.exists():
             try:
                 definition.sudo().action_compile_bpmn()
@@ -49,7 +49,7 @@ class BPMNEditorController(http.Controller):
         """Debug endpoint: return basic info about the definition without rendering templates.
         Use this to confirm the record exists and inspect stored bpmn_xml safely.
         """
-        definition = request.env['bpm.process.definition'].sudo().browse(definition_id)
+        definition = request.env['process.definition'].sudo().browse(definition_id)
         if not definition.exists():
             return {'exists': False, 'error': 'Definition not found'}
         # return some safe debug info

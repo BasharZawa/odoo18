@@ -1,7 +1,7 @@
 <odoo>
-  <record id="view_bpm_outbox_list" model="ir.ui.view">
-    <field name="name">bpm.outbox.list</field>
-    <field name="model">bpm.outbox</field>
+  <record id="view_outbox_list" model="ir.ui.view">
+    <field name="name">outbox.list</field>
+    <field name="model">outbox</field>
     <field name="arch" type="xml">
       <list string="Outbox">
         <field name="kind"/>
@@ -15,9 +15,9 @@
     </field>
   </record>
 
-  <record id="action_bpm_outbox" model="ir.actions.act_window">
+  <record id="action_outbox" model="ir.actions.act_window">
     <field name="name">Outbox</field>
-    <field name="res_model">bpm.outbox</field>
+    <field name="res_model">outbox</field>
     <field name="view_mode">list</field>
   </record>
 </odoo>

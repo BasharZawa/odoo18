@@ -1,10 +1,10 @@
 from odoo import models, fields
 
-class BpmActivityInstance(models.Model):
-    _name = "bpm.activity.instance"
+class ActivityInstance(models.Model):
+    _name = "activity.instance"
     _description = "BPM Activity Instance"
 
-    proc_id = fields.Many2one("bpm.process.instance", required=True, ondelete="cascade")
+    proc_id = fields.Many2one("process.instance", required=True, ondelete="cascade")
     node_id = fields.Char(required=True)
     type = fields.Selection([
         ('start','Start'),('if','IF'),('task','Task'),('sys','SystemAction'),

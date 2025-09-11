@@ -1,7 +1,7 @@
 <odoo>
-  <record id="view_bpm_process_instance_form" model="ir.ui.view">
-    <field name="name">bpm.process.instance.form</field>
-    <field name="model">bpm.process.instance</field>
+  <record id="view_process_instance_form" model="ir.ui.view">
+    <field name="name">process.instance.form</field>
+    <field name="model">process.instance</field>
     <field name="arch" type="xml">
       <form string="Process Instance">
         <sheet>
@@ -33,9 +33,9 @@
     </field>
   </record>
 
-  <record id="view_bpm_process_instance_list" model="ir.ui.view">
-    <field name="name">bpm.process.instance.list</field>
-    <field name="model">bpm.process.instance</field>
+  <record id="view_process_instance_list" model="ir.ui.view">
+    <field name="name">process.instance.list</field>
+    <field name="model">process.instance</field>
     <field name="arch" type="xml">
       <list string="Process Instances">
         <field name="definition_id"/>
@@ -47,9 +47,9 @@
     </field>
   </record>
 
-  <record id="action_bpm_process_instance" model="ir.actions.act_window">
+  <record id="action_process_instance" model="ir.actions.act_window">
     <field name="name">Process Instances</field>
-    <field name="res_model">bpm.process.instance</field>
+    <field name="res_model">process.instance</field>
     <field name="view_mode">list,form</field>
   </record>
 </odoo>
