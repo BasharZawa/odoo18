@@ -44,13 +44,14 @@ class BpmProcessDefinitionActivity(models.Model):
         ('static', 'Static User'),
         ('resolver', 'Dynamic Resolver'),
         ('group', 'User Group'),
-        ('role', 'Role Based')
+        ('role', 'BPM Role')
     ], string="Assignee Type", default='static')
     
     assignee_id = fields.Many2one('res.users', string="Assigned User")
     assignee_resolver = fields.Char(string="Assignee Resolver", 
                                    help="Dotted path to resolver function (e.g., my_module.resolvers.get_manager)")
     assignee_group_id = fields.Many2one('res.groups', string="Assigned Group")
+    assignee_role_id = fields.Many2one('bpm.role', string="Assigned BPM Role")
     
     # Approval routing for user tasks
     next_approve_activity_id = fields.Many2one("bpm.process.definition.activity", 
@@ -182,6 +183,11 @@ class BpmProcessDefinitionActivity(models.Model):
             users = self.assignee_group_id.users
             return users[0].id if users else False
             
+        elif self.assignee_type == 'role' and self.assignee_role_id:
+            # Get current assignee from the BPM role
+            assigned_user = self.assignee_role_id.get_current_assignee()
+            return assigned_user.id if assigned_user else False
+            
         return False
     
     def to_json_node(self):
@@ -207,6 +213,7 @@ class BpmProcessDefinitionActivity(models.Model):
                 'label': self.name,
                 'assignee_id': self.assignee_id.id if self.assignee_type == 'static' else None,
                 'assignee_resolver': self.assignee_resolver if self.assignee_type == 'resolver' else None,
+                'assignee_role_id': self.assignee_role_id.id if self.assignee_type == 'role' else None,
                 'next': self.next_activity_id.node_id if self.next_activity_id else None,
                 'next_approve': self.next_approve_activity_id.node_id if self.next_approve_activity_id else None,
                 'next_reject': self.next_reject_activity_id.node_id if self.next_reject_activity_id else None,

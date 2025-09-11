@@ -1,9 +1,8 @@
 <odoo>
-  <menuitem id="menu_bpm_def" name="Definitions" parent="menu_bpm_root" action="action_bpm_process_definition"/>
-  <menuitem id="menu_bpm_def_activities" name="Definition Activities" parent="menu_bpm_root" action="action_bpm_process_definition_activity"/>
-  <menuitem id="menu_bpm_instances" name="Instances" parent="menu_bpm_root" action="action_bpm_process_instance"/>
   <menuitem id="menu_bpm_root" name="BPM" sequence="10"/>
   <menuitem id="menu_bpm_def" name="Definitions" parent="menu_bpm_root" action="action_bpm_process_definition"/>
+  <menuitem id="menu_bpm_def_activities" name="Definition Activities" parent="menu_bpm_root" action="action_bpm_process_definition_activity"/>
+  <menuitem id="menu_bpm_roles" name="BPM Roles" parent="menu_bpm_root" action="action_bpm_role"/>
   <menuitem id="menu_bpm_instances" name="Instances" parent="menu_bpm_root" action="action_bpm_process_instance"/>
   <menuitem id="menu_bpm_activities" name="Activities" parent="menu_bpm_root" action="action_bpm_activity_instance"/>
   <menuitem id="menu_bpm_outbox" name="Outbox" parent="menu_bpm_root" action="action_bpm_outbox"/>

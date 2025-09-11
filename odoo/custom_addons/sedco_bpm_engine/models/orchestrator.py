@@ -5,6 +5,7 @@ from datetime import timedelta
 import logging
 _logger = logging.getLogger(__name__)
 
+# Build a deterministic de-duplication key by joining parts with '|'.
 def _dedup_key(*parts):
     return '|'.join([str(p) for p in parts])
 
@@ -12,16 +13,22 @@ class BpmOrchestratorHelper(models.TransientModel):
     _name = "bpm.orchestrator.helper"
     _description = "BPM Orchestrator Helper"
 
+    # Return approve/reject action URLs for a human task activity.
     def _task_links(self, act):
         base = '/bpm/task/complete'
         return {'approve': f"{base}?act_id={act.id}&decision=approve", 'reject': f"{base}?act_id={act.id}&decision=reject"}
 
+    # Cron entry: pick a batch of 'ready' activities and execute them.
     def cron_tick(self, limit=20):
         Activity = self.env['bpm.activity.instance'].sudo()
         acts = Activity.search([('status','=','ready')], limit=limit, order="id asc")
         for act in acts:
             self._execute_activity(act)
 
+    # Core state machine to progress a single activity instance.
+    # Handles node types: start, if, task, sys, pbranch, pwait, wtime, wevent,
+    # wcond, end. Updates activity/proc status, enqueues next nodes, and emits
+    # outbox/timers/subscriptions as needed. Errors mark the process failed.
     def _execute_activity(self, act):
         proc = act.proc_id.sudo()
         now = fields.Datetime.now()
@@ -48,15 +55,28 @@ class BpmOrchestratorHelper(models.TransientModel):
                 if nxt: self._enqueue(proc, nxt, '')
             elif node_type == 'task':
                 if act.status != 'waiting':
+                    # Resolve assignee from multiple sources
                     assignee_id = (act.data or {}).get('assignee_id')
-                    body = ((act.data or {}).get('label') or 'BPM Task') + '<div style="margin-top:8px">' +                            f"<a href='{self._task_links(act)['approve']}' class='btn btn-primary btn-sm'>Approve</a> " +                            f"<a href='{self._task_links(act)['reject']}' class='btn btn-secondary btn-sm'>Reject</a></div>"
+                    assignee_role_id = (act.data or {}).get('assignee_role_id')
+                    
+                    # If role is specified, get the current assignee from the role
+                    if assignee_role_id and not assignee_id:
+                        role = self.env['bpm.role'].sudo().browse(assignee_role_id)
+                        if role.exists():
+                            assignee_id = role.get_current_assignee().id
+                            # Store role assignment in activity instance
+                            act.write({'assignee_role_id': assignee_role_id})
+                    
+                    body = ((act.data or {}).get('label') or 'BPM Task') + '<div style="margin-top:8px">' + \
+                           f"<a href='{self._task_links(act)['approve']}' class='btn btn-primary btn-sm'>Approve</a> " + \
+                           f"<a href='{self._task_links(act)['reject']}' class='btn btn-secondary btn-sm'>Reject</a></div>"
                     self.env['mail.activity'].sudo().create({
                         'res_model': 'bpm.process.instance','res_id': proc.id,
                         'activity_type_id': self.env.ref('mail.mail_activity_data_todo').id,
                         'user_id': assignee_id or self.env.user.id,
                         'note': body,'date_deadline': fields.Date.today() + timedelta(days=2),
                     })
-                    act.write({'status':'waiting'})
+                    act.write({'status':'waiting', 'assignee_id': assignee_id})
             elif node_type == 'sys':
                 action = (act.data or {}).get('action')
                 dedup = _dedup_key(proc.id, act.node_id, 'sys', action or '')
@@ -117,6 +137,8 @@ class BpmOrchestratorHelper(models.TransientModel):
             proc.mark_failed(str(e))
             self.env.cr.commit()
 
+    # Decrement join counter when a parallel branch finishes and release join.
+    # If the pwait node reaches zero remaining branches, mark it done and enqueue next.
     def _on_branch_completed(self, proc, act):
         join_node = (act.data or {}).get('join_node')
         if not join_node: return
@@ -129,9 +151,11 @@ class BpmOrchestratorHelper(models.TransientModel):
             nxt = (join.data or {}).get('next')
             if nxt: self._enqueue(proc, nxt, '')
 
+    # Create a new activity instance for the given node in 'ready' state.
     def _enqueue(self, proc, node_id, kind):
         self.env['bpm.activity.instance'].sudo().create({'proc_id': proc.id, 'node_id': node_id, 'type': self._infer_type(proc, node_id), 'status':'ready', 'data': {}})
 
+    # Look up the node type from the process definition JSON; fallback to 'sys'.
     def _infer_type(self, proc, node_id):
         import json
         data = json.loads(proc.definition_id.definition_json or '{}')
@@ -139,9 +163,11 @@ class BpmOrchestratorHelper(models.TransientModel):
             if n.get('id') == node_id: return n.get('type')
         return 'sys'
 
+    # Cron entry: dispatch pending outbox messages via bpm.outbox model.
     def cron_dispatch_outbox(self):
         return self.env['bpm.outbox'].sudo().dispatch_pending()
 
+    # Cron entry: fire due timers by enqueuing their next nodes and marking fired.
     def cron_fire_due_timers(self, limit=100):
         Timer = self.env['bpm.timer'].sudo()
         due = Timer.search([('status','=','scheduled'),('due_at','<=', fields.Datetime.now())], limit=limit, order='due_at asc')

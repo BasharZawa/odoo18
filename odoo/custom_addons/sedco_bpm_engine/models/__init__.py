@@ -7,3 +7,4 @@ from . import timer
 from . import outbox
 from . import registry
 from . import orchestrator
+from . import bpm_role

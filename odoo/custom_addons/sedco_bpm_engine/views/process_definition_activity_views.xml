@@ -14,6 +14,7 @@
                 <field name="type"/>
                 <field name="assignee_type" optional="hide"/>
                 <field name="assignee_id" optional="show"/>
+                <field name="assignee_role_id" optional="show"/>
                 <field name="active" widget="boolean_toggle"/>
                 <field name="definition_id" invisible="1"/>
             </list>
@@ -80,6 +81,9 @@
                                     <field name="assignee_group_id" 
                                            invisible="assignee_type != 'group'" 
                                            required="assignee_type == 'group'"/>
+                                    <field name="assignee_role_id" 
+                                           invisible="assignee_type != 'role'" 
+                                           required="assignee_type == 'role'"/>
                                 </group>
                                 
                                 <group name="approval_routing" string="Approval Routing">
