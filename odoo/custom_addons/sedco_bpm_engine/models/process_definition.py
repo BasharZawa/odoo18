@@ -80,8 +80,6 @@ class BpmProcessDefinition(models.Model):
                     'name': f'Auto-start {rec.key} v{rec.version}',
                     'model_id': rec.model_id.id,
                     'trigger': 'on_create',
-                    'state': 'code',
-                    'code': srv.code,
                     'active': True,
                     'filter_domain': domain,
                     'action_server_id': srv.id,
