@@ -18,5 +18,9 @@ class ActivityInstance(models.Model):
     started_at = fields.Datetime()
     ended_at = fields.Datetime()
     data = fields.Json(default=dict)
+    mail_activity_id = fields.Many2one('mail.activity', string="Related Mail Activity")
 
-    _sql_constraints = [('proc_node_unique', 'unique(proc_id, node_id)', 'Activity for this node already exists in this process.')]
+    _sql_constraints = [
+        ('proc_node_unique', 'unique(proc_id, node_id)', 'Activity for this node already exists in this process.'),
+        ('mail_activity_unique', 'unique(mail_activity_id)', 'Mail activity can only be linked to one BPM activity instance.')
+    ]

@@ -67,16 +67,40 @@ class BpmOrchestratorHelper(models.TransientModel):
                             # Store role assignment in activity instance
                             act.write({'assignee_role_id': assignee_role_id})
                     
-                    body = ((act.data or {}).get('label') or 'BPM Task') + '<div style="margin-top:8px">' + \
-                           f"<a href='{self._task_links(act)['approve']}' class='btn btn-primary btn-sm'>Approve</a> " + \
-                           f"<a href='{self._task_links(act)['reject']}' class='btn btn-secondary btn-sm'>Reject</a></div>"
-                    self.env['mail.activity'].sudo().create({
-                        'res_model': 'process.instance','res_id': proc.id,
+                    # Create mail.activity for notifications and email integration
+                    task_data = act.data or {}
+                    custom_form_url = task_data.get('form_url')
+                    
+                    if custom_form_url:
+                        # Custom form URL
+                        separator = '&' if '?' in custom_form_url else '?'
+                        form_link = f"{custom_form_url}{separator}act_id={act.id}"
+                        body = (task_data.get('label') or 'BPM Task') + '<div style="margin-top:8px">' + \
+                               f"<a href='{form_link}' class='btn btn-primary btn-sm'>Complete Task</a></div>"
+                    else:
+                        # Default approve/reject buttons
+                        links = self._task_links(act)
+                        body = (task_data.get('label') or 'BPM Task') + '<div style="margin-top:8px">' + \
+                               f"<a href='{links['approve']}' class='btn btn-primary btn-sm'>Approve</a> " + \
+                               f"<a href='{links['reject']}' class='btn btn-secondary btn-sm'>Reject</a></div>"
+                    
+                    # Create mail.activity linked to the BPM activity instance
+                    mail_activity = self.env['mail.activity'].sudo().create({
+                        'res_model': 'activity.instance',  # Link to BPM activity, not process
+                        'res_id': act.id,
                         'activity_type_id': self.env.ref('mail.mail_activity_data_todo').id,
                         'user_id': assignee_id or self.env.user.id,
-                        'note': body,'date_deadline': fields.Date.today() + timedelta(days=2),
+                        'note': body,
+                        'date_deadline': fields.Date.today() + timedelta(days=2),
                     })
-                    act.write({'status':'waiting', 'assignee_id': assignee_id})
+                    
+                    # Set BPM activity to waiting and store mail.activity reference
+                    act.write({
+                        'assignee_id': assignee_id or self.env.user.id,
+                        'mail_activity_id': mail_activity.id
+                    })
+                    # Don't call _on_branch_completed or enqueue next until task is actually completed
+                    # These will be handled when the task is completed via the web interface
             elif node_type == 'sys':
                 action = (act.data or {}).get('action')
                 dedup = _dedup_key(proc.id, act.node_id, 'sys', action or '')
