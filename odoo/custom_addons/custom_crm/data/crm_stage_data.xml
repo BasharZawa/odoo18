@@ -2,113 +2,127 @@
 <odoo>
     <data noupdate="1">
         
-        <!-- CRM Stages for Lead and Opportunity Management -->
+        <!-- Lead Stages -->
         <record id="stage_prospect" model="crm.stage">
             <field name="name">Prospect</field>
             <field name="sequence">1</field>
             <field name="fold" eval="False"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">lead</field>
         </record>
 
         <record id="stage_lead_new" model="crm.stage">
-            <field name="name">Lead New</field>
+            <field name="name">New</field>
             <field name="sequence">2</field>
             <field name="fold" eval="False"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">lead</field>
         </record>
 
         <record id="stage_lead_contacted" model="crm.stage">
-            <field name="name">Lead Contacted</field>
+            <field name="name">Contacted</field>
             <field name="sequence">3</field>
             <field name="fold" eval="False"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">lead</field>
         </record>
 
         <record id="stage_lead_postponed" model="crm.stage">
-            <field name="name">Lead Postponed</field>
+            <field name="name">Postponed</field>
             <field name="sequence">4</field>
             <field name="fold" eval="False"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">lead</field>
         </record>
 
         <record id="stage_lead_forwarded_partner" model="crm.stage">
-            <field name="name">Lead Forwarded to Partner</field>
+            <field name="name">Forwarded to Partner</field>
             <field name="sequence">5</field>
             <field name="fold" eval="False"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">lead</field>
         </record>
 
         <record id="stage_lead_qualified_contact" model="crm.stage">
-            <field name="name">Lead Qualified As Contact</field>
+            <field name="name">Qualified As Contact</field>
             <field name="sequence">6</field>
             <field name="fold" eval="False"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">lead</field>
         </record>
 
         <record id="stage_lead_disqualified" model="crm.stage">
-            <field name="name">Lead Disqualified</field>
+            <field name="name">Disqualified</field>
             <field name="sequence">7</field>
             <field name="fold" eval="True"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">lead</field>
         </record>
 
+        <!-- Opportunity Stages -->
         <record id="stage_oppy_initiation" model="crm.stage">
-            <field name="name">Oppy Initiation</field>
-            <field name="sequence">8</field>
+            <field name="name">Initiation</field>
+            <field name="sequence">1</field>
             <field name="fold" eval="False"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">opportunity</field>
         </record>
 
         <record id="stage_oppy_quotation" model="crm.stage">
-            <field name="name">Oppy Quotation</field>
-            <field name="sequence">9</field>
+            <field name="name">Quotation</field>
+            <field name="sequence">2</field>
             <field name="fold" eval="False"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">opportunity</field>
         </record>
 
         <record id="stage_oppy_negotiation" model="crm.stage">
-            <field name="name">Oppy Negotiation</field>
-            <field name="sequence">10</field>
+            <field name="name">Negotiation</field>
+            <field name="sequence">3</field>
             <field name="fold" eval="False"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">opportunity</field>
         </record>
 
         <record id="stage_oppy_waiting_order" model="crm.stage">
-            <field name="name">Oppy Waiting Order</field>
-            <field name="sequence">11</field>
+            <field name="name">Waiting Order</field>
+            <field name="sequence">4</field>
             <field name="fold" eval="False"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">opportunity</field>
         </record>
 
         <record id="stage_oppy_won" model="crm.stage">
-            <field name="name">Oppy Won</field>
-            <field name="sequence">12</field>
+            <field name="name">Won</field>
+            <field name="sequence">5</field>
             <field name="fold" eval="False"/>
             <field name="is_won" eval="True"/>
+            <field name="stage_type">opportunity</field>
         </record>
 
         <record id="stage_oppy_deferred" model="crm.stage">
-            <field name="name">Oppy Deferred</field>
-            <field name="sequence">13</field>
+            <field name="name">Deferred</field>
+            <field name="sequence">6</field>
             <field name="fold" eval="True"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">opportunity</field>
         </record>
 
         <record id="stage_oppy_cancelled" model="crm.stage">
-            <field name="name">Oppy Cancelled</field>
-            <field name="sequence">14</field>
+            <field name="name">Cancelled</field>
+            <field name="sequence">7</field>
             <field name="fold" eval="True"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">opportunity</field>
         </record>
 
         <record id="stage_oppy_outsold" model="crm.stage">
-            <field name="name">Oppy Outsold</field>
-            <field name="sequence">15</field>
+            <field name="name">Outsold (Lost)</field>
+            <field name="sequence">8</field>
             <field name="fold" eval="True"/>
             <field name="is_won" eval="False"/>
+            <field name="stage_type">opportunity</field>
         </record>
-
-        <!-- Add more stages as needed -->
 
     </data>
 </odoo>

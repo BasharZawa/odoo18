@@ -1,5 +1,6 @@
 from . import custom_contact
 from . import crm_lead
+from . import crm_stage
 from . import product_line
 from . import vertical
 from . import interested_solution

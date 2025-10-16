@@ -1,1 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vertical_all,access.vertical.all,model_vertical,,1,1,1,1
+access_product_line_all,access.product.line.all,model_product_line,,1,1,1,1
+access_interested_solution_all,access.interested.solution.all,model_interested_solution,,1,1,1,1
+access_opportunity_rec_schedule_all,access.opportunity.rec.schedule.all,model_opportunity_rec_schedule,,1,1,1,1
+access_opportunity_line_all,access.opportunity.line.all,model_opportunity_line,,1,1,1,1

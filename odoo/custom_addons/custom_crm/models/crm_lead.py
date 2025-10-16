@@ -71,6 +71,23 @@ class CrmLead(models.Model):
     parent_opportunity_id = fields.Many2one('crm.lead', string='Parent Opportunity', domain="[('type','=','opportunity')]", help='Parent Opportunity in case this is a upsell')
     Oppy_rec_schedule_ids = fields.One2many('opportunity.rec.schedule', 'opportunity_id', string='Recurring Schedule')
 
+    @api.model
+    def _read_group_stage_ids(self, stages, domain):
+        """Override to filter stages based on lead/opportunity type"""
+        # Get the context to check if we're filtering by type
+        lead_type = self.env.context.get('default_type')
+        
+        # First call the parent method to get the base filtered stages
+        stages = super(CrmLead, self)._read_group_stage_ids(stages, domain)
+        
+        # Apply additional stage_type filter if we're in a filtered view
+        if lead_type == 'lead':
+            stages = stages.filtered(lambda s: s.stage_type in ['lead'])
+        elif lead_type == 'opportunity':
+            stages = stages.filtered(lambda s: s.stage_type in ['opportunity'])
+        
+        return stages
+
 
 
 

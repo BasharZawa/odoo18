@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Inherit CRM Stage Tree View to add stage_type -->
+        <record id="crm_stage_tree_inherit" model="ir.ui.view">
+            <field name="name">crm.stage.tree.inherit</field>
+            <field name="model">crm.stage</field>
+            <field name="inherit_id" ref="crm.crm_stage_tree"/>
+            <field name="arch" type="xml">
+                <!-- Make the list editable -->
+                <xpath expr="//list" position="attributes">
+                    <attribute name="editable">top</attribute>
+                </xpath>
+                <!-- Remove readonly from name field -->
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <!-- Add stage_type field after name -->
+                <field name="name" position="after">
+                    <field name="stage_type"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Inherit CRM Stage Form View to add stage_type -->
+        <record id="crm_stage_form_inherit" model="ir.ui.view">
+            <field name="name">crm.stage.form.inherit</field>
+            <field name="model">crm.stage</field>
+            <field name="inherit_id" ref="crm.crm_stage_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="stage_type" required="1"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>
