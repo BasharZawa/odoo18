@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Custom CRM",
-    'summary': "Short (1 phrase/line) summary of the module's purpose",
+    'summary': "Extended of CRM to bridge the gaps ",
     'description': "This module is extending the CRM module to add custom features and functionalities.",
     'author': "SEDCO",
     'website': "https://www.sedco.co",
@@ -18,7 +18,7 @@
         'reports/QuoteReport.xml',
         'reports/QuoteReportTemplate.xml',
         'views/sale_order_report_button.xml',
-
+        'data/crm_stage_data.xml',
     ],
     'assets': {
         'web.assets_backend': [
