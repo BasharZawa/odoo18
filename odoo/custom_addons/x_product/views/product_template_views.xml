@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Product Template Form View -->
+    <record id="view_product_template_form_inherit" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Add custom fields in the General Information tab -->
+            <xpath expr="//page[@name='general_information']//group[@name='group_general']" position="after">
+                <group string="Custom Accounting Information" name="custom_accounting_info">
+                        <field name="x_product_line_id"/>
+                        <field name="x_product_nature_id"/>
+                        <field name="x_hs_code"/>
+                        <field name="x_coo"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

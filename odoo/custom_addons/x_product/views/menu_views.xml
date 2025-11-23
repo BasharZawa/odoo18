@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_x_product_root"
+              name="X Product"
+              sequence="50"
+              web_icon="x_product,static/description/icon.png"/>
+    
+    <!-- Configuration Menu -->
+    <menuitem id="menu_x_product_config"
+              name="Configuration"
+              parent="menu_x_product_root"
+              sequence="100"/>
+    
+    <!-- Product Nature Menu -->
+    <menuitem id="menu_x_product_nature"
+              name="Product Nature"
+              parent="menu_x_product_config"
+              action="action_x_product_nature"
+              sequence="10"/>
+    
+    <!-- Product Line Menu -->
+    <menuitem id="menu_x_product_line"
+              name="Product Line"
+              parent="menu_x_product_config"
+              action="action_x_product_line"
+              sequence="20"/>
+</odoo>

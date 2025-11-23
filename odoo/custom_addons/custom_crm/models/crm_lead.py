@@ -68,8 +68,18 @@ class CrmLead(models.Model):
     lost_to_id = fields.Many2one('res.partner', string='Lost To', domain="[('is_company','=',True)]")
     lost_note = fields.Text(string='Lost Notes')
     renewal_for_sc_id = fields.Many2one('sale.order', string='Renewal for SC#', help='Link to the original Sale Order for the Service Contract being renewed')
-    parent_opportunity_id = fields.Many2one('crm.lead', string='Parent Opportunity', domain="[('type','=','opportunity')]", help='Parent Opportunity in case this is a upsell')
+    parent_opportunity_id = fields.Many2one('crm.lead', string='Parent Opportunity', domain="[('type','=','opportunity')]", help='Parent Opportunity in case this is an upsell')
     Oppy_rec_schedule_ids = fields.One2many('opportunity.rec.schedule', 'opportunity_id', string='Recurring Schedule')
+    
+    opportunity_line_ids = fields.One2many('opportunity.line', 'opportunity_id', string='Opportunity Lines')
+    # Computed total from opportunity lines
+    opportunity_lines_total = fields.Monetary(
+        string='Lines Total',
+        compute='_compute_opportunity_lines_total',
+        store=True,
+        currency_field='company_currency'
+    )
+
 
     @api.model
     def _read_group_stage_ids(self, stages, domain):
@@ -89,6 +99,19 @@ class CrmLead(models.Model):
         return stages
 
 
+    # on create any new lead, call _cron_assign_leads to assign leads to salespersons
+    @api.model
+    def create(self, vals):
+        lead = super(CrmLead, self).create(vals)
+        if lead.type == 'lead':
+            self.env['ir.cron']._cron_assign_leads()
+        return lead
+
+
+    @api.depends('opportunity_line_ids.total_price')
+    def _compute_opportunity_lines_total(self):
+        for lead in self:
+            lead.opportunity_lines_total = sum(lead.opportunity_line_ids.mapped('total_price'))
 
 
 

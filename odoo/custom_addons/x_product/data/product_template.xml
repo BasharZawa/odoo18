@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="x_product_line_cvm" model="x.product.line">
+            <field name="name">CVM</field>
+            <field name="description">Customer Visit Management</field>
+        </record>
+        
+        <record id="x_product_line_self_service" model="x.product.line">
+            <field name="name">Self Service</field>
+            <field name="description">Empower customers to manage their own services.</field>
+        </record>
+        
+        <record id="x_product_line_media_analytics" model="x.product.line">
+            <field name="name">Media Analytics</field>
+            <field name="description">Advanced analytics for media consumption.</field>
+        </record>
+
+        <record id="x_product_line_services" model="x.product.line">
+            <field name="name">Service</field>
+            <field name="description">Services</field>
+        </record>
+
+
+        <record id="x_product_nature_Software" model="x.product.nature">
+            <field name="name">Software</field>
+            <field name="description">Software products and solutions.</field>
+        </record>
+        <record id="x_product_nature_Hardware" model="x.product.nature">
+            <field name="name">Hardware</field>
+            <field name="description">Physical hardware products.</field>
+        </record>
+        <record id="x_product_nature_Services" model="x.product.nature">
+            <field name="name">Services</field>
+            <field name="description">Service-based products and solutions.</field>
+        </record>
+    </data>
+</odoo>

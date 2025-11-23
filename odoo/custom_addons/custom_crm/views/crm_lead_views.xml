@@ -2,6 +2,74 @@
 <odoo>
     <data>
         
+        <!-- Inherit CRM Lead Form View -->
+        <record id="crm_lead_view_form_inherit_custom" model="ir.ui.view">
+            <field name="name">crm.lead.form.custom</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <notebook>
+                    <page string="Product Lines" name="product_lines_tab">
+                        <field name="opportunity_line_ids">
+                            <list string="Opportunity Lines" editable="bottom">
+                                <field name="product_id" 
+                                    required="is_product_overriden == False"
+                                    readonly="is_product_overriden == True"
+                                    domain="[('sale_ok', '=', True)]"
+                                    context="{'default_detailed_type': 'product'}"
+                                    options="{'no_create': False, 'no_open': True}"
+                                    on_change="1"/>
+                                
+                                <field name="product_name" 
+                                        optional="show"
+                                        readonly="is_product_overriden == False"/>
+                                
+                                <field name="is_product_overriden" 
+                                        string="Write-In"
+                                        widget="boolean_toggle"/>
+                                
+                                <field name="quantity" 
+                                        string="Qty"
+                                        required="1"/>
+                                
+                                <field name="unit_price" 
+                                        string="Unit Price"
+                                        required="1"
+                                        widget="monetary"
+                                        options="{'currency_field': 'currency_id'}"
+                                        readonly="is_price_overriden == False"/>
+                                
+                                <field name="is_price_overriden" 
+                                        string="Price Override"
+                                        widget="boolean_toggle"
+                                        readonly="is_product_overriden == False"
+                                        />
+                                
+                                <field name="total_price" 
+                                        string="Total"
+                                        widget="monetary"
+                                        options="{'currency_field': 'currency_id'}"
+                                        readonly="1"
+                                        sum="Total"/>
+                                
+                                <field name="currency_id" column_invisible="1"/>
+                                <field name="opportunity_id" column_invisible="1"/>
+                            </list>
+                        </field>
+                        
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="opportunity_total">
+                            <field name="opportunity_lines_total" 
+                                    widget="monetary"
+                                    class="oe_subtotal_footer_separator"
+                                    options="{'currency_field': 'company_currency'}"/>
+                        </group>
+                        
+                        <div class="oe_clear"/>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
         <!-- Action for Lead Kanban -->
         <record id="crm_lead_action_custom" model="ir.actions.act_window">
             <field name="name">Leads</field>
