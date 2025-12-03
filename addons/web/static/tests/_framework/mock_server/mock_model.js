@@ -25,6 +25,7 @@ const {
     DEFAULT_RELATIONAL_FIELD_VALUES,
     DEFAULT_SELECTION_FIELD_VALUES,
     S_FIELD,
+    copyFields,
     isComputed,
 } = fields;
 
@@ -215,7 +216,7 @@ function createRawInstance(ModelClass) {
  * @param {string} fieldName
  */
 function fieldNotFoundError(modelName, fieldName, consequence) {
-    let message = `cannot find a definition for field "${fieldName}" in model "${modelName}"`;
+    let message = `Cannot find a definition for field "${fieldName}" in model "${modelName}"`;
     if (consequence) {
         message += `: ${consequence}`;
     }
@@ -384,12 +385,11 @@ function getModelDefinition(previous, constructor) {
                 }
             }
             for (const [key, map] of INHERITED_OBJECT_KEYS) {
-                for (const subKey in previous[key]) {
+                const previousValue = map ? map(previous[key]) : previous[key];
+                for (const subKey in previousValue) {
                     // Assign only if empty
                     if (isEmptyValue(model[key][subKey])) {
-                        model[key][subKey] = map
-                            ? map(previous[key][subKey])
-                            : previous[key][subKey];
+                        model[key][subKey] = previousValue[subKey];
                     }
                 }
             }
@@ -832,7 +832,7 @@ function orderByField(model, orderBy, records) {
         } else {
             if (!["boolean", "number", "string"].includes(typeof v1) || typeof v1 !== typeof v2) {
                 throw new MockServerError(
-                    `cannot order by field "${field.name}" in model "${
+                    `Cannot order by field "${field.name}" in model "${
                         model._name
                     }": values must be of the same primitive type (got ${typeof v1} and ${typeof v2})`
                 );
@@ -865,7 +865,7 @@ function parseView(model, params) {
     const { arch } = params;
     const level = params.level || 0;
     const editable = params.editable || true;
-    const fields = deepCopy(model._fields);
+    const fields = copyFields(model._fields);
 
     const { _onChanges } = model;
     const fieldNodes = {};
@@ -969,7 +969,7 @@ function parseView(model, params) {
     for (const [name, node] of Object.entries(groupbyNodes)) {
         const field = fields[name];
         if (!isM2OField(field)) {
-            throw new MockServerError("cannot group: 'groupby' can only target many2one fields");
+            throw new MockServerError("Cannot group: 'groupby' can only target many2one fields");
         }
         field.views = {};
         const coModel = getRelation(field);
@@ -1288,7 +1288,7 @@ function updateComodelRelationalFields(model, record, originalRecord) {
 function validateFieldDefinition(fieldName, fieldDef) {
     if (fieldDef[S_FIELD] && fieldDef.name) {
         throw new MockServerError(
-            `cannot set the name of field "${fieldName}" from its definition: got "${fieldDef.name}"`
+            `Cannot set the name of field "${fieldName}" from its definition: got "${fieldDef.name}"`
         );
     }
     delete fieldDef[S_FIELD];
@@ -1301,7 +1301,7 @@ function validateFieldDefinition(fieldName, fieldDef) {
  * @param {number | false} viewId
  */
 function viewNotFoundError(modelName, viewType, viewId, consequence) {
-    let message = `cannot find an arch for view "${viewType}" with ID ${JSON.stringify(
+    let message = `Cannot find an arch for view "${viewType}" with ID ${JSON.stringify(
         viewId
     )} in model "${modelName}"`;
     if (consequence) {
@@ -1340,7 +1340,7 @@ const DATETIME_FORMAT = {
 };
 const INHERITED_OBJECT_KEYS = [
     ["_computes", null],
-    ["_fields", deepCopy],
+    ["_fields", copyFields],
     ["_onChanges", null],
     ["_toolbar", deepCopy],
     ["_views", null],
@@ -1702,7 +1702,7 @@ export class Model extends Array {
         const ids = [];
         for (const values of allValues) {
             if ("id" in values) {
-                throw new MockServerError(`cannot create a record with a given ID value`);
+                throw new MockServerError(`Cannot create a record with a given ID value`);
             }
             const record = { id: this._getNextId() };
             ids.push(record.id);
@@ -1744,7 +1744,7 @@ export class Model extends Array {
             } else {
                 if (!(field.type in DEFAULT_FIELD_VALUES)) {
                     throw new MockServerError(
-                        `missing default value for field type "${field.type}"`
+                        `Missing default value for field type "${field.type}"`
                     );
                 }
                 result[fieldName] = DEFAULT_FIELD_VALUES[field.type]();
@@ -1982,7 +1982,7 @@ export class Model extends Array {
                 const [, name, aggregator, fname] = fspec.match(R_AGGREGATE_FUNCTION);
                 const fieldName = aggregator ? fname || name : name;
                 if (aggregator && !VALID_AGGREGATE_FUNCTIONS.includes(aggregator)) {
-                    throw new MockServerError(`invalid aggregation function "${aggregator}"`);
+                    throw new MockServerError(`Invalid aggregation function "${aggregator}"`);
                 }
                 const field = this._fields[fieldName];
                 if (
@@ -2259,7 +2259,7 @@ export class Model extends Array {
         const supportedTypes = ["many2one", "selection"];
         if (!supportedTypes.includes(field.type)) {
             throw new MockServerError(
-                `only category types ${supportedTypes.join(" and ")} are supported, got "${
+                `Only category types ${supportedTypes.join(" and ")} are supported, got "${
                     field.type
                 }"`
             );
@@ -2400,7 +2400,7 @@ export class Model extends Array {
         const supportedTypes = ["many2many", "many2one", "selection"];
         if (!supportedTypes.includes(field.type)) {
             throw new MockServerError(
-                `only filter types ${supportedTypes} are supported, got "${field.type}"`
+                `Only filter types ${supportedTypes} are supported, got "${field.type}"`
             );
         }
         let modelDomain = kwargs.search_domain || [];
@@ -2773,7 +2773,7 @@ export class Model extends Array {
                 const fieldDef = this._fields[fieldName];
                 if (!isValidFieldValue(record, fieldDef)) {
                     throw new MockServerError(
-                        `invalid value for field "${fieldName}" on ${getRecordQualifier(
+                        `Invalid value for field "${fieldName}" on ${getRecordQualifier(
                             record
                         )} in model "${this._name}": expected "${fieldDef.type}" and got: ${
                             record[fieldName]
@@ -3071,7 +3071,7 @@ export class Model extends Array {
         for (const id of ids) {
             if (!id) {
                 throw new MockServerError(
-                    `cannot read: falsy ID value would result in an access error on the actual server`
+                    `Cannot read: falsy ID value would result in an access error on the actual server`
                 );
             }
             const record = modelMap[this._name][id];
@@ -3281,7 +3281,7 @@ export class Model extends Array {
                         const inverseData = command[2]; // write in place instead of copy, because some tests rely on the object given being updated
                         const inverseFieldName = field.inverse_fname_by_model_name?.[coModel._name];
                         if (inverseFieldName) {
-                            inverseData[inverseFieldName] = id;
+                            inverseData[inverseFieldName] = field.type === "many2many" ? [id] : id;
                         }
                         const [newId] = coModel.create([inverseData]);
                         ids.push(newId);
@@ -3305,7 +3305,7 @@ export class Model extends Array {
                         ids = [...command[2]];
                     } else {
                         throw new MockServerError(
-                            `command "${JSON.stringify(
+                            `Command "${JSON.stringify(
                                 value
                             )}" is not supported by the MockServer on field "${fieldName}" in model "${
                                 this._name
@@ -3323,7 +3323,7 @@ export class Model extends Array {
                             continue;
                         }
                         throw new MockServerError(
-                            `invalid ID "${JSON.stringify(
+                            `Invalid ID "${JSON.stringify(
                                 value
                             )}" for a many2one on field "${fieldName}" in model "${this._name}"`
                         );

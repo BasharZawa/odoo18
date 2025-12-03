@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* website
+# * website
 #
 # Translators:
 # Jolien De Paepe, 2024
@@ -10,21 +10,24 @@
 # Larissa Manderfeld, 2025
 # Wil Odoo, 2025
 # Manon Rondou, 2025
-#
+# "Manon Rondou (ronm)" <ronm@odoo.com>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-08 18:37+0000\n"
-"PO-Revision-Date: 2024-09-25 09:42+0000\n"
-"Last-Translator: Manon Rondou, 2025\n"
-"Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
+"POT-Creation-Date: 2025-10-24 18:36+0000\n"
+"PO-Revision-Date: 2025-11-21 06:39+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"Language-Team: French <https://translate.odoo.com/projects/odoo-18/website/"
+"fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
+"1000000 == 0) ? 1 : 2);\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: website
 #. odoo-javascript
@@ -66,8 +69,8 @@ msgid ""
 "\" Write a quote here from one of your customers. Quotes are a great way to "
 "build confidence in your products or services. \""
 msgstr ""
-"\" Insérez ici une citation de l'un de vos clients. Les citations sont un "
-"excellent moyen de renforcer la confiance en vos produits ou services. \""
+"\"Insérez ici une citation d’un client. Les citations renforcent la "
+"confiance en vos produits ou services.\""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -2460,7 +2463,7 @@ msgstr "Une carte et une liste de vos boutiques"
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "A mega menu cannot have a parent or child menu."
-msgstr ""
+msgstr "Un méga menu ne peut pas avoir de menu parent ni de menu enfant."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
@@ -2731,7 +2734,7 @@ msgstr "Ajouter un mégamenu"
 #. odoo-javascript
 #: code:addons/website/static/src/components/dialog/edit_menu.xml:0
 msgid "Add Menu Item"
-msgstr "Ajouter une rubrique"
+msgstr "Ajouter un élément de menu"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_faq_horizontal_options
@@ -2778,6 +2781,12 @@ msgstr "Ajouter un onglet"
 #: code:addons/website/static/src/xml/website.editor.xml:0
 msgid "Add Text Highlight Effects"
 msgstr "Ajouter des effets de surlignage de texte"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/res_config_settings.py:0
+msgid "Add Website"
+msgstr "Ajouter site web"
 
 #. module: website
 #. odoo-javascript
@@ -4480,7 +4489,6 @@ msgstr "Nos clients ont économisé 32 millions de dollars grâce à nos service
 #. odoo-javascript
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
 #: code:addons/website/static/src/components/views/theme_preview.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: code:addons/website/static/src/xml/website.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -7376,7 +7384,7 @@ msgstr "Une collaboration enrichissante depuis 2014"
 #: model_terms:ir.ui.view,arch_db:website.s_popup_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Full"
-msgstr "Plein écran"
+msgstr "Complet"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -7533,7 +7541,7 @@ msgstr "Aller à la vue"
 #. odoo-javascript
 #: code:addons/website/static/src/client_actions/website_dashboard/website_dashboard.xml:0
 msgid "Go to Website"
-msgstr "Mon site web"
+msgstr "Aller au site web"
 
 #. module: website
 #. odoo-javascript
@@ -7561,7 +7569,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/website/static/src/js/tours/tour_utils.js:0
 msgid "Good job! It's time to <b>Save</b> your work."
-msgstr "Bon travail ! Il est temps de <b>Enregistrer</b>votre travail."
+msgstr "Bon travail ! Il est temps de <b>sauvegarder</b>votre travail."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -7598,7 +7606,7 @@ msgstr "Console Google Search"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__google_search_console
 msgid "Google Search Console Key"
-msgstr ""
+msgstr "Clé Google Search Console"
 
 #. module: website
 #: model:ir.model.fields,help:website.field_res_config_settings__google_search_console
@@ -8049,7 +8057,7 @@ msgstr "Page d'accueil du site actuel"
 #: model:ir.model.fields,field_description:website.field_website_page_properties_base__is_homepage
 #: model:ir.ui.menu,name:website.menu_website_preview
 msgid "Homepage"
-msgstr "Page d'accueil"
+msgstr "Accueil"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__website_homepage_url
@@ -8381,7 +8389,6 @@ msgstr "Galerie d'images"
 
 #. module: website
 #. odoo-javascript
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 msgid "Image Gallery Dialog"
 msgstr "Boîte de dialogue Galerie d'Images"
@@ -10040,13 +10047,15 @@ msgstr "Menus"
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "Menus cannot have more than two levels of hierarchy."
-msgstr ""
+msgstr "Les menus ne peuvent pas avoir plus de deux niveaux de hiérarchie."
 
 #. module: website
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "Menus with child menus cannot be added as a submenu."
 msgstr ""
+"Les menus contenant des sous-menus ne peuvent pas être ajoutés comme sous-"
+"menu."
 
 #. module: website
 #: model:ir.model,name:website.model_base_partner_merge_automatic_wizard
@@ -10540,7 +10549,6 @@ msgstr "Newsletter Popup"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -11897,7 +11905,6 @@ msgstr "Prévisualiser cette URL dans un nouvel onglet"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -12513,7 +12520,7 @@ msgstr "Analyse"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 msgid "Required"
-msgstr "Requis"
+msgstr "Obligatoire"
 
 #. module: website
 #. odoo-javascript
@@ -12764,7 +12771,7 @@ msgstr "Saturation"
 #: model_terms:ir.ui.view,arch_db:website.view_edit_robots
 #: model_terms:ir.ui.view,arch_db:website.view_edit_third_party_domains
 msgid "Save"
-msgstr "Enregistrer"
+msgstr "Sauvegarder"
 
 #. module: website
 #. odoo-javascript
@@ -12776,7 +12783,7 @@ msgstr "Enregistrer & copier"
 #. odoo-javascript
 #: code:addons/website/static/src/xml/website.editor.xml:0
 msgid "Save and Reload"
-msgstr "Enregistrer et recharger"
+msgstr "Sauvegarder et recharger"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -14199,6 +14206,20 @@ msgid "The evolution of our company"
 msgstr "L'évolution de notre entreprise"
 
 #. module: website
+#. odoo-python
+#: code:addons/website/models/website_form.py:0
+msgid ""
+"The field '%(field)s' cannot be deleted because it is referenced in a "
+"website view.\n"
+"Model: %(model)s\n"
+"View: %(view)s"
+msgstr ""
+"Le champ \"%(field)s\" ne peut pas être supprimé car il est référencé dans "
+"une vue du site web.\n"
+"Modèle : %(model)s\n"
+"Vue : %(view)s"
+
+#. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_website_form/options.js:0
 msgid "The field “%(field)s” is mandatory for the action “%(action)s”."
@@ -14311,6 +14332,12 @@ msgstr ""
 #: model:ir.model.fields,help:website.field_website_controller_page__name_slugified
 msgid "The name of the page usable in a URL"
 msgstr "Le nom de la page utilisable dans une URL"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/website.py:0
+msgid "The provided website domain is not a valid URL."
+msgstr "Le domaine du site web fourni n’est pas une URL valide."
 
 #. module: website
 #. odoo-javascript
@@ -17736,7 +17763,7 @@ msgstr "odoo.official"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.step_wizard
 msgid "of"
-msgstr "ou"
+msgstr "sur"
 
 #. module: website
 #. odoo-javascript

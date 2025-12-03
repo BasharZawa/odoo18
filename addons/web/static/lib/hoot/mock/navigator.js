@@ -1,8 +1,14 @@
 /** @odoo-module */
 
 import { isInstanceOf } from "../../hoot-dom/hoot_dom_utils";
-import { createMock, HootError, MIME_TYPE, MockEventTarget } from "../hoot_utils";
-import { getSyncValue, setSyncValue } from "./sync_values";
+import {
+    createMock,
+    getSyncValue,
+    HootError,
+    MIME_TYPE,
+    MockEventTarget,
+    setSyncValue,
+} from "../hoot_utils";
 
 /**
  * @typedef {"android" | "ios" | "linux" | "mac" | "windows"} Platform
@@ -176,7 +182,7 @@ function makeUserAgent(platform) {
  */
 function throwNotImplemented(fnName) {
     return function notImplemented() {
-        throw new HootError(`Unmocked navigator method: ${fnName}`);
+        throw new HootError(`unmocked navigator method: ${fnName}`);
     };
 }
 
@@ -220,7 +226,7 @@ export class MockClipboardItem extends ClipboardItem {
     // Added synchronous methods to enhance speed in tests
 
     async getType(type) {
-        return getSyncValue(this)[type];
+        return getSyncValue(this, false)[type];
     }
 }
 

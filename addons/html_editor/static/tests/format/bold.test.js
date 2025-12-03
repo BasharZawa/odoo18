@@ -6,7 +6,14 @@ import { setupEditor, testEditor } from "../_helpers/editor";
 import { unformat } from "../_helpers/format";
 import { getContent } from "../_helpers/selection";
 import { BOLD_TAGS, notStrong, span, strong, em } from "../_helpers/tags";
-import { bold, italic, simulateArrowKeyPress, tripleClick } from "../_helpers/user_actions";
+import {
+    bold,
+    insertText,
+    italic,
+    simulateArrowKeyPress,
+    tripleClick,
+    undo,
+} from "../_helpers/user_actions";
 import { expectElementCount } from "../_helpers/ui_expectations";
 
 const styleH1Bold = `h1 { font-weight: bold; }`;
@@ -245,7 +252,10 @@ test("should insert a span zws when toggling a formatting command twice", () =>
         // todo: It would be better to remove the zws entirely so that
         // the P could have the "/" hint but that behavior might be
         // complex with the current implementation.
-        contentAfterEdit: `<p>${span(`[]\u200B`, "first")}</p>`,
+        contentAfterEdit: `<p placeholder='Type "/" for commands' class="o-we-hint">${span(
+            `[]\u200B`,
+            "first"
+        )}</p>`,
     }));
 
 // This test uses execCommand to reproduce as closely as possible the browser's
@@ -380,9 +390,32 @@ test("should not remove empty bold tag in an empty block when changing selection
 
     bold(editor);
     await tick();
-    expect(getContent(el)).toBe(`<p>abcd</p><p>${strong("[]\u200B", "first")}</p>`);
+    expect(getContent(el)).toBe(
+        `<p>abcd</p><p placeholder='Type "/" for commands' class="o-we-hint">${strong(
+            "[]\u200B",
+            "first"
+        )}</p>`
+    );
 
     await simulateArrowKeyPress(editor, "ArrowUp");
     await tick(); // await selectionchange
     expect(getContent(el)).toBe(`<p>[]abcd</p><p>${strong("\u200B", "first")}</p>`);
+});
+
+test("should not add history step for bold on collapsed selection", async () => {
+    const { editor, el } = await setupEditor("<p>abcd[]</p>");
+
+    patchWithCleanup(console, { warn: () => {} });
+
+    // Collapsed formatting shortcuts (e.g. Ctrl+B) shouldn’t create a history
+    // step. The empty inline tag is temporary: auto-cleaned if unused. We want
+    // to avoid having a phantom step in the history.
+    await press(["ctrl", "b"]);
+    expect(getContent(el)).toBe(`<p>abcd${strong("[]\u200B", "first")}</p>`);
+
+    await insertText(editor, "A");
+    expect(getContent(el)).toBe(`<p>abcd${strong("A[]")}</p>`);
+
+    undo(editor);
+    expect(getContent(el)).toBe(`<p>abcd[]</p>`);
 });

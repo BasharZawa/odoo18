@@ -10,7 +10,6 @@ class TestUblBis3(AccountTestInvoicingCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.env['ir.config_parameter'].sudo().set_param('account_edi_ubl_cii.use_new_dict_to_xml_helpers', True)
         cls.env.company.tax_calculation_rounding_method = 'round_globally'
         cls.partner_a.invoice_edi_format = 'ubl_bis3'
 
@@ -178,7 +177,7 @@ class TestUblBis3(AccountTestInvoicingCommon):
             ],
         })
         invoice.action_post()
-        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
+        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods={'manual'})
         self._assert_invoice_ubl_file(invoice, 'bis3/test_taxes_rounding_negative_line_tax_included')
 
     def test_single_fixed_tax_price_excluded(self):
@@ -200,7 +199,7 @@ class TestUblBis3(AccountTestInvoicingCommon):
             ],
         })
         invoice.action_post()
-        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
+        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods={'manual'})
         self._assert_invoice_ubl_file(invoice, 'bis3/test_single_fixed_tax_price_excluded')
 
     def test_single_fixed_tax_price_included(self):
@@ -222,7 +221,7 @@ class TestUblBis3(AccountTestInvoicingCommon):
             ],
         })
         invoice.action_post()
-        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
+        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods={'manual'})
         self._assert_invoice_ubl_file(invoice, 'bis3/test_single_fixed_tax_price_included')
 
     def test_multiple_fixed_taxes_price_excluded(self):
@@ -245,7 +244,7 @@ class TestUblBis3(AccountTestInvoicingCommon):
             ],
         })
         invoice.action_post()
-        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
+        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods={'manual'})
         self._assert_invoice_ubl_file(invoice, 'bis3/test_multiple_fixed_taxes_price_excluded')
 
     def test_single_fixed_tax_price_excluded_and_discount(self):
@@ -269,7 +268,7 @@ class TestUblBis3(AccountTestInvoicingCommon):
             ],
         })
         invoice.action_post()
-        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
+        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods={'manual'})
         self._assert_invoice_ubl_file(invoice, 'bis3/test_single_fixed_tax_price_excluded_and_discount')
 
     def test_manual_tax_amount_on_invoice(self):
@@ -313,7 +312,7 @@ class TestUblBis3(AccountTestInvoicingCommon):
         ]})
         invoice.action_post()
 
-        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
+        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods={'manual'})
         self._assert_invoice_ubl_file(invoice, 'bis3/test_manual_tax_amount_on_invoice')
 
     # -------------------------------------------------------------------------
@@ -342,7 +341,7 @@ class TestUblBis3(AccountTestInvoicingCommon):
             ],
         })
         invoice.action_post()
-        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
+        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods={'manual'})
         self._assert_invoice_ubl_file(invoice, 'bis3/test_price_unit_with_more_decimals')
 
     # -------------------------------------------------------------------------
@@ -374,7 +373,7 @@ class TestUblBis3(AccountTestInvoicingCommon):
             ],
         })
         invoice.action_post()
-        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
+        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods={'manual'})
         self._assert_invoice_ubl_file(invoice, 'bis3/test_early_pay_discount_different_taxes')
 
     def test_early_pay_discount_with_fixed_tax(self):
@@ -397,7 +396,7 @@ class TestUblBis3(AccountTestInvoicingCommon):
             ],
         })
         invoice.action_post()
-        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
+        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods={'manual'})
         self._assert_invoice_ubl_file(invoice, 'bis3/test_early_pay_discount_with_fixed_tax')
 
     def test_early_pay_discount_with_discount_on_lines(self):
@@ -451,7 +450,7 @@ class TestUblBis3(AccountTestInvoicingCommon):
             ],
         })
         invoice.action_post()
-        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
+        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods={'manual'})
         self._assert_invoice_ubl_file(invoice, 'bis3/test_early_pay_discount_with_discount_on_lines')
 
     def test_dispatch_base_lines_delta(self):
@@ -483,3 +482,35 @@ class TestUblBis3(AccountTestInvoicingCommon):
         invoice.action_post()
         self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
         self._assert_invoice_ubl_file(invoice, 'bis3/test_dispatch_base_lines_delta')
+
+    def test_unit_price_precision(self):
+        """ Check that with large quantities, the precision of the rounding on the unit price
+            is adapted in order to pass the Peppol schematron's requirement that the line's
+            subtotal must be equal to unit price * quantity, to a tolerance of less than 0.02.
+
+            In this case, the line's tax-excluded subtotal is 85.62, there are 8 units, so the raw unit
+            price is 85.62 / 8 = 10.7025.
+            If we round the unit price to 2 decimals, we get 10.70, but 10.70 * 8 = 85.60 which has
+            a difference of 0.02 with the subtotal, so this would not pass the schematron.
+            So we need to round the unit price to 3 decimals, which gives 10.703.
+        """
+        self.setup_partner_as_be1(self.env.company.partner_id)
+        self.setup_partner_as_be2(self.partner_a)
+        tax_21 = self.percent_tax(21.0, price_include_override='tax_included')
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_date': '2017-01-01',
+            'invoice_line_ids': [
+                Command.create({
+                    'product_id': self.product_a.id,
+                    'quantity': 8,
+                    'price_unit': 12.95,
+                    'tax_ids': [Command.set(tax_21.ids)],
+                }),
+            ],
+        })
+        invoice.action_post()
+        self.env['account.move.send']._generate_and_send_invoices(invoice, sending_methods=['manual'])
+        self._assert_invoice_ubl_file(invoice, 'bis3/test_unit_price_precision')

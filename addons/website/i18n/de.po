@@ -9,13 +9,14 @@
 # Larissa Manderfeld, 2025
 #
 # "Larissa Manderfeld (lman)" <lman@odoo.com>, 2025.
+# Grace Conlon <grco@odoo.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-08 18:37+0000\n"
-"PO-Revision-Date: 2025-08-11 22:21+0000\n"
-"Last-Translator: \"Larissa Manderfeld (lman)\" <lman@odoo.com>\n"
+"POT-Creation-Date: 2025-10-24 18:36+0000\n"
+"PO-Revision-Date: 2025-11-17 13:54+0000\n"
+"Last-Translator: Grace Conlon <grco@odoo.com>\n"
 "Language-Team: German <https://translate.odoo.com/projects/odoo-18/website/"
 "de/>\n"
 "Language: de\n"
@@ -2459,7 +2460,8 @@ msgstr "Eine Karte und eine Auflistung Ihrer Filialen"
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "A mega menu cannot have a parent or child menu."
-msgstr "Ein Mega-Menü kann kein übergeordnetes oder untergeordnetes Menü haben."
+msgstr ""
+"Ein Mega-Menü kann kein übergeordnetes oder untergeordnetes Menü haben."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
@@ -2777,6 +2779,12 @@ msgstr "Tab hinzufügen"
 #: code:addons/website/static/src/xml/website.editor.xml:0
 msgid "Add Text Highlight Effects"
 msgstr "Effekte zur Texthervorhebung hinzufügen"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/res_config_settings.py:0
+msgid "Add Website"
+msgstr "Website hinzufügen"
 
 #. module: website
 #. odoo-javascript
@@ -4484,7 +4492,6 @@ msgstr "Kunden haben 32 Mio. € mit unseren Dienstleistungen gespart."
 #. odoo-javascript
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
 #: code:addons/website/static/src/components/views/theme_preview.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: code:addons/website/static/src/xml/website.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -4801,8 +4808,8 @@ msgid ""
 "                                    We'll do our best to get back to you as "
 "soon as possible."
 msgstr ""
-"Kontaktieren Sie uns bezüglich unserer Firma und unseren Dienstleistungen."
-"<br/>\n"
+"Kontaktieren Sie uns bezüglich unseres Unternehmens und unserer "
+"Dienstleistungen.<br/>\n"
 "                                    Wir tun alles, um uns so schnell wie "
 "möglich mit Ihnen in Verbindung zu setzen."
 
@@ -8396,7 +8403,6 @@ msgstr "Bildergalerie"
 
 #. module: website
 #. odoo-javascript
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 msgid "Image Gallery Dialog"
 msgstr "Bildergalerie-Dialog"
@@ -10560,7 +10566,6 @@ msgstr "Newsletter-Pop-up"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -11811,7 +11816,7 @@ msgid ""
 "(Maximum %(max)s MB)"
 msgstr ""
 "Bitte füllen Sie das Formular korrekt aus. Die Datei „%(file name)s“ ist zu "
-"groß (maximal %(max)s1 MB)"
+"groß (maximal %(max)s MB)"
 
 #. module: website
 #. odoo-javascript
@@ -11913,7 +11918,6 @@ msgstr "Vorschau dieser URL in einem neuen Reiter"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -14214,6 +14218,20 @@ msgid "The evolution of our company"
 msgstr "Die Entwicklung unseres Unternehmen"
 
 #. module: website
+#. odoo-python
+#: code:addons/website/models/website_form.py:0
+msgid ""
+"The field '%(field)s' cannot be deleted because it is referenced in a "
+"website view.\n"
+"Model: %(model)s\n"
+"View: %(view)s"
+msgstr ""
+"Das Feld ‚%(field)s‘ kann nicht gelöscht werden, da eine Website-Ansicht "
+"darauf verweist.\n"
+"Modell: %(model)s\n"
+"Ansicht: %(view)s"
+
+#. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_website_form/options.js:0
 msgid "The field “%(field)s” is mandatory for the action “%(action)s”."
@@ -14328,6 +14346,12 @@ msgstr ""
 #: model:ir.model.fields,help:website.field_website_controller_page__name_slugified
 msgid "The name of the page usable in a URL"
 msgstr "Der Name der Seite, der in einer URL verwendet werden kann"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/website.py:0
+msgid "The provided website domain is not a valid URL."
+msgstr "Die angegebene Website-Domain ist keine gültige URL."
 
 #. module: website
 #. odoo-javascript

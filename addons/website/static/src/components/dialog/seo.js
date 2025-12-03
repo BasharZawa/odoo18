@@ -114,9 +114,10 @@ class ImageSelector extends Component {
             useMediaLibrary: true,
             save: image => {
                 let existingImage;
+                const src = image.getAttribute('src');
                 this.state.images = this.state.images.map(img => {
                     img.active = false;
-                    if (img.src === image.src) {
+                    if (img.src === src) {
                         existingImage = img;
                         img.active = true;
                     }
@@ -124,12 +125,12 @@ class ImageSelector extends Component {
                 });
                 if (!existingImage) {
                     this.state.images.push({
-                        src: image.src,
+                        src: src,
                         active: true,
                         custom: true,
                     });
                 }
-                this.seoContext.metaImage = image.src;
+                this.seoContext.metaImage = src;
             },
         });
     }
@@ -267,10 +268,10 @@ class SEOPreview extends Component {
     };
 
     get description() {
-        if (this.props.description.length > 160) {
+        if (this.props.description?.length > 160) {
             return this.props.description.substring(0, 159) + '…';
         }
-        return this.props.description;
+        return this.props.description || "";
     }
 }
 class TitleDescription extends Component {
@@ -399,6 +400,9 @@ export class OptimizeSEODialog extends Component {
         this.contentClass = "oe_seo_configuration";
 
         onWillStart(async () => {
+            // Wait for the preview iframe because this dialog reads directly
+            // from the iframe DOM.
+            await this.waitForIframe();
             const { metadata: { mainObject, seoObject, path } } = this.website.currentWebsite;
 
             this.object = seoObject || mainObject;
@@ -434,6 +438,16 @@ export class OptimizeSEODialog extends Component {
 
             this.canEditKeywords = 'website_meta_keywords' in this.data;
             seoContext.keywords = this.getMeta({ name: 'keywords' });
+        });
+    }
+
+    async waitForIframe() {
+        await new Promise((resolve) => {
+            const iframeEl = document.querySelector(".o_iframe");
+            if (!iframeEl || iframeEl.contentDocument?.readyState === "complete") {
+                return resolve();
+            }
+            iframeEl.addEventListener("load", resolve, { once: true });
         });
     }
 

@@ -45,6 +45,19 @@ class AccountMoveSend(models.AbstractModel):
                     'action_text': _("View Partner(s)"),
                     'action': not_configured_partners._get_records_action(name=_("Check Partner(s)"))
                 }
+
+            if any(
+                    self.env['account.edi.xml.ubl_bis3']._is_customer_behind_chorus_pro(partner)
+                    for partner in peppol_format_moves.partner_id.commercial_partner_id
+                ):
+                chorus_pro = self.env['ir.module.module'].sudo().search([('name', '=', 'l10n_fr_facturx_chorus_pro')], limit=1)
+                if chorus_pro and chorus_pro.state != 'installed':
+                    alerts['account_edi_ubl_cii_chorus_pro_install'] = {
+                        'message': _("Please install the french Chorus pro module to have all the specific rules."),
+                        'level': 'info',
+                        'action': chorus_pro._get_records_action(),
+                        'action_text': _("Install Chorus Pro"),
+                    }
         return alerts
 
     # -------------------------------------------------------------------------
@@ -56,6 +69,8 @@ class AccountMoveSend(models.AbstractModel):
         return super()._get_invoice_extra_attachments(move) + move.ubl_cii_xml_id
 
     def _get_placeholder_mail_attachments_data(self, move, invoice_edi_format=None, extra_edis=None):
+        if extra_edis is None:
+            extra_edis = {}
         # EXTENDS 'account'
         results = super()._get_placeholder_mail_attachments_data(move, invoice_edi_format=invoice_edi_format, extra_edis=extra_edis)
         if move._need_ubl_cii_xml(invoice_edi_format):

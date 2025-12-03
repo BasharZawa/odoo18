@@ -1,20 +1,26 @@
 /** @odoo-module */
 
-import { after, describe, expect, getFixture, test } from "@odoo/hoot";
 import {
     advanceTime,
+    after,
     animationFrame,
     clear,
     click,
     dblclick,
+    describe,
     drag,
     edit,
+    expect,
     fill,
+    getFixture,
     hover,
     keyDown,
     keyUp,
     leave,
     middleClick,
+    mockFetch,
+    mockTouch,
+    mockUserAgent,
     on,
     pointerDown,
     pointerUp,
@@ -26,9 +32,9 @@ import {
     select,
     setInputFiles,
     setInputRange,
+    test,
     uncheck,
-} from "@odoo/hoot-dom";
-import { mockFetch, mockTouch, mockUserAgent } from "@odoo/hoot-mock";
+} from "@odoo/hoot";
 import { Component, xml } from "@odoo/owl";
 import { EventList } from "@web/../lib/hoot-dom/helpers/events";
 import { mountForTest, parseUrl } from "../local_helpers";
@@ -1428,6 +1434,24 @@ describe(parseUrl(import.meta.url), () => {
         expect("input").toHaveValue(/file\.txt/);
     });
 
+    test("setInputFiles: shadow root", async () => {
+        await mountForTest(/* xml */ `
+            <div class="container" />
+        `);
+
+        const shadow = queryOne(".container").attachShadow({
+            mode: "open",
+        });
+        const input = document.createElement("input");
+        input.type = "file";
+        shadow.appendChild(input);
+
+        await click(".container:shadow input");
+        await setInputFiles(new File([""], "file.txt"));
+
+        expect(".container:shadow input").toHaveValue(/file\.txt/);
+    });
+
     test("setInputRange: basic case and events", async () => {
         await mountForTest(/* xml */ `<input type="range" min="10" max="40" />`);
 
@@ -1817,10 +1841,11 @@ describe(parseUrl(import.meta.url), () => {
             </form>
         `);
 
-        mockFetch((url, { body, method }) => {
+        mockFetch((url, { body, headers, method }) => {
             expect.step(new URL(url).pathname);
 
-            expect(method).toBe("post");
+            expect(method).toBe("POST");
+            expect(headers).toEqual(new Headers([["Content-Type", "multipart/form-data"]]));
             expect(body).toBeInstanceOf(FormData);
             expect(body.get("csrf_token")).toBe("CSRF_TOKEN_VALUE");
             expect(body.get("name")).toBe("Pierre");

@@ -248,7 +248,7 @@ class Partner(models.Model):
     vat_label = fields.Char(string='Tax ID Label', compute='_compute_vat_label')
     same_vat_partner_id: Partner = fields.Many2one('res.partner', string='Partner with same Tax ID', compute='_compute_same_vat_partner_id', store=False)
     same_company_registry_partner_id: Partner = fields.Many2one('res.partner', string='Partner with same Company Registry', compute='_compute_same_vat_partner_id', store=False)
-    company_registry = fields.Char(string="Company ID", compute='_compute_company_registry', store=True, readonly=False,
+    company_registry = fields.Char(string="Company ID", compute='_compute_company_registry', store=True, readonly=False, index='btree_not_null',
        help="The registry number of the company. Use it if it is different from the Tax ID. It must be unique across all partners of a same country")
     company_registry_label = fields.Char(string='Company ID Label', compute='_compute_company_registry_label')
     bank_ids: ResPartnerBank = fields.One2many('res.partner.bank', 'partner_id', string='Banks')
@@ -432,6 +432,7 @@ class Partner(models.Model):
                 domain += [('id', '!=', partner_id), '!', ('id', 'child_of', partner_id)]
             partner.same_company_registry_partner_id = bool(partner.company_registry) and not partner.parent_id and Partner.search(domain, limit=1)
 
+    @api.depends('vat')
     @api.depends_context('company')
     def _compute_vat_label(self):
         self.vat_label = self.env.company.country_id.vat_label or _("Tax ID")

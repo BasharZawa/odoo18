@@ -8,12 +8,13 @@ from itertools import groupby
 from collections import defaultdict
 from random import randrange
 from pprint import pformat
+from uuid import uuid4
 
 import psycopg2
 import pytz
 
 from odoo import api, fields, models, tools, _, Command
-from odoo.tools import float_is_zero, float_round, float_repr, float_compare, formatLang
+from odoo.tools import float_is_zero, float_round, float_repr, float_compare, formatLang, SQL
 from odoo.exceptions import ValidationError, UserError
 from odoo.osv.expression import AND
 import base64
@@ -72,7 +73,10 @@ class PosOrder(models.Model):
         :returns: id of created/updated pos.order
         :rtype: int
         """
-        draft = True if order.get('state') == 'draft' else False
+        draft = order.get('state') == 'draft'
+        paid = order.get('state') == 'paid'
+        if 'state' in order:
+            order['state'] = 'draft' if paid else order['state']  # paid state will be set later
         pos_session = self.env['pos.session'].browse(order['session_id'])
         if pos_session.state == 'closing_control' or pos_session.state == 'closed':
             order['session_id'] = self._get_valid_session(order).id
@@ -178,9 +182,10 @@ class PosOrder(models.Model):
         :type draft: bool.
         """
         prec_acc = order.currency_id.decimal_places
+        order = order.with_context(backend_recomputation=True)
 
         # Recompute amount paid because we don't trust the client
-        order.with_context(backend_recomputation=True).write({'amount_paid': sum(order.payment_ids.mapped('amount'))})
+        order.write({'amount_paid': sum(order.payment_ids.mapped('amount'))})
 
         if not draft and not float_is_zero(pos_order['amount_return'], prec_acc):
             cash_payment_method = pos_session.payment_method_ids.filtered('is_cash_count')[:1]
@@ -357,17 +362,28 @@ class PosOrder(models.Model):
         if operator in ['ilike', '='] and isinstance(value, str):
             if value[0] == '%' and value[-1] == '%':
                 value = value[1:-1]
-            value = value.zfill(3)
-            search = '% ____' + value[0] + '-___-__' + value[1:]
-            return [('pos_reference', operator, search or '')]
-        else:
-            raise NotImplementedError(_("Unsupported search operation"))
+            if len(value) < 3 and operator == 'ilike':
+                value = value.zfill(2)
+                search = '% _____-___-__' + value
+                return [('pos_reference', operator, search or '')]
+            elif len(value) == 3:
+                sql = SQL("""(
+                    SELECT id
+                      FROM pos_order
+                     WHERE pos_reference LIKE %s
+                       AND MOD(session_id, 10) = %s
+                    )""", '% _____-___-__' + value[1:], int(value[0]))
+                return [('id', 'in', sql)]
+            else:
+                raise UserError(_("The search on Order Number only supports up to 3 digits."))
+
+        raise NotImplementedError(_("Unsupported search operation"))
 
     @api.depends('lines.refund_orderline_ids', 'lines.refunded_orderline_id')
     def _compute_refund_related_fields(self):
         for order in self:
             order.refund_orders_count = len(order.mapped('lines.refund_orderline_ids.order_id'))
-            order.refunded_order_id = order.lines.refunded_orderline_id.order_id
+            order.refunded_order_id = next(iter(order.lines.refunded_orderline_id.order_id), False)
 
     @api.depends('lines.refunded_qty', 'lines.qty')
     def _compute_has_refundable_lines(self):
@@ -1021,6 +1037,8 @@ class PosOrder(models.Model):
     def action_pos_order_cancel(self):
         cancellable_orders = self.filtered(lambda order: order.state == 'draft')
         cancellable_orders.write({'state': 'cancel'})
+        for config in self.config_id:
+            config.notify_synchronisation(config.current_session_id.id, self.env.context.get('login_number', 0))
         return {
             'pos.order': cancellable_orders.read(self._load_pos_data_fields(self.config_id.ids[0]), load=False)
         }
@@ -1174,7 +1192,8 @@ class PosOrder(models.Model):
             'amount_tax': -self.amount_tax,
             'amount_total': -self.amount_total,
             'amount_paid': 0,
-            'is_total_cost_computed': False
+            'is_total_cost_computed': False,
+            'uuid': str(uuid4()),
         }
 
     def _prepare_mail_values(self, email, ticket, basic_ticket):
@@ -1219,6 +1238,7 @@ class PosOrder(models.Model):
                     PosOrderLineLot += pack_lot.copy()
                 line.copy(line._prepare_refund_data(refund_order, PosOrderLineLot))
             refund_orders |= refund_order
+        refund_orders._compute_prices()
         return refund_orders
 
     def refund(self):
@@ -1552,7 +1572,7 @@ class PosOrderLine(models.Model):
                 self.price_subtotal = taxes['total_excluded']
                 self.price_subtotal_incl = taxes['total_included']
 
-    @api.depends('order_id', 'order_id.fiscal_position_id')
+    @api.depends('order_id', 'order_id.fiscal_position_id', 'tax_ids')
     def _get_tax_ids_after_fiscal_position(self):
         for line in self:
             line.tax_ids_after_fiscal_position = line.order_id.fiscal_position_id.map_tax(line.tax_ids)
@@ -1650,13 +1670,14 @@ class PosOrderLine(models.Model):
         """
         for line in self.filtered(lambda l: not l.is_total_cost_computed):
             product = line.product_id
+            cost_currency = product.sudo().cost_currency_id
             if line._is_product_storable_fifo_avco() and stock_moves:
                 product_cost = product._compute_average_price(0, line.qty, line._get_stock_moves_to_consider(stock_moves, product))
-                if (product.cost_currency_id.is_zero(product_cost) and line.order_id.shipping_date and line.refunded_orderline_id):
+                if (cost_currency.is_zero(product_cost) and line.order_id.shipping_date and line.refunded_orderline_id):
                     product_cost = line.refunded_orderline_id.total_cost / line.refunded_orderline_id.qty
             else:
                 product_cost = product.standard_price
-            line.total_cost = line.qty * product.cost_currency_id._convert(
+            line.total_cost = line.qty * cost_currency._convert(
                 from_amount=product_cost,
                 to_currency=line.currency_id,
                 company=line.company_id or self.env.company,

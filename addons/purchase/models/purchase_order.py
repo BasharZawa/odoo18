@@ -22,7 +22,7 @@ class PurchaseOrder(models.Model):
     _rec_names_search = ['name', 'partner_ref']
     _order = 'priority desc, id desc'
 
-    @api.depends('order_line.price_subtotal', 'company_id')
+    @api.depends('order_line.price_subtotal', 'company_id', 'currency_id')
     def _amount_all(self):
         AccountTax = self.env['account.tax']
         for order in self:
@@ -85,7 +85,7 @@ class PurchaseOrder(models.Model):
     date_order = fields.Datetime('Order Deadline', required=True, index=True, copy=False, default=fields.Datetime.now,
         help="Depicts the date within which the Quotation should be confirmed and converted into a purchase order.")
     date_approve = fields.Datetime('Confirmation Date', readonly=True, index=True, copy=False)
-    partner_id = fields.Many2one('res.partner', string='Vendor', required=True, change_default=True, tracking=True, check_company=True, help="You can find a vendor by its Name, TIN, Email or Internal Reference.")
+    partner_id = fields.Many2one('res.partner', string='Vendor', required=True, index=True, change_default=True, tracking=True, check_company=True, help="You can find a vendor by its Name, TIN, Email or Internal Reference.")
     dest_address_id = fields.Many2one('res.partner', check_company=True, string='Dropship Address',
         help="Put an address if you want to deliver directly from the vendor to the customer. "
              "Otherwise, keep empty to deliver to your own company.")
@@ -249,7 +249,7 @@ class PurchaseOrder(models.Model):
                 company=order.company_id,
             )
             if order.currency_id != order.company_currency_id:
-                order.tax_totals['amount_total_cc'] = f"({formatLang(self.env, order.amount_total_cc, currency_obj=self.company_currency_id)})"
+                order.tax_totals['amount_total_cc'] = f"({formatLang(self.env, order.amount_total_cc, currency_obj=order.company_currency_id)})"
 
     @api.depends('company_id.account_fiscal_country_id', 'fiscal_position_id.country_id', 'fiscal_position_id.foreign_vat')
     def _compute_tax_country_id(self):
@@ -417,16 +417,17 @@ class PurchaseOrder(models.Model):
             pass
         else:
             access_opt = customer_portal_group[2].setdefault('button_access', {})
+            base_url = self.get_base_url()
             if self.env.context.get('is_reminder'):
                 access_opt['title'] = _('View')
                 actions = customer_portal_group[2].setdefault('actions', list())
                 actions.extend([
-                    {'url': self.get_confirm_url(confirm_type='reminder'), 'title': _('Accept')},
-                    {'url': self.get_update_url(), 'title': _('Update Dates')},
+                    {'url': base_url + self.get_confirm_url(confirm_type='reminder'), 'title': _('Accept')},
+                    {'url': base_url + self.get_update_url(), 'title': _('Update Dates')},
                 ])
             else:
-                access_opt['title'] = _('View Quotation') if self.state in ('draft', 'sent') else _('View Order')
-                access_opt['url'] = self.get_confirm_url()
+                title = _('View Quotation') if self.state in ('draft', 'sent') else _('View Order')
+                access_opt.update(title=title, url=base_url + self.get_confirm_url())
 
         return groups
 
@@ -1078,8 +1079,11 @@ class PurchaseOrder(models.Model):
             params=params
         )
         if seller:
+            price = seller.price_discounted
+            if seller.currency_id != self.currency_id:
+                price = seller.currency_id._convert(seller.price_discounted, self.currency_id)
             product_infos.update(
-                price=seller.price_discounted,
+                price=price,
                 min_qty=seller.min_qty,
             )
         # Check if the product uses some packaging.
@@ -1224,8 +1228,11 @@ class PurchaseOrder(models.Model):
                 date=pol.order_id.date_order and pol.order_id.date_order.date() or fields.Date.context_today(pol),
                 uom_id=pol.product_uom)
             if seller:
+                price = seller.price_discounted
+                if seller.currency_id != self.currency_id:
+                    price = seller.currency_id._convert(seller.price_discounted, self.currency_id)
                 # Fix the PO line's price on the seller's one.
-                pol.price_unit = seller.price_discounted
+                pol.price_unit = price
         return pol.price_unit_discounted
 
     def _create_update_date_activity(self, updated_dates):

@@ -55,12 +55,12 @@ PROJECT_TASK_READABLE_FIELDS = {
     'recurring_count',
     'duration_tracking',
     'display_follow_button',
+    'partner_id',
 }
 
 PROJECT_TASK_WRITABLE_FIELDS = {
     'name',
     'description',
-    'partner_id',
     'date_deadline',
     'date_last_stage_update',
     'tag_ids',
@@ -980,7 +980,11 @@ class Task(models.Model):
 
         if defaults:
             vals = {
-                **{key[8:]: value for key, value in self.env.context.items() if key.startswith("default_")},
+                **{
+                    key[8:]: value
+                    for key, value in self.env.context.items()
+                    if key.startswith("default_") and key[8:] in self._fields
+                },
                 **vals
             }
 
@@ -1999,7 +2003,7 @@ class Task(models.Model):
         menu_id = self.env.ref('project.menu_project_management_all_tasks').id
         return {
             'type': 'ir.actions.act_url',
-            'url': f"/odoo/1/action-project.act_project_project_2_project_task_all/{self.id}?menu_id={menu_id}",
+            'url': f"/odoo/{self.project_id.id}/action-project.act_project_project_2_project_task_all/{self.id}?menu_id={menu_id}",
             'target': 'new',
         }
 

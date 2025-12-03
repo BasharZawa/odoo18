@@ -144,7 +144,7 @@ class SaleOrderLine(models.Model):
             if line.analytic_distribution:
                 applied_root_plans = self.env['account.analytic.account'].browse(
                     list({int(account_id) for ids in line.analytic_distribution for account_id in ids.split(",")})
-                ).root_plan_id
+                ).exists().root_plan_id
                 if accounts_to_add := project._get_analytic_accounts().filtered(
                     lambda account: account.root_plan_id not in applied_root_plans
                 ):
@@ -275,7 +275,7 @@ class SaleOrderLine(models.Model):
     def _timesheet_create_task_prepare_values(self, project):
         self.ensure_one()
         allocated_hours = 0.0
-        if self.product_id.service_type not in ['milestones', 'manual']:
+        if self.product_id.service_type != 'milestones':
             allocated_hours = self._convert_qty_company_hours(self.company_id)
         sale_line_name_parts = self.name.split('\n')
         products_inside_template_line_with_name = self.order_id.sale_order_template_id.sale_order_template_line_ids.filtered(

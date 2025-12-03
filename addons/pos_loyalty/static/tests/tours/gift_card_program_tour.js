@@ -7,6 +7,7 @@ import * as TicketScreen from "@point_of_sale/../tests/tours/utils/ticket_screen
 import * as Order from "@point_of_sale/../tests/tours/utils/generic_components/order_widget_util";
 import * as PaymentScreen from "@point_of_sale/../tests/tours/utils/payment_screen_util";
 import * as ReceiptScreen from "@point_of_sale/../tests/tours/utils/receipt_screen_util";
+import * as Utils from "@point_of_sale/../tests/tours/utils/common";
 
 registry.category("web_tour.tours").add("GiftCardProgramTour1", {
     steps: () =>
@@ -164,7 +165,7 @@ registry.category("web_tour.tours").add("GiftCardProgramInvoice", {
             Dialog.confirm("Open Register"),
             ProductScreen.clickDisplayedProduct("Gift Card"),
             ProductScreen.clickPartnerButton(),
-            ProductScreen.clickCustomer("Test Partner"),
+            ProductScreen.clickCustomer("A Test Partner"),
             PosLoyalty.orderTotalIs("50.00"),
             ProductScreen.clickPayButton(),
             PaymentScreen.clickPaymentMethod("Bank"),
@@ -191,7 +192,7 @@ registry.category("web_tour.tours").add("test_physical_gift_card_invoiced", {
             Chrome.startPoS(),
             Dialog.confirm("Open Register"),
             ProductScreen.clickPartnerButton(),
-            ProductScreen.clickCustomer("Test Partner"),
+            ProductScreen.clickCustomer("A Test Partner"),
             ProductScreen.addOrderline("Gift Card", "1", "50", "50"),
             PosLoyalty.createManualGiftCard("test-card-1234", 125),
             ProductScreen.selectedOrderlineHas("Gift Card", "1.00", "125"),
@@ -201,5 +202,21 @@ registry.category("web_tour.tours").add("test_physical_gift_card_invoiced", {
             PaymentScreen.clickInvoiceButton(),
             PaymentScreen.clickValidate(),
             ReceiptScreen.isShown(),
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_coupon_code_stays_set", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            ProductScreen.clickDisplayedProduct("Gift Card"),
+            PosLoyalty.createManualGiftCard("Card Name", 20),
+            ProductScreen.clickDisplayedProduct("Gift Card"),
+            Utils.refresh(),
+            ProductScreen.clickPayButton(),
+            PaymentScreen.clickPaymentMethod("Cash"),
+            PaymentScreen.clickValidate(),
+            ReceiptScreen.clickNextOrder(),
         ].flat(),
 });

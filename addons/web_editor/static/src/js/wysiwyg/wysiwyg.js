@@ -405,10 +405,19 @@ export class Wysiwyg extends Component {
         }
 
         const getYoutubeVideoElement = async (url) => {
-            const { embed_url: src } = await this._serviceRpc(
-                '/web_editor/video_url/data',
-                { video_url: url },
-            );
+            const parsedUrl = new URL(url);
+            const urlParams = parsedUrl.searchParams;
+            const autoplay = urlParams.get("autoplay") === "1";
+            const loop = urlParams.get("loop") === "1";
+            const hide_controls = urlParams.get("controls") === "0";
+            const hide_fullscreen = urlParams.get("fs") === "0";
+            const { embed_url: src } = await this._serviceRpc("/web_editor/video_url/data", {
+                video_url: url,
+                autoplay,
+                loop,
+                hide_controls,
+                hide_fullscreen,
+            });
             const [savedVideo] = VideoSelector.createElements([{src}]);
             savedVideo.classList.add(...VideoSelector.mediaSpecificClasses);
             return savedVideo;
@@ -651,6 +660,9 @@ export class Wysiwyg extends Component {
             this.snippetsMenuComponent = await this.getSnippetsMenuClass(options);
             await this._insertSnippetMenu();
             $(this.odooEditor.document.body).addClass('editor_enable');
+            if (localization.direction === "rtl") {
+                this.odooEditor.document.body.setAttribute("is-rtl-backend", "true");
+            }
 
             this._onBeforeUnload = (event) => {
                 if (this.isDirty()) {
@@ -1344,6 +1356,10 @@ export class Wysiwyg extends Component {
                         node.classList.remove(...this.odooEditor.options.renderingClasses);
                     }
                     const html = $(fieldNodeClone).html();
+                    // Prevent recording unnecessary mutations (especially in the header,
+                    // where multiple observers are used to synchronize desktop and mobile views)
+                    // while clearing the uncommitted draft.
+                    this.odooEditor.observerUnactive("undo_redo_header");
                     this.odooEditor.withoutRollback(() => {
                         for (const node of $nodes) {
                             if (node.classList.contains('o_translation_without_style')) {
@@ -1361,6 +1377,7 @@ export class Wysiwyg extends Component {
                             }
                         }
                     });
+                    this.odooEditor.observerActive("undo_redo_header");
                     this._observeOdooFieldChanges();
                 });
                 observer.observe(field, observerOptions);
@@ -3713,17 +3730,24 @@ export class Wysiwyg extends Component {
         // Modifying an image always creates a copy of the original, even if
         // it was modified previously, as the other modified image may be used
         // elsewhere if the snippet was duplicated or was saved as a custom one.
-        newAttachmentSrc = await this._serviceRpc(
-            `/web_editor/modify_image/${encodeURIComponent(el.dataset.originalId)}`,
-            {
-                res_model: resModel,
-                res_id: parseInt(resId),
-                data: (isBackground ? el.dataset.bgSrc : el.getAttribute('src')).split(',')[1],
-                alt_data: altData,
-                mimetype: (isBackground ? el.dataset.mimetype : el.getAttribute('src').split(":")[1].split(";")[0]),
-                name: (el.dataset.fileName ? el.dataset.fileName : null),
-            },
-        );
+        let attachmentNotFound = false;
+        try {
+            newAttachmentSrc = await this._serviceRpc(
+                `/web_editor/modify_image/${encodeURIComponent(el.dataset.originalId)}`,
+                {
+                    res_model: resModel,
+                    res_id: parseInt(resId),
+                    data: (isBackground ? el.dataset.bgSrc : el.getAttribute('src')).split(',')[1],
+                    alt_data: altData,
+                    mimetype: (isBackground ? el.dataset.mimetype : el.getAttribute('src').split(":")[1].split(";")[0]),
+                    name: (el.dataset.fileName ? el.dataset.fileName : null),
+                },
+            );
+        } catch {
+            // On RPC failure, set a placeholder image source with a flag.
+            newAttachmentSrc = "/html_editor/static/src/img/placeholder_thumbnail.png";
+            attachmentNotFound = true;
+        }
         el.classList.remove('o_modified_image_to_save');
         if (isBackground) {
             const parts = weUtils.backgroundImageCssToParts($(el).css('background-image'));
@@ -3732,9 +3756,16 @@ export class Wysiwyg extends Component {
             $(el).css('background-image', combined);
             delete el.dataset.bgSrc;
         } else {
-            el.setAttribute('src', newAttachmentSrc);
+            let targetEl = el;
+            if (attachmentNotFound) {
+                // Reset image to a clean state if a placeholder is returned.
+                targetEl = document.createElement("img");
+                el.insertAdjacentElement("afterend", targetEl);
+                el.remove();
+            }
+            targetEl.src = newAttachmentSrc;
             // Also update carousel thumbnail.
-            weUtils.forwardToThumbnail(el);
+            weUtils.forwardToThumbnail(targetEl);
         }
     }
 

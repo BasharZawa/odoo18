@@ -1,7 +1,7 @@
 import { Plugin } from "../plugin";
 import { closestBlock, isBlock } from "../utils/blocks";
 import { hasAnyNodesColor, TEXT_CLASSES_REGEX, BG_CLASSES_REGEX } from "@html_editor/utils/color";
-import { cleanTextNode, splitTextNode, unwrapContents } from "../utils/dom";
+import { cleanTextNode, removeEmptyTextNodes, splitTextNode, unwrapContents } from "../utils/dom";
 import {
     areSimilarElements,
     isContentEditable,
@@ -178,7 +178,7 @@ export class FormatPlugin extends Plugin {
     hasSelectionFormat(format, targetedNodes = this.dependencies.selection.getTargetedNodes()) {
         const targetedTextNodes = targetedNodes.filter(isTextNode);
         const isFormatted = formatsSpecs[format].isFormatted;
-        return targetedTextNodes.some((n) => isFormatted(n, this.editable));
+        return targetedTextNodes.some((n) => isFormatted(n, { editable: this.editable }));
     }
     /**
      * Return true if the current selection on the editable appears as the given
@@ -199,7 +199,8 @@ export class FormatPlugin extends Plugin {
         );
         const isFormatted = formatsSpecs[format].isFormatted;
         return (
-            targetedTextNodes.length && targetedTextNodes.every((node) => isFormatted(node, this.editable))
+            targetedTextNodes.length &&
+            targetedTextNodes.every((node) => isFormatted(node, { editable: this.editable }))
         );
     }
 
@@ -304,6 +305,12 @@ export class FormatPlugin extends Plugin {
                 if (isUselessZws) {
                     unwrapContents(parentNode);
                 } else {
+                    const cursors = this.dependencies.selection.preserveSelection();
+                    this.dispatchTo("clean_handlers", parentNode);
+                    // Remove empty text nodes (replaced FEFFs) before splitting,
+                    // to prevent creating empty elements in the DOM.
+                    removeEmptyTextNodes(parentNode, cursors);
+                    cursors.restore();
                     const newLastAncestorInlineFormat = this.dependencies.split.splitAroundUntil(
                         currentNode,
                         parentNode

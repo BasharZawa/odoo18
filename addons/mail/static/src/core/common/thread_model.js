@@ -596,7 +596,7 @@ export class Thread extends Record {
                 return;
             }
             const otherMembers = this.channelMembers.filter((member) =>
-                member.persona.notEq(this.store.self)
+                member.notEq(this.selfMember)
             );
             if (otherMembers.length === 0) {
                 return;
@@ -677,6 +677,7 @@ export class Thread extends Record {
         try {
             const { data, messages } = await this.fetchMessagesData({ after, around, before });
             this.store.insert(data, { html: true });
+            this.hasLoadingFailed = false;
             return this.store.Message.insert(messages.reverse());
         } catch (e) {
             this.hasLoadingFailed = true;

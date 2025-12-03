@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-08 18:37+0000\n"
-"PO-Revision-Date: 2025-08-07 09:04+0000\n"
+"POT-Creation-Date: 2025-11-28 18:36+0000\n"
+"PO-Revision-Date: 2025-11-19 09:14+0000\n"
 "Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>\n"
 "Language-Team: Ukrainian <https://translate.odoo.com/projects/odoo-18/"
 "account/uk/>\n"
@@ -206,18 +206,6 @@ msgstr "%(ref)s (%(currency_amount)s)"
 #: code:addons/account/models/account_account_tag.py:0
 msgid "%(tag)s (%(country_code)s)"
 msgstr "%(tag)s (%(country_code)s)"
-
-#. module: account
-#. odoo-python
-#: code:addons/account/models/account_tax.py:0
-msgid ""
-"%(tax_account)s (%(account_name)s) should be an account of type \"%"
-"(receivable)s\" or \"%(payable)s\" with both options \"%"
-"(allow_reconciliation)s\" and \"%(non_trade)s\" enabled."
-msgstr ""
-"%(tax_account)s (%(account_name)s) має бути рахунок з типом \"%"
-"(receivable)s\"або \"%(payable)s\" з двома опціями \"%"
-"(allow_reconciliation)s\" та включеним \"%(non_trade)s\"."
 
 #. module: account
 #. odoo-python
@@ -995,14 +983,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.portal_my_details_fields
 msgid ""
 "<small class=\"form-text text-muted\">\n"
-"                    You can choose how you want us to send your invoices, "
-"and with which electronic format.\n"
-"                </small>"
+"                        You can choose how you want us to send your "
+"invoices, and with which electronic format.\n"
+"                    </small>"
 msgstr ""
 "<small class=\"form-text text-muted\">\n"
-"                    Ви можете вибрати спосіб надсилання рахунків-фактур і "
-"електронний формат.\n"
-"                </small>"
+"                        Ви можете обрати, як і в якому електронному форматі "
+"нам надсилати рахунки-фактури.\n"
+"                    </small>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
@@ -2406,10 +2394,10 @@ msgstr "Нарахування"
 #. odoo-python
 #: code:addons/account/wizard/accrued_orders.py:0
 msgid ""
-"Accrual entry created on %(date)s: %(accrual_entry)s.                    And "
-"its reverse entry: %(reverse_entry)s."
+"Accrual entry created on %(date)s: %(accrual_entry)s.                And its "
+"reverse entry: %(reverse_entry)s."
 msgstr ""
-"Дата нарахування створена %(date)s: %(accrual_entry)s.                    І "
+"Запис нарахування створено %(date)s: %(accrual_entry)s.                І "
 "його зворотний запис: %(reverse_entry)s."
 
 #. module: account
@@ -3899,6 +3887,27 @@ msgid "Batch Payments"
 msgstr "Групові платежі"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid ""
+"Batch invoice sending is unavailable. Please, activate the cron to enable "
+"batch sending of invoices."
+msgstr ""
+"Групове надсилання рахунків-фактур недоступне. Будь ласка, активуйте cron, "
+"щоб увімкнути групове надсилання рахунків-фактур."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid ""
+"Batch invoice sending is unavailable. Please, contact your system "
+"administrator to activate the cron to enable batch sending of invoices."
+msgstr ""
+"Групове надсилання рахунків недоступне. Будь ласка, зверніться до свого "
+"системного адміністратора, щоб активувати cron для групового надсилання "
+"рахунків."
+
+#. module: account
 #. odoo-javascript
 #: code:addons/account/static/src/components/account_resequence/account_resequence.xml:0
 msgid "Before"
@@ -4658,6 +4667,7 @@ msgstr "Закрити"
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_payment_method__code
 #: model:ir.model.fields,field_description:account.field_account_payment_method_line__code
+#: model:ir.model.fields,field_description:account.field_account_payment_register__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_report_line__code
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_list
@@ -6186,6 +6196,12 @@ msgstr "Податки за замовчуванням, які використ�
 #: model:ir.model.fields,help:account.field_product_template__taxes_id
 msgid "Default taxes used when selling the product"
 msgstr "Податки за замовчуванням, які використовуються при продажу товару"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Default value for 'company_id' for %(record)s is not an integer"
+msgstr "Типове значення для 'company_id' для %(record)s не є цілим числом"
 
 #. module: account
 #: model:account.account,name:account.1_deferred_revenue
@@ -8012,6 +8028,12 @@ msgid "Global Lock Date"
 msgstr "Глобальна дата блокування"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid "Go to cron configuration"
+msgstr "Перейдіть до налаштувань крону"
+
+#. module: account
 #: model_terms:ir.actions.act_window,help:account.action_account_audit_trail_report
 msgid "Go to the accounting settings"
 msgstr "Зайдіть в налаштування бухгалтерського обліку"
@@ -8090,11 +8112,11 @@ msgstr "Групові платежі в одній партії полегшу�
 #. odoo-python
 #: code:addons/account/models/account_report.py:0
 msgid ""
-"Groupby feature isn't supported by aggregation engine. Please remove the "
-"groupby value on '%s'"
+"Groupby feature isn't supported by '%(engine)s' engine. Please remove the "
+"groupby value on '%(report_line)s'"
 msgstr ""
-"Функція Групувати за не підтримується механізмом агрегації. Змініть значення "
-"групувати за на '%s'"
+"Функція групування не підтримується '%(engine)s'. Будь ласка, видаліть "
+"значення groupby з '%(report_line)s'"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_merge_wizard_line__grouping_key
@@ -9829,6 +9851,11 @@ msgstr "Липень"
 #: model:ir.model.fields.selection,name:account.selection__res_company__fiscalyear_last_month__6
 msgid "June"
 msgstr "Червень"
+
+#. module: account
+#: model:ir.model,name:account.model_kpi_provider
+msgid "KPI Provider"
+msgstr "Провайдер KPI"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__kanban_dashboard
@@ -12406,6 +12433,12 @@ msgstr ""
 "пропущені."
 
 #. module: account
+#: model:ir.model.fields,help:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,help:account.field_account_move__reconciled_payment_ids
+msgid "Payments that have been reconciled with this invoice."
+msgstr "Платежі, які було узгоджено з цим рахунком-фактурою."
+
+#. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment_term_line__value__percent
 msgid "Percent"
 msgstr "Відсоток"
@@ -13073,6 +13106,12 @@ msgstr "Узгоджені рахунки"
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_invoices_type
 msgid "Reconciled Invoices Type"
 msgstr "Тип узгоджених рахунків"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,field_description:account.field_account_move__reconciled_payment_ids
+msgid "Reconciled Payments"
+msgstr "Узгоджені платежі"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_statement_line_ids
@@ -15639,6 +15678,12 @@ msgid "The country to use the tax reports from for this company"
 msgstr "Країна для використоання податкових звітів з цієї компанії"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "The currency rate must be strictly positive."
+msgstr "Курс валют повинен бути строго більше нуля."
+
+#. module: account
 #: model:ir.model.fields,help:account.field_account_journal__currency_id
 msgid "The currency used to enter statement"
 msgstr "Валюта використовується у виписці"
@@ -16904,8 +16949,8 @@ msgstr "Цю повторювану проводку буде опубліков
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
-msgid "This setting cannot be changed after an invoice is created."
-msgstr "Цей параметр не можна змінити після створення рахунку-фактури."
+msgid "This setting locks once a journal entry is created."
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -19633,6 +19678,43 @@ msgid ""
 msgstr ""
 "{{ object.company_id.name }} Квитанція про оплату (Ref {{ object.name or 'n/"
 "a' }})"
+
+#~ msgid "This setting cannot be changed after an invoice is created."
+#~ msgstr "Цей параметр не можна змінити після створення рахунку-фактури."
+
+#~ msgid ""
+#~ "%(tax_account)s (%(account_name)s) should be an account of type \"%"
+#~ "(receivable)s\" or \"%(payable)s\" with both options \"%"
+#~ "(allow_reconciliation)s\" and \"%(non_trade)s\" enabled."
+#~ msgstr ""
+#~ "%(tax_account)s (%(account_name)s) має бути рахунок з типом \"%"
+#~ "(receivable)s\"або \"%(payable)s\" з двома опціями \"%"
+#~ "(allow_reconciliation)s\" та включеним \"%(non_trade)s\"."
+
+#~ msgid ""
+#~ "Accrual entry created on %(date)s: %(accrual_entry)s.                    "
+#~ "And its reverse entry: %(reverse_entry)s."
+#~ msgstr ""
+#~ "Дата нарахування створена %(date)s: %(accrual_entry)s.                    "
+#~ "І його зворотний запис: %(reverse_entry)s."
+
+#~ msgid ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    You can choose how you want us to send your invoices, "
+#~ "and with which electronic format.\n"
+#~ "                </small>"
+#~ msgstr ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    Ви можете вибрати спосіб надсилання рахунків-фактур і "
+#~ "електронний формат.\n"
+#~ "                </small>"
+
+#~ msgid ""
+#~ "Groupby feature isn't supported by aggregation engine. Please remove the "
+#~ "groupby value on '%s'"
+#~ msgstr ""
+#~ "Функція Групувати за не підтримується механізмом агрегації. Змініть "
+#~ "значення групувати за на '%s'"
 
 #~ msgid "IBAN: BE76 4294 6878 9995"
 #~ msgstr "IBAN: BE76 4294 6878 9995"

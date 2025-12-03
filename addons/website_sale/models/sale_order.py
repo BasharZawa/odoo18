@@ -107,6 +107,16 @@ class SaleOrder(models.Model):
                     ('company_id', '=', order.company_id.id),
                 ], limit=1)
 
+    def _compute_pricelist_id(self):
+        # Override to compute pricelists for carts using the partner's GeoIP,
+        # providing a fallback in case they don't have an address set.
+        if not (country_code := self.env['website']._get_geoip_country_code()):
+            return super()._compute_pricelist_id()
+        if website_orders := self.filtered('website_id'):
+            website_orders = website_orders.with_context(country_code=country_code)
+            super(SaleOrder, website_orders)._compute_pricelist_id()
+        return super(SaleOrder, self - website_orders)._compute_pricelist_id()
+
     def _search_abandoned_cart(self, operator, value):
         website_ids = self.env['website'].search_read(fields=['id', 'cart_abandoned_delay', 'partner_id'])
         deadlines = [[
@@ -430,7 +440,12 @@ class SaleOrder(models.Model):
         if not filtered_sol:
             return self.env['sale.order.line']
 
-        if product.product_tmpl_id._has_no_variant_attributes():
+        has_configurable_no_variant_attributes = any(
+            len(line.value_ids) > 1 or line.attribute_id.display_type == 'multi'
+            for line in product.attribute_line_ids
+            if line.attribute_id.create_variant == 'no_variant'
+        )
+        if has_configurable_no_variant_attributes:
             filtered_sol = filtered_sol.filtered(
                 lambda sol:
                     sol.product_no_variant_attribute_value_ids.ids == no_variant_attribute_value_ids

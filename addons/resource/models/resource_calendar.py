@@ -362,15 +362,16 @@ class ResourceCalendar(models.Model):
                     for val in base_result]
             for tz in resources_per_tz.keys()
         }
+        resource_calendars = resources._get_calendar_at(start_dt, tz)
         result_per_resource_id = dict()
-        for tz, resources in resources_per_tz.items():
+        for tz, tz_resources in resources_per_tz.items():
             res = result_per_tz[tz]
             res_intervals = WorkIntervals(res)
             start_datetime = start_dt.astimezone(tz)
             end_datetime = end_dt.astimezone(tz)
 
-            for resource in resources:
-                if resource and resource._is_fully_flexible():
+            for resource in tz_resources:
+                if resource and not resource_calendars.get(resource, False):
                     # If the resource is fully flexible, return the whole period from start_dt to end_dt with a dummy attendance
                     hours = (end_dt - start_dt).total_seconds() / 3600
                     days = hours / 24
@@ -378,8 +379,8 @@ class ResourceCalendar(models.Model):
                         'duration_hours': hours,
                         'duration_days': days,
                     })
-                    result_per_resource_id[resource.id] = WorkIntervals([(start_dt, end_dt, dummy_attendance)])
-                elif resource and resource.calendar_id.flexible_hours:
+                    result_per_resource_id[resource.id] = WorkIntervals([(start_datetime, end_datetime, dummy_attendance)])
+                elif self.flexible_hours or (resource and resource_calendars[resource].flexible_hours):
                     # For flexible Calendars, we create intervals to fill in the weekly intervals with the average daily hours
                     # until the full time required hours are met. This gives us the most correct approximation when looking at a daily
                     # and weekly range for time offs and overtime calculations and work entry generation
@@ -387,8 +388,10 @@ class ResourceCalendar(models.Model):
                     end_datetime_adjusted = end_datetime - relativedelta(seconds=1)
                     end_date = end_datetime_adjusted.date()
 
-                    full_time_required_hours = resource.calendar_id.full_time_required_hours
-                    max_hours_per_day = resource.calendar_id.hours_per_day
+                    calendar = resource_calendars[resource] if resource else self
+
+                    full_time_required_hours = calendar.full_time_required_hours
+                    max_hours_per_day = calendar.hours_per_day
 
                     intervals = []
                     current_start_day = start_date
@@ -681,7 +684,10 @@ class ResourceCalendar(models.Model):
         if company_id:
             domain = [('company_id', 'in', (company_id.id, False))]
         if self.flexible_hours:
-            works = {d[0].date() for d in self._leave_intervals_batch(start_dt, end_dt, domain=domain)[False]}
+            leave_intervals = self._leave_intervals_batch(start_dt, end_dt, domain=domain)[False]
+            works = set()
+            for start_int, end_int, _ in leave_intervals:
+                works.update(start_int.date() + timedelta(days=i) for i in range((end_int.date() - start_int.date()).days + 1))
             return {fields.Date.to_string(day.date()): (day.date() in works) for day in rrule(DAILY, start_dt, until=end_dt)}
         works = {d[0].date() for d in self._work_intervals_batch(start_dt, end_dt, domain=domain)[False]}
         return {fields.Date.to_string(day.date()): (day.date() not in works) for day in rrule(DAILY, start_dt, until=end_dt)}

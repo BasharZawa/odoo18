@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* web
-# 
+# * web
+#
 # Translators:
 # Tomas Darius Davainis <tomas@davainis.lt>, 2024
 # Eimantas <eimantas@focusate.eu>, 2024
@@ -34,20 +34,24 @@
 # Ugne, 2025
 # Jessica Jakara, 2025
 # Paulius Sladkevičius <paulius@versada.eu>, 2025
-# 
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-23 18:39+0000\n"
-"PO-Revision-Date: 2024-09-25 09:42+0000\n"
-"Last-Translator: Paulius Sladkevičius <paulius@versada.eu>, 2025\n"
-"Language-Team: Lithuanian (https://app.transifex.com/odoo/teams/41243/lt/)\n"
+"POT-Creation-Date: 2025-10-16 18:39+0000\n"
+"PO-Revision-Date: 2025-11-21 06:39+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"Language-Team: Lithuanian <https://translate.odoo.com/projects/odoo-18/web/"
+"lt/>\n"
+"Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: lt\n"
-"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);\n"
+"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
+" n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: web
 #. odoo-javascript
@@ -503,20 +507,20 @@ msgstr ""
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
-"<span class=\"text-nowrap\">$ <span "
-"class=\"oe_currency_value\">11,750.00</span></span>"
+"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">11,750.00</"
+"span></span>"
 msgstr ""
-"<span class=\"text-nowrap\">$ <span "
-"class=\"oe_currency_value\">11,750.00</span></span>"
+"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">11,750.00</"
+"span></span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
-"<span class=\"text-nowrap\">$ <span "
-"class=\"oe_currency_value\">7,500.00</span></span>"
+"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">7,500.00</"
+"span></span>"
 msgstr ""
-"<span class=\"text-nowrap\">$ <span "
-"class=\"oe_currency_value\">7,500.00</span></span>"
+"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">7,500.00</"
+"span></span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -536,8 +540,10 @@ msgstr ""
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
-"<span class=\"w-100 o_force_ltr\" itemprop=\"streetAddress\">77 Santa Barbara\n"
-"                                       Rd<br/>Pleasant Hill CA 94523<br/>United States</span>"
+"<span class=\"w-100 o_force_ltr\" itemprop=\"streetAddress\">77 Santa "
+"Barbara\n"
+"                                       Rd<br/>Pleasant Hill CA 94523<br/"
+">United States</span>"
 msgstr ""
 
 #. module: web
@@ -601,21 +607,24 @@ msgstr "<span>Vieneto kaina</span>"
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
 "<span>[FURN_8220] Four Person Desk<br/>\n"
-"                                       Four person modern office workstation</span>"
+"                                       Four person modern office "
+"workstation</span>"
 msgstr ""
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
 "<span>[FURN_8999] Three-Seat Sofa<br/>\n"
-"                                       Three Seater Sofa with Lounger in Steel Grey Colour</span>"
+"                                       Three Seater Sofa with Lounger in "
+"Steel Grey Colour</span>"
 msgstr ""
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid ""
 "<strong class=\"text-nowrap\">$ <span class=\"oe_currency_value\">\n"
-"                                                       22,137.50</span></strong>"
+"                                                       22,137.50</span></"
+"strong>"
 msgstr ""
 
 #. module: web
@@ -1051,7 +1060,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "Americas"
-msgstr ""
+msgstr "Amerikos"
 
 #. module: web
 #. odoo-javascript
@@ -1118,8 +1127,7 @@ msgstr "Archyvuoti viską"
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/kanban/kanban_header.js:0
-msgid ""
-"Are you sure that you want to archive all the records from this column?"
+msgid "Are you sure that you want to archive all the records from this column?"
 msgstr "Ar tikrai norite archyvuoti visus šio stulpelio įrašus?"
 
 #. module: web
@@ -1373,8 +1381,8 @@ msgstr "Tapti super vartotoju"
 #. odoo-python
 #: code:addons/web/controllers/export.py:0
 msgid ""
-"Binary fields can not be exported to Excel unless their content is "
-"base64-encoded. That does not seem to be the case for %s."
+"Binary fields can not be exported to Excel unless their content is base64-"
+"encoded. That does not seem to be the case for %s."
 msgstr ""
 "Binariniai laukai negali būti eksportuojami į Excel, kol jie nėra užkoduoti "
 "base64. Neatrodo, kad toks būtų %s."
@@ -1448,9 +1456,9 @@ msgstr "Mygtuko tipas:"
 #. odoo-javascript
 #: code:addons/web/static/src/core/signature/signature_dialog.xml:0
 msgid ""
-"By clicking Adopt & Sign, I agree that the chosen signature/initials will be"
-" a valid electronic representation of my hand-written signature/initials for"
-" all purposes when it is used on documents, including legally binding "
+"By clicking Adopt & Sign, I agree that the chosen signature/initials will be "
+"a valid electronic representation of my hand-written signature/initials for "
+"all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
 
@@ -1676,7 +1684,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/label_selection/label_selection_field.js:0
 msgid "Classes"
-msgstr ""
+msgstr "Klasės"
 
 #. module: web
 #. odoo-javascript
@@ -1745,7 +1753,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/kanban_color_picker/kanban_color_picker_field.js:0
 msgid "Color Picker"
-msgstr ""
+msgstr "Color Picker"
 
 #. module: web
 #. odoo-javascript
@@ -2721,7 +2729,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/settings_form_view/highlight_text/form_label_highlight_text.xml:0
 msgid "Enterprise"
-msgstr ""
+msgstr "Verslininkystė"
 
 #. module: web
 #. odoo-javascript
@@ -3024,7 +3032,8 @@ msgstr "Poraštės tekstas bus rodomas visų ataskaitų apačioje."
 #. odoo-javascript
 #: code:addons/web/static/src/views/pivot/pivot_renderer.js:0
 msgid ""
-"For Excel compatibility, data cannot be exported if there are more than 16384 columns.\n"
+"For Excel compatibility, data cannot be exported if there are more than "
+"16384 columns.\n"
 "\n"
 "Tip: try to flip axis, filter further or reduce the number of measures."
 msgstr ""
@@ -3056,7 +3065,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "French"
-msgstr ""
+msgstr "Prancūzų kalba"
 
 #. module: web
 #. odoo-javascript
@@ -3289,8 +3298,7 @@ msgstr "Piktograma"
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/url/url_field.js:0
-msgid ""
-"If True, the url will be used as it is, without any prefix added to it."
+msgid "If True, the url will be used as it is, without any prefix added to it."
 msgstr ""
 
 #. module: web
@@ -3562,11 +3570,16 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/debug/profiling/profiling_qweb.xml:0
 msgid ""
-"It is possible that the \"t-call\" time does not correspond to the overall time of the\n"
-"            template. Because the global time (in the drop down) does not take into account the\n"
-"            duration which is not in the rendering (look for the template, read, inheritance,\n"
-"            compilation...). During rendering, the global time also takes part of the time to make\n"
-"            the profile as well as some part not logged in the function generated by the qweb."
+"It is possible that the \"t-call\" time does not correspond to the overall "
+"time of the\n"
+"            template. Because the global time (in the drop down) does not "
+"take into account the\n"
+"            duration which is not in the rendering (look for the template, "
+"read, inheritance,\n"
+"            compilation...). During rendering, the global time also takes "
+"part of the time to make\n"
+"            the profile as well as some part not logged in the function "
+"generated by the qweb."
 msgstr ""
 
 #. module: web
@@ -4288,7 +4301,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/statusbar/statusbar_field.xml:0
 msgid "More..."
-msgstr ""
+msgstr "Daugiau..."
 
 #. module: web
 #. odoo-javascript
@@ -4761,7 +4774,7 @@ msgstr "Odoo programos klaida"
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/settings_form_view/fields/upgrade_dialog.xml:0
 msgid "Odoo Enterprise"
-msgstr ""
+msgstr "Odoo Verslininkystė"
 
 #. module: web
 #. odoo-javascript
@@ -4886,16 +4899,16 @@ msgstr ""
 #. odoo-python
 #: code:addons/web/models/models.py:0
 msgid ""
-"Only types %(supported_types)s are supported for category (found type "
-"%(field_type)s)"
+"Only types %(supported_types)s are supported for category (found type %"
+"(field_type)s)"
 msgstr ""
 
 #. module: web
 #. odoo-python
 #: code:addons/web/models/models.py:0
 msgid ""
-"Only types %(supported_types)s are supported for filter (found type "
-"%(field_type)s)"
+"Only types %(supported_types)s are supported for filter (found type %"
+"(field_type)s)"
 msgstr ""
 
 #. module: web
@@ -4908,7 +4921,7 @@ msgstr "Tik jūs"
 #. odoo-javascript
 #: code:addons/web/static/src/core/errors/error_dialogs.xml:0
 msgid "Oops!"
-msgstr ""
+msgstr "Oi!"
 
 #. module: web
 #. odoo-javascript
@@ -5095,8 +5108,8 @@ msgid ""
 "Pie chart cannot mix positive and negative numbers. Try to change your "
 "domain to only display positive results"
 msgstr ""
-"Skritulinė diagrama negali maišyti teigiamų ir neigiamų skaičių. Pabandykite"
-" pakeisti rezultatus tik į teigiamus."
+"Skritulinė diagrama negali maišyti teigiamų ir neigiamų skaičių. Pabandykite "
+"pakeisti rezultatus tik į teigiamus."
 
 #. module: web
 #. odoo-javascript
@@ -5493,7 +5506,7 @@ msgstr "Numeris"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/domain/domain_field.xml:0
 msgid "Refresh"
-msgstr ""
+msgstr "Atnaujinti"
 
 #. module: web
 #. odoo-javascript
@@ -6062,8 +6075,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/datetime/datetime_field.js:0
 msgid ""
-"Set to true the full range input has to be display by default, even if "
-"empty."
+"Set to true the full range input has to be display by default, even if empty."
 msgstr ""
 
 #. module: web
@@ -6477,6 +6489,9 @@ msgid ""
 "country format. You can use '/' to indicate that the partner is not subject "
 "to tax."
 msgstr ""
+"Mokesčių identifikacijos numeris. Vertės čia bus tikrinamos pagal šalies "
+"formatą. Galite naudoti '/' norėdami nurodyti, kad partneris yra "
+"neapmokestinamas."
 
 #. module: web
 #. odoo-python
@@ -6524,14 +6539,26 @@ msgstr ""
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/core/utils/files.js:0
+msgid "The file is not an image, resizing is not possible"
+msgstr ""
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/core/errors/error_dialogs.xml:0
 #: code:addons/web/static/src/public/error_notifications.js:0
 msgid ""
-"The operation was interrupted. This usually means that the current operation"
-" is taking too much time."
+"The operation was interrupted. This usually means that the current operation "
+"is taking too much time."
 msgstr ""
 "Operacija buvo nutraukta. Tai dažniausiai reiškia, kad vykstanti operacija "
 "trunka per ilgai."
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/core/utils/files.js:0
+msgid "The resizing of the image failed"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -6543,8 +6570,8 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/utils/files.js:0
 msgid ""
-"The selected file (%(size)sB) is larger than the maximum allowed file size "
-"(%(maxSize)sB)."
+"The selected file (%(size)sB) is larger than the maximum allowed file size (%"
+"(maxSize)sB)."
 msgstr ""
 
 #. module: web
@@ -6690,7 +6717,8 @@ msgstr ""
 #: code:addons/web/static/src/views/fields/timezone_mismatch/timezone_mismatch_field.js:0
 msgid ""
 "Timezone Mismatch : This timezone is different from that of your browser.\n"
-"Please, set the same timezone as your browser's to avoid time discrepancies in your system."
+"Please, set the same timezone as your browser's to avoid time discrepancies "
+"in your system."
 msgstr ""
 
 #. module: web
@@ -6926,8 +6954,8 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/actions/reports/utils.js:0
 msgid ""
-"Unable to find Wkhtmltopdf on this system. The report will be shown in "
-"html.%(link)s"
+"Unable to find Wkhtmltopdf on this system. The report will be shown in html.%"
+"(link)s"
 msgstr ""
 
 #. module: web
@@ -7516,8 +7544,8 @@ msgstr ""
 #: code:addons/web/static/src/webclient/actions/reports/utils.js:0
 msgid ""
 "You should upgrade your version of Wkhtmltopdf to at least 0.12.0 in order "
-"to get a correct display of headers and footers as well as support for "
-"table-breaking between pages.%(link)s"
+"to get a correct display of headers and footers as well as support for table-"
+"breaking between pages.%(link)s"
 msgstr ""
 
 #. module: web
@@ -7731,7 +7759,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "airplane"
-msgstr ""
+msgstr "Lėktuvas"
 
 #. module: web
 #. odoo-javascript
@@ -7846,7 +7874,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "amusement park"
-msgstr ""
+msgstr "Pramogų parkas"
 
 #. module: web
 #. odoo-javascript
@@ -7985,7 +8013,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "architect"
-msgstr ""
+msgstr "Architektas"
 
 #. module: web
 #. odoo-javascript
@@ -7997,7 +8025,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "arena"
-msgstr ""
+msgstr "Arena"
 
 #. module: web
 #. odoo-javascript
@@ -8039,7 +8067,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "artist"
-msgstr ""
+msgstr "Menininkas"
 
 #. module: web
 #. odoo-javascript
@@ -8339,7 +8367,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "bakery"
-msgstr ""
+msgstr "Kepykla"
 
 #. module: web
 #. odoo-javascript
@@ -8447,7 +8475,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "bank"
-msgstr ""
+msgstr "Bankas"
 
 #. module: web
 #. odoo-javascript
@@ -8465,7 +8493,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "bar"
-msgstr ""
+msgstr "Baras"
 
 #. module: web
 #. odoo-javascript
@@ -8495,7 +8523,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "baseball"
-msgstr ""
+msgstr "Beisbolas"
 
 #. module: web
 #. odoo-javascript
@@ -9323,7 +9351,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "bridge"
-msgstr ""
+msgstr "Bridžas"
 
 #. module: web
 #. odoo-javascript
@@ -9833,7 +9861,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "castle"
-msgstr ""
+msgstr "Pilis"
 
 #. module: web
 #. odoo-javascript
@@ -9935,7 +9963,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "chapel"
-msgstr ""
+msgstr "Koplyčia"
 
 #. module: web
 #. odoo-javascript
@@ -10199,7 +10227,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "church"
-msgstr ""
+msgstr "Bažnyčia"
 
 #. module: web
 #. odoo-javascript
@@ -10229,7 +10257,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "circus"
-msgstr ""
+msgstr "Cirkas"
 
 #. module: web
 #. odoo-javascript
@@ -10379,7 +10407,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "clock"
-msgstr ""
+msgstr "laikrodis"
 
 #. module: web
 #. odoo-javascript
@@ -10757,7 +10785,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "convenience store"
-msgstr ""
+msgstr "Savitarnos parduotuvė"
 
 #. module: web
 #. odoo-javascript
@@ -11303,7 +11331,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "dairy"
-msgstr ""
+msgstr "Pieno produktai"
 
 #. module: web
 #. odoo-javascript
@@ -11501,7 +11529,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "dentist"
-msgstr ""
+msgstr "Odontologas"
 
 #. module: web
 #. odoo-javascript
@@ -11513,7 +11541,7 @@ msgstr "skyrius"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "department store"
-msgstr ""
+msgstr "Universalinė parduotuvė"
 
 #. module: web
 #. odoo-javascript
@@ -11573,7 +11601,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "detective"
-msgstr ""
+msgstr "Detektyvas"
 
 #. module: web
 #. odoo-javascript
@@ -11801,7 +11829,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "doctor"
-msgstr ""
+msgstr "Gydytojas"
 
 #. module: web
 #. odoo-javascript
@@ -12232,7 +12260,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "electrician"
-msgstr ""
+msgstr "Elektrikas"
 
 #. module: web
 #. odoo-javascript
@@ -12316,7 +12344,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "engineer"
-msgstr ""
+msgstr "Inžinierius"
 
 #. module: web
 #. odoo-javascript
@@ -12334,7 +12362,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "entertainer"
-msgstr ""
+msgstr "Pramogų atlikėjas"
 
 #. module: web
 #. odoo-javascript
@@ -13018,7 +13046,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "ferris wheel"
-msgstr ""
+msgstr "Apžvalgos ratas"
 
 #. module: web
 #. odoo-javascript
@@ -13030,7 +13058,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "festival"
-msgstr ""
+msgstr "Festivalis"
 
 #. module: web
 #. odoo-javascript
@@ -13786,13 +13814,13 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "garden"
-msgstr ""
+msgstr "Sodas"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "gardener"
-msgstr ""
+msgstr "Sodininkas"
 
 #. module: web
 #. odoo-javascript
@@ -14362,7 +14390,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "hairdresser"
-msgstr ""
+msgstr "Kirpėjas"
 
 #. module: web
 #. odoo-javascript
@@ -14842,7 +14870,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "hindu temple"
-msgstr ""
+msgstr "Hinduistų šventykla"
 
 #. module: web
 #. odoo-javascript
@@ -15004,7 +15032,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "hospital"
-msgstr ""
+msgstr "Ligoninė"
 
 #. module: web
 #. odoo-javascript
@@ -15058,7 +15086,7 @@ msgstr "dešrainis"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "hotel"
-msgstr ""
+msgstr "Viešbutis"
 
 #. module: web
 #. odoo-javascript
@@ -15742,7 +15770,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "karaoke"
-msgstr ""
+msgstr "Karaoke"
 
 #. module: web
 #. odoo-javascript
@@ -16186,7 +16214,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "laundry"
-msgstr ""
+msgstr "Skalbimas"
 
 #. module: web
 #. odoo-javascript
@@ -16594,7 +16622,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "love hotel"
-msgstr ""
+msgstr "Meilės viešbutis"
 
 #. module: web
 #. odoo-javascript
@@ -17404,7 +17432,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "mechanic"
-msgstr ""
+msgstr "Mechanikas"
 
 #. module: web
 #. odoo-javascript
@@ -17860,7 +17888,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "mosque"
-msgstr ""
+msgstr "Mečetė"
 
 #. module: web
 #. odoo-javascript
@@ -18046,7 +18074,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "museum"
-msgstr ""
+msgstr "Muziejus"
 
 #. module: web
 #. odoo-javascript
@@ -18136,7 +18164,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "national park"
-msgstr ""
+msgstr "Nacionalinis parkas"
 
 #. module: web
 #. odoo-javascript
@@ -19009,13 +19037,13 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "painter"
-msgstr ""
+msgstr "Dailininkas"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "painting"
-msgstr ""
+msgstr "Tapyba"
 
 #. module: web
 #. odoo-javascript
@@ -19135,7 +19163,7 @@ msgstr "tėvinis"
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "park"
-msgstr ""
+msgstr "Parkas"
 
 #. module: web
 #. odoo-javascript
@@ -19345,7 +19373,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "pen"
-msgstr ""
+msgstr "tušinukas"
 
 #. module: web
 #. odoo-javascript
@@ -19915,7 +19943,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "place of worship"
-msgstr ""
+msgstr "Maldos vieta"
 
 #. module: web
 #. odoo-javascript
@@ -19999,7 +20027,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "plumber"
-msgstr ""
+msgstr "Santechnikas"
 
 #. module: web
 #. odoo-javascript
@@ -20173,7 +20201,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "post office"
-msgstr ""
+msgstr "Pašto skyrius"
 
 #. module: web
 #. odoo-javascript
@@ -20389,7 +20417,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "professor"
-msgstr ""
+msgstr "profesorius"
 
 #. module: web
 #. odoo-javascript
@@ -20785,7 +20813,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "record"
-msgstr ""
+msgstr "įrašyti"
 
 #. module: web
 #. odoo-javascript
@@ -20996,7 +21024,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "resort"
-msgstr ""
+msgstr "Kurortas"
 
 #. module: web
 #. odoo-javascript
@@ -21248,7 +21276,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "roller coaster"
-msgstr ""
+msgstr "Amerikietiški kalneliai"
 
 #. module: web
 #. odoo-javascript
@@ -21326,7 +21354,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "rugby"
-msgstr ""
+msgstr "Rugdby"
 
 #. module: web
 #. odoo-javascript
@@ -21542,7 +21570,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "sauna"
-msgstr ""
+msgstr "Pirtis/Sauna"
 
 #. module: web
 #. odoo-javascript
@@ -21614,7 +21642,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "school"
-msgstr ""
+msgstr "Mokykla"
 
 #. module: web
 #. odoo-javascript
@@ -21941,7 +21969,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "shield"
-msgstr ""
+msgstr "skydas"
 
 #. module: web
 #. odoo-javascript
@@ -21965,13 +21993,13 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "shinto shrine"
-msgstr ""
+msgstr "Šinto šventykla"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "ship"
-msgstr ""
+msgstr "laivas"
 
 #. module: web
 #. odoo-javascript
@@ -22001,7 +22029,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "shooting"
-msgstr ""
+msgstr "diagnotika"
 
 #. module: web
 #. odoo-javascript
@@ -22061,7 +22089,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "shrine"
-msgstr ""
+msgstr "Šventykla"
 
 #. module: web
 #. odoo-javascript
@@ -23009,7 +23037,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "stadium"
-msgstr ""
+msgstr "Stadionas"
 
 #. module: web
 #. odoo-javascript
@@ -23189,7 +23217,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "store"
-msgstr ""
+msgstr "Parduotuvė"
 
 #. module: web
 #. odoo-javascript
@@ -23573,7 +23601,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "synagogue"
-msgstr ""
+msgstr "Sinagoga"
 
 #. module: web
 #. odoo-javascript
@@ -23891,7 +23919,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "theme park"
-msgstr ""
+msgstr "Teminis parkas"
 
 #. module: web
 #. odoo-javascript
@@ -24365,7 +24393,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "trophy"
-msgstr ""
+msgstr "trofėjus"
 
 #. module: web
 #. odoo-javascript
@@ -24395,7 +24423,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "truck"
-msgstr ""
+msgstr "sunkvežimis"
 
 #. module: web
 #. odoo-javascript
@@ -25145,7 +25173,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 msgid "wavy"
-msgstr ""
+msgstr "banguotas"
 
 #. module: web
 #. odoo-javascript

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0+e\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-12 15:48+0000\n"
-"PO-Revision-Date: 2025-06-12 15:48+0000\n"
+"POT-Creation-Date: 2025-11-03 15:44+0000\n"
+"PO-Revision-Date: 2025-11-03 15:44+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -328,6 +328,18 @@ msgstr ""
 #. module: l10n_it_edi
 #. odoo-python
 #: code:addons/l10n_it_edi/models/account_move.py:0
+msgid "Error sending file from the Proxy Server to SdI"
+msgstr ""
+
+#. module: l10n_it_edi
+#. odoo-python
+#: code:addons/l10n_it_edi/models/account_move.py:0
+msgid "Error signing the XML"
+msgstr ""
+
+#. module: l10n_it_edi
+#. odoo-python
+#: code:addons/l10n_it_edi/models/account_move.py:0
 msgid ""
 "Error uploading the e-invoice file %(file)s.\n"
 "%(error)s"
@@ -337,11 +349,6 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_it_edi/models/account_move_send.py:0
 msgid "Errors occurred while creating the e-invoice file:"
-msgstr ""
-
-#. module: l10n_it_edi
-#: model:ir.model.fields.selection,name:l10n_it_edi.selection__res_partner__invoice_edi_format__it_edi_xml
-msgid "FatturaPA"
 msgstr ""
 
 #. module: l10n_it_edi
@@ -416,7 +423,7 @@ msgstr ""
 #. module: l10n_it_edi
 #. odoo-python
 #: code:addons/l10n_it_edi/models/account_move.py:0
-msgid "Invoices must have exactly one VAT tax set per line."
+msgid "Invoices must have %(number)s one %(kind)s tax set per line."
 msgstr ""
 
 #. module: l10n_it_edi
@@ -432,6 +439,11 @@ msgstr ""
 #. module: l10n_it_edi
 #: model_terms:ir.ui.view,arch_db:l10n_it_edi.res_config_settings_view_form
 msgid "Italian Electronic Invoicing"
+msgstr ""
+
+#. module: l10n_it_edi
+#: model:ir.model.fields.selection,name:l10n_it_edi.selection__res_partner__invoice_edi_format__it_edi_xml
+msgid "Italy (Factura PA)"
 msgstr ""
 
 #. module: l10n_it_edi
@@ -650,6 +662,12 @@ msgid "Province of the register-of-companies office"
 msgstr ""
 
 #. module: l10n_it_edi
+#. odoo-python
+#: code:addons/l10n_it_edi/models/account_move.py:0
+msgid "Proxy Server configuration error"
+msgstr ""
+
+#. module: l10n_it_edi
 #: model:ir.model.fields,field_description:l10n_it_edi.field_account_edi_proxy_client_user__proxy_type
 msgid "Proxy Type"
 msgstr ""
@@ -731,14 +749,6 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_it_edi/models/account_move_send.py:0
 msgid "Send to Tax Agency"
-msgstr ""
-
-#. module: l10n_it_edi
-#. odoo-python
-#: code:addons/l10n_it_edi/models/account_move.py:0
-msgid ""
-"Sending invoices to Public Administration partners is not supported.\n"
-"The IT EDI XML file is generated, please sign the document and upload it through the 'Fatture e Corrispettivi' portal of the Tax Agency."
 msgstr ""
 
 #. module: l10n_it_edi
@@ -944,6 +954,12 @@ msgstr ""
 #. module: l10n_it_edi
 #. odoo-python
 #: code:addons/l10n_it_edi/models/account_move.py:0
+msgid "The e-invoice file %s was signed and sent to the SdI for processing."
+msgstr ""
+
+#. module: l10n_it_edi
+#. odoo-python
+#: code:addons/l10n_it_edi/models/account_move.py:0
 msgid ""
 "The e-invoice filename %(file)s is duplicated. Please check the FatturaPA Filename sequence.\n"
 "Original message from the SdI: %(message)s"
@@ -1055,6 +1071,12 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_it_edi.field_account_move__l10n_it_edi_header
 msgid ""
 "User description of the current state, with hints to make the flow progress"
+msgstr ""
+
+#. module: l10n_it_edi
+#. odoo-python
+#: code:addons/l10n_it_edi/models/account_move.py:0
+msgid "VAT"
 msgstr ""
 
 #. module: l10n_it_edi
@@ -1229,9 +1251,21 @@ msgid "[RF19] Regime forfettario (art.1, c.54-89, L. 190/2014)"
 msgstr ""
 
 #. module: l10n_it_edi
+#. odoo-python
+#: code:addons/l10n_it_edi/models/account_move.py:0
+msgid "at most"
+msgstr ""
+
+#. module: l10n_it_edi
 #: model:ir.model.fields,field_description:l10n_it_edi.field_res_partner__invoice_edi_format
 #: model:ir.model.fields,field_description:l10n_it_edi.field_res_users__invoice_edi_format
 msgid "eInvoice format"
+msgstr ""
+
+#. module: l10n_it_edi
+#. odoo-python
+#: code:addons/l10n_it_edi/models/account_move.py:0
+msgid "exactly"
 msgstr ""
 
 #. module: l10n_it_edi

@@ -125,11 +125,15 @@ paymentForm.include({
             },
             (err, token) =>  
                 {
+                    // if any errors are reported, immediately report it
+                    if (err) {
+                        this._xenditHandleResponse(err, token, processingValues, '');
+                    }
                     // For multiple use tokens, we have to create an authentication first before
                     // charging.
                     if (processingValues['should_tokenize']) {
                         Xendit.card.createAuthentication({
-                            amount: processingValues.amount,
+                            amount: processingValues['rounded_amount'],
                             token_id: token.id
                         }, (err, result) => {
                             this._xenditHandleResponse(err, result, processingValues, 'auth')

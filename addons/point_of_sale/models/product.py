@@ -269,7 +269,7 @@ class ProductAttribute(models.Model):
 
     @api.model
     def _load_pos_data_fields(self, config_id):
-        return ['name', 'display_type', 'template_value_ids', 'attribute_line_ids', 'create_variant']
+        return ['name', 'display_type', 'create_variant']
 
     @api.model
     def _load_pos_data_domain(self, data):
@@ -365,8 +365,13 @@ class Uom(models.Model):
         return ['id', 'name', 'category_id', 'factor_inv', 'factor', 'is_pos_groupable', 'uom_type', 'rounding']
 
     def _load_pos_data(self, data):
+        # Add custom fields for 'formula' taxes.
+        fields = set(self._load_pos_data_fields(data['pos.config']['data'][0]['id']))
+        taxes = self.env['account.tax'].search(self.env['account.tax']._load_pos_data_domain(data))
+        product_fields = taxes._eval_taxes_computation_prepare_product_uom_fields()
+        fields = list(fields.union(product_fields))
+
         domain = self._load_pos_data_domain(data)
-        fields = self._load_pos_data_fields(data['pos.config']['data'][0]['id'])
         return {
             'data': self.with_context({**self.env.context}).search_read(domain, fields, load=False),
             'fields': fields,

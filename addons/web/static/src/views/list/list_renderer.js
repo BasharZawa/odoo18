@@ -26,6 +26,7 @@ import {
     onPatched,
     onWillPatch,
     onWillRender,
+    status,
     useExternalListener,
     useRef,
 } from "@odoo/owl";
@@ -214,7 +215,9 @@ export class ListRenderer extends Component {
             // HACK: we need to wait for the next tick to be sure that the Field components are patched.
             // OWL don't wait the patch for the children components if the children trigger a patch by himself.
             await Promise.resolve();
-
+            if (status(this) === "destroyed") {
+                return;
+            }
             if (this.activeElement !== this.uiService.activeElement) {
                 return;
             }
@@ -1051,7 +1054,8 @@ export class ListRenderer extends Component {
             return;
         }
         element.dataset.clicked = true;
-
+        // re-enable the button after a while (this is a manual debounce, but record by record)
+        setTimeout(() => delete element.dataset.clicked, 500);
         this.onDeleteRecord(record, ev);
     }
 

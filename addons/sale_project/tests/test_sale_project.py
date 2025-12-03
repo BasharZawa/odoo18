@@ -618,7 +618,7 @@ class TestSaleProject(HttpCase, TestSaleProjectCommon):
         sale_order.action_confirm()
         self.assertEqual(sale_order.order_line.analytic_distribution, expected_analytic_distribution)
 
-    def test_include_archived_projects_in_stat_btn_related_view(self):
+    def test_exclude_archived_projects_in_stat_btn_related_view(self):
         """Checks if the project stat-button action includes both archived and active projects."""
         # Setup
         project_A = self.env['project.project'].create({'name': 'Project_A'})
@@ -673,11 +673,15 @@ class TestSaleProject(HttpCase, TestSaleProjectCommon):
         # Check if button action includes both projects BEFORE archivization
         action = sale_order.action_view_project_ids()
         self.assertEqual(len(get_project_ids_from_action_domain(action)), 2, "Domain should contain 2 projects.")
+        self.assertEqual(sale_order.project_count, 2, "Expected 2 projects linked to the sale order.")
 
         # Check if button action includes both projects AFTER archivization
         project_B.write({'active': False})
+        sale_order._compute_project_ids()
+        self.assertEqual(sale_order.project_count, 1, "Expected 1 project linked to the sale order.")
+
         action = sale_order.action_view_project_ids()
-        self.assertEqual(len(get_project_ids_from_action_domain(action)), 2, "Domain should contain 2 projects. (one archived, one not)")
+        self.assertEqual(len(get_project_ids_from_action_domain(action)), 1, "Domain should contain 1 active project.")
 
     def test_sale_order_line_view_form_editable(self):
         """ Check the behavior of the form view editable of `sale.order.line` introduced in that module
@@ -1325,3 +1329,18 @@ class TestSaleProject(HttpCase, TestSaleProjectCommon):
         so.action_confirm()
         self.assertFalse(self.product_order_service2.project_id.task_ids)
         self.assertFalse(sol.task_id)
+
+    def test_allocated_hours_manual_delivery_service(self):
+        """
+        Test that allocated_hours match the quantity ordered on creation
+        when the service product has 'delivered_manual' service policy.
+        """
+        self.product_service_delivered_manual.service_tracking = 'task_in_project'
+        so = self.env['sale.order'].create({'partner_id': self.partner.id})
+        sol = self.env['sale.order.line'].create({
+            'order_id': so.id,
+            'product_id': self.product_service_delivered_manual.id,
+            'product_uom_qty': 10,
+        })
+        so.action_confirm()
+        self.assertEqual(sol.task_id.allocated_hours, 10, "The allocated hours should be 10.")

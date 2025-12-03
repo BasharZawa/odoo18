@@ -18,7 +18,7 @@
                     'o-chatWindow mx-2': env.inChatWindow,
                     'mb-3': env.inChatWindow and !props.composer.message,
                     'o-discussApp': env.inDiscussApp,
-                }" t-attf-class="{{ props.className }}">
+                }" t-attf-class="{{ props.className }}" t-ref="root">
             <div class="o-mail-Composer-sidebarMain flex-shrink-0" t-if="showComposerAvatar">
                 <img class="o-mail-Composer-avatar o_avatar rounded" t-att-src="(thread?.effectiveSelf or message.effectiveSelf).avatarUrl" alt="Avatar of user"/>
             </div>
@@ -42,7 +42,8 @@
                     <div class="position-relative flex-grow-1">
                         <t t-set="inputClasses" t-value="'o-mail-Composer-inputStyle form-control border-0 rounded-3'"/>
                         <textarea class="o-mail-Composer-input o-mail-Composer-bg shadow-none overflow-auto text-body"
-                            t-att-class="inputClasses"
+                            t-att-class="{ 'o-mobile': isMobileOS }"
+                            t-attf-class="{{ inputClasses }}"
                             t-ref="textarea"
                             t-on-keydown="onKeydown"
                             t-on-focusin="onFocusin"
@@ -60,7 +61,8 @@
                         -->
                         <textarea
                             class="o-mail-Composer-fake position-absolute overflow-hidden"
-                            t-att-class="inputClasses"
+                            t-att-class="{ 'o-mobile': isMobileOS }"
+                            t-attf-class="{{ inputClasses }}"
                             t-model="props.composer.text"
                             t-ref="fakeTextarea"
                             disabled="1"

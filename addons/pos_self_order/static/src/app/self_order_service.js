@@ -2,7 +2,6 @@ import { Reactive } from "@web/core/utils/reactive";
 import { ConnectionLostError, RPCError, rpc } from "@web/core/network/rpc";
 import { _t } from "@web/core/l10n/translation";
 import { formatCurrency as webFormatCurrency } from "@web/core/currency";
-import { attributeFormatter } from "@pos_self_order/app/utils";
 import { useState, markup } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
@@ -24,6 +23,7 @@ import {
     getTaxesAfterFiscalPosition,
     getTaxesValues,
 } from "@point_of_sale/app/models/utils/tax_utils";
+import { initLNA } from "@point_of_sale/app/utils/init_lna";
 
 const { DateTime } = luxon;
 
@@ -145,6 +145,12 @@ export class SelfOrder extends Reactive {
             this.addToCart(product, 1, "", {}, {});
             this.router.navigate("cart");
         });
+
+        if (this.config.self_ordering_mode === "kiosk") {
+            initLNA(this.notification);
+        } else {
+            odoo.use_lna = false;
+        }
     }
 
     computeAvailableCategories() {
@@ -249,7 +255,8 @@ export class SelfOrder extends Reactive {
                 comboValues,
                 this.currentOrder.pricelist_id,
                 this.models["decimal.precision"].getAll(),
-                this.models["product.template.attribute.value"].getAllBy("id")
+                this.models["product.template.attribute.value"].getAllBy("id"),
+                this.currency
             );
 
             values.price_unit = 0;
@@ -884,20 +891,6 @@ export class SelfOrder extends Reactive {
     }
     getLinePrice(line) {
         return this.config.iface_tax_included ? line.price_subtotal_incl : line.price_subtotal;
-    }
-    getSelectedAttributes(line) {
-        const attributeValues = line.attribute_value_ids;
-        const customAttr = line.custom_attribute_value_ids;
-        return attributeFormatter(
-            this.models["product.attribute"].getAllBy("id"),
-            attributeValues,
-            customAttr
-        );
-    }
-    getFullProductName(line) {
-        const attrs = this.getSelectedAttributes(line);
-        const attrsStr = " (" + attrs.map((a) => a.value).join(", ") + ")";
-        return line.full_product_name + (attrs.length ? attrsStr : "");
     }
     showDownloadButton(order) {
         return this.config.self_ordering_mode === "mobile" && order.state === "paid";

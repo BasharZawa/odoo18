@@ -152,9 +152,7 @@ export class PosOrderline extends Base {
         }
 
         // Remove those that needed to be removed.
-        for (const lotLine of lotLinesToRemove) {
-            this.pack_lot_ids = this.pack_lot_ids.filter((pll) => pll.id !== lotLine.id);
-        }
+        this.update({ pack_lot_ids: [["unlink", ...lotLinesToRemove]] });
 
         for (const newLotLine of newPackLotLines) {
             this.models["pos.pack.operation.lot"].create({
@@ -254,13 +252,27 @@ export class PosOrderline extends Base {
 
         // just like in sale.order changing the qty will recompute the unit price
         if (!keep_price && this.price_type === "original") {
-            this.set_unit_price(
-                this.product_id.get_price(
+            if (this.isLotTracked()) {
+                const related_lines = [];
+                const price = this.product_id.get_price(
                     this.order_id.pricelist_id,
                     this.get_quantity(),
-                    this.get_price_extra()
-                )
-            );
+                    this.get_price_extra(),
+                    false,
+                    false,
+                    this,
+                    related_lines
+                );
+                related_lines.forEach((line) => line.set_unit_price(price));
+            } else {
+                this.set_unit_price(
+                    this.product_id.get_price(
+                        this.order_id.pricelist_id,
+                        this.get_quantity(),
+                        this.get_price_extra()
+                    )
+                );
+            }
         }
 
         this.setDirty();
@@ -367,6 +379,7 @@ export class PosOrderline extends Base {
         const currency = order.config.currency_id;
         const extraValues = { currency_id: currency };
         const product = this.get_product();
+        const product_uom = this.get_unit();
         const priceUnit = this.get_unit_price();
         const discount = this.get_discount();
 
@@ -376,10 +389,9 @@ export class PosOrderline extends Base {
             price_unit: priceUnit,
             discount: discount,
             tax_ids: this.tax_ids,
-            product_id: accountTaxHelpers.eval_taxes_computation_prepare_product_values(
-                this.config._product_default_values,
-                product
-            ),
+            product_id: product,
+            product_uom_id: product_uom,
+            is_refund: this.qty * priceUnit < 0,
             ...customValues,
         };
         if (order.fiscal_position_id) {
@@ -736,6 +748,12 @@ export class PosOrderline extends Base {
     }
     isSelected() {
         return this.order_id?.uiState?.selected_orderline_uuid === this.uuid;
+    }
+    setDirty(skip = false) {
+        if (this.isPartOfCombo && !skip) {
+            this.getAllLinesInCombo().forEach((line) => line.setDirty(true));
+        }
+        super.setDirty(skip);
     }
 }
 

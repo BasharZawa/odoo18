@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* website
+# * website
 #
 # Translators:
 # Tiffany Chang, 2024
@@ -43,14 +43,16 @@
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2025
 # Wil Odoo, 2025
 # Jessica Jakara, 2025
-#
+# "Jessica Tuulia Sade Jäkärä (jtsj)" <jtsj@odoo.com>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Saara Hakanen <sahak@odoo.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-08 18:37+0000\n"
-"PO-Revision-Date: 2025-08-06 05:55+0000\n"
-"Last-Translator: \"Jessica Tuulia Sade Jäkärä (jtsj)\" <jtsj@odoo.com>\n"
+"POT-Creation-Date: 2025-10-24 18:36+0000\n"
+"PO-Revision-Date: 2025-11-21 07:48+0000\n"
+"Last-Translator: Saara Hakanen <sahak@odoo.com>\n"
 "Language-Team: Finnish <https://translate.odoo.com/projects/odoo-18/website/"
 "fi/>\n"
 "Language: fi\n"
@@ -350,7 +352,7 @@ msgstr ""
 #: code:addons/website/static/src/snippets/s_searchbar/000.xml:0
 #: model_terms:ir.ui.view,arch_db:website.list_website_public_pages
 msgid "'. Showing results for '"
-msgstr "'. Näytetään tulokset  '"
+msgstr "'. Tulokset haulle'"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -1114,8 +1116,8 @@ msgstr "<i class=\"fa fa-check text-success\" role=\"img\"/>  Sähköpostituki"
 msgid ""
 "<i class=\"fa fa-check text-success\" role=\"img\"/>  Limited customization"
 msgstr ""
-"<i class=\"fa fa-check text-success\" role=\"img\"/>  Rajoitettu "
-"mukauttaminen"
+"<i class=\"fa fa-check text-success\" role=\"img\"/>  Rajoitetut "
+"räätälöintimahdollisuudet"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
@@ -1138,8 +1140,8 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-check text-success\" role=\"img\"/>  Unlimited customization"
 msgstr ""
-"<i class=\"fa fa-check text-success\" role=\"img\"/>  Rajoittamaton "
-"mukauttaminen"
+"<i class=\"fa fa-check text-success\" role=\"img\"/>  Rajoittamattomat "
+"räätälöintimahdollisuudet"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_contact_info
@@ -1282,7 +1284,9 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
 msgid "<i class=\"fa fa-times text-danger\" role=\"img\"/>  No customization"
-msgstr "<i class=\"fa fa-times text-danger\" role=\"img\"/>  Ei mukautuksia"
+msgstr ""
+"<i class=\"fa fa-times text-danger\" role=\"img\"/>  Ei "
+"räätälöintimahdollisuutta"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_comparisons
@@ -1467,8 +1471,8 @@ msgstr ""
 msgid ""
 "<small class=\"text-center\">Instant setup, satisfied or reimbursed.</small>"
 msgstr ""
-"<small class=\"text-center\">Välitön asennus, tyytyväinen tai hyvitys.</"
-"small>"
+"<small class=\"text-center\">Välitön asennus; tyytyväisyys tai rahat "
+"takaisin.</small>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
@@ -2478,7 +2482,7 @@ msgstr "Kartta ja luettelo myymälöistäsi"
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "A mega menu cannot have a parent or child menu."
-msgstr ""
+msgstr "Mega-valikossa ei voi olla pää- tai alivalikkoa."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
@@ -2792,6 +2796,12 @@ msgstr "Lisää välilehti"
 #: code:addons/website/static/src/xml/website.editor.xml:0
 msgid "Add Text Highlight Effects"
 msgstr "Lisää tekstin korostustehosteita"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/res_config_settings.py:0
+msgid "Add Website"
+msgstr "Lisää verkkosivusto"
 
 #. module: website
 #. odoo-javascript
@@ -3223,13 +3233,13 @@ msgstr "Mahtavat sivut"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_map
 msgid "An address must be specified for a map to be embedded"
-msgstr "Osoite on määritettävä, jotta kartta voidaan syvätä"
+msgstr "Osoite on määritettävä, jotta kartta voidaan upottaa"
 
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_website_form/000.js:0
 msgid "An error has occured, the form has not been sent."
-msgstr "Lomakkeen lähetyksessä tapahtui virhe, eikä sitä pystytty lähettämään."
+msgstr "Tapahtui virhe, eikä lomaketta voitu lähettää."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.qweb_500
@@ -4487,7 +4497,6 @@ msgstr "Palveluidemme avulla asiakkaamme säästivät 32 miljoonaa dollaria."
 #. odoo-javascript
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
 #: code:addons/website/static/src/components/views/theme_preview.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: code:addons/website/static/src/xml/website.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -7589,7 +7598,7 @@ msgstr "Google Search Console"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__google_search_console
 msgid "Google Search Console Key"
-msgstr "Google Search Consolen avain"
+msgstr "Google Search Console -avain"
 
 #. module: website
 #: model:ir.model.fields,help:website.field_res_config_settings__google_search_console
@@ -8368,7 +8377,6 @@ msgstr "Kuvagalleria"
 
 #. module: website
 #. odoo-javascript
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 msgid "Image Gallery Dialog"
 msgstr "Kuvagallerian valintaikkuna"
@@ -10024,13 +10032,13 @@ msgstr "Valikot"
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "Menus cannot have more than two levels of hierarchy."
-msgstr ""
+msgstr "Valikoilla ei voi olla enempää kuin kaksi hierarkiatasoa."
 
 #. module: website
 #. odoo-python
 #: code:addons/website/models/website_menu.py:0
 msgid "Menus with child menus cannot be added as a submenu."
-msgstr ""
+msgstr "Valikoita, joilla on alisteisia valikoita, ei voi lisätä alivalikoiksi."
 
 #. module: website
 #: model:ir.model,name:website.model_base_partner_merge_automatic_wizard
@@ -10521,7 +10529,6 @@ msgstr "Uutiskirje-ponnahdusikkuna"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -11872,7 +11879,6 @@ msgstr "Esikatsele tämä URL-osoite uudessa välilehdessä"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
-#: code:addons/website/static/src/snippets/s_image_gallery/000.xml:0
 #: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -14169,6 +14175,20 @@ msgid "The evolution of our company"
 msgstr "Yrityksemme kehitys"
 
 #. module: website
+#. odoo-python
+#: code:addons/website/models/website_form.py:0
+msgid ""
+"The field '%(field)s' cannot be deleted because it is referenced in a "
+"website view.\n"
+"Model: %(model)s\n"
+"View: %(view)s"
+msgstr ""
+"Kenttää '%(field)s' ei voi poistaa, koska siihen viitataan "
+"verkkosivunäkymässä.\n"
+"Malli: %(model)s\n"
+"Näkymä: %(view)s"
+
+#. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/snippets/s_website_form/options.js:0
 msgid "The field “%(field)s” is mandatory for the action “%(action)s”."
@@ -14280,6 +14300,12 @@ msgstr ""
 #: model:ir.model.fields,help:website.field_website_controller_page__name_slugified
 msgid "The name of the page usable in a URL"
 msgstr "Sivun nimi, jota voidaan käyttää URL-osoitteessa"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/website.py:0
+msgid "The provided website domain is not a valid URL."
+msgstr "Annettu verkkosivu-domain ei ole kelvollinen URL-osoite."
 
 #. module: website
 #. odoo-javascript
@@ -15792,8 +15818,8 @@ msgid ""
 "                            <br/><br/>Our products are designed for small to "
 "medium size companies willing to optimize their performance."
 msgstr ""
-"Olemme intohimoisten ihmisten tiimi, jonka tavoitteena on parantaa kaikkien "
-"elämää mullistavien tuotteiden avulla. Rakennamme loistavia tuotteita "
+"Olemme intohimoinen tiimi, jonka tavoitteena on parantaa kaikkien elämää "
+"mullistavien tuotteiden avulla. Kehitämme loistavia tuotteita "
 "liiketoimintasi ongelmien ratkaisemiseksi.\n"
 "                           <br/><br/>Tuotteemme on suunniteltu pienille ja "
 "keskisuurille yrityksille, jotka haluavat optimoida suorituskykynsä."
@@ -15806,8 +15832,8 @@ msgid ""
 "problems. Our products are designed for small to medium size companies "
 "willing to optimize their performance."
 msgstr ""
-"Olemme intohimoisten ihmisten tiimi, jonka tavoitteena on parantaa kaikkien "
-"elämää mullistavien tuotteiden avulla. Rakennamme loistavia tuotteita "
+"Olemme intohimoinen tiimi, jonka tavoitteena on parantaa kaikkien elämää "
+"mullistavien tuotteiden avulla. Kehitämme loistavia tuotteita "
 "liiketoimintasi ongelmien ratkaisemiseksi. Tuotteemme on suunniteltu "
 "pienille ja keskisuurille yrityksille, jotka haluavat optimoida "
 "suorituskykynsä."

@@ -1,3 +1,4 @@
+/* global posmodel */
 import * as PaymentScreen from "@point_of_sale/../tests/tours/utils/payment_screen_util";
 import * as Dialog from "@point_of_sale/../tests/tours/utils/dialog_util";
 import * as PartnerList from "@point_of_sale/../tests/tours/utils/partner_list_util";
@@ -178,6 +179,34 @@ registry.category("web_tour.tours").add("FloatingOrderTour", {
             ProductScreen.isShown(),
             ProductScreen.selectFloatingOrder(1),
             ProductScreen.productCardQtyIs("Letter Tray", "2.0"),
+            inLeftSide([
+                ...ProductScreen.clickLine("Letter Tray", "2.0"),
+                ...ProductScreen.clickControlButtonMore(),
+                {
+                    trigger: "body",
+                    run: () => {
+                        window.dispatchEvent(new KeyboardEvent("keyup", { key: "9" }));
+                    },
+                },
+                Dialog.cancel(),
+            ]),
+            ProductScreen.isShown(),
+            ProductScreen.productCardQtyIs("Letter Tray", "2.0"),
+            inLeftSide([
+                ...Order.hasLine({
+                    productName: "Letter Tray",
+                    quantity: "2.0",
+                }),
+            ]),
+            {
+                trigger: "body",
+                run: () => {
+                    const bufferValue = posmodel.numberBuffer.get();
+                    if (bufferValue != "") {
+                        throw new Error(`Number buffer should be empty, but got ${bufferValue}`);
+                    }
+                },
+            },
         ].flat(),
 });
 
@@ -199,6 +228,17 @@ registry.category("web_tour.tours").add("test_reuse_empty_floating_order", {
             ReceiptScreen.clickNextOrder(),
             // Should reuse previously created empty floating order
             ProductScreen.checkFloatingOrderCount(1),
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_tax_control_button_visiblity", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            ProductScreen.clickReview(),
+            ProductScreen.clickControlButtonMore(),
+            negateStep(...ProductScreen.checkFiscalPositionButton()),
         ].flat(),
 });
 
@@ -688,6 +728,65 @@ registry.category("web_tour.tours").add("test_barcode_search_attributes_preset",
                 "1.0"
             ),
 
+            Chrome.endTour(),
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_pos_ui_round_globally", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            ProductScreen.clickDisplayedProduct("Test Product 1"),
+            ProductScreen.clickDisplayedProduct("Test Product 2"),
+            inLeftSide([
+                ...["+/-"].map(Numpad.click),
+                ...ProductScreen.selectedOrderlineHasDirect("Test Product 2", "-1.0"),
+            ]),
+            ProductScreen.totalAmountIs("7,771.01"),
+            ProductScreen.clickPayButton(),
+            PaymentScreen.clickPaymentMethod("Bank"),
+            PaymentScreen.clickValidate(),
+            ReceiptScreen.isShown(),
+            Chrome.endTour(),
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_product_ref_displayed", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            ProductScreen.clickDisplayedProduct("Test name"),
+            ProductScreen.clickInfoProduct("Test name"),
+            {
+                trigger: ".modal .btn-secondary:contains(Edit)",
+                run: "click",
+            },
+            {
+                trigger: ".modal .btn-primary:contains(Save)",
+                run: "click",
+            },
+            ProductScreen.clickDisplayedProduct("Test name"),
+            ProductScreen.selectedOrderlineHas("Test name", "2.0"),
+
+            Chrome.endTour(),
+        ].flat(),
+});
+
+registry.category("web_tour.tours").add("test_dynamic_product_price", {
+    steps: () =>
+        [
+            Chrome.startPoS(),
+            Dialog.confirm("Open Register"),
+            ProductScreen.clickDisplayedProduct("Dynamic Product"),
+            ProductConfiguratorPopup.pickRadio("Dynamic Value 1"),
+            Chrome.clickBtn("Add"),
+            ProductScreen.selectedOrderlineHas("Dynamic Product (Dynamic Value 1)", "1.0", "10.00"),
+            ProductScreen.clickDisplayedProduct("Dynamic Product"),
+            ProductConfiguratorPopup.pickRadio("Dynamic Value 2"),
+            Chrome.clickBtn("Add"),
+            ProductScreen.selectedOrderlineHas("Dynamic Product (Dynamic Value 2)", "1.0", "20.00"),
             Chrome.endTour(),
         ].flat(),
 });

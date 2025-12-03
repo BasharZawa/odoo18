@@ -30,7 +30,7 @@ class AccountAnalyticLine(models.Model):
         )
         if not last_timesheets:
             internal_project = self.env.company.internal_project_id
-            return internal_project.active and internal_project.allow_timesheets and internal_project.id
+            return internal_project.has_access('read') and internal_project.active and internal_project.allow_timesheets and internal_project.id
         return mode([t.project_id.id for t in last_timesheets])
 
     @api.model
@@ -262,7 +262,7 @@ class AccountAnalyticLine(models.Model):
             employee_out_id = False
             if employee_per_company:
                 company_id = list(employee_per_company)[0] if len(employee_per_company) == 1\
-                        else vals.get('company_id', self.env.company.id)
+                        else vals.get('company_id') or self.env.company.id
                 employee_out_id = employee_per_company.get(company_id, False)
 
             if employee_out_id:

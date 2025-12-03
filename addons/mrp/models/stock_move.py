@@ -209,6 +209,9 @@ class StockMoveLine(models.Model):
         else:
             return super()._get_linkable_moves()
 
+    def _exclude_requiring_lot(self):
+        return (self.move_id.unbuild_id and not self.move_id.origin_returned_move_id.move_line_ids.lot_id) or super()._exclude_requiring_lot()
+
 
 class StockMove(models.Model):
     _inherit = 'stock.move'
@@ -498,7 +501,7 @@ class StockMove(models.Model):
                         or (move.reservation_date and move.reservation_date <= fields.Date.today()):
                     to_assign |= move
 
-            if move.procure_method == 'make_to_order':
+            if move.procure_method == 'make_to_order' or move.rule_id.procure_method == 'mts_else_mto':
                 procurement_qty = move.product_uom_qty - old_qties.get(move.id, 0)
                 possible_reduceable_qty = -sum(move.move_orig_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_uom_qty).mapped('product_uom_qty'))
                 procurement_qty = max(procurement_qty, possible_reduceable_qty)

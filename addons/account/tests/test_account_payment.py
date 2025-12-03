@@ -653,12 +653,12 @@ class TestAccountPayment(AccountTestInvoicingCommon, MailCommon):
         }])
         invoice_1.action_post()
         register_payment_and_assert_state(invoice_1, 100.0, is_community=True)
-        self.assertTrue(invoice_1.matched_payment_ids.move_id)
+        self.assertTrue(invoice_1.reconciled_payment_ids.move_id)
 
         invoice_2 = invoice_1.copy()
         invoice_2.action_post()
         register_payment_and_assert_state(invoice_2, 100.0, is_community=False)
-        self.assertFalse(invoice_2.matched_payment_ids.move_id)
+        self.assertFalse(invoice_2.reconciled_payment_ids.move_id)
 
     def test_payment_confirmation_with_bank_outstanding_account(self):
         """ Ensures that when the outstanding account of the payment method is set to a bank,
@@ -676,6 +676,25 @@ class TestAccountPayment(AccountTestInvoicingCommon, MailCommon):
         })
         payment.action_post()
         self.assertEqual(payment.state, 'paid')
+
+    def test_payment_memo_account_move_ref_inverse(self):
+        ''' Ensure that when the account payment's memo is updated,
+            the related account move's ref is also updated.
+        '''
+        bank_journal = self.company_data['default_journal_bank']
+        bank_journal.inbound_payment_method_line_ids.payment_account_id = self.inbound_payment_method_line.payment_account_id
+        payment = self.env['account.payment'].create({
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'partner_id': self.partner_a.id,
+            'journal_id': bank_journal.id,
+            'amount': 2629,
+            'memo': 'Test Memo'
+        })
+        payment.action_post()
+        payment.write({'memo': 'Updated Memo'})
+
+        self.assertEqual(payment.move_id.ref, payment.memo)
 
     def test_payment_state_with_unreconciliable_outstanding_account(self):
         unreconciliable_account = self.env['account.account'].create({

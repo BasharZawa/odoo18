@@ -56,12 +56,20 @@ class StockMove(models.Model):
     def _get_all_related_sm(self, product):
         return super()._get_all_related_sm(product) | self.filtered(lambda m: m.sale_line_id.product_id == product)
 
+    def write(self, vals):
+        res = super().write(vals)
+        if 'product_id' in vals:
+            for move in self:
+                if move.sale_line_id and move.product_id != move.sale_line_id.product_id:
+                    move.sale_line_id = False
+        return res
+
 
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
     def _should_show_lot_in_invoice(self):
-        return 'customer' in {self.location_id.usage, self.location_dest_id.usage}
+        return 'customer' in {self.location_id.usage, self.location_dest_id.usage} or self.env.ref('stock.stock_location_inter_company') in (self.location_id, self.location_dest_id)
 
 
 class ProcurementGroup(models.Model):

@@ -16,8 +16,21 @@
         width: 100%;
         object-fit: cover;
 
-        &[data-shape] {
+        // When an image is cropped, we use `object-fit: contain` so the visible crop area
+        // is displayed correctly inside containers. However, when the image is stretched
+        // to fill its container, it should use `object-fit: cover` instead.
+        &[data-shape].o_we_image_cropped {
             object-fit: contain;
+        }
+
+        &.rounded-start {
+            border-bottom-left-radius: var(--card-inner-border-radius) !important;
+            border-top-left-radius: var(--card-inner-border-radius) !important;
+        }
+
+        &.rounded-end {
+            border-top-right-radius: var(--card-inner-border-radius) !important;
+            border-bottom-right-radius: var(--card-inner-border-radius) !important;
         }
     }
 

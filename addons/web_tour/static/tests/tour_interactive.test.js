@@ -710,7 +710,7 @@ test("Tour backward when the pointed element disappear and ignore warn step", as
     registry.category("web_tour.tours").add("tour1", {
         steps: () => [
             { trigger: "button.foo", run: "click" },
-            { trigger: "button.bar" },
+            { trigger: "button.foo" },
             { trigger: "button.bar", run: "click" },
         ],
     });
@@ -747,7 +747,7 @@ test("Tour backward when the pointed element disappear and ignore warn step", as
     await contains("button.bar").click();
     await animationFrame();
     expect(".o_tour_pointer").toHaveCount(0);
-    expect.verifySteps(["Step 'button.bar' ignored.", "Step 'button.bar' ignored."]);
+    expect.verifySteps(["Step 'button.foo' ignored.", "Step 'button.foo' ignored."]);
 });
 
 test("Tour started by the URL", async () => {
@@ -1135,5 +1135,60 @@ test("Tour don't backward when dropdown loading", async () => {
     await contains(".o-autocomplete--dropdown-item:eq(1)").click();
     expect(".o_tour_pointer").toHaveCount(1);
     await contains(".o_form_button_save").click();
+    expect(".o_tour_pointer").toHaveCount(0);
+});
+
+test("Don't backward when action manager is busy", async () => {
+    registry.category("web_tour.tours").add("tour1", {
+        steps: () => [
+            { trigger: "button.foo", run: "click" },
+            { trigger: "button.bar", run: "click" },
+        ],
+    });
+
+    class Dummy extends Component {
+        static props = ["*"];
+        state = useState({ bool: true });
+        static components = {};
+        static template = xml`
+            <button class="fool w-100" t-on-click="() => { state.bool = true; }">You fool</button>
+            <button class="foo w-100" t-if="state.bool" t-on-click="() => { state.bool = false; }">Foo</button>
+            <button class="bar w-100" t-if="!state.bool">Bar</button>
+        `;
+    }
+
+    const comp = await mountWithCleanup(Dummy);
+
+    await getService("tour_service").startTour("tour1", { mode: "manual" });
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(1);
+
+    await contains("button.foo").click();
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(1);
+
+    comp.env.bus.trigger("ACTION_MANAGER:UPDATE");
+    await animationFrame();
+
+    await contains("button.fool").click();
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(0);
+
+    await contains("button.foo").click();
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(1);
+
+    comp.env.bus.trigger("ACTION_MANAGER:UI-UPDATED");
+
+    await contains("button.fool").click();
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(1);
+
+    await contains("button.foo").click();
+    await animationFrame();
+    expect(".o_tour_pointer").toHaveCount(1);
+
+    await contains("button.bar").click();
+    await animationFrame();
     expect(".o_tour_pointer").toHaveCount(0);
 });

@@ -265,9 +265,6 @@ class TestFrontend(TestFrontendCommon):
         order_tips.sort()
         self.assertEqual(order_tips, [0.0, 0.4, 1.0, 1.0, 1.5])
 
-        order1 = self.env['pos.order'].search([('pos_reference', 'ilike', '%-0001')], limit=1, order='id desc')
-        self.assertEqual(order1.payment_ids.amount, 2.4)
-
         order4 = self.env['pos.order'].search([('pos_reference', 'ilike', '%-0004')], limit=1, order='id desc')
         self.assertEqual(order4.customer_count, 2)
 
@@ -531,8 +528,35 @@ class TestFrontend(TestFrontendCommon):
         """
         self.start_pos_tour("OrderSynchronisationTour")
 
+    def test_cancel_order_from_ui(self):
+        self.pos_config.with_user(self.pos_user).open_ui()
+        self.start_pos_tour('test_cancel_order_from_ui')
+        order = self.pos_config.current_session_id.order_ids[0]
+        self.assertEqual(order.state, "cancel", "The order should be in cancel state")
+
     def test_book_and_release_table(self):
         self.pos_config.with_user(self.pos_user).open_ui()
         self.start_pos_tour('test_book_and_release_table', login="pos_user")
         order = self.env['pos.order'].search([], limit=1, order='id desc')
         self.assertEqual(order.state, "cancel", "The order should be in cancel state after releasing the table")
+
+    def test_combo_synchronisation(self):
+        """This test checks that when a combo line is set as dirty, the parent combo line is also set as dirty.
+           if this is not the case, the combo lines would lose their link to the parent combo line and appear as
+           normal line"""
+        setup_product_combo_items(self)
+        self.pos_config.is_order_printer = False
+        self.pos_config.with_user(self.pos_user).open_ui()
+        self.start_pos_tour('test_combo_synchronisation')
+
+    def test_reload_order_line_removed(self):
+        """ This test checks that when a saved order line is removed but not yet synced to the backend,
+            if PoS gets reloaded, the order line gets back
+        """
+        self.start_pos_tour('test_reload_order_line_removed')
+
+    def test_combo_children_qty_updated_with_note(self):
+        setup_product_combo_items(self)
+        self.pos_config.write({'printer_ids': False})
+        self.pos_config.with_user(self.pos_user).open_ui()
+        self.start_pos_tour('test_combo_children_qty_updated_with_note')

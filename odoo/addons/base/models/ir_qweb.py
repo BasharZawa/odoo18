@@ -425,6 +425,7 @@ _SAFE_QWEB_OPCODES = _EXPR_OPCODES.union(to_opcodes([
     'LOAD_FAST', 'STORE_FAST', 'UNPACK_SEQUENCE',
     'STORE_SUBSCR',
     'LOAD_GLOBAL',
+    'EXTENDED_ARG',
     # Following opcodes were added in 3.11 https://docs.python.org/3/whatsnew/3.11.html#new-opcodes
     'RESUME',
     'CALL',
@@ -474,6 +475,10 @@ SPECIAL_DIRECTIVES = {'t-translation', 't-ignore', 't-title'}
 # Name of the variable to insert the content in t-call in the template.
 # The slot will be replaced by the `t-call` tag content of the caller.
 T_CALL_SLOT = '0'
+
+
+# Only allow a javascript scheme if it is followed by [ ][window.]history.back()
+MALICIOUS_SCHEMES = re.compile(r'javascript:(?!( ?)((window\.)?)history\.back\(\)$)', re.I).findall
 
 
 def indent_code(code, level):
@@ -1355,7 +1360,7 @@ class IrQWeb(models.AbstractModel):
         """ Compile a purely static element into a list of string. """
         if not el.nsmap:
             unqualified_el_tag = el_tag = el.tag
-            attrib = self._post_processing_att(el.tag, el.attrib)
+            attrib = self._post_processing_att(el.tag, {**el.attrib, '__is_static_node': True})
         else:
             # Etree will remove the ns prefixes indirection by inlining the corresponding
             # nsmap definition into the tag attribute. Restore the tag and prefix here.
@@ -1385,7 +1390,7 @@ class IrQWeb(models.AbstractModel):
                 else:
                     attrib[key] = value
 
-            attrib = self._post_processing_att(el.tag, attrib)
+            attrib = self._post_processing_att(el.tag, {**attrib, '__is_static_node': True})
 
             # Update the dict of inherited namespaces before continuing the recursion. Note:
             # since `compile_context['nsmap']` is a dict (and therefore mutable) and we do **not**
@@ -2420,6 +2425,8 @@ class IrQWeb(models.AbstractModel):
 
             @returns dict
         """
+        if not atts.pop('__is_static_node', False) and (href := atts.get('href')) and MALICIOUS_SCHEMES(str(href)):
+            atts['href'] = ""
         return atts
 
     def _get_field(self, record, field_name, expression, tagName, field_options, values):

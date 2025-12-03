@@ -84,13 +84,5 @@
                 <EsigibilitaIVA>I</EsigibilitaIVA>
             </DatiRiepilogo>
         </DatiBeniServizi>
-        <DatiPagamento>
-            <CondizioniPagamento>TP02</CondizioniPagamento>
-            <DettaglioPagamento>
-                <ModalitaPagamento>MP05</ModalitaPagamento>
-                <DataScadenzaPagamento>2022-04-01</DataScadenzaPagamento>
-                <ImportoPagamento>800.40</ImportoPagamento>
-            </DettaglioPagamento>
-        </DatiPagamento>
     </FatturaElettronicaBody>
 </p:FatturaElettronica>

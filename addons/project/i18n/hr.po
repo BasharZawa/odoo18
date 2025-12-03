@@ -27,13 +27,15 @@
 # Ivica Dimjašević, 2025
 # Luka Carević <luka@uvid.hr>, 2025
 # Karlo Mikešić <karlo@uvid.hr>, 2025.
+# Ana Matulin <ana@uvid.hr>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-27 18:38+0000\n"
-"PO-Revision-Date: 2025-08-11 22:21+0000\n"
-"Last-Translator: Karlo Mikešić <karlo@uvid.hr>\n"
+"PO-Revision-Date: 2025-11-14 13:50+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Croatian <https://translate.odoo.com/projects/odoo-18/project/"
 "hr/>\n"
 "Language: hr\n"
@@ -411,7 +413,7 @@ msgstr "<i class=\"fa fa-warning\"/>&amp;nbsp;"
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_form
 msgid "<i class=\"oi oi-arrow-right me-1\"/>Back to edit mode"
-msgstr ""
+msgstr "<i class=\"oi oi-arrow-right me-1\"/>Natrag u način uređivanja"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_task_kanban
@@ -602,7 +604,7 @@ msgstr "Prihvati email od"
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_share_collaborator_wizard__access_mode
 msgid "Access Mode"
-msgstr ""
+msgstr "Način pristupa"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__access_warning
@@ -711,7 +713,7 @@ msgstr "Dodajte detalje o ovom zadatku..."
 #. module: project
 #: model:ir.model.fields,help:project.field_project_share_wizard__note
 msgid "Add extra content to display in the email"
-msgstr ""
+msgstr "Dodajte dodatni sadržaj za prikaz u e-poruci"
 
 #. module: project
 #: model_terms:digest.tip,tip_description:project.digest_tip_project_3
@@ -1146,7 +1148,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project.project_task_burndown_chart_report_view_search
 #: model_terms:ir.ui.view,arch_db:project.view_project_kanban
 msgid "Burndown Chart"
-msgstr ""
+msgstr "Burndown grafikon"
 
 #. module: project
 #. odoo-python
@@ -1169,7 +1171,7 @@ msgstr "Otkazano"
 #: model:mail.message.subtype,name:project.mt_project_task_changes_requested
 #: model:mail.message.subtype,name:project.mt_task_changes_requested
 msgid "Changes Requested"
-msgstr ""
+msgstr "Zatražene izmjene"
 
 #. module: project
 #. odoo-javascript
@@ -2066,7 +2068,7 @@ msgstr "Font awesome ikona npr. fa-tasks"
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_type__forever
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_type__forever
 msgid "Forever"
-msgstr "Zauvjek"
+msgstr "Zauvijek"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.edit_project
@@ -2091,6 +2093,8 @@ msgid ""
 "Get a snapshot of the status of your project and share its progress with key"
 " stakeholders."
 msgstr ""
+"Dobijte trenutni pregled statusa vašeg projekta i podijelite njegov napredak "
+"s ključnim dionicima."
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.edit_project
@@ -2625,7 +2629,7 @@ msgstr "Uživo"
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__alias_incoming_local
 msgid "Local-part based incoming detection"
-msgstr ""
+msgstr "Otkrivanje dolazne pošte temeljeno na lokalnom dijelu adrese"
 
 #. module: project
 #. odoo-javascript
@@ -3003,7 +3007,7 @@ msgstr "Nema pronađenih zadataka. Kreiraj novi!"
 #. module: project
 #: model_terms:ir.actions.act_window,help:project.project_update_all_action
 msgid "No updates found. Let's create one!"
-msgstr ""
+msgstr "Nisu pronađena ažuriranja. Napravimo jedno!"
 
 #. module: project
 #. odoo-python
@@ -3108,6 +3112,8 @@ msgstr ""
 #: code:addons/project/static/src/project_sharing/components/chatter/chatter_composer.xml:0
 msgid "Oops! Something went wrong. Try to reload the page and log in."
 msgstr ""
+"Ups! Nešto je pošlo po zlu. Pokušajte ponovno učitati stranicu i prijaviti "
+"se."
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_digest_digest__kpi_project_task_opened
@@ -3369,7 +3375,7 @@ msgstr "Privatno"
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Private Tasks"
-msgstr ""
+msgstr "Privatni zadaci"
 
 #. module: project
 #. odoo-python
@@ -3524,7 +3530,7 @@ msgstr "Vidljivost projekta"
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.edit_project
 msgid "Project description..."
-msgstr ""
+msgstr "Opis projekta..."
 
 #. module: project
 #. odoo-python
@@ -3692,7 +3698,7 @@ msgstr "Zadnja ocjena"
 #: model:ir.model.fields,field_description:project.field_project_project__rating_percentage_satisfaction
 #: model:ir.model.fields,field_description:project.field_project_task__rating_percentage_satisfaction
 msgid "Rating Satisfaction"
-msgstr ""
+msgstr "Ocjena zadovoljstva"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task__rating_last_text
@@ -3789,7 +3795,7 @@ msgstr "Odbijen"
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_share_wizard__resource_ref
 msgid "Related Document"
-msgstr ""
+msgstr "Povezani dokument"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_share_wizard__res_id
@@ -3811,7 +3817,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/project/static/src/components/subtask_kanban_list/subtask_kanban_create/subtask_kanban_create.xml:0
 msgid "Rename"
-msgstr ""
+msgstr "Preimenuj"
 
 #. module: project
 #: model:account.analytic.account,name:project.analytic_renovations
@@ -4962,6 +4968,8 @@ msgid ""
 "Track project costs, revenues, and margin by setting the analytic account "
 "associated with the project on relevant documents."
 msgstr ""
+"Pratite troškove, prihode i maržu projekta postavljanjem analitičkog računa "
+"povezanog s projektom na relevantnim dokumentima."
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.res_config_settings_view_form
@@ -4971,7 +4979,7 @@ msgstr "Pratite napredak svojih projekata"
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.res_config_settings_view_form
 msgid "Track time spent on projects and tasks"
-msgstr ""
+msgstr "Prati vrijeme provedeno na projektima i zadacima"
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_tags__color

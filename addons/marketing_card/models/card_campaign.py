@@ -2,7 +2,7 @@ import base64
 import pytz
 from datetime import date, datetime
 
-from odoo import _, api, fields, models, exceptions
+from odoo import _, api, exceptions, fields, models, modules
 
 from .card_template import TEMPLATE_DIMENSIONS
 
@@ -181,7 +181,7 @@ class CardCampaign(models.Model):
     def write(self, vals):
         link_tracker_vals = {}
         if vals.keys() & set(self._get_render_fields()):
-            self.env['card.card'].search([('campaign_id', 'in', self.ids)]).requires_sync = True
+            self.env['card.card'].with_context(active_test=False).search([('campaign_id', 'in', self.ids)]).requires_sync = True
         if 'target_url' in vals:
             link_tracker_vals['url'] = vals['target_url'] or self.env['card.campaign'].get_base_url()
         if link_tracker_vals:
@@ -332,6 +332,15 @@ class CardCampaign(models.Model):
             [self._render_field('body_html', record.ids, add_context={'card_campaign': self})[record.id]],
             *TEMPLATE_DIMENSIONS
         )[0]
+
+        # None means there was a logged error at image rendering time.
+        # Tests also do not render by default, in that case ignore.
+        if image_bytes is None and not modules.module.current_test:
+            raise exceptions.UserError(_(
+                'An error occured while rendering a card for %(record_name)s. '
+                'Try again or check the server logs for more details.',
+                record_name=record.display_name
+            ))
         return image_bytes and base64.b64encode(image_bytes)
 
     # ==========================================================================
@@ -408,13 +417,20 @@ class CardCampaign(models.Model):
         for el, text_field, dyn_field, path_field in campaign_text_element_fields:
             if not self[dyn_field]:
                 result[el] = self[text_field]
+            elif not (field_path := self[path_field]):
+                result[el] = record
             else:
+                fnames = field_path.split('.')
                 try:
-                    m = record.mapped(self[path_field])
+                    value = record
+                    while fnames and (fname := fnames.pop(0)):
+                        value.fetch([fname])
+                        value = value[fname]
+                    m = record.mapped(field_path)
                     result[el] = m and m[0] or False
-                except (AttributeError, KeyError):
+                except (AttributeError, ValueError):
                     # for generic image, or if field incorrect, return name of field
-                    result[el] = self[path_field]
+                    result[el] = field_path
                 # force dates to their relevant timezone as that's what is usually wanted
                 if (
                     isinstance(result[el], (date, datetime))

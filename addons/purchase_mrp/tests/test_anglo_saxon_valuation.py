@@ -2,10 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.fields import Date, Datetime
-from odoo.tools import float_is_zero, mute_logger
+from odoo.tools import mute_logger
 from odoo.tests import Form, tagged
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.stock_account.tests.test_stockvaluation import _create_accounting_data
+from odoo import Command
 
 
 @tagged('post_install', '-at_install')
@@ -276,74 +277,117 @@ class TestAngloSaxonValuationPurchaseMRP(AccountTestInvoicingCommon):
 
         self.assertEqual(self.product_a.standard_price, 100)
 
-    def test_average_cost_unbuild_valuation(self):
-        """ Ensure that an unbuild for some avg cost product won't leave the `Cost of Production`
-        journal in an imbalanced state if the std price of that product has changed since the MO
-        was completed (i.e., since build time).
+    def test_kit_valuation_no_pull(self):
+        """ When selling a kit without ever moving it using a Pull rule, ensure that
+        the invoice is generated with the correct COGS
         """
-        def make_purchase_and_production(product_ids, price_units):
-            purchase_orders = self.env['purchase.order'].create([{
-                'partner_id': self.partner_a.id,
-                'order_line': [(0, 0, {
-                    'product_id': prod_id,
-                    'product_qty': 2,
-                    'price_unit': price_unit
-                })],
-            } for prod_id, price_unit in zip(product_ids, price_units)])
-            purchase_orders.button_confirm()
-            purchase_orders.picking_ids.move_ids.quantity = 2
-            purchase_orders.picking_ids.button_validate()
-            production_form = Form(self.env['mrp.production'])
-            production_form.product_id = final_product
-            production_form.bom_id = final_product_bom
-            production_form.product_qty = 1
-            production = production_form.save()
-            production.action_confirm()
-            mo_form = Form(production)
-            mo_form.qty_producing = 1
-            production = mo_form.save()
-            production._post_inventory()
-            production.button_mark_done()
-            return production
 
-        cost_of_production_account = self.env['account.account'].search([
-            ('name', '=', 'Cost of Production'),
-            ('company_ids', 'in', self.env.company.id),
-        ], limit=1)
-        self.avco_category.property_stock_account_production_cost_id = cost_of_production_account.id
-        final_product = self.env['product.product'].create({
-            'name': 'final product',
-            'is_storable': True,
-            'standard_price': 0,
-            'categ_id': self.avco_category.id,
-            'route_ids': [(6, 0, self.env['stock.route'].search([('name', '=', 'Manufacture')], limit=1).ids)],
+        if 'sale' not in self.env['ir.module.module']._installed():
+            self.skipTest("Sale module is required for this test to run")
+
+        # Prepare the cross-dock route (contains no Pull rules)
+        warehouse = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
+        warehouse.write({'reception_steps': 'two_steps', 'delivery_steps': 'pick_ship'})
+        xdock_route = warehouse.crossdock_route_id
+
+        # Prepare the kit
+        kit_final_prod = self.product_a
+        product_c = self.env['product.product'].create({
+            'name': 'product_c',
+            'lst_price': 120.0,
+            'standard_price': 100.0,
+            'property_account_income_id': self.copy_account(self.company_data['default_account_revenue']).id,
+            'property_account_expense_id': self.copy_account(self.company_data['default_account_expense']).id,
+            'taxes_id': [Command.set((self.tax_sale_a + self.tax_sale_b).ids)],
+            'supplier_taxes_id': [Command.set((self.tax_purchase_a + self.tax_purchase_b).ids)]
         })
-        comp_1, comp_2 = self.env['product.product'].create([{
-            'name': name,
-            'is_storable': True,
-            'standard_price': 0,
-            'categ_id': self.avco_category.id,
-            'route_ids': [(4, self.env['stock.route'].search([('name', '=', 'Buy')], limit=1).id)],
-        } for name in ('comp_1', 'comp_2')])
-        final_product_bom = self.env['mrp.bom'].create({
-            'product_tmpl_id': final_product.product_tmpl_id.id,
-            'type': 'normal',
-            'bom_line_ids': [(0, 0, {
-                'product_id': comp_prod_id,
-                'product_qty': 2,
-            }) for comp_prod_id in (comp_1.id, comp_2.id)],
+        kit_bom = self.env['mrp.bom'].create({
+            'product_tmpl_id': kit_final_prod.product_tmpl_id.id,
+            'product_qty': 1.0,
+            'type': 'phantom',
         })
-        production_1 = make_purchase_and_production([comp_1.id, comp_2.id], [50, 40])
-        make_purchase_and_production([comp_1.id, comp_2.id], [55, 45])
-        action = production_1.button_unbuild()
-        wizard = Form(self.env[action['res_model']].with_context(action['context']))
-        wizard.product_qty = 1
-        wizard = wizard.save()
-        wizard.action_validate()
-        self.assertTrue(float_is_zero(
-            sum(self.env['account.move.line'].search([
-                ('account_id', '=', cost_of_production_account.id),
-                ('product_id', 'in', (final_product.id, comp_1.id, comp_2.id)),
-            ]).mapped('balance')),
-            precision_rounding=self.env.company.currency_id.rounding
-        ))
+        bom_line_b = Command.create({
+            'product_id': self.product_b.id,
+            'product_qty': 2,
+        })
+        bom_line_c = Command.create({
+            'product_id': product_c.id,
+            'product_qty': 1,
+        })
+        kit_bom.bom_line_ids = [
+            bom_line_b,
+            bom_line_c
+        ]
+
+        self.env['product.supplierinfo'].create({
+            'product_id': self.product_b.id,
+            'partner_id': self.partner_a.id,
+            'price': 160,
+        })
+        self.env['product.supplierinfo'].create({
+            'product_id': product_c.id,
+            'partner_id': self.partner_a.id,
+            'price': 100,
+        })
+        self.product_b.standard_price = 10
+        (kit_final_prod + self.product_b + product_c).categ_id.write({
+            'property_cost_method': 'fifo',
+            'property_valuation': 'real_time',
+        })
+        (kit_final_prod + self.product_b + product_c).is_storable = True
+
+        # Create a sale order and use the cross dock route
+        customer = self.env['res.partner'].create({'name': 'Test Customer'})
+        so = self.env['sale.order'].create({
+            'partner_id': customer.id,
+            'order_line': [
+                Command.create({
+                    'name': self.product_a.name,
+                    'product_id': self.product_a.id,
+                    'product_uom_qty': 1,
+                    'product_uom': self.product_a.uom_id.id,
+                    'price_unit': 500,
+                    'route_id': xdock_route.id,
+                }),
+            ],
+        })
+        so.action_confirm()
+        po = so._get_purchase_orders()
+        po.button_confirm()
+        # The bom_line_ids on the stock moves should be set
+        product_b_move = so.order_line.move_ids.filtered(lambda sm: sm.product_id == self.product_b)
+        product_c_move = so.order_line.move_ids.filtered(lambda sm: sm.product_id == product_c)
+        bom_line_b = kit_bom.bom_line_ids.filtered(lambda bl: bl.product_id == self.product_b)
+        bom_line_c = kit_bom.bom_line_ids.filtered(lambda bl: bl.product_id == product_c)
+        self.assertTrue(product_b_move.bom_line_id == bom_line_b, "The bom_line_id on the stock move was set incorrectly")
+        self.assertTrue(product_c_move.bom_line_id == bom_line_c, "The bom_line_id on the stock move was set incorrectly")
+
+        # Validate the chain
+        receipt_move = po.picking_ids.move_ids
+        receipt_move.write({'picked': True})
+        receipt_move._action_done()
+
+        cross_dock_move = receipt_move.move_dest_ids
+        cross_dock_move.write({'picked': True})
+        cross_dock_move._action_done()
+
+        delivery_move = cross_dock_move.move_dest_ids
+        delivery_move.write({'picked': True})
+        delivery_move._action_done()
+
+        self.assertTrue(so.order_line.qty_delivered == 1, "The Quantity Delivered on the Sale Order Line was not correctly calculated")
+
+        account_move = so._create_invoices()
+        account_move.action_post()
+
+        # COGS == (160*2) + 100 = 420
+        self.assertRecordValues(
+            account_move.line_ids.sorted('balance'),
+            [
+                {'name': 'product_a',            'debit': 0.0, 'credit': 500},
+                {'name': 'product_a',            'debit': 0.0, 'credit': 420},
+                {'name': '15%',                  'debit': 0.0, 'credit': 75},
+                {'name': 'product_a',            'debit': 420, 'credit': 0.0},
+                {'name': f'{account_move.name}', 'debit': 575, 'credit': 0.0},
+            ]
+        )

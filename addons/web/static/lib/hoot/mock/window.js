@@ -28,6 +28,7 @@ import { MockConsole } from "./console";
 import { MockDate, MockIntl } from "./date";
 import { MockClipboardItem, mockNavigator } from "./navigator";
 import {
+    MockBlob,
     MockBroadcastChannel,
     MockMessageChannel,
     MockMessagePort,
@@ -46,7 +47,6 @@ import {
 } from "./network";
 import { MockNotification } from "./notification";
 import { MockStorage } from "./storage";
-import { MockBlob } from "./sync_values";
 
 //-----------------------------------------------------------------------------
 // Global
@@ -55,10 +55,12 @@ import { MockBlob } from "./sync_values";
 const {
     EventTarget,
     HTMLAnchorElement,
+    MutationObserver,
     Number: { isNaN: $isNaN, parseFloat: $parseFloat },
     Object: {
         assign: $assign,
         defineProperties: $defineProperties,
+        defineProperty: $defineProperty,
         entries: $entries,
         getOwnPropertyDescriptor: $getOwnPropertyDescriptor,
         getPrototypeOf: $getPrototypeOf,
@@ -68,9 +70,11 @@ const {
     Reflect: { ownKeys: $ownKeys },
     Set,
     WeakMap,
+    WeakSet,
 } = globalThis;
 
 const { addEventListener, removeEventListener } = EventTarget.prototype;
+const { preventDefault } = Event.prototype;
 
 //-----------------------------------------------------------------------------
 // Internal
@@ -325,6 +329,11 @@ function mockedMatchMedia(mediaQueryString) {
     return new MockMediaQueryList(mediaQueryString);
 }
 
+function mockedPreventDefault() {
+    preventedEvents.add(this);
+    return preventDefault.call(this, ...arguments);
+}
+
 /** @type {typeof removeEventListener} */
 function mockedRemoveEventListener(...args) {
     if (getRunner().dry) {
@@ -332,6 +341,22 @@ function mockedRemoveEventListener(...args) {
         return;
     }
     return removeEventListener.call(this, ...args);
+}
+
+/**
+ * @param {MutationRecord[]} mutations
+ */
+function observeAddedNodes(mutations) {
+    const runner = getRunner();
+    for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+            if (runner.dry) {
+                node.remove();
+            } else {
+                runner.after(node.remove.bind(node));
+            }
+        }
+    }
 }
 
 /**
@@ -426,6 +451,8 @@ const mockConsole = new MockConsole();
 const mockLocalStorage = new MockStorage();
 const mockMediaValues = { ...DEFAULT_MEDIA_VALUES };
 const mockSessionStorage = new MockStorage();
+/** @type {WeakSet<Event>} */
+const preventedEvents = new WeakSet();
 let mockTitle = "";
 
 // Mock descriptors
@@ -560,12 +587,28 @@ export function getViewPortWidth() {
 }
 
 /**
+ * @param {Event} event
+ */
+export function isPrevented(event) {
+    return event.defaultPrevented || preventedEvents.has(event);
+}
+
+/**
  * @param {Record<string, string>} name
  */
 export function mockMatchMedia(values) {
     $assign(mockMediaValues, values);
 
     callMediaQueryChanges($keys(values));
+}
+
+/**
+ * @param {Event} event
+ */
+export function mockPreventDefault(event) {
+    $defineProperty(event, "preventDefault", {
+        value: mockedPreventDefault,
+    });
 }
 
 /**
@@ -633,8 +676,23 @@ export function setupWindow() {
     view.addEventListener("resize", onWindowResize);
 }
 
-export function watchListeners() {
-    const targets = getWatchedEventTargets(getWindow());
+/**
+ * @param {typeof globalThis} [view=getWindow()]
+ */
+export function watchAddedNodes(view = getWindow()) {
+    const observer = new MutationObserver(observeAddedNodes);
+    observer.observe(view.document.head, { childList: true });
+
+    return function unwatchAddedNodes() {
+        observer.disconnect();
+    };
+}
+
+/**
+ * @param {typeof globalThis} [view=getWindow()]
+ */
+export function watchListeners(view = getWindow()) {
+    const targets = getWatchedEventTargets(view);
     for (const target of targets) {
         target.addEventListener = mockedAddEventListener;
         target.removeEventListener = mockedRemoveEventListener;

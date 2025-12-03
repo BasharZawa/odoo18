@@ -1,17 +1,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import base64
+
 from datetime import datetime
 from freezegun import freeze_time
-import logging
+from lxml import etree
 from pytz import timezone
-
 from odoo import Command
-from odoo.exceptions import ValidationError
+
+from odoo.exceptions import ValidationError, UserError
 from odoo.tests import tagged
 from odoo.tools import misc
-
-from .common import TestSaEdiCommon
-
-_logger = logging.getLogger(__name__)
+from odoo.addons.l10n_sa_edi.tests.common import TestSaEdiCommon
 
 
 @tagged('post_install_l10n', '-at_install', 'post_install')
@@ -89,7 +88,6 @@ class TestEdiZatca(TestSaEdiCommon):
             'invoice_line_ids': [{
                 'product_id': self.product_a.id,
                 'price_unit': self.product_a.standard_price,
-                'quantity': 1,
                 'tax_ids': self.tax_15.ids,
             }]
         }
@@ -142,7 +140,6 @@ class TestEdiZatca(TestSaEdiCommon):
             'invoice_line_ids': [{
                 'product_id': self.product_b.id,
                 'price_unit': self.product_b.standard_price,
-                'quantity': 1,
                 'tax_ids': self.tax_15.ids,
             }]
         }
@@ -195,7 +192,6 @@ class TestEdiZatca(TestSaEdiCommon):
             'invoice_line_ids': [{
                 'product_id': self.product_a.id,
                 'price_unit': self.product_a.standard_price,
-                'quantity': 1,
                 'tax_ids': self.tax_15.ids,
             }]
         }
@@ -207,6 +203,38 @@ class TestEdiZatca(TestSaEdiCommon):
             move_data=move_data,
             freeze_time_at=datetime(2022, 9, 5, 8, 20, 2, tzinfo=timezone('Etc/GMT-3'))
         )
+
+    def testInvoiceWithZeroTax(self):
+        """Test invoice generation with 0% tax on a line."""
+        tax_0 = self.env['account.tax'].create({
+            'name': 'Tax 0',
+            'amount_type': 'percent',
+            'amount': 0,
+        })
+        invoice = self._create_invoice(
+            name='INV/2022/00014',
+            invoice_date='2022-09-05',
+            invoice_date_due='2022-09-22',
+            partner_id=self.partner_sa,
+            invoice_line_ids=[{
+                'product_id': self.product_a.id,
+                'price_unit': 500,
+                'tax_ids': self.tax_15.ids,
+            }, {
+                'product_id': self.product_b.id,
+                'price_unit': -100,
+                'tax_ids': tax_0.ids,
+            }],
+        )
+
+        invoice.action_post()
+        xml_content = self.env['account.edi.format']._l10n_sa_generate_zatca_template(invoice)
+        xml_root = etree.fromstring(xml_content)
+        taxable_amount = xml_root.xpath(
+            "(//cac:TaxSubtotal)[2]/cbc:TaxableAmount",
+            namespaces=self.env['account.edi.xml.ubl_21.zatca']._l10n_sa_get_namespaces()
+        )[0].text.strip()
+        self.assertEqual(taxable_amount, '-100.00')
 
     def testInvoiceWithDownpayment(self):
         """Test invoice generation with downpayment scenarios."""
@@ -257,43 +285,43 @@ class TestEdiZatca(TestSaEdiCommon):
             final.invoice_line_ids.filtered('is_downpayment').name = 'Down Payment'
             final.invoice_date_due = '2022-09-22'
 
-        # Test invoices
-        for move, test_file in [
-            (downpayment, "downpayment_invoice"),
-            (final, "final_invoice")
-        ]:
-            with self.subTest(move=move, test_file=test_file):
-                self._test_document_generation(
-                    test_file_path=f'l10n_sa_edi/tests/test_files/{test_file}.xml',
-                    expected_xpath=self.invoice_applied_xpath,
-                    freeze_time_at=freeze,
-                    move=move,
-                )
+            # Test invoices
+            for move, test_file in [
+                (downpayment, "downpayment_invoice"),
+                (final, "final_invoice")
+            ]:
+                with self.subTest(move=move, test_file=test_file):
+                    self._test_document_generation(
+                        test_file_path=f'l10n_sa_edi/tests/test_files/{test_file}.xml',
+                        expected_xpath=self.invoice_applied_xpath,
+                        freeze_time_at=freeze,
+                        move=move,
+                    )
 
-        # Test credit notes
-        for move, test_file in [
-            (downpayment, "downpayment_credit_note"),
-            (final, "final_credit_note")
-        ]:
-            with self.subTest(move=move, test_file=test_file):
-                # Create refund
-                wiz_context = {
-                    'active_model': 'account.move',
-                    'active_ids': [move.id],
-                    'default_journal_id': move.journal_id.id,
-                }
-                refund_wizard = self.env['account.move.reversal'].with_context(wiz_context).create({
-                    'reason': 'please reverse :c',
-                    'date': '2022-09-05',
-                })
-                refund_invoice = self.env['account.move'].browse(refund_wizard.reverse_moves()['res_id'])
-                refund_invoice.invoice_date_due = '2022-09-22'
-                self._test_document_generation(
-                    test_file_path=f'l10n_sa_edi/tests/test_files/{test_file}.xml',
-                    expected_xpath=self.credit_note_applied_xpath,
-                    freeze_time_at=freeze,
-                    move=refund_invoice,
-                )
+            # Test credit notes
+            for move, test_file in [
+                (downpayment, "downpayment_credit_note"),
+                (final, "final_credit_note")
+            ]:
+                with self.subTest(move=move, test_file=test_file):
+                    # Create refund
+                    wiz_context = {
+                        'active_model': 'account.move',
+                        'active_ids': [move.id],
+                        'default_journal_id': move.journal_id.id,
+                    }
+                    refund_wizard = self.env['account.move.reversal'].with_context(wiz_context).create({
+                        'reason': 'please reverse :c',
+                        'date': '2022-09-05',
+                    })
+                    refund_invoice = self.env['account.move'].browse(refund_wizard.reverse_moves()['res_id'])
+                    refund_invoice.invoice_date_due = '2022-09-22'
+                    self._test_document_generation(
+                        test_file_path=f'l10n_sa_edi/tests/test_files/{test_file}.xml',
+                        expected_xpath=self.credit_note_applied_xpath,
+                        freeze_time_at=freeze,
+                        move=refund_invoice,
+                    )
 
     def testInvoiceWithRetention(self):
         """Test standard invoice generation."""
@@ -313,7 +341,6 @@ class TestEdiZatca(TestSaEdiCommon):
             'invoice_line_ids': [{
                 'product_id': self.product_a.id,
                 'price_unit': self.product_a.standard_price,
-                'quantity': 1,
                 'tax_ids': self.tax_15.ids + retention_tax.ids,
             }]
         }
@@ -325,3 +352,68 @@ class TestEdiZatca(TestSaEdiCommon):
             move_data=move_data,
             freeze_time_at=datetime(2022, 9, 5, 8, 20, 2, tzinfo=timezone('Etc/GMT-3'))
         )
+
+    def testCompanyOnSimplifiedInvoiceQR(self):
+        move_data = {
+            'name': 'INV/2025/00012',
+            'invoice_date': '2025-07-05',
+            'invoice_date_due': '2025-07-12',
+            'company_id': self.sa_branch,
+            'partner_id': self.partner_sa_simplified,
+            'invoice_line_ids': [{
+                'product_id': self.product_a.id,
+                'price_unit': self.product_a.standard_price,
+                'tax_ids': self.tax_15.ids,
+            }],
+        }
+
+        # Fetch company name from xml
+        invoice = self._create_invoice(**move_data)
+        invoice.action_post()
+        xml_content = self.env['account.edi.format']._l10n_sa_generate_zatca_template(invoice)
+        xml_root = etree.fromstring(xml_content)
+        xml_company_name = xml_root.xpath(
+            "//cac:AccountingSupplierParty/cac:Party/cac:PartyName/cbc:Name",
+            namespaces=self.env['account.edi.xml.ubl_21.zatca']._l10n_sa_get_namespaces()
+        )[0].text.strip()
+
+        # Fetch company name from QR code
+        # Format: Tag (1 Byte) - Length (1 Byte) - Value
+        invoice._l10n_sa_generate_unsigned_data()
+        decoded_qr = base64.b64decode(invoice.l10n_sa_qr_code_str)
+        length = decoded_qr[1]
+        qr_company_name = decoded_qr[2:2 + length].decode()
+
+        self.assertEqual(xml_company_name, qr_company_name, "Seller name on the xml does not match the seller name on the QR code")
+
+    def test_company_missing_country_on_standard_invoice(self):
+        """Test standard invoice generation when the company does not have a country set."""
+        # setup new company to prevent errors in other tests
+        vals = self._get_company_vals({"name": "SA Company (Minus Country)"})
+        new_company = self._create_company(**vals)
+
+        new_company_customer_invoice_journal = self.env['account.journal'].search([
+            ('company_id', '=', new_company.id),
+            ('type', '=', 'sale'),
+        ], limit=1)
+        new_company_customer_invoice_journal._l10n_sa_load_edi_demo_data()
+
+        new_company.country_id = False
+
+        # missing tax should always cause a user error, even if the country is blank
+        move_data = {
+            'name': 'INV/2022/00014',
+            'invoice_date': '2022-09-05',
+            'invoice_date_due': '2022-09-22',
+            'company_id': new_company,
+            'partner_id': self.partner_sa,
+            'invoice_line_ids': [{
+                'product_id': self.product_a.id,
+                'price_unit': self.product_a.standard_price,
+                'tax_ids': False,
+            }],
+        }
+
+        invoice = self._create_invoice(**move_data)
+        with self.assertRaises(UserError):
+            invoice.action_post()

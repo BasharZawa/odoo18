@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from . import common
 from odoo import Command
+from odoo.exceptions import ValidationError
 from odoo.tests import Form, tagged
 from odoo.tools.float_utils import float_split_str
 
@@ -245,7 +246,7 @@ class TestManual(common.TestAr):
                             'id': self.tax_other.tax_group_id.id,
                             'base_amount_currency': 10000.0,
                             'tax_amount_currency': 100.0,
-                            'display_base_amount_currency': None,
+                            'display_base_amount_currency': False,
                         },
                     ],
                 },
@@ -348,3 +349,36 @@ class TestManual(common.TestAr):
         self.assertAlmostEqual(l10n_ar_values['price_unit'], 5470.0)
         self.assertAlmostEqual(l10n_ar_values['price_subtotal'], 124716.0)
         self.assertAlmostEqual(l10n_ar_values['price_net'], 5196.5)
+
+    def test_l10n_ar_vat_with_non_numeric_value(self):
+        with self.assertRaises(ValidationError) as e:
+            with Form(self.partner) as partner_form:
+                partner_form.l10n_latam_identification_type_id = self.env.ref("l10n_ar.it_dni")
+                partner_form.vat = "test"
+        self.assertIn('Only numbers allowed for "DNI"', str(e.exception))
+
+    def test_create_debit_note_for_credit_note(self):
+        """
+        Test that it is possible to create a debit note from a credit note
+        """
+
+        invoice = self.init_invoice('out_invoice', partner=self.partner_afip, products=[self.product_a], post=True)
+
+        credit_note_wizard = self.env['account.move.reversal'].with_context({
+            'active_ids': invoice.ids,
+            'active_model': 'account.move',
+        }).create({
+            'reason': 'credit note',
+            'journal_id': invoice.journal_id.id,
+        })
+        credit_note_wizard.refund_moves()
+        invoice.reversal_move_ids.action_post()
+
+        debit_note_wizard = self.env['account.debit.note'].with_context({
+            'active_ids': invoice.reversal_move_ids.ids,
+            'active_model': 'account.move',
+        }).create({
+            'reason': 'debit_note',
+        })
+        debit_note_wizard.create_debit()
+        self.assertTrue(invoice.reversal_move_ids.debit_note_ids)

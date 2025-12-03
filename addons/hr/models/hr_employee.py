@@ -11,7 +11,7 @@ from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError, AccessError
+from odoo.exceptions import ValidationError, AccessError, RedirectWarning
 from odoo.osv import expression
 from odoo.tools import convert, format_date
 
@@ -323,6 +323,11 @@ class HrEmployeePrivate(models.Model):
         self.flush_recordset(field_names)
         public = self.env['hr.employee.public'].browse(self._ids)
         public.fetch(field_names)
+        # make sure all related fields from employee are in cache
+        for field_name in field_names:
+            field = self.env['hr.employee.public']._fields[field_name]
+            if field.related and field.related_field.model_name == 'hr.employee':
+                public.mapped(field_name)
         self._copy_cache_from(public, field_names)
 
     def _check_private_fields(self, field_names):
@@ -373,9 +378,16 @@ class HrEmployeePrivate(models.Model):
     def get_views(self, views, options=None):
         if self.browse().has_access('read'):
             return super().get_views(views, options)
-        res = self.env['hr.employee.public'].get_views(views, options)
-        res['models'].update({'hr.employee': res['models']['hr.employee.public']})
-        return res
+        # returning public employee data would cause a traceback when building
+        # the private employee xml view
+        raise RedirectWarning(
+            message=_(
+            """You are not allowed to access "Employee" (hr.employee) records.
+We can redirect you to the public employee list."""
+            ),
+            action=self.env.ref('hr.hr_employee_public_action').id,
+            button_text=_("Employees profile"),
+        )
 
     @api.model
     def _search(self, domain, offset=0, limit=None, order=None):

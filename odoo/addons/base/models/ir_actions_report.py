@@ -5,8 +5,8 @@ from contextlib import ExitStack
 from markupsafe import Markup
 from urllib.parse import urlparse
 
-from odoo import api, fields, models, tools, SUPERUSER_ID, _
-from odoo.exceptions import UserError, AccessError, RedirectWarning
+from odoo import api, fields, models, modules, tools, _
+from odoo.exceptions import UserError, AccessError, RedirectWarning, ValidationError
 from odoo.service import security
 from odoo.tools.safe_eval import safe_eval, time
 from odoo.tools.misc import find_in_path
@@ -22,6 +22,7 @@ import lxml.html
 import tempfile
 import subprocess
 import re
+import requests
 import json
 
 from lxml import etree
@@ -461,7 +462,7 @@ class IrActionsReport(models.Model):
         :param image_format union['jpg', 'png']: format of the image
         :return list[bytes|None]:
         """
-        if (tools.config['test_enable'] or tools.config['test_file']) and not self.env.context.get('force_image_rendering'):
+        if modules.module.current_test:
             return [None] * len(bodies)
         if not wkhtmltoimage_version or wkhtmltoimage_version < parse_version('0.12.0'):
             raise UserError(_('wkhtmltoimage 0.12.0^ is required in order to render images from html'))
@@ -785,7 +786,10 @@ class IrActionsReport(models.Model):
                 handle_error(error=e, error_stream=stream)
         result_stream = io.BytesIO()
         streams.append(result_stream)
-        writer.write(result_stream)
+        try:
+            writer.write(result_stream)
+        except PdfReadError:
+            raise UserError(_("Odoo is unable to merge the generated PDFs."))
         return result_stream
 
     def _render_qweb_pdf_prepare_streams(self, report_ref, data, res_ids=None):
@@ -1182,3 +1186,13 @@ class IrActionsReport(models.Model):
             if records.filtered_domain(literal_eval(action.domain)):
                 valid_action_report_ids.append(action.id)
         return valid_action_report_ids
+
+    @api.model
+    def _prepare_local_attachments(self, attachments):
+        for attachment in attachments:
+            if attachment._is_remote_source():
+                try:
+                    attachment._migrate_remote_to_local()
+                except (ValidationError, requests.exceptions.RequestException) as e:
+                    _logger.error("Failed to migrate attachment %s to local: %s", attachment.id, e)
+        return attachments.filtered(lambda a: not a._is_remote_source())

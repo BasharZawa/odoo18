@@ -54,7 +54,7 @@ class TestTimesheetHolidays(TestCommonTimesheet):
         self.internal_task_leaves = self.env.company.leave_timesheet_task_id
 
         self.hr_leave_type_with_ts = self.env['hr.leave.type'].create({
-            'name': 'Time Off Type with timesheet generation',
+            'name': 'Time Off Type with timesheet generation (absence)',
             'requires_allocation': 'no',
             'timesheet_generate': True,
             'timesheet_project_id': self.internal_project.id,
@@ -68,6 +68,14 @@ class TestTimesheetHolidays(TestCommonTimesheet):
             'timesheet_generate': True,
             'timesheet_project_id': self.internal_project.id,
             'timesheet_task_id': self.internal_task_leaves.id,
+        })
+
+        self.hr_leave_type_worked = self.env['hr.leave.type'].create({
+            'name': 'Time Off Type (worked time)',
+            'requires_allocation': 'no',
+            'timesheet_project_id': self.internal_project.id,
+            'timesheet_task_id': self.internal_task_leaves.id,
+            'time_type': 'other',
         })
 
         self.hr_leave_type_no_ts = self.env['hr.leave.type'].create({
@@ -145,6 +153,19 @@ class TestTimesheetHolidays(TestCommonTimesheet):
         self.assertEqual(holiday.timesheet_ids.project_id.id, company.internal_project_id.id)
         self.assertEqual(holiday.timesheet_ids.task_id.id, company.leave_timesheet_task_id.id)
 
+    def test_validate_worked_leave(self):
+        # employee creates a leave request of worked time type
+        holiday = self.Requests.with_user(self.user_employee).create({
+            'name': 'Time Off 3',
+            'employee_id': self.empl_employee.id,
+            'holiday_status_id': self.hr_leave_type_worked.id,
+            'request_date_from': self.leave_start_datetime,
+            'request_date_to': self.leave_end_datetime,
+        })
+        holiday.with_user(SUPERUSER_ID).action_validate()
+
+        self.assertEqual(len(holiday.timesheet_ids), 0, 'No timesheet should be created for a leave of worked time type')
+
     def test_validate_without_timesheet(self):
         # employee creates a leave request
         holiday = self.Requests.with_user(self.user_employee).create({
@@ -215,11 +236,11 @@ class TestTimesheetHolidays(TestCommonTimesheet):
 
         # should not able to update timeoff timesheets
         with self.assertRaises(UserError):
-            timesheets.with_user(self.empl_employee).write({'task_id': 4})
+            timesheets.with_user(self.user_employee).write({'task_id': 4})
 
         # should not able to create timesheet in timeoff task
         with self.assertRaises(UserError):
-            self.env['account.analytic.line'].with_user(self.empl_employee).create({
+            self.env['account.analytic.line'].with_user(self.user_employee).create({
                 'name': "my timesheet",
                 'project_id': self.internal_project.id,
                 'task_id': self.internal_task_leaves.id,
