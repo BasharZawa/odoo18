@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "X Product",
+    'name': "X Products",
 
     'summary': "This module adds custom product features",
 
@@ -24,8 +24,8 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'views/x_product_nature_views.xml',
-        'views/x_product_line_views.xml',
+        'views/product_nature_views.xml',
+        'views/product_line_views.xml',
         'views/product_template_views.xml',
         'views/menu_views.xml',
         'data/product_template.xml',

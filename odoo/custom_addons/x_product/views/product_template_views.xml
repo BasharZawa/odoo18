@@ -9,10 +9,11 @@
             <!-- Add custom fields in the General Information tab -->
             <xpath expr="//page[@name='general_information']//group[@name='group_general']" position="after">
                 <group string="Custom Accounting Information" name="custom_accounting_info">
-                        <field name="x_product_line_id"/>
-                        <field name="x_product_nature_id"/>
-                        <field name="x_hs_code"/>
-                        <field name="x_coo"/>
+                        <field name="product_line_id"/>
+                        <field name="product_nature_id"/>
+                        <field name="hs_code"/>
+                        <field name="coo"/>
+                        <field name="model_number"/>
                 </group>
             </xpath>
         </field>

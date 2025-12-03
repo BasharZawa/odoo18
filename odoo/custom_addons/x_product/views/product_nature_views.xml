@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Product Nature list View -->
-    <record id="view_x_product_nature_list" model="ir.ui.view">
-        <field name="name">x.product.nature.list</field>
-        <field name="model">x.product.nature</field>
+    <record id="view_product_nature_list" model="ir.ui.view">
+        <field name="name">product.nature.list</field>
+        <field name="model">product.nature</field>
         <field name="arch" type="xml">
             <list string="Product Nature">
                 <field name="name"/>
@@ -13,9 +13,9 @@
     </record>
 
     <!-- Product Nature Form View -->
-    <record id="view_x_product_nature_form" model="ir.ui.view">
-        <field name="name">x.product.nature.form</field>
-        <field name="model">x.product.nature</field>
+    <record id="view_product_nature_form" model="ir.ui.view">
+        <field name="name">product.nature.form</field>
+        <field name="model">product.nature</field>
         <field name="arch" type="xml">
             <form string="Product Nature">
                 <sheet>
@@ -29,7 +29,7 @@
                     </group>
                     <notebook>
                         <page string="Products">
-                            <field name="x_product_ids">
+                            <field name="product_ids">
                                 <list>
                                     <field name="name"/>
                                     <field name="default_code"/>
@@ -44,9 +44,9 @@
     </record>
 
     <!-- Product Nature Action -->
-    <record id="action_x_product_nature" model="ir.actions.act_window">
+    <record id="action_product_nature" model="ir.actions.act_window">
         <field name="name">Product Nature</field>
-        <field name="res_model">x.product.nature</field>
+        <field name="res_model">product.nature</field>
         <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

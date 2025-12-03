@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Product Line list View -->
-    <record id="view_x_product_line_list" model="ir.ui.view">
-        <field name="name">x.product.line.list</field>
-        <field name="model">x.product.line</field>
+    <record id="view_product_line_list" model="ir.ui.view">
+        <field name="name">product.line.list</field>
+        <field name="model">product.line</field>
         <field name="arch" type="xml">
             <list string="Product Line">
                 <field name="name"/>
@@ -13,9 +13,9 @@
     </record>
 
     <!-- Product Line Form View -->
-    <record id="view_x_product_line_form" model="ir.ui.view">
-        <field name="name">x.product.line.form</field>
-        <field name="model">x.product.line</field>
+    <record id="view_product_line_form" model="ir.ui.view">
+        <field name="name">product.line.form</field>
+        <field name="model">product.line</field>
         <field name="arch" type="xml">
             <form string="Product Line">
                 <sheet>
@@ -29,7 +29,7 @@
                     </group>
                     <notebook>
                         <page string="Related Products">
-                            <field name="x_product_ids">
+                            <field name="product_ids">
                                 <list>
                                     <field name="name"/>
                                     <field name="default_code"/>
@@ -45,9 +45,9 @@
     </record>
 
     <!-- Product Line Action -->
-    <record id="action_x_product_line" model="ir.actions.act_window">
+    <record id="action_product_line" model="ir.actions.act_window">
         <field name="name">Product Line</field>
-        <field name="res_model">x.product.line</field>
+        <field name="res_model">product.line</field>
         <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
