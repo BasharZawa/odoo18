@@ -1,0 +1,28 @@
+{
+    // Configurations for launching Odoo with the virtual environment
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Odoo with venv",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/odoo-bin", // Path to the Odoo binary
+            "args": [
+                "-c",
+                "${workspaceFolder}/odoo.conf", // Path to your Odoo configuration file
+                "-u",
+                "x_product", // Module to update
+                // "--max-cron-threads", "2", // Enable cron workers for BPM orchestrator
+                // Uncomment and modify the following lines to override database settings:
+                // "--db_host", "localhost",
+                // "--db_port", "5432",
+                // "--db_user", "odoo",
+                // "--db_password", "your_password",
+                // "--db_name", "your_database_name"
+            ],
+            "python": "${workspaceFolder}/venv/bin/python", // Path to the Python executable in your virtual environment
+            "justMyCode": false, // Allows debugging third-party and Odoo code
+            "stopOnEntry": false // Set to true if you want to pause execution at the start
+        }
+    ]
+}
