@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="customer_management_ept.list">
+      <field name="name">customer_management_ept list</field>
+      <field name="model">customer_management_ept.customer_management_ept</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </list>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="customer_management_ept.action_window">
+      <field name="name">customer_management_ept window</field>
+      <field name="res_model">customer_management_ept.customer_management_ept</field>
+      <field name="view_mode">list,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="customer_management_ept.action_server">
+      <field name="name">customer_management_ept server</field>
+      <field name="model_id" ref="model_customer_management_ept_customer_management_ept"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="customer_management_ept" id="customer_management_ept.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="customer_management_ept.menu_1" parent="customer_management_ept.menu_root"/>
+    <menuitem name="Menu 2" id="customer_management_ept.menu_2" parent="customer_management_ept.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="customer_management_ept.menu_1_list" parent="customer_management_ept.menu_1"
+              action="customer_management_ept.action_window"/>
+    <menuitem name="Server to list" id="customer_management_ept" parent="customer_management_ept.menu_2"
+              action="customer_management_ept.action_server"/>
+-->
+  </data>
+</odoo>

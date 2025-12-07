@@ -11,8 +11,6 @@
                 <group string="Custom Accounting Information" name="custom_accounting_info">
                         <field name="product_line_id"/>
                         <field name="product_nature_id"/>
-                        <field name="hs_code"/>
-                        <field name="coo"/>
                         <field name="model_number"/>
                 </group>
             </xpath>
