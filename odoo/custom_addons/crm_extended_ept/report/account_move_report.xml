@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_invoice_model_number_inherited" inherit_id="account.report_invoice_document">
+        <xpath expr="//table[contains(@class, 'o_has_total_table')]//td[@name='account_invoice_line_name']/span" position="replace">
+            <span t-field="line.product_id.name" class="text-center" t-options="{'widget': 'text'}"/>
+        </xpath>
+
+        <xpath expr="//table[contains(@class, 'o_has_total_table')]//th[@name='th_description']" position="after">
+            <th name="th_model_number" class="text-start">Model Number</th>
+        </xpath>
+
+        <xpath expr="//table[contains(@class, 'o_has_total_table')]//td[@name='account_invoice_line_name']" position="after">
+            <td name="account_invoice_line_model_number">
+                <span t-field="line.model_number" class="text-start" t-options="{'widget': 'text'}"/>
+            </td>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="product_product_form_threshold_qty">
+        <field name="name">product.product.form.threshold.qty</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group_lots_and_weight']" position="inside">
+                <label for="qty_available_threshold"/>
+                <div class="o_row">
+                    <field name="qty_available_threshold" class="oe_inline"/>
+                </div>
+                <label for="tolerance"/>
+                <div class="o_row">
+                    <field name="tolerance" class="oe_inline"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

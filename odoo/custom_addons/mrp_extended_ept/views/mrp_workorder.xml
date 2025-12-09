@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_mrp_workorder_tree_inherit" model="ir.ui.view">
+        <field name="name">mrp.workorder.tree.inherit</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_editable_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="workorder_sequence"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_mrp_workorder_form_inherit" model="ir.ui.view">
+        <field name="name">mrp.workorder.form.inherit</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='finished_lot_id']" position="after">
+                <div class="oe_title">
+                    <h1>
+                        <field name="workorder_sequence" readonly="1"/>
+                    </h1>
+                </div>
+            </xpath>
+            <xpath expr="//label[@for='duration_expected']" position="before">
+                <label for="schedule_date_finished"/>
+                <div class="oe_inline">
+                    <field name="date_start" class="mr8 oe_inline" readonly="state in ['cancel', 'done']"/>
+                    <strong class="mr8 oe_inline">to</strong>
+                    <field name="schedule_date_finished" class="oe_inline"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='qty_remaining']" position="attributes">
+                <attribute name="string">Qty Remaining</attribute>
+            </xpath>
+            <xpath expr="//field[@name='qty_remaining']" position="before">
+                <field name="qty_produced" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='loss_id']" position="after">
+                <field name="total_cost" string="Labor Cost" readonly="1" sum="Total Labor Cost"/>
+                <!--                <field name="has_approvals" invisible="1" groups="mrp_extended_ept.timesheet_supervisor_group_user"/>-->
+                <!--                <button name="open_timesheet_approval_requests" type="object" string="Approvals"-->
+                <!--                        class="btn btn-sm btn-secondary ms-auto"-->
+                <!--                        groups="mrp_extended_ept.timesheet_supervisor_group_user"-->
+                <!--                        invisible="not has_approvals"/>/>-->
+            </xpath>
+            <xpath expr="//field[@name='time_ids']/list/field[@name='duration']" position="attributes">
+                <attribute name="readonly">0</attribute>
+                <attribute name="sum">Total Duration</attribute>
+            </xpath>
+            <xpath expr="//label[@for='duration']/.." position="after">
+                <div>
+                    <label for="avg_labor_cost" class="pe-2"/>
+                    <field name="avg_labor_cost" class="oe_inline"/>
+                    <field name="currency_id" invisible="1"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_mrp_workorder_search_inherit" model="ir.ui.view">
+        <field name="name">mrp.workorder.search.inherit</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_workorder_form_view_filter"/>
+        <field name="arch" type="xml">
+            <field name="workcenter_id" position="before">
+                <field name="workorder_sequence"/>
+            </field>
+        </field>
+    </record>
+</odoo>

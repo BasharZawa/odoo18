@@ -1,36 +1,43 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Customer Management EPT",
-
-    'summary': "Short (1 phrase/line) summary of the module's purpose",
-
+    'name': 'Customer Management Ept',
+    'version': '18.0.1.0.0',
+    'category': 'Sales/CRM',
+    'summary': 'Customer contact validation workflow with Finance team approval',
     'description': """
-    Long description of module's purpose
+        Customer Contact & Validation Module with Sales Order Scheduling
+        
+        Features:
+        - Unique Customer ID generation for contacts
+        - Validation workflow for customer contacts
+        - Finance team approval process
+        - Field-level access control based on validation status
+        - Sales order blocking for unvalidated customers
+        - Automatic notifications to Finance team
+        - End Customer tracking for license management
+        - Invoicing Schedule with milestone-based billing
+        - Recognition Schedule for revenue recognition
+        - Distribution Schedule for salesperson commission allocation
+        - Comprehensive reporting for all schedules
     """,
-
-    'author': "My Company",
-    'website': "https://www.yourcompany.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Uncategorized',
-    'version': '0.1',
-
-    # any module necessary for this one to work correctly
-    'depends': ['base'],
-
-    # always loaded
+    'author': 'Emipro Technologies Pvt Ltd',
+    'website': 'https://www.emiprotechnologies.com',
+    'depends': [
+        'vendor_tracking_ept',
+        'sale_extended_ept',
+    ],
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
+        'security/security_groups.xml',
+        'security/ir.model.access.csv',
+        'data/ir_sequence_data.xml',
+        'data/approval_data.xml',
+        'views/res_partner_views.xml',
+        'views/sale_order_views.xml',
+        'views/schedule_reports.xml',
+        'views/menu_items.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
-    
-    
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+    'license': 'LGPL-3',
 }
-

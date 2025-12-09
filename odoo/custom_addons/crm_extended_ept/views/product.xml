@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_model_number_form" model="ir.ui.view">
+        <field name="name">product.template.model.number.ept</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <field name="default_code" position="after">
+                <field name="model_number" invisible="product_variant_count &gt; 1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_product_model_number_form" model="ir.ui.view">
+        <field name="name">product.product.model.number.ept</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <field name="default_code" position="after">
+                <field name="model_number"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_template_line_nature_form" model="ir.ui.view">
+        <field name="name">product.template.line.nature.ept</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group_general']" position="inside">
+                    <field name="product_line_id"/>
+                    <field name="product_nature_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_view_search_catalog" model="ir.ui.view">
+        <field name="name">product.template.view.search.ept</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <filter string="Product Line" name="product_line_id" context="{'group_by':'product_line_id'}"/>
+                <filter string="Product Nature" name="product_nature_id" context="{'group_by':'product_nature_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="server_action_generate_pending_report" model="ir.actions.server">
+        <field name="name">Stock Availability Report Action</field>
+        <field name="model_id" ref="product.model_product_product"/>
+        <field name="state">code</field>
+        <field name="code">action = env['product.product'].action_generate_pending_report()</field>
+    </record>
+
+    <record id="server_action_purchase_generate_pending_report" model="ir.actions.server">
+        <field name="name">Purchase: Stock Availability Report Action</field>
+        <field name="model_id" ref="product.model_product_product"/>
+        <field name="state">code</field>
+        <field name="code">action = env['product.product'].action_generate_pending_report()</field>
+    </record>
+
+    <menuitem id="menu_stock_availability_report"
+              name="Stock Availability Report"
+              parent="stock.menu_warehouse_report"
+              action="server_action_generate_pending_report"
+              sequence="301"/>
+
+    <menuitem id="menu_purchase_stock_availability_report"
+              name="Stock Availability Report"
+              parent="purchase.purchase_report_main"
+              action="server_action_purchase_generate_pending_report"
+              sequence="301"/>
+</odoo>

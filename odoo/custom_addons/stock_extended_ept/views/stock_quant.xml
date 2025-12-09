@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_quant_approval_tree_inventory_editable" model="ir.ui.view">
+        <field name="name">stock.quant.inventory.approval.list.editable.inherit</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.view_stock_quant_tree_inventory_editable"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_apply_inventory']" position="attributes">
+                <attribute name="groups">stock_extended_ept.inv_adjustment_approval_group_user</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_clear_inventory_quantity']" position="attributes">
+                <attribute name="groups">stock_extended_ept.inv_adjustment_approval_group_user</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_apply_all']" position="attributes">
+                <attribute name="groups">stock_extended_ept.inv_adjustment_approval_group_user</attribute>
+            </xpath>
+            <xpath expr="//button[@name='stock.action_stock_inventory_adjustement_name']" position="attributes">
+                <attribute name="groups">stock_extended_ept.inv_adjustment_approval_group_user</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_clear_inventory_quantity']" position="after">
+                <field name="has_approvals" invisible="1" groups="stock_extended_ept.inv_adjustment_approval_group_user"/>
+                <button name="open_adjustment_approval_requests" type="object" string="Approvals"
+                        class="btn btn-sm btn-secondary ms-auto"
+                        groups="stock_extended_ept.inv_adjustment_approval_group_user"
+                        invisible="not has_approvals"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

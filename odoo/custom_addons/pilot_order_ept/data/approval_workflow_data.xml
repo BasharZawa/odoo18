@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Create approval category for pilot orders -->
+        <record id="pilot_order_approval_category" model="approval.category">
+            <field name="name">Pilot Order Approval</field>
+            <field name="has_product">no</field>
+            <field name="has_amount">no</field>
+            <field name="approval_type">pilot_order_req</field>
+            <field name="has_partner">required</field>
+            <field name="has_payment_method">no</field>
+            <field name="has_reference">required</field>
+            <field name="approval_minimum">1</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- Create approval category for pilot orders -->
+        <record id="freight_approval_category" model="approval.category">
+            <field name="name">Freight or Tax Adjustment Approval</field>
+            <field name="has_product">no</field>
+            <field name="has_amount">no</field>
+            <field name="approval_type">freight_tax_req</field>
+            <field name="has_partner">required</field>
+            <field name="has_payment_method">no</field>
+            <field name="has_reference">required</field>
+            <field name="approval_minimum">1</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- Create tags for pilot order categorization -->
+        <record id="pilot_tag_high_value" model="crm.tag">
+            <field name="name">High Value Pilot Order</field>
+            <field name="is_pilot_approval">True</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="pilot_tag_strategic" model="crm.tag">
+            <field name="name">Strategic Account Pilot Order</field>
+            <field name="is_pilot_approval">True</field>
+            <field name="color">2</field>
+        </record>
+    </data>
+</odoo>

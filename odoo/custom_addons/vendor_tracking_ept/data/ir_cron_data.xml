@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!--Auto cron job for process for schedule activity for due Bills.-->
+        <record id="bill_mismatch_schedule_activity" model="ir.cron">
+            <field name="name">Bill Mismatch Schedule Activity</field>
+            <field name="model_id" ref="model_account_move"/>
+            <field name="state">code</field>
+            <field eval="False" name="active"/>
+            <field name="code">model.cron_invoice_mismatch_activity()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+</odoo>

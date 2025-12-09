@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View for crm.tag with the new field -->
+        <record id="view_crm_tag_tree_pilot_approval" model="ir.ui.view">
+            <field name="name">crm.tag.tree.pilot.approval</field>
+            <field name="model">crm.tag</field>
+            <field name="inherit_id" ref="sales_team.sales_team_crm_tag_view_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="is_pilot_approval"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

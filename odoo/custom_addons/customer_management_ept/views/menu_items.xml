@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Main Menu -->
+        <menuitem id="menu_customer_management_main"
+                  name="Customer Management"
+                  parent="sale.menu_sale_report"
+                  sequence="20"
+        />
+
+        <!-- Reports Submenu -->
+        <menuitem id="menu_schedule_reports"
+                  name="Schedule Reports"
+                  parent="menu_customer_management_main"
+                  sequence="10"/>
+
+        <!-- Invoicing Schedule Report Menu -->
+        <menuitem id="menu_invoicing_schedule_report"
+                  name="Invoicing Schedule"
+                  parent="menu_schedule_reports"
+                  action="action_invoicing_schedule_report"
+                  sequence="10"/>
+
+        <!-- Recognition Schedule Report Menu -->
+        <menuitem id="menu_recognition_schedule_report"
+                  name="Recognition Schedule"
+                  parent="menu_schedule_reports"
+                  action="action_recognition_schedule_report"
+                  sequence="20"/>
+
+        <!-- Distribution Schedule Report Menu -->
+        <menuitem id="menu_distribution_schedule_report"
+                  name="Distribution Schedule"
+                  parent="menu_schedule_reports"
+                  action="action_distribution_schedule_report"
+                  sequence="30"/>
+
+    </data>
+</odoo>

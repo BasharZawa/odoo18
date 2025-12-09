@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bill_mismatch_schedule_activity_form_view" model="ir.ui.view">
+        <field name="name">Bill Mismatch Schedule Activity</field>
+        <field name="model">account.journal</field>
+        <field name="priority" eval="100"/>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='advanced_settings']/group" position="inside">
+                <group string="Bill Mismatch Schedule Activity" invisible="type != 'purchase'">
+                    <field name="is_create_schedule_activity"/>
+                    <field name="activity_user_ids" widget="many2many_tags" class="oe_inline"
+                           invisible="not is_create_schedule_activity" required="is_create_schedule_activity"/>
+                    <field name="activity_date_deadline" invisible="not is_create_schedule_activity"
+                           required="is_create_schedule_activity"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

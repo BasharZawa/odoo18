@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Stock Picking Extended Ept",
+    'summary': """Inventory Modifications""",
+    'description': """Inventory related modifications""",
+    'author': 'Emipro Technologies Pvt. Ltd.',
+    'website': 'http://www.emiprotechnologies.com/',
+    'depends': ['base', 'stock', 'approvals', 'account', 'purchase'],
+    'data': [
+        'security/res_groups.xml',
+        'data/approval_category_rec.xml',
+        'data/mail_template.xml',
+        'data/ir_cron.xml',
+        'report/packing_slip.xml',
+        'report/report_packing_slip.xml',
+        'report/special_customer_layout.xml',
+        'views/approval_category.xml',
+        'views/approval_request.xml',
+        'views/stock_availability_report.xml',
+        'views/stock_quant.xml',
+        'views/product_product.xml',
+        'views/res_company.xml',
+        'views/stock_lot.xml',
+        'views/stock_picking.xml',
+        'views/res_partner.xml'
+    ],
+    'images': ['static/description/icon.png'],
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}

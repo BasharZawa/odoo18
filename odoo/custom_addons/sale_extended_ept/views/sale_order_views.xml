@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_credit_hold" model="ir.ui.view">
+        <field name="name">sale.order.form.credit.hold.ept</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <!--                <button name="action_view_approval_request"-->
+                <!--                        type="object"-->
+                <!--                        string="View Approval Request"-->
+                <!--                        class="btn-secondary"-->
+                <!--                        invisible="not approval_request_id"/>-->
+                <button name="action_resubmit_approval"
+                        type="object"
+                        string="Resubmit Approval"
+                        class="oe_highlight"
+                        invisible="state != 'on_hold' or approval_status != 'refused'"/>
+                <button name="action_cancel" type="object" string="Cancel"
+                        invisible="state not in ['on_hold',] or not id or locked" data-hotkey="x"/>
+            </xpath>
+
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="boe_number"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="readonly">
+                    (state == 'cancel') or (state == 'on_hold') or locked
+                </attribute>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_all_approvals"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-check-circle">
+                    <field name="approval_count" widget="statinfo" string="Approvals"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

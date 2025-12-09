@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_country_form_inherit_sequence_prefix" model="ir.ui.view">
+        <field name="name">res.country.form.inherit.sequence.prefix</field>
+        <field name="model">res.country</field>
+        <field name="inherit_id" ref="base.view_country_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="sequence_prefix"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

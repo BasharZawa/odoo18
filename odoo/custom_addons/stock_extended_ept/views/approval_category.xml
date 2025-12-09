@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="approval_category_adjustment_view_form_inherit" model="ir.ui.view">
+        <field name="name">approval.category.adjustment.view.form.inherit</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='option_settings']" position="inside">
+                <field name="has_adjustment_product" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_adjustment_location" widget="radio" options="{'horizontal': true}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="approval_type_inv_adjust_stock" model="approval.category">
+        <field name="name">Stock Adjustment Approval</field>
+        <field name="description">Inventory adjustment approval</field>
+        <field name="automated_sequence">True</field>
+        <field name="sequence_code">STA</field>
+        <field name="approval_type">stock_adjustment_req</field>
+        <field name="has_adjustment_product">required</field>
+        <field name="has_adjustment_location">required</field>
+        <field name="has_quantity">required</field>
+        <field name="approval_minimum">1</field>
+    </record>
+</odoo>

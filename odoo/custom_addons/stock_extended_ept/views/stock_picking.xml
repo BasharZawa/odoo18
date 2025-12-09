@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bayan_code_stock_picking_form_view" model="ir.ui.view">
+        <field name="name">Bayan Code Stock Picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="backorder_id" position="after">
+                <field name="bayan_code" invisible="picking_type_code != 'incoming' or not is_bayan_code_visible"
+                       readonly="state in ['done', 'cancel']"/>
+                <field name="boe_number" invisible="picking_type_code not in ['incoming', 'outgoing']"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Server action that appears in Print menu -->
+    <record id="action_print_packing_slip_xlsx" model="ir.actions.server">
+        <field name="name">Packing Slip XLSX</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="groups_id" eval="[(4, ref('stock.group_stock_user'))]"/>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            action = records.action_download_packing_slip_xlsx_report()
+        </field>
+    </record>
+</odoo>

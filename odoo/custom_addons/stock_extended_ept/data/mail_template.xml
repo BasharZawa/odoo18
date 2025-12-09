@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="email_template_low_stock_alert" model="mail.template">
+            <field name="name">Low Stock Product(s) Alert</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="subject">Low Stock Product(s) Alert from your Odoo system.</field>
+            <!--            <field name="email_to"></field>-->
+            <!--            <field name="email_from"></field>-->
+            <field name="body_html" type="html">
+                <tbody>
+                </tbody>
+                <p>Hello,</p>
+                <p>The following products are below the minimum stock level:</p>
+                <t t-set="datas" t-value="ctx.get('datas', [])"/>
+                <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;">
+                    <thead style="background:#f2f2f2;">
+                        <tr>
+                            <th style="text-align:left;">Product</th>
+                            <th style="text-align:left;">Sku</th>
+                            <th style="text-align:right;">Available Qty</th>
+                            <th style="text-align:right;">Minimum Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="datas" t-as="d">
+                            <tr>
+                                <td>
+                                    <t t-esc="d.get('product_name')"/>
+                                </td>
+                                <td>
+                                    <t t-esc="d.get('default_code')"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <t t-esc="d.get('qty_available')"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <t t-esc="d.get('min_qty')"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <p>Thank you.
+                    <br/>
+                </p>
+            </field>
+        </record>
+
+        <record id="email_template_replenish_review_reminder" model="mail.template">
+            <field name="name">Replenish review reminder</field>
+            <field name="model_id" ref="stock.model_stock_warehouse_orderpoint"/>
+            <field name="subject">Replenish review reminder from your Odoo system.</field>
+            <field name="body_html" type="html">
+                <tbody>
+                </tbody>
+                <p>Hello,</p>
+                <p>This is a friendly reminder to review your product replenishment requirements for the month.</p>
+
+                <p>Please take a moment to check your <strong>Replenishment Dashboard</strong> and ensure that stock
+                    levels are aligned with upcoming demand and purchase planning.
+                </p>
+
+                <p>You can access the replenishment overview directly by clicking the link below:</p>
+                <p>
+                    <a t-att-href="ctx.get('base_url')"
+                       style="background-color:#017e84; color:white; padding:8px 14px; border-radius:4px; text-decoration:none;">
+                        Review Replenishment
+                    </a>
+                </p>
+
+                <p>If you’ve already completed this month’s review, please ignore this message.</p>
+
+                <p>Thank you.
+                    <br/>
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

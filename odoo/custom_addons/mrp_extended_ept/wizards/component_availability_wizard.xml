@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard Form View -->
+    <record id="view_component_availability_wizard_form" model="ir.ui.view">
+        <field name="name">component.availability.wizard.form</field>
+        <field name="model">component.availability.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Component Availability Report">
+                <sheet>
+                    <group>
+                        <field name="bom_ids" required="1" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="generate_report" string="Generate Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open wizard -->
+    <record id="action_component_availability_wizard" model="ir.actions.act_window">
+        <field name="name">Component Availability Report</field>
+        <field name="res_model">component.availability.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'dialog_size': 'medium'}</field>
+
+    </record>
+
+    <!-- Add to Manufacturing Reporting menu -->
+    <menuitem
+            id="menu_component_availability_report"
+            name="Component Availability Report"
+            parent="mrp.menu_mrp_reporting"
+            action="action_component_availability_wizard"
+            sequence="301"/>
+
+
+    <menuitem id="menu_purchase_component_availability_report"
+              name="Component Availability Report"
+              parent="purchase.purchase_report_main"
+              action="action_component_availability_wizard"
+              sequence="302"/>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_scrap_product_confirmation_wizard_form" model="ir.ui.view">
+        <field name="name">scrap.product.confirmation.wizard.form</field>
+        <field name="model">scrap.product.confirmation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Confirm Component Scrap">
+                <sheet>
+                    <group>
+                            <field name="confirmation_message" nolabel="1" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_confirm_scrap" string="Confirm Scrap" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_component_availability_wizard,component.availability.wizard,model_component_availability_wizard,,1,1,1,1
+access_scrap_product_confirmation_wizard,scrap.product.confirmation.wizard,model_scrap_product_confirmation_wizard,,1,1,1,1

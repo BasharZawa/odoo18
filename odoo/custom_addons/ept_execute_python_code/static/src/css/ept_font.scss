@@ -1,0 +1,24 @@
+// Increased Font size for text-field in Execute Python Code
+.execute_python{
+	.o_ace_view_editor{
+		.ace_editor{	
+			font-size: 20px !important;		
+		}
+	}
+	.ace_gutter{
+	    display:block !important
+	}
+	.ace_folding-enabled .ace_gutter-cell {
+        background: #ededed00;
+	}
+
+	$colors-list: #884b04 #34ff3a #4c35a8 #9f9901 #000 #e64747 #47e6b1 #e247e6 #ee8d00 #214141;
+    $colorslistLength: length($colors-list);
+    @for $i from 1 through $colorslistLength {
+      .ace_folding-enabled .ace_gutter-cell {
+        &:nth-of-type(#{$colorslistLength}n+#{$i}) {
+          color: nth($colors-list, $i); }
+      }
+    }
+
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_discount_allocation_tree" model="ir.ui.view">
+        <field name="name">discount.allocation.tree</field>
+        <field name="model">discount.allocation</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="job_id"/>
+                <field name="category_id"/>
+                <field name="max_service_discount_percent"/>
+                <field name="max_storable_discount_percent"/>
+                <field name="max_consumable_discount_percent"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_discount_allocation_form" model="ir.ui.view">
+        <field name="name">discount.allocation.form</field>
+        <field name="model">discount.allocation</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="job_id"/>
+                        <field name="category_id"/>
+                    </group>
+                    <group>
+                        <field name="max_service_discount_percent"/>
+                        <field name="max_storable_discount_percent"/>
+                        <field name="max_consumable_discount_percent"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_discount_allocation" model="ir.actions.act_window">
+        <field name="name">Discount Allocations</field>
+        <field name="res_model">discount.allocation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,9 @@
+<odoo>
+	<template id="ept_python_code" name="test"
+		inherit_id="web.assets_backend">
+		<xpath expr="." position="inside">
+			<link rel="stylesheet"
+				href="/ept_execute_python_code/static/src/css/ept_font.scss" />
+		</xpath>
+	</template>
+</odoo>

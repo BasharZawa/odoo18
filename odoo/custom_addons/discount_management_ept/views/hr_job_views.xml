@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_job_form_discount" model="ir.ui.view">
+        <field name="name">hr.job.form.discount</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Discount Allocation">
+                    <group class="o_group_col_6">
+                        <field name="use_discount" widget="boolean_toggle"/>
+                        <field name="max_total_discount_percent"/>
+                    </group>
+                    <group class="o_group_col_6">
+                        <field name="allocation_ids">
+                            <list editable="bottom">
+                                <field name="category_id"/>
+                                <field name="max_storable_discount_percent"/>
+                                <field name="max_service_discount_percent"/>
+                                <field name="max_consumable_discount_percent"/>
+                            </list>
+                        </field>
+                    </group>
+                    <separator string="Discount Approvers"/>
+                    <field name="discount_approver_ids">
+                        <list editable="bottom">
+                            <field name="priority" widget="handle"/>
+                            <field name="user_id"/>
+                            <field name="max_discount"/>
+                            
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View Extensions -->
+        <record id="view_order_form_pilot_orders" model="ir.ui.view">
+            <field name="name">sale.order.form.pilot.orders</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="is_pilot_order"
+                           readonly="state not in ['draft', 'sent']  or pilot_approval_state != 'draft'"
+                           widget="boolean_toggle"/>
+                </xpath>
+
+                <xpath expr="//header" position="inside">
+                    <button name="action_customer_confirm_purchase"
+                            type="object"
+                            string="Customer Confirmed Pilot Order"
+                            class="btn-success"
+                            invisible="not is_pilot_order or customer_confirmation or pilot_approval_state != 'approved'"/>
+                </xpath>
+
+                <xpath expr="//page[@name='other_information']" position="before">
+                    <page string="Pilot Order" invisible="not is_pilot_order">
+                        <group>
+                            <group string="Approval Information">
+                                <field name="pilot_approval_state" readonly="1"/>
+                                <field name="pilot_approval_date" readonly="1"/>
+                                <field name="pilot_approved_by" readonly="1"/>
+                            </group>
+                            <group string="Customer Confirmation">
+                                <field name="customer_confirmation" readonly="1"/>
+                                <field name="customer_confirmation_date" readonly="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- list View Extensions -->
+        <record id="view_order_list_pilot_orders" model="ir.ui.view">
+            <field name="name">sale.order.list.pilot.orders</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="is_pilot_order"/>
+                    <field name="pilot_approval_state" widget="badge"
+                           options="{'classes': {'draft': 'default', 'pending': 'warning', 'approved': 'success', 'rejected': 'danger'}}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

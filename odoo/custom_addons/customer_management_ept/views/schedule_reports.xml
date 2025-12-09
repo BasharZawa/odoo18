@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Invoicing Schedule Report Action -->
+        <record id="action_invoicing_schedule_report" model="ir.actions.act_window">
+            <field name="name">Invoicing Schedule Report</field>
+            <field name="res_model">sale.order.invoicing.schedule</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_group_by_sale_order': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No invoicing schedules found!
+                </p>
+                <p>
+                    Create invoicing schedules to track when invoices should be generated.
+                </p>
+            </field>
+        </record>
+
+        <!-- Recognition Schedule Report Action -->
+        <record id="action_recognition_schedule_report" model="ir.actions.act_window">
+            <field name="name">Recognition Schedule Report</field>
+            <field name="res_model">sale.order.recognition.schedule</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_group_by_sale_order': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No recognition schedules found!
+                </p>
+                <p>
+                    Create recognition schedules to track revenue recognition milestones.
+                </p>
+            </field>
+        </record>
+
+        <!-- Distribution Schedule Report Action -->
+        <record id="action_distribution_schedule_report" model="ir.actions.act_window">
+            <field name="name">Distribution Schedule Report</field>
+            <field name="res_model">sale.order.distribution.schedule</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_group_by_salesperson': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No distribution schedules found!
+                </p>
+                <p>
+                    Create distribution schedules to track commission allocation to salespersons.
+                </p>
+            </field>
+        </record>
+
+        <!-- Enhanced Invoicing Schedule list View with Grouping -->
+        <record id="view_invoicing_schedule_report_list" model="ir.ui.view">
+            <field name="name">sale.order.invoicing.schedule.report.list</field>
+            <field name="model">sale.order.invoicing.schedule</field>
+            <field name="arch" type="xml">
+                <list default_order="invoice_date">
+                    <field name="sale_order_id"/>
+                    <field name="invoice_date"/>
+                    <field name="due_date"/>
+                    <field name="billing_milestone_description"/>
+                    <field name="invoice_amount"/>
+                    <field name="invoiced_status"/>
+                    <field name="reference_document"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Enhanced Recognition Schedule list View with Grouping -->
+        <record id="view_recognition_schedule_report_list" model="ir.ui.view">
+            <field name="name">sale.order.recognition.schedule.report.list</field>
+            <field name="model">sale.order.recognition.schedule</field>
+            <field name="arch" type="xml">
+                <list default_order="recognition_date">
+                    <field name="sale_order_id"/>
+                    <field name="recognition_date"/>
+                    <field name="description"/>
+                    <field name="amount"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Enhanced Distribution Schedule list View with Grouping -->
+        <record id="view_distribution_schedule_report_list" model="ir.ui.view">
+            <field name="name">sale.order.distribution.schedule.report.list</field>
+            <field name="model">sale.order.distribution.schedule</field>
+            <field name="arch" type="xml">
+                <list default_order="salesperson_id">
+                    <field name="salesperson_id"/>
+                    <field name="sale_order_id"/>
+                    <field name="commission_percentage"/>
+                    <field name="commission_amount"/>
+
+                </list>
+            </field>
+        </record>
+
+        <!-- Search Views for Reports -->
+        <record id="view_invoicing_schedule_search" model="ir.ui.view">
+            <field name="name">sale.order.invoicing.schedule.search</field>
+            <field name="model">sale.order.invoicing.schedule</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="sale_order_id"/>
+                    <field name="billing_milestone_description"/>
+                    <field name="reference_document"/>
+                    <filter string="Not Invoiced" name="not_invoiced"
+                            domain="[('invoiced_status', '=', 'not_invoiced')]"/>
+                    <filter string="Invoiced" name="invoiced" domain="[('invoiced_status', '=', 'invoiced')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Sales Order" name="group_by_sale_order"
+                                context="{'group_by': 'sale_order_id'}"/>
+                        <filter string="Invoice Date" name="group_by_invoice_date"
+                                context="{'group_by': 'invoice_date'}"/>
+                        <filter string="Invoiced Status" name="group_by_invoiced_status"
+                                context="{'group_by': 'invoiced_status'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_recognition_schedule_search" model="ir.ui.view">
+            <field name="name">sale.order.recognition.schedule.search</field>
+            <field name="model">sale.order.recognition.schedule</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="sale_order_id"/>
+                    <field name="description"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Sales Order" name="group_by_sale_order"
+                                context="{'group_by': 'sale_order_id'}"/>
+                        <filter string="Recognition Date" name="group_by_recognition_date"
+                                context="{'group_by': 'recognition_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_distribution_schedule_search" model="ir.ui.view">
+            <field name="name">sale.order.distribution.schedule.search</field>
+            <field name="model">sale.order.distribution.schedule</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="salesperson_id"/>
+                    <field name="sale_order_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Salesperson" name="group_by_salesperson"
+                                context="{'group_by': 'salesperson_id'}"/>
+                        <filter string="Sales Order" name="group_by_sale_order"
+                                context="{'group_by': 'sale_order_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>
