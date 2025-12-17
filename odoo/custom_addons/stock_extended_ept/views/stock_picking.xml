@@ -8,7 +8,6 @@
             <field name="backorder_id" position="after">
                 <field name="bayan_code" invisible="picking_type_code != 'incoming' or not is_bayan_code_visible"
                        readonly="state in ['done', 'cancel']"/>
-                <field name="boe_number" invisible="picking_type_code not in ['incoming', 'outgoing']"/>
             </field>
         </field>
     </record>

@@ -14,7 +14,6 @@
         'data/ir_cron_data.xml',
         'views/res_partner_views.xml',
         'views/account_journal.xml',
-        'views/purchase_order.xml',
         'views/res_country.xml',
     ],
     'installable': True,

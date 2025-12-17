@@ -9,7 +9,6 @@ class ResPartner(models.Model):
 
     customer_id = fields.Char(
         string='Customer ID',
-        readonly=True,
         copy=False,
         help="Unique identifier for customer contacts"
     )
@@ -25,14 +24,12 @@ class ResPartner(models.Model):
 
     validation_date = fields.Datetime(
         string='Validation Date',
-        readonly=True,
         help="Date when the customer contact was validated"
     )
 
     validated_by = fields.Many2one(
         'res.users',
         string='Validated By',
-        readonly=True,
         help="User who validated this customer contact"
     )
 

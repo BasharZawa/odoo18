@@ -6,7 +6,7 @@ from odoo import models, fields
 class StockLotExtend(models.Model):
     _inherit = 'stock.lot'
 
-    bayan_code = fields.Char(string="Bayan Code")
+    bayan_code = fields.Char(string="BOE Number")
 
     def _compute_display_name(self):
         """

@@ -37,15 +37,9 @@
                 </div>
             </div>
             <div t-if="o.bayan_code" class="col col-3 mw-100 mb-2" name="div_origin">
-                <strong>Bayan Code</strong>
+                <strong>BOE Number</strong>
                 <div class="m-0">
                     <t t-esc="o.bayan_code"/>
-                </div>
-            </div>
-            <div t-if="o.boe_number" class="col col-3 mw-100 mb-2" name="div_origin">
-                <strong>Bill Of Entry Number</strong>
-                <div class="m-0">
-                    <t t-esc="o.boe_number"/>
                 </div>
             </div>
         </xpath>

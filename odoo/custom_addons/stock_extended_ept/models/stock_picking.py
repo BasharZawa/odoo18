@@ -13,12 +13,11 @@ from odoo.exceptions import ValidationError
 class StockPickingExtend(models.Model):
     _inherit = 'stock.picking'
 
-    bayan_code = fields.Char(string="Bayan Code")
+    bayan_code = fields.Char(string="BOE Number")
     is_bayan_code_visible = fields.Boolean(
         related='company_id.is_bayan_code_applicable',
         store=False
     )
-    boe_number = fields.Char(string="BOE Number", help="Bill Of Entry Number")
 
     def button_validate(self):
         """
@@ -34,24 +33,11 @@ class StockPickingExtend(models.Model):
                         lot.write({
                             'bayan_code': picking.bayan_code,
                         })
-
-                if not picking.bayan_code or not picking.boe_number:
-                    missing_fields = []
+                if not picking.bayan_code:
                     if picking.company_id.is_bayan_code_applicable and not picking.bayan_code:
-                        missing_fields.append("Bayan Code")
-                    if not picking.boe_number:
-                        missing_fields.append("BOE Number")
-                    if missing_fields:
                         raise ValidationError(_(
-                            "The following fields are missing and are mandatory to validate the receipt:\n%s",
-                            '\n'.join(f" - {field}" for field in missing_fields)
+                            "BOE Number field is missing and it is mandatory to validate the receipt!!"
                         ))
-            elif picking.picking_type_id.code == 'outgoing':
-                # Outgoing picking logic - only BOE required
-                if not picking.boe_number:
-                    raise ValidationError(_(
-                        "The following fields are missing and are mandatory to validate the receipt: \n - Bill Of Entry Number"
-                    ))
         return res
 
     def action_download_packing_slip_xlsx_report(self):
@@ -125,9 +111,7 @@ class StockPickingExtend(models.Model):
             'Tracking Number': self.carrier_tracking_ref or 'N/A',
         }
         if self.bayan_code:
-            common_data.update({'Bayan Code': self.bayan_code or 'N/A'})
-        if self.boe_number:
-            common_data.update({'BOE Number': self.boe_number or 'N/A'})
+            common_data.update({'BOE Number': self.bayan_code or 'N/A'})
         return common_data
 
 
@@ -241,7 +225,9 @@ class StockPickingExtend(models.Model):
 
         # Product Details
         if product_data:
-            headers, has_lot = self.has_lot_serial_data(product_data)
+            
+            
+            ers, has_lot = self.has_lot_serial_data(product_data)
 
             # Product Headers
             row += 2  # Adding some space before product details

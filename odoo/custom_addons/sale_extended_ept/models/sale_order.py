@@ -1,6 +1,6 @@
 from datetime import date
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
@@ -52,8 +52,6 @@ class SaleOrder(models.Model):
         compute="_compute_approval_count",
         store=False,
     )
-
-    boe_number = fields.Char(string="BOE Number", help="Bill Of Entry Number")
 
     def _compute_credit_overdue_amount(self):
         for order in self:
@@ -124,13 +122,6 @@ class SaleOrder(models.Model):
         if hold_reason:
             return True
         res = super(SaleOrder, self).action_confirm()
-        if 'boe_number' in self.env['stock.picking']._fields:
-            for order in self:
-                if order.boe_number:
-                    for pick in order.picking_ids:
-                        pick.write({
-                            'boe_number': order.boe_number,
-                        })
         return res
 
     def _create_approval_request(self):

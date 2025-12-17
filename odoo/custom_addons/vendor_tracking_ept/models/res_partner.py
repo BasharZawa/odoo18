@@ -21,7 +21,6 @@ class ResPartner(models.Model):
 
     vendor_code = fields.Char(
         string='Vendor Code',
-        readonly=True,
         copy=False,
         index=True,
         help='System-generated code for vendor identification. Immutable once assigned.',

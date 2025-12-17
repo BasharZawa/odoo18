@@ -20,8 +20,10 @@
                         invisible="state not in ['on_hold',] or not id or locked" data-hotkey="x"/>
             </xpath>
 
-            <xpath expr="//field[@name='tag_ids']" position="after">
-                <field name="boe_number"/>
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="readonly">
+                    (state == 'cancel') or (state == 'on_hold') or locked
+                </attribute>
             </xpath>
             <xpath expr="//field[@name='order_line']" position="attributes">
                 <attribute name="readonly">
