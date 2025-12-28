@@ -27,8 +27,8 @@ class SaleOrder(models.Model):
         table_html = ""
         if lines:
             # HTML table header
-            table_html = wiz._prepare_below_cost_lines_html(lines)
-            table_html += "</tbody></table>"
+            table_html = wiz._prepare_below_cost_lines_html(lines, include_cost=True)
+            # table_html += "</tbody></table>"
         wizard = wiz.create({'order_id': self.id, 'below_lines_info': table_html, 'reason': _(
             'Auto generated approval due to alteration in Order Line Selling Below Cost Approval Request')})
         if self.order_line.filtered(lambda l: l.below_cost):
@@ -38,7 +38,10 @@ class SaleOrder(models.Model):
 
     def action_confirm(self):
         for order in self:
-            if not order.has_below_cost_approved and not self.env.context.get('bypass_below_cost_check'):
+            category = self.env['approval.category'].search([
+                ('approval_type', '=', 'below_cost_req'), ('company_id', '=', self.env.company.id)
+                ], limit=1)
+            if (category and category.create_approval_request) and not order.has_below_cost_approved and not self.env.context.get('bypass_below_cost_check'):
                 below_lines = order.order_line.filtered(lambda l: l.below_cost)
                 if below_lines:
                     return order._action_open_below_cost_wizard()

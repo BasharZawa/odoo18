@@ -29,7 +29,10 @@ class SaleOrderLine(models.Model):
             for line in self:
                 if not line.is_delivery:
                     order = line.order_id
-                    if order:
+                    category = self.env['approval.category'].search([
+                        ('approval_type', '=', 'below_cost_req'), ('company_id', '=', self.env.company.id)
+                        ], limit=1)
+                    if order and category and category.create_approval_request:
                         # Reset approval flag
                         order.write({'has_below_cost_approved': False})
                         # Trigger approval wizard silently

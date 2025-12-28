@@ -99,7 +99,10 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         hold_reason = []
         for order in self:
-            if not order.env.context.get(
+            category = self.env['approval.category'].search([
+                ('approval_type', '=', 'sales_credit_req'), ('company_id', '=', self.env.company.id)
+                ], limit=1)
+            if (category and category.create_approval_request) and not order.env.context.get(
                     "from_approval") and order.approval_request_id.request_status != 'approved' and order.company_id.account_use_credit_limit:
                 if order._has_partner_overdue_invoices():
                     hold_reason.append("overdue invoices")
@@ -133,13 +136,13 @@ class SaleOrder(models.Model):
         category = self.env['approval.category'].search([
             ('approval_type', '=', 'sales_credit_req'), ('company_id', '=', self.env.company.id)
         ], limit=1)
-        if not category:
-            category = self.env['approval.category'].sudo().create({
-                'name': 'Sale Order Credit Hold',
-                'approver_ids': [],
-                'approval_type': 'sales_credit_req',
-                'company_id': self.env.company.id,
-            })
+        # if not category:
+        #     category = self.env['approval.category'].sudo().create({
+        #         'name': 'Sale Order Credit Hold',
+        #         'approver_ids': [],
+        #         'approval_type': 'sales_credit_req',
+        #         'company_id': self.env.company.id,
+        #     })
         # Create approval request
         approval_request = self.env["approval.request"].sudo().create({
             "name": f"Credit Hold Approval - {self.name}",
@@ -187,6 +190,11 @@ class SaleOrder(models.Model):
 
     def action_resubmit_approval(self):
         """Resubmit approval request after rejection"""
+        category = self.env['approval.category'].search([
+                ('approval_type', '=', 'sales_credit_req'), ('company_id', '=', self.env.company.id)
+                ], limit=1)
+        if not category or not category.create_approval_request:
+            raise UserError(_("Approval category for credit requests is not configured."))
         self.ensure_one()
         if self.state != "on_hold":
             raise UserError(_("Only orders on hold can resubmit approval."))

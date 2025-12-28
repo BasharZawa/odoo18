@@ -128,13 +128,13 @@ class SaleOrder(models.Model):
         # Get or create approval category
         category = self.env['approval.category'].search(
             [('approval_type', '=', 'discount_request'), ('company_id', '=', self.env.company.id)], limit=1)
-        if not category:
-            category = ApprovalCategory.create({
-                'name': 'Sales Discount Approval',
-                'approver_ids': [],
-                'approval_type': 'discount_request',
-                'company_id': self.env.company.id,
-            })
+        # if not category:
+        #     category = ApprovalCategory.create({
+        #         'name': 'Sales Discount Approval',
+        #         'approver_ids': [],
+        #         'approval_type': 'discount_request',
+        #         'company_id': self.env.company.id,
+        #     })
 
         # Check for existing request (only check for the top-level request or any request linked to this SO)
         # Actually, we should probably check if there are any pending requests.
@@ -249,7 +249,9 @@ class SaleOrder(models.Model):
 
     def action_confirm(self):
         for order in self:
-            if (order.discount_requires_approval and
+            category = self.env['approval.category'].search(
+                [('approval_type', '=', 'discount_request'), ('company_id', '=', self.env.company.id)], limit=1)
+            if category and category.create_approval_request and (order.discount_requires_approval and
                 not order.env.context.get("from_disc_approval")) and not order.env.context.get("from_approval"):
                 description = order._get_violation_description()
                 order.write({'state': 'on_hold'})

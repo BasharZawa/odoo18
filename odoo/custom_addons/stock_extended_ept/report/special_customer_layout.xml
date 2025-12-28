@@ -2,7 +2,7 @@
     <template id="special_customer_external_layout" inherit_id="web.external_layout_standard">
         <xpath expr="//img[@class='o_company_logo_small']/.." position="replace">
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <t t-if="o._context.get('active_model') == 'stock.picking'">
+                <t t-if="o and o._context.get('active_model') == 'stock.picking'">
                     <t t-if="o.partner_id.is_special_customer">
                         <div style="padding-top: 4pt; padding-bottom: 2pt; width: 100%;">
                             <img t-att-src="image_data_uri(o.partner_id.header_img)"
@@ -34,7 +34,7 @@
         </xpath>
 
         <xpath expr="//div[contains(@t-attf-class, 'footer')]" position="replace">
-            <t t-if="o._context.get('active_model') == 'stock.picking'">
+            <t t-if="o and o._context.get('active_model') == 'stock.picking'">
                 <t t-if="o.partner_id.is_special_customer">
                     <div t-attf-class="footer o_company_#{company.id}_layout {{report_type != 'pdf' and 'mt-auto'}}">
                         <div class="o_footer_content d-flex border-top pt-2">

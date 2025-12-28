@@ -11,7 +11,8 @@
                 "-c",
                 "${workspaceFolder}/odoo.conf", // Path to your Odoo configuration file
                 "-u",
-                "customer_management_ept,customer_import_helper", // Module to update
+                "account_extended_ept, crm_extended_ept, customer_management_ept, discount_management_ept, ept_execute_python_code, mrp_extended_ept, pilot_order_ept, sale_below_cost_approval_ept, sale_extended_ept, stock_extended_ept, vendor_tracking_ept, customer_import_helper", 
+                // Module to update
                 // "--max-cron-threads", "2", // Enable cron workers for BPM orchestrator
                 // Uncomment and modify the following lines to override database settings:
                 // "--db_host", "localhost",

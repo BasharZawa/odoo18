@@ -103,7 +103,10 @@ class SaleOrder(models.Model):
     def write(self, vals):
         res = super(SaleOrder, self).write(vals)
         for order in self:
-            if 'partner_id' in vals and order.partner_id.validation_status != 'validated':
+            category = self.env['approval.category'].search([
+                ('approval_type', '=', 'customer_validation'), ('company_id', '=', self.env.company.id)
+                ], limit=1)
+            if category and category.create_approval_request and ('partner_id' in vals and order.partner_id.validation_status != 'validated'):
                 # Save original state before overriding
                 order.previous_state = order.state
                 order.state = 'validation_pending'
@@ -122,7 +125,10 @@ class SaleOrder(models.Model):
         orders = super(SaleOrder, self).create(vals_list)
 
         for order in orders:
-            if order.partner_id.validation_status != 'validated':
+            category = self.env['approval.category'].search([
+                ('approval_type', '=', 'customer_validation'), ('company_id', '=', self.env.company.id)
+                ], limit=1)
+            if category and category.create_approval_request and order.partner_id.validation_status != 'validated':
                 # Save original state before overriding
                 order.previous_state = order.state
                 order.state = 'validation_pending'
@@ -151,13 +157,13 @@ class SaleOrder(models.Model):
         category = self.env['approval.category'].search([
             ('approval_type', '=', 'customer_validation'), ('company_id', '=', self.env.company.id)
         ], limit=1)
-        if not category:
-            category = ApprovalCategory.create({
-                'name': 'Customer Validation Approval',
-                'approver_ids': [],
-                'approval_type' : 'customer_validation',
-                'company_id' : self.env.company.id,
-            })
+        # if not category:
+        #     category = ApprovalCategory.create({
+        #         'name': 'Customer Validation Approval',
+        #         'approver_ids': [],
+        #         'approval_type' : 'customer_validation',
+        #         'company_id' : self.env.company.id,
+        #     })
         # Notify Sales Managers: create activity on order
         manager_group = self.env.ref('customer_management_ept.group_finance_team')
         managers = manager_group.users

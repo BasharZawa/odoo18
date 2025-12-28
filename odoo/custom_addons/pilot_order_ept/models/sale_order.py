@@ -36,13 +36,17 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         """Override to enforce pilot order approval"""
         for order in self:
-            if order.is_pilot_order and order.pilot_approval_state == 'draft' and not self.env.context.get(
-                    'bypass_pilot_order_check'):
-                order.action_request_pilot_and_freight_approval()
-                return False
-            if order.is_pilot_order and order.pilot_approval_state == 'pending' and not self.env.context.get(
-                    'bypass_pilot_order_check'):
-                raise UserError(_("Pilot orders must be approved before confirmation."))
+            approval_category = self.env['approval.category'].search([
+                    ('approval_type', '=', 'pilot_order_req'), ('company_id', '=', self.env.company.id)
+                    ], limit=1)
+            if approval_category and approval_category.create_approval_request:
+                if order.is_pilot_order and order.pilot_approval_state == 'draft' and not self.env.context.get(
+                        'bypass_pilot_order_check'):
+                    order.action_request_pilot_and_freight_approval()
+                    return False
+                if order.is_pilot_order and order.pilot_approval_state == 'pending' and not self.env.context.get(
+                        'bypass_pilot_order_check'):
+                    raise UserError(_("Pilot orders must be approved before confirmation."))
         return super(SaleOrder, self).action_confirm()
 
     def action_request_pilot_and_freight_approval(self, is_freight=False):
@@ -76,13 +80,13 @@ class SaleOrder(models.Model):
         approval_category = self.env['approval.category'].search([
             ('approval_type', '=', 'pilot_order_req'), ('company_id', '=', self.env.company.id)
         ], limit=1)
-        if not approval_category:
-            approval_category = self.env['approval.category'].sudo().create({
-                'name': 'Pilot Order Approval',
-                'approver_ids': [],
-                'approval_type' : 'pilot_order_req',
-                'company_id' : self.env.company.id,
-            })
+        # if not approval_category:
+        #     approval_category = self.env['approval.category'].sudo().create({
+        #         'name': 'Pilot Order Approval',
+        #         'approver_ids': [],
+        #         'approval_type' : 'pilot_order_req',
+        #         'company_id' : self.env.company.id,
+        #     })
         request_vals = {
             'name': f"Pilot Order Approval - {self.name}",
             'category_id': approval_category.id,
@@ -119,13 +123,13 @@ class SaleOrder(models.Model):
         approval_category = self.env['approval.category'].search([
             ('approval_type', '=', 'freight_tax_req'), ('company_id', '=', self.env.company.id)
         ], limit=1)
-        if not approval_category:
-            approval_category = self.env['approval.category'].sudo().create({
-                'name': 'Freight or Tax Adjustment Approval',
-                'approver_ids': [],
-                'approval_type': 'freight_tax_req',
-                'company_id': self.env.company.id,
-            })
+        # if not approval_category:
+        #     approval_category = self.env['approval.category'].sudo().create({
+        #         'name': 'Freight or Tax Adjustment Approval',
+        #         'approver_ids': [],
+        #         'approval_type': 'freight_tax_req',
+        #         'company_id': self.env.company.id,
+        #     })
 
         # Generate formatted HTML reason (includes tax names instead of IDs)
         formatted_reason = self._format_pending_modifications_html()
@@ -251,55 +255,58 @@ class SaleOrder(models.Model):
                 'pilot_approval_state': 'draft',
                 'customer_confirmation': False,
             })
-        for order in self:
-            proposed_changes = []
-            approval_needed = False
-            if 'order_line' in vals:
-                for command in vals['order_line']:
+        approval_category = self.env['approval.category'].search([
+            ('approval_type', '=', 'freight_tax_req'), ('company_id', '=', self.env.company.id)
+            ], limit=1)
+        if approval_category and approval_category.create_approval_request:
+            for order in self:
+                proposed_changes = []
+                approval_needed = False
+                if 'order_line' in vals:
+                    for command in vals['order_line']:
 
-                    cmd, line_id, line_data = (
-                        command[0],
-                        command[1] if len(command) > 1 else False,
-                        command[2] if len(command) > 2 and isinstance(command[2], dict) else {},
-                    )
-                    existing_line = False
-                    if cmd == 1:  # Update existing
-                        existing_line = order.order_line.browse(line_id)
+                        cmd, line_id, line_data = (
+                            command[0],
+                            command[1] if len(command) > 1 else False,
+                            command[2] if len(command) > 2 and isinstance(command[2], dict) else {},
+                        )
+                        existing_line = False
+                        if cmd == 1:  # Update existing
+                            existing_line = order.order_line.browse(line_id)
 
-                    elif cmd == 4:  # Link existing line
-                        existing_line = order.order_line.browse(line_id)
-                    if not line_data:
-                        continue
-                    if 'tax_id' in line_data and existing_line:
-                        old_tax_ids = existing_line.tax_id.ids
+                        elif cmd == 4:  # Link existing line
+                            existing_line = order.order_line.browse(line_id)
+                        if not line_data:
+                            continue
+                        if 'tax_id' in line_data and existing_line:
+                            old_tax_ids = existing_line.tax_id.ids
 
-                        if line_data['tax_id']:
-                            approval_needed = True
-                            proposed_changes.append({
-                                'type': "tax_changes",
-                                'line_id': existing_line.id,
-                                'old_tax_ids': old_tax_ids,
-                                'new_tax_ids': line_data['tax_id'],
-                            })
+                            if line_data['tax_id']:
+                                approval_needed = True
+                                proposed_changes.append({
+                                    'type': "tax_changes",
+                                    'line_id': existing_line.id,
+                                    'old_tax_ids': old_tax_ids,
+                                    'new_tax_ids': line_data['tax_id'],
+                                })
 
-                        # Revert change immediately
-                        line_data['tax_id'] = [(6, 0, old_tax_ids)]
+                            # Revert change immediately
+                            line_data['tax_id'] = [(6, 0, old_tax_ids)]
 
-                    if 'price_unit' in line_data and existing_line:
-                        if existing_line.is_delivery:
-                            approval_needed = True
-                            proposed_changes.append({
-                                'type': 'freight_change',
-                                'line_id': existing_line.id,
-                                'old_price': existing_line.price_unit,
-                                'new_price': line_data['price_unit'],
-                            })
-                            line_data['price_unit'] = existing_line.price_unit
+                        if 'price_unit' in line_data and existing_line:
+                            if existing_line.is_delivery:
+                                approval_needed = True
+                                proposed_changes.append({
+                                    'type': 'freight_change',
+                                    'line_id': existing_line.id,
+                                    'old_price': existing_line.price_unit,
+                                    'new_price': line_data['price_unit'],
+                                })
+                                line_data['price_unit'] = existing_line.price_unit
 
-            # Create approval request
-            if approval_needed:
-                order.pending_modifications = proposed_changes
-                order.action_request_pilot_and_freight_approval(is_freight=True)
+                if approval_needed:
+                    order.pending_modifications = proposed_changes
+                    order.action_request_pilot_and_freight_approval(is_freight=True)
 
         return super().write(vals)
 
@@ -308,7 +315,10 @@ class SaleOrder(models.Model):
         """Handle pilot order creation (multi)"""
         records = super(SaleOrder, self).create(vals_list)
         for record in records:
-            if record.is_pilot_order:
+            approval_category = self.env['approval.category'].search([
+                    ('approval_type', '=', 'pilot_order_req'), ('company_id', '=', self.env.company.id)
+                    ], limit=1)
+            if record.is_pilot_order and approval_category and approval_category.create_approval_request:
                 record.action_request_pilot_and_freight_approval()
                 message = _("Pilot order created")
                 record.message_post(body=message)

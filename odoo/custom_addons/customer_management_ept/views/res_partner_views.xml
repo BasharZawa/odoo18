@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="0">
-
         <!-- Partner Form View -->
         <record id="view_partner_form_customer_validation" model="ir.ui.view">
             <field name="name">res.partner.form.customer.validation</field>
@@ -62,5 +60,4 @@
 
             </field>
         </record>
-    </data>
 </odoo>

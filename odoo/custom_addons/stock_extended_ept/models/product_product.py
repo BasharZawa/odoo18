@@ -57,6 +57,7 @@ class ProductVariantExtended(models.Model):
             data = {
                 'Item Code': prod.default_code,
                 'Item Description': prod.name or '',
+                'Product Line': prod.product_line_id.name or  '',
                 'Current Cost': prod.standard_price,
                 'Short Description': prod.description or '',
                 'Supplier': vendors,

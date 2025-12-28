@@ -23,3 +23,7 @@ class ApprovalCategory(models.Model):
     _inherit = 'approval.category'
 
     approval_type = fields.Selection(selection_add=[('sales_credit_req', 'Sales Credit Request')])
+    create_approval_request = fields.Boolean(
+        string="Create Approval Request ?",
+        help="If enabled, an approval request will be created for the selected category."
+    )

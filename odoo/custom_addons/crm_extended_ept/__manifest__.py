@@ -7,7 +7,7 @@
     'website': 'http://www.emiprotechnologies.com',
     'maintainer': 'Emipro Technologies Pvt. Ltd.',
     'summary': """Extended version of CRM module""",
-    'depends': ['base', 'crm', 'product', 'sale', 'account_accountant', 'stock'],
+    'depends': ['base', 'crm', 'product', 'sale', 'account_accountant', 'stock', 'mrp_extended_ept'],
     'data': [
         'security/ir.model.access.csv',
         'views/product_line.xml',

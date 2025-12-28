@@ -19,11 +19,11 @@
                 </xpath>
 
                 <!-- Modify the confirm button to hide when validation is pending -->
-                <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <!-- <xpath expr="//button[@name='action_confirm']" position="attributes">
                     <attribute name="invisible">
-                        state in ['sale', 'done', 'cancel'] or partner_id.validation_status != 'validated'
+                        state in ['sale', 'done', 'cancel']
                     </attribute>
-                </xpath>
+                </xpath> -->
 
                 <!-- Add schedule tabs after order lines -->
                 <xpath expr="//notebook" position="inside">

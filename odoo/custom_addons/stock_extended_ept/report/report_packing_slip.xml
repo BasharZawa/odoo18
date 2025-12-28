@@ -7,6 +7,11 @@
                     <span style="color:#5d4765;text-decoration: underline;">PACKING SLIP</span>
                 </h2>
             </t>
+            <t t-elif="o.picking_type_id.code=='incoming'">
+                <h2 style="text-align:center; margin-bottom: 20px;">
+                    <span style="color:#5d4765;text-decoration: underline;">Goods Receipt Note</span>
+                </h2>
+            </t>
             <t t-else="">
                 <h2 style="text-align:center; margin-bottom: 20px;">
                     <span style="color:#5d4765;text-decoration: underline;">DELIVERY SLIP</span>
@@ -40,6 +45,12 @@
                 <strong>BOE Number</strong>
                 <div class="m-0">
                     <t t-esc="o.bayan_code"/>
+                </div>
+            </div>
+            <div t-if="o.picking_type_id.code=='incoming' and o.partner_id.vendor_code" class="col col-3 mw-100 mb-2" name="div_origin">
+                <strong>Vendor Code</strong>
+                <div class="m-0">
+                    <t t-esc="o.partner_id.vendor_code"/>
                 </div>
             </div>
         </xpath>
@@ -126,7 +137,7 @@
 
 
         <xpath expr="//span[@t-field='move.product_uom_qty']/.." position="attributes">
-            <attribute name="t-attf-class" add="#{'d-none' if is_packing_slip else 'text-end'}"/>
+            <attribute name="t-attf-class" add="#{'d-none' if is_packing_slip else 'text-nowrap'}"/>
         </xpath>
         <!--        #-->
 

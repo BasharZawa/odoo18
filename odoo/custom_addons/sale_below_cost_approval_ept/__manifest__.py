@@ -6,7 +6,7 @@
     'author': 'Emipro Technologies Pvt. Ltd.',
     'website': 'https://emiprotechnologies.com',
     'license': 'LGPL-3',
-    'depends': ['sale_extended_ept'],
+    'depends': ['sale_extended_ept', 'delivery'],
     'data': [
         'security/ir.model.access.csv',
         'data/approval_data.xml',

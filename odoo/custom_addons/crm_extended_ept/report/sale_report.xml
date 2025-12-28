@@ -9,5 +9,9 @@
         <xpath expr="//table[contains(@class, 'o_has_total_table')]/tbody//td[@name='td_name']" position="after">
             <td name="td_model_number"><span t-field="line.model_number" class="text-start"/></td>
         </xpath>
+        <xpath expr="//td[@name='td_name']/span[@t-field='line.name']"
+               position="replace">
+            <span t-field="line.product_id.name"/>
+        </xpath>
     </template>
 </odoo>

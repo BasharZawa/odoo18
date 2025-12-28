@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo noupdate="0">
+<odoo noupdate="1">
     <record id="seq_vendor_code" model="ir.sequence">
         <field name="name">Vendor Code</field>
         <field name="code">ept.vendor.code</field>

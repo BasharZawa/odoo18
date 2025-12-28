@@ -12,6 +12,7 @@
             <field name="has_reference">required</field>
             <field name="approval_minimum">1</field>
             <field name="sequence">10</field>
+            <field name="create_approval_request">True</field>
         </record>
 
         <!-- Create approval category for pilot orders -->
@@ -25,6 +26,7 @@
             <field name="has_reference">required</field>
             <field name="approval_minimum">1</field>
             <field name="sequence">10</field>
+            <field name="create_approval_request">True</field>
         </record>
 
         <!-- Create tags for pilot order categorization -->

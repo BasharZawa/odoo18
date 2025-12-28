@@ -196,7 +196,7 @@ class ResPartner(models.Model):
 
         if "contact_type" in vals:
             for partner in self:
-                if partner.contact_type in ("customer", "both") and not partner.customer_id and partner.validation_status == "validated":
+                if partner.contact_type in ("customer", "both") and not partner.customer_id:
                     partner._generate_customer_id()
         return res
 

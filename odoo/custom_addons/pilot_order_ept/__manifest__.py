@@ -16,7 +16,7 @@
     'website': 'https://www.emiprotechnologies.com',
     'depends': ['sale_extended_ept', 'approvals'],
     'data': [
-        'security/pilot_order_security.xml',
+        # 'security/pilot_order_security.xml',
         'data/approval_workflow_data.xml',
         'views/sale_order_views.xml',
         'views/crm_tags_views.xml'

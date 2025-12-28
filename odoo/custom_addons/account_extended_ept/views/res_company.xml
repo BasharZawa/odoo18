@@ -15,9 +15,6 @@
                            style="direction: rtl; text-align: right;"/>
                 </div>
             </field>
-            <field name="phone" position="after">
-                <field name="fax"/>
-            </field>
             <field name="currency_id" position="after">
                 <field name="header_img" widget="image"/>
             </field>

@@ -110,8 +110,7 @@ class ComponentAvailabilityWizard(models.TransientModel):
         """
         widths = {
             'A': 30, 'B': 20, 'E': 40, 'F': 10, 'G': 10, 'H': 10, 'I': 11,
-            'J': 17, 'K': 10, 'L': 10, 'M': 13, 'N': 13, 'O': 10, 'P': 15,
-            'Q': 10, 'R': 16, 'S': 12
+            'J': 17, 'K': 10, 'L': 10, 'M': 13, 'N': 13, 'O': 15, 'P': 15,
         }
         for col, width in widths.items():
             ws.column_dimensions[col].width = width
@@ -183,16 +182,14 @@ class ComponentAvailabilityWizard(models.TransientModel):
                 cell.border = styles['borders']['thin']
 
                 if col in ['Qty on\ncurrent P\norder/s', 'min order\nQty\nacceptable\nto supplier',
-                           'Actual\nNew\norder', 'PO No']:
+                           'PO No']:
                     cell.fill = styles['fills']['yellow']
                 elif col in ['Total Qty\nafter\nreceiving\nqty on\norder',
                              'Remaining after\nproduction', 'Required', 'Shortage',
-                             'Qty to\nbe Ordered', 'Qty after\nnew order']:
+                             'Qty to\nbe Ordered']:
                     cell.fill = styles['fills']['cyan']
                 elif col in ['Producible\nunits', 'Producible units\nafter new order']:
                     cell.fill = styles['fills']['green']
-                elif col in ['Remaining\nDead Stock']:
-                    cell.fill = styles['fills']['violet']
 
     @staticmethod
     def add_total_cost(ws, total_cost):
@@ -272,8 +269,6 @@ class ComponentAvailabilityWizard(models.TransientModel):
                         line.product_qty * min_producible_bom_qty)
             required_qty = -surplus_deficit_qty * line.product_qty if surplus_deficit_qty < 0 else 0
             shortage = required_qty - remained_after_prod if required_qty > remained_after_prod else 0
-            actual_new_order = 0
-            qty_after_new_order = remained_after_prod + actual_new_order
             data = {
                 'Finished Good Item Number': product.default_code,
                 'Component': comp.default_code,
@@ -290,11 +285,7 @@ class ComponentAvailabilityWizard(models.TransientModel):
                 'Shortage': shortage,
                 'min order\nQty\nacceptable\nto supplier': min_supplier_qty,
                 'Qty to\nbe Ordered': 0 if not shortage else min([required_qty, shortage]),
-                'Actual\nNew\norder': actual_new_order,
                 'PO No': ', '.join(list(set(po_lines.mapped('order_id.name')))),
-                'Qty after\nnew order': qty_after_new_order,
-                'Producible units\nafter new order': math.floor(
-                    qty_after_new_order / line.product_qty),
             }
             comp_data.append(data)
         return comp_data
@@ -370,10 +361,10 @@ class ComponentAvailabilityWizard(models.TransientModel):
         :param prod:
         :return: Return minimum stock level from Replenishment
         """
-        rpl = self.env['stock.warehouse.orderpoint'].search(
-            [('product_id', '=', prod.id)], limit=1
-        )
-        min_stock_level = rpl.product_min_qty or 0
+        # rpl = self.env['stock.warehouse.orderpoint'].search(
+        #     [('product_id', '=', prod.id)], limit=1
+        # )
+        min_stock_level = prod.qty_available_threshold or 0
         return min_stock_level
 
     @staticmethod
@@ -384,14 +375,9 @@ class ComponentAvailabilityWizard(models.TransientModel):
         :return: Total cost
         """
         total_cost = 0
-        min_producible_qty = min(
-            [data.get('Producible units\nafter new order', 0) for data in comp_data])
         for data in comp_data:
-            remaining_dead_stock = data.get('Qty after\nnew order', 0) - (
-                        min_producible_qty * data.get('QTY', 0))
             data.update({
-                'Remaining\nDead Stock': remaining_dead_stock,
-                'Cost': remaining_dead_stock * data.get('Current\nCost', 0)
+                'Cost': data.get('Current\nCost', 0)
             })
-            total_cost += remaining_dead_stock * data.get('Current\nCost', 0)
+            total_cost +=  data.get('Current\nCost', 0)
         return total_cost

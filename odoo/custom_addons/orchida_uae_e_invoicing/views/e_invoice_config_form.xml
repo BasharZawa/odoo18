@@ -1,0 +1,43 @@
+<odoo>
+    <record id="view_res_config_settings_einvoice_tab" model="ir.ui.view">
+        <field name="name">res.config.settings.einvoice.tab</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+           <xpath expr="//div[hasclass('settings')]" position="inside">
+    <div class="app_settings_block" data-string="E-Invoice" string="E-Invoice" data-key="orchida_uae_e_invoicing">
+        <h2>E-Invoice</h2>
+
+        <div class="row mt16 o_settings_container">
+            <div class="col-12 o_setting_box">
+                <div class="o_setting_left_pane" >
+                    <label for="api_token" string="API Token  "/>
+
+                </div>
+
+                <div class="o_setting_right_pane">
+                    <field name="api_token" string="API Token" password="True"/>
+                </div>
+            </div>
+        </div>
+
+
+
+         <div class="row mt16 o_settings_container">
+            <div class="col-12 o_setting_box">
+                <div class="o_setting_left_pane" >
+                    <label for="companyid" string="Company ID  "/>
+
+                </div>
+
+                <div class="o_setting_right_pane"   style="margin-left: 60px;">
+                    <field name="companyid" string="Company ID   " password="True"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</xpath>
+        </field>
+    </record>
+</odoo>

@@ -9,12 +9,18 @@
     "installable": True,
     "application": False,
     "depends": [
+        "product",
         "sale_management",
         "account",
         "approvals",
+        "stock_account"
     ],
     "data": [
         "data/approval_category_data.xml",
+        "data/groups.xml",
         "views/sale_order_views.xml",
+        "views/product_views.xml",
+        "views/stock_lot_view.xml",
+        "views/approval_category.xml",
     ],
 }

@@ -21,16 +21,15 @@ class SaleBelowCostWizard(models.TransientModel):
             lines = order.order_line.filtered(lambda l: l.below_cost)
             if lines:
                 # HTML table header
-                table_html = self._prepare_below_cost_lines_html(lines)
-
-                table_html += "</tbody></table>"
-                vals['below_lines_info'] = table_html
+                vals['below_lines_info'] = self._prepare_below_cost_lines_html(
+                lines, include_cost=False
+                )
                 vals['order_id'] = order.id
 
         return vals
 
     # write a separate method to prepare table html for the above method
-    def _prepare_below_cost_lines_html(self, lines):
+    def _prepare_below_cost_lines_html(self, lines, include_cost=False):
         table_html = """
             <table style="width:100%; border-collapse: collapse; text-align:left;">
                 <thead>
@@ -39,7 +38,12 @@ class SaleBelowCostWizard(models.TransientModel):
                         <th style="border:1px solid #ddd; padding:8px;">Qty</th>
                         <th style="border:1px solid #ddd; padding:8px;">Actual Price</th>
                         <th style="border:1px solid #ddd; padding:8px;">Current Selling Price</th>
-                        <th style="border:1px solid #ddd; padding:8px;">Original Cost</th>
+        """
+        if include_cost:
+            table_html += """
+                <th style="border:1px solid #ddd; padding:8px;">Original Cost</th>
+            """
+        table_html += """
                     </tr>
                 </thead>
                 <tbody>
@@ -59,10 +63,16 @@ class SaleBelowCostWizard(models.TransientModel):
                     <td style="border:1px solid #ddd; padding:8px;">{line.product_uom_qty}</td>
                     <td style="border:1px solid #ddd; padding:8px;">{actual_price:.2f}</td>
                     <td style="border:1px solid #ddd; padding:8px;">{current_price:.2f}</td>
-                    <td style="border:1px solid #ddd; padding:8px;">{original_cost:.2f}</td>
-                </tr>
             """
-        return table_html if table_html else False
+            if include_cost:
+                table_html += f"""
+                    <td style="border:1px solid #ddd; padding:8px;">{original_cost:.2f}</td>
+                """
+
+            table_html += "</tr>"
+
+        table_html += "</tbody></table>"
+        return table_html
 
     def action_request_approval(self):
         """Create an approval request for below-cost sales."""
@@ -82,13 +92,13 @@ class SaleBelowCostWizard(models.TransientModel):
         category = self.env['approval.category'].search([
             ('approval_type', '=', 'below_cost_req'), ('company_id', '=', self.env.company.id)
         ], limit=1)
-        if not category:
-            category = ApprovalCategory.create({
-                'name': 'Sales Discrepancy Approval',
-                'approver_ids': [],
-                'approval_type': 'below_cost_req',
-                'company_id': self.env.company.id,
-            })
+        # if not category:
+        #     category = ApprovalCategory.create({
+        #         'name': 'Sales Discrepancy Approval',
+        #         'approver_ids': [],
+        #         'approval_type': 'below_cost_req',
+        #         'company_id': self.env.company.id,
+        #     })
         if not order.order_line.filtered(lambda l: l.below_cost):
             return False
 
@@ -98,6 +108,13 @@ class SaleBelowCostWizard(models.TransientModel):
         manager_group = self.env.ref('sales_team.group_sale_manager')
         approver_vals = [(0, 0, {'user_id': user.id, 'required': 'required'}) for user in manager_group.users]
 
+        # reason_content = (self.below_lines_info or '') + (self.reason or '')
+        lines = order.order_line.filtered(lambda l: l.below_cost)
+
+        full_table_html = self._prepare_below_cost_lines_html(
+            lines, include_cost=True
+        )
+        self.below_lines_info = full_table_html
         reason_content = (self.below_lines_info or '') + (self.reason or '')
         # Create approval request
         request = ApprovalRequest.create({

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_approval_category_form_inherit_pilot_order" model="ir.ui.view">
+            <field name="name">approval.category.form.inherit.pilot.order</field>
+            <field name="model">approval.category</field>
+            <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='approval_type']" position="after">
+                    <field name="create_approval_request" widget="boolean_toggle"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

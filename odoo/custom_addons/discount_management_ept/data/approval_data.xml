@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<odoo noupdate="1">
     <record id="approvals_category_discount_so" model="approval.category">
         <field name="name">Sales Discount Approval</field>
         <field name="has_date">required</field>
@@ -11,5 +11,6 @@
         <field name="has_product">no</field>
         <field name="approval_minimum">1</field>
         <field name="sequence">10</field>
+        <field name="create_approval_request">True</field>
     </record>
 </odoo>

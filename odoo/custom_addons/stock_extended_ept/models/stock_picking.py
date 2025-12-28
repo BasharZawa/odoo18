@@ -225,9 +225,7 @@ class StockPickingExtend(models.Model):
 
         # Product Details
         if product_data:
-            
-            
-            ers, has_lot = self.has_lot_serial_data(product_data)
+            headers, has_lot = self.has_lot_serial_data(product_data)
 
             # Product Headers
             row += 2  # Adding some space before product details
