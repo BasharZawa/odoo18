@@ -83,7 +83,7 @@ class SalesAnalysisReportWizard(models.TransientModel):
             
             for line in order.order_line:
                 product_line_id = line.product_id.product_tmpl_id.product_line_id.id if line.product_id.product_tmpl_id.product_line_id else 0
-                amount = line.price_total  # Including taxes
+                amount = line.price_subtotal  # Excluding taxes
                 
                 if is_intercompany:
                     if product_line_id not in intercompany_result:
@@ -170,7 +170,7 @@ class SalesAnalysisReportWizard(models.TransientModel):
             else:
                 group_key = order.user_id.id if order.user_id else 0
             
-            amount = order.amount_total
+            amount = order.amount_untaxed
             if group_key not in result:
                 result[group_key] = 0
             result[group_key] += amount

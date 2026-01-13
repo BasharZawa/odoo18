@@ -314,9 +314,9 @@ class SalesRecognitionReportWizard(models.TransientModel):
             worksheet.write(row, col, order.date_order.date() if order.date_order else '', formats['date'])
             col += 1
             
-            # Total (Order amount with taxes)
-            worksheet.write(row, col, order.amount_total, formats['number'])
-            totals['total'] += order.amount_total
+            # Total (Order amount without taxes)
+            worksheet.write(row, col, order.amount_untaxed, formats['number'])
+            totals['total'] += order.amount_untaxed
             col += 1
             
             # Monthly recognition amounts
