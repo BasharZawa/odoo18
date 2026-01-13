@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_purchase_order_search_extended" model="ir.ui.view">
+        <field name="name">report.purchase.order.search.extended</field>
+        <field name="model">purchase.report</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/filter[@name='company']" position="after">
+                <filter string="Product Line" name="product_line_id" context="{'group_by':'product_line_id'}"/>
+                <filter string="Product Nature" name="product_nature_id" context="{'group_by':'product_nature_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

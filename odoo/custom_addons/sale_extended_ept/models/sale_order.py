@@ -1,56 +1,94 @@
 from datetime import date
 
-from odoo import _, fields, models
+from odoo import _, fields, models, api
 from odoo.exceptions import UserError
+from odoo.tools import float_compare, float_is_zero, format_date, groupby
 
+# NOTE: Removed invoice_policy override with company_dependent=True as it causes 
+# database column type conflicts (varchar -> jsonb conversion fails with existing data).
+# The standard invoice_policy field from sale module is used instead.
+
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
+
+    @api.depends('state', 'product_uom_qty', 'qty_delivered', 'qty_to_invoice', 'qty_invoiced')
+    def _compute_invoice_status(self):
+        """
+        Compute the invoice status of a SO line. Possible statuses:
+        - no: if the SO is not in status 'sale', we consider that there is nothing to
+          invoice. This is also the default value if the conditions of no other status is met.
+        - to invoice: we refer to the quantity to invoice of the line. Refer to method
+          `_compute_qty_to_invoice()` for more information on how this quantity is calculated.
+        - upselling: this is possible only for a product invoiced on ordered quantities for which
+          we delivered more than expected. The could arise if, for example, a project took more
+          time than expected but we decided not to invoice the extra cost to the client. This
+          occurs only in state 'sale', the upselling opportunity is removed from the list.
+        - invoiced: the quantity invoiced is larger or equal to the quantity ordered.
+        """
+        precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        for line in self.with_company(self.company_id):
+            if line.state != 'sale':
+                line.invoice_status = 'no'
+            elif line.is_downpayment and line.untaxed_amount_to_invoice == 0:
+                line.invoice_status = 'invoiced'
+            elif not float_is_zero(line.qty_to_invoice, precision_digits=precision):
+                line.invoice_status = 'to invoice'
+            elif line.state == 'sale' and line.product_id.invoice_policy == 'order' and \
+                    line.product_uom_qty >= 0.0 and \
+                    float_compare(line.qty_delivered, line.product_uom_qty, precision_digits=precision) == 1:
+                line.invoice_status = 'upselling'
+            elif float_compare(line.qty_invoiced, line.product_uom_qty, precision_digits=precision) >= 0:
+                line.invoice_status = 'invoiced'
+            else:
+                line.invoice_status = 'no'
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     state = fields.Selection(
-        selection_add=[("on_hold", "On Hold")],
-        ondelete={"on_hold": "set default"},
+            selection_add=[("on_hold", "On Hold")],
+            ondelete={"on_hold": "set default"},
     )
 
     credit_on_hold = fields.Boolean(
-        string="Credit On Hold",
-        help="Set automatically if the customer has overdue invoices at confirmation time.",
-        readonly=True,
-        copy=False,
+            string="Credit On Hold",
+            help="Set automatically if the customer has overdue invoices at confirmation time.",
+            readonly=True,
+            copy=False,
     )
 
     credit_overdue_amount = fields.Monetary(
-        string="Overdue Amount",
-        currency_field="currency_id",
-        compute="_compute_credit_overdue_amount",
-        store=False,
+            string="Overdue Amount",
+            currency_field="currency_id",
+            compute="_compute_credit_overdue_amount",
+            store=False,
     )
 
     approval_request_id = fields.Many2one(
-        "approval.request",
-        string="Approval Request",
-        readonly=True,
-        copy=False,
+            "approval.request",
+            string="Approval Request",
+            readonly=True,
+            copy=False,
     )
 
     approval_status = fields.Selection(
-        related="approval_request_id.request_status",
-        string="Approval Status",
-        readonly=True,
-        store=False,
+            related="approval_request_id.request_status",
+            string="Approval Status",
+            readonly=True,
+            store=False,
     )
 
     credit_available = fields.Monetary(
-        string="Available Credit",
-        currency_field="currency_id",
-        compute="_compute_credit_available",
-        store=False,
+            string="Available Credit",
+            currency_field="currency_id",
+            compute="_compute_credit_available",
+            store=False,
     )
 
     approval_count = fields.Integer(
-        string="Approval Count",
-        compute="_compute_approval_count",
-        store=False,
+            string="Approval Count",
+            compute="_compute_approval_count",
+            store=False,
     )
 
     def _compute_credit_overdue_amount(self):
@@ -80,7 +118,8 @@ class SaleOrder(models.Model):
     def _has_partner_overdue_invoices(self):
         """Check if partner has any overdue invoices"""
         self.ensure_one()
-        overdue_invoices = self.env['account.move'].search(self._get_overdue_invoices_domain(self.partner_id.commercial_partner_id.id))
+        overdue_invoices = self.env['account.move'].search(
+                self._get_overdue_invoices_domain(self.partner_id.commercial_partner_id.id))
         return (len(overdue_invoices) if overdue_invoices else 0) > 0
 
     def _get_overdue_invoices_domain(self, partner_id=None):
@@ -101,7 +140,7 @@ class SaleOrder(models.Model):
         for order in self:
             category = self.env['approval.category'].search([
                 ('approval_type', '=', 'sales_credit_req'), ('company_id', '=', self.env.company.id)
-                ], limit=1)
+            ], limit=1)
             if (category and category.create_approval_request) and not order.env.context.get(
                     "from_approval") and order.approval_request_id.request_status != 'approved' and order.company_id.account_use_credit_limit:
                 if order._has_partner_overdue_invoices():
@@ -119,8 +158,8 @@ class SaleOrder(models.Model):
                     # Create a chatter note for visibility
                     reason_text = " and ".join(hold_reason)
                     order.message_post(
-                        body=_("Order placed On Hold due to %s. Approval request has been created.") % reason_text,
-                        subtype_xmlid="mail.mt_note",
+                            body=_("Order placed On Hold due to %s. Approval request has been created.") % reason_text,
+                            subtype_xmlid="mail.mt_note",
                     )
         if hold_reason:
             return True
@@ -191,8 +230,8 @@ class SaleOrder(models.Model):
     def action_resubmit_approval(self):
         """Resubmit approval request after rejection"""
         category = self.env['approval.category'].search([
-                ('approval_type', '=', 'sales_credit_req'), ('company_id', '=', self.env.company.id)
-                ], limit=1)
+            ('approval_type', '=', 'sales_credit_req'), ('company_id', '=', self.env.company.id)
+        ], limit=1)
         if not category or not category.create_approval_request:
             raise UserError(_("Approval category for credit requests is not configured."))
         self.ensure_one()
@@ -210,8 +249,8 @@ class SaleOrder(models.Model):
 
         # Log the resubmission
         self.message_post(
-            body=_("Approval request has been resubmitted after rejection."),
-            subtype_xmlid="mail.mt_note",
+                body=_("Approval request has been resubmitted after rejection."),
+                subtype_xmlid="mail.mt_note",
         )
 
         return {

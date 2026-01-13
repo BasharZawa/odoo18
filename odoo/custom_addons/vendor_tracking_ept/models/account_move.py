@@ -17,7 +17,7 @@ class AccountMove(models.Model):
             pickings = purchase_orders.mapped("picking_ids").filtered(lambda p: p.state == "done")
 
             # Price mismatch check
-            for line in move.invoice_line_ids.filtered("purchase_line_id"):
+            for line in move.invoice_line_ids.filtered(lambda x: x.purchase_line_id and x.product_id.type == 'consu'):
                 po_line = line.purchase_line_id
                 if po_line and abs(line.price_unit - po_line.price_unit) > 0.01:
                     discrepancies.append(_("Price mismatch for product %s (PO: %s, Invoice: %s)") % (

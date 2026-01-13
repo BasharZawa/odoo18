@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu under Sales > Reporting -->
+    
+    <!-- Sales Reports Menu (parent for all reports) -->
+    <menuitem id="menu_sales_reports_ept"
+              name="Sales Analysis Reports"
+              parent="sale.menu_sale_report"
+              sequence="100"/>
+    
+    <!-- Sales Analysis Budget vs Actual Report Menu -->
+    <menuitem id="menu_sales_analysis_report"
+              name="Budget vs Actual Report"
+              parent="menu_sales_reports_ept"
+              action="sales_analysis_report_wizard_action"
+              sequence="10"/>
+    
+    <!-- Sales Recognition Report Menu -->
+    <menuitem id="menu_sales_recognition_report"
+              name="Sales Recognition Report"
+              parent="menu_sales_reports_ept"
+              action="sales_recognition_report_wizard_action"
+              sequence="20"/>
+    
+    <!-- Configuration Menu under Sales > Configuration -->
+    <menuitem id="menu_sales_reports_config"
+              name="Sales Reports Configuration"
+              parent="sale.menu_sale_config"
+              sequence="50"/>
+    
+    <!-- Budget Entries Menu -->
+    <menuitem id="menu_sales_budget_entries"
+              name="Budget Entries"
+              parent="menu_sales_reports_config"
+              action="sales_budget_entry_action"
+              sequence="10"/>
+    
+    <!-- Sales Regions Menu -->
+    <menuitem id="menu_sales_regions"
+              name="Sales Regions"
+              parent="menu_sales_reports_config"
+              action="sales_region_action"
+              sequence="20"/>
+</odoo>

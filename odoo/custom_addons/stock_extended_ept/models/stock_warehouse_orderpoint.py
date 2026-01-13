@@ -18,7 +18,6 @@ class ProductVariantExtended(models.Model):
         action = self.env.ref('stock.action_orderpoint_replenish', raise_if_not_found=False)
 
         if template and template.email_to and action:
-            company = self.env.company
             if not template.email_from:
                 template.email_from = self.env.user.email
 
@@ -27,9 +26,10 @@ class ProductVariantExtended(models.Model):
 
             ctx = dict(self.env.context)
             ctx.update({'base_url': url})
-
-            template.with_context(ctx).send_mail(
-                company.id,
-                force_send=True
-            )
+            rpl = self.env['stock.warehouse.orderpoint'].search([], limit=1)
+            if rpl:
+                template.with_context(ctx).send_mail(
+                    rpl.id,
+                    force_send=True
+                )
         return True

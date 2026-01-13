@@ -11,3 +11,4 @@ source venv/bin/activate
 UPDATE ir_config_parameter
 SET value = gen_random_uuid()
 WHERE key = 'database.uuid';
+

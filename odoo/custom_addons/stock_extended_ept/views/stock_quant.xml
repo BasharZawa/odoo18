@@ -24,6 +24,9 @@
                         groups="stock_extended_ept.inv_adjustment_approval_group_user"
                         invisible="not has_approvals"/>
             </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="in_date" readonly="0"/>
+            </xpath>
         </field>
     </record>
 </odoo>

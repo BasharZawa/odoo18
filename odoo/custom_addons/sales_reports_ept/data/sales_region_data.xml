@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Default Sales Regions for Middle East -->
+        
+        <!-- Gulf Region -->
+        <record id="sales_region_gulf" model="sales.region">
+            <field name="name">Gulf</field>
+            <field name="code">GULF</field>
+            <field name="sequence">10</field>
+            <field name="country_ids" eval="[(6, 0, [
+                ref('base.ae'),
+                ref('base.bh'),
+                ref('base.kw'),
+                ref('base.om'),
+                ref('base.qa'),
+            ])]"/>
+        </record>
+        
+        <!-- Saudi Region -->
+        <record id="sales_region_saudi" model="sales.region">
+            <field name="name">Saudi Arabia</field>
+            <field name="code">SAUDI</field>
+            <field name="sequence">20</field>
+            <field name="country_ids" eval="[(6, 0, [ref('base.sa')])]"/>
+        </record>
+        
+        <!-- Levant Region -->
+        <record id="sales_region_levant" model="sales.region">
+            <field name="name">Levant</field>
+            <field name="code">LEVANT</field>
+            <field name="sequence">30</field>
+            <field name="country_ids" eval="[(6, 0, [
+                ref('base.jo'),
+                ref('base.lb'),
+                ref('base.sy'),
+                ref('base.ps'),
+                ref('base.iq'),
+            ])]"/>
+        </record>
+        
+        <!-- Africa Region -->
+        <record id="sales_region_africa" model="sales.region">
+            <field name="name">Africa</field>
+            <field name="code">AFRICA</field>
+            <field name="sequence">40</field>
+            <field name="country_ids" eval="[(6, 0, [
+                ref('base.eg'),
+                ref('base.ng'),
+                ref('base.za'),
+                ref('base.ke'),
+                ref('base.gh'),
+                ref('base.tz'),
+                ref('base.ma'),
+                ref('base.dz'),
+                ref('base.tn'),
+            ])]"/>
+        </record>
+        
+        <!-- Other Region (for countries not in defined regions) -->
+        <record id="sales_region_other" model="sales.region">
+            <field name="name">Other</field>
+            <field name="code">OTHER</field>
+            <field name="sequence">100</field>
+            <field name="country_ids" eval="[(6, 0, [])]"/>
+        </record>
+    </data>
+</odoo>

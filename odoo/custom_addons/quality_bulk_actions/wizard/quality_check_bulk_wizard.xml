@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_quality_check_bulk_wizard_form" model="ir.ui.view">
+        <field name="name">quality.check.bulk.wizard.form</field>
+        <field name="model">quality.check.bulk.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Quality Check Bulk Action">
+                <field name="action_type" readonly="1" invisible="1"/>
+                
+                <div class="alert alert-info" role="alert" invisible="action_type != 'pass'">
+                    You are about to <b>PASS</b> the selected quality checks.
+                </div>
+                
+                <div class="alert alert-warning" role="alert" invisible="action_type != 'fail'">
+                    You are about to <b>FAILED</b> the selected quality checks.
+                </div>
+                
+                 <group string="Selected Checks">
+                    <field name="check_ids" nolabel="1" readonly="1" colspan="2">
+                        <list string="Quality Checks" create="0" delete="0" editable="bottom">
+                            <field name="name" string="Reference"/>
+                            <field name="product_id"/>
+                            <field name="lot_id" string="Lot/Serial"/>
+                            <field name="quality_state" string="Status"/>
+                        </list>
+                    </field>
+                </group>
+                <group invisible="action_type != 'fail'" col="2">
+                    <field name="failure_reason" 
+                           required="action_type == 'fail'"
+                           placeholder="Describe why these checks failed..."/>
+                           
+                    <field name="failure_location_id" 
+                           placeholder="Select a destination for failed items"/>
+                </group>
+                
+               
+                
+                
+                <footer>
+                    <button string="Confirm" name="action_confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_quality_check_bulk_wizard" model="ir.actions.act_window">
+        <field name="name">Quality Check Bulk Action</field>
+        <field name="res_model">quality.check.bulk.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

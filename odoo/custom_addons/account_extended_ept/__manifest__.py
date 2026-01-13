@@ -11,7 +11,8 @@
     'depends': ['base', 'account', 'web'],
     'data': [
         'report/account_invoice_custom_report.xml',
-        'views/res_company.xml'
+        'views/res_company.xml',
+        "views/res_partner_views.xml",
     ],
     'installable': True,
     'images': ['static/description/icon.png']

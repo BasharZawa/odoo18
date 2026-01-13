@@ -10,3 +10,11 @@ class ResCompanyExtended(models.Model):
                                help="This image will be displayed in the header of the invoices.")
     street_arabic = fields.Char(string="Street Arabic")
     street2_arabic = fields.Char(string="Street2 Arabic")
+    invoice_policy = fields.Selection(
+        [
+            ('order', 'Ordered quantities'),
+            ('delivery', 'Delivered quantities'),
+        ],
+        string='Invoice Policy',
+        default='order',
+    )

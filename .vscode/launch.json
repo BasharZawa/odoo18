@@ -11,7 +11,9 @@
                 "-c",
                 "${workspaceFolder}/odoo.conf", // Path to your Odoo configuration file
                 "-u",
-                "account_extended_ept, crm_extended_ept, customer_management_ept, discount_management_ept, ept_execute_python_code, mrp_extended_ept, pilot_order_ept, sale_below_cost_approval_ept, sale_extended_ept, stock_extended_ept, vendor_tracking_ept, customer_import_helper", 
+                "quality_bulk_actions,sales_reports_ept",
+                "-d",
+                "OdooE"
                 // Module to update
                 // "--max-cron-threads", "2", // Enable cron workers for BPM orchestrator
                 // Uncomment and modify the following lines to override database settings:
@@ -21,7 +23,7 @@
                 // "--db_password", "your_password",
                 // "--db_name", "your_database_name"
             ],
-            "python": "${workspaceFolder}/venv/bin/python", // Path to the Python executable in your virtual environment
+            "python": "${workspaceFolder}/venv/bin/python3",
             "justMyCode": false, // Allows debugging third-party and Odoo code
             "stopOnEntry": false // Set to true if you want to pause execution at the start
         }

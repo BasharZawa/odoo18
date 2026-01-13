@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- ============================================ -->
+        <!-- PRODUCT LINES (if not existing) -->
+        <!-- ============================================ -->
+        <record id="product_line_legacy" model="product.line.ept">
+            <field name="name">Legacy Products</field>
+        </record>
+        <record id="product_line_cvm" model="product.line.ept">
+            <field name="name">CVM</field>
+        </record>
+        <record id="product_line_self_service" model="product.line.ept">
+            <field name="name">Self Service</field>
+        </record>
+        <record id="product_line_media_analytics" model="product.line.ept">
+            <field name="name">Media Analytics</field>
+        </record>
+        <record id="product_line_services" model="product.line.ept">
+            <field name="name">Services</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- DEMO PRODUCTS WITH PRODUCT LINES -->
+        <!-- ============================================ -->
+        <record id="demo_product_legacy_1" model="product.template">
+            <field name="name">Queue Management System</field>
+            <field name="type">consu</field>
+            <field name="list_price">15000.00</field>
+            <field name="product_line_id" ref="product_line_legacy"/>
+            <field name="sale_ok">True</field>
+        </record>
+        
+        <record id="demo_product_cvm_1" model="product.template">
+            <field name="name">Customer Voice Module</field>
+            <field name="type">consu</field>
+            <field name="list_price">25000.00</field>
+            <field name="product_line_id" ref="product_line_cvm"/>
+            <field name="sale_ok">True</field>
+        </record>
+        
+        <record id="demo_product_self_service_1" model="product.template">
+            <field name="name">Self Service Kiosk</field>
+            <field name="type">consu</field>
+            <field name="list_price">35000.00</field>
+            <field name="product_line_id" ref="product_line_self_service"/>
+            <field name="sale_ok">True</field>
+        </record>
+        
+        <record id="demo_product_media_1" model="product.template">
+            <field name="name">Digital Signage Analytics</field>
+            <field name="type">consu</field>
+            <field name="list_price">20000.00</field>
+            <field name="product_line_id" ref="product_line_media_analytics"/>
+            <field name="sale_ok">True</field>
+        </record>
+        
+        <record id="demo_product_services_1" model="product.template">
+            <field name="name">Implementation Services</field>
+            <field name="type">service</field>
+            <field name="list_price">10000.00</field>
+            <field name="product_line_id" ref="product_line_services"/>
+            <field name="sale_ok">True</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- DEMO INDUSTRIES/SECTORS -->
+        <!-- ============================================ -->
+        <record id="industry_banking" model="res.partner.industry">
+            <field name="name">Banking &amp; Finance</field>
+        </record>
+        <record id="industry_healthcare" model="res.partner.industry">
+            <field name="name">Healthcare</field>
+        </record>
+        <record id="industry_telecom" model="res.partner.industry">
+            <field name="name">Telecommunications</field>
+        </record>
+        <record id="industry_government" model="res.partner.industry">
+            <field name="name">Government</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- DEMO CUSTOMERS -->
+        <!-- ============================================ -->
+        <record id="demo_customer_uae_1" model="res.partner">
+            <field name="name">Emirates National Bank</field>
+            <field name="company_type">company</field>
+            <field name="country_id" ref="base.ae"/>
+            <field name="industry_id" ref="industry_banking"/>
+            <field name="email">info@enb.ae</field>
+        </record>
+        
+        <record id="demo_customer_uae_2" model="res.partner">
+            <field name="name">Dubai Health Authority</field>
+            <field name="company_type">company</field>
+            <field name="country_id" ref="base.ae"/>
+            <field name="industry_id" ref="industry_healthcare"/>
+            <field name="email">info@dha.ae</field>
+        </record>
+        
+        <record id="demo_customer_sa_1" model="res.partner">
+            <field name="name">Saudi Telecom Company</field>
+            <field name="company_type">company</field>
+            <field name="country_id" ref="base.sa"/>
+            <field name="industry_id" ref="industry_telecom"/>
+            <field name="email">info@stc.sa</field>
+        </record>
+        
+        <record id="demo_customer_sa_2" model="res.partner">
+            <field name="name">Ministry of Interior KSA</field>
+            <field name="company_type">company</field>
+            <field name="country_id" ref="base.sa"/>
+            <field name="industry_id" ref="industry_government"/>
+            <field name="email">info@moi.gov.sa</field>
+        </record>
+        
+        <record id="demo_customer_jordan_1" model="res.partner">
+            <field name="name">Jordan Islamic Bank</field>
+            <field name="company_type">company</field>
+            <field name="country_id" ref="base.jo"/>
+            <field name="industry_id" ref="industry_banking"/>
+            <field name="email">info@jib.jo</field>
+        </record>
+        
+        <record id="demo_customer_qatar_1" model="res.partner">
+            <field name="name">Qatar National Bank</field>
+            <field name="company_type">company</field>
+            <field name="country_id" ref="base.qa"/>
+            <field name="industry_id" ref="industry_banking"/>
+            <field name="email">info@qnb.qa</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- BUDGET ENTRIES FOR 2025 & 2026 -->
+        <!-- ============================================ -->
+        <!-- UAE Budgets -->
+        <record id="budget_2025_uae_legacy" model="sales.budget.entry">
+            <field name="year">2025</field>
+            <field name="salesperson_id" ref="base.user_admin"/>
+            <field name="country_id" ref="base.ae"/>
+            <field name="product_line_id" ref="product_line_legacy"/>
+            <field name="budget_amount">150000.00</field>
+        </record>
+        <record id="budget_2025_uae_cvm" model="sales.budget.entry">
+            <field name="year">2025</field>
+            <field name="salesperson_id" ref="base.user_admin"/>
+            <field name="country_id" ref="base.ae"/>
+            <field name="product_line_id" ref="product_line_cvm"/>
+            <field name="budget_amount">200000.00</field>
+        </record>
+        <record id="budget_2025_uae_services" model="sales.budget.entry">
+            <field name="year">2025</field>
+            <field name="salesperson_id" ref="base.user_admin"/>
+            <field name="country_id" ref="base.ae"/>
+            <field name="product_line_id" ref="product_line_services"/>
+            <field name="budget_amount">80000.00</field>
+        </record>
+        
+        <!-- Saudi Budgets -->
+        <record id="budget_2025_sa_legacy" model="sales.budget.entry">
+            <field name="year">2025</field>
+            <field name="salesperson_id" ref="base.user_admin"/>
+            <field name="country_id" ref="base.sa"/>
+            <field name="product_line_id" ref="product_line_legacy"/>
+            <field name="budget_amount">300000.00</field>
+        </record>
+        <record id="budget_2025_sa_self_service" model="sales.budget.entry">
+            <field name="year">2025</field>
+            <field name="salesperson_id" ref="base.user_admin"/>
+            <field name="country_id" ref="base.sa"/>
+            <field name="product_line_id" ref="product_line_self_service"/>
+            <field name="budget_amount">250000.00</field>
+        </record>
+        
+        <!-- Jordan Budgets -->
+        <record id="budget_2025_jo_legacy" model="sales.budget.entry">
+            <field name="year">2025</field>
+            <field name="salesperson_id" ref="base.user_admin"/>
+            <field name="country_id" ref="base.jo"/>
+            <field name="product_line_id" ref="product_line_legacy"/>
+            <field name="budget_amount">100000.00</field>
+        </record>
+
+        <!-- 2026 Budgets -->
+        <record id="budget_2026_uae_legacy" model="sales.budget.entry">
+            <field name="year">2026</field>
+            <field name="salesperson_id" ref="base.user_admin"/>
+            <field name="country_id" ref="base.ae"/>
+            <field name="product_line_id" ref="product_line_legacy"/>
+            <field name="budget_amount">180000.00</field>
+        </record>
+        <record id="budget_2026_sa_legacy" model="sales.budget.entry">
+            <field name="year">2026</field>
+            <field name="salesperson_id" ref="base.user_admin"/>
+            <field name="country_id" ref="base.sa"/>
+            <field name="product_line_id" ref="product_line_legacy"/>
+            <field name="budget_amount">350000.00</field>
+        </record>
+
+    </data>
+</odoo>

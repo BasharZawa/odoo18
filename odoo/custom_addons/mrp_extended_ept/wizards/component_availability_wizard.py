@@ -70,7 +70,7 @@ class ComponentAvailabilityWizard(models.TransientModel):
 
             self.write_bom_summary(ws, bom_summary, styles)
             headers = comp_data and list(comp_data[0].keys()) or []
-            headers = headers[:-1] + [''] + headers[-1:]
+            # headers = headers[:-1] + [''] + headers[-1:]
 
             self.write_headers(ws, headers, styles)
             self.write_component_rows(ws, comp_data, headers, styles)
@@ -110,7 +110,7 @@ class ComponentAvailabilityWizard(models.TransientModel):
         """
         widths = {
             'A': 30, 'B': 20, 'E': 40, 'F': 10, 'G': 10, 'H': 10, 'I': 11,
-            'J': 17, 'K': 10, 'L': 10, 'M': 13, 'N': 13, 'O': 15, 'P': 15,
+            'J': 17, 'K': 10, 'L': 10, 'M': 13, 'N': 13, 'O': 15,
         }
         for col, width in widths.items():
             ws.column_dimensions[col].width = width
@@ -340,7 +340,9 @@ class ComponentAvailabilityWizard(models.TransientModel):
             producible_units = math.floor(
                 (qty_data['on_hand_qty'] + qty_data['po_qty']) / line.product_qty)
             all_producible_unit.append(producible_units)
-        return min(all_producible_unit)
+        if all_producible_unit:
+            return min(all_producible_unit)
+        return 0
 
     def get_total_sales_qty(self, prod):
         """
@@ -376,8 +378,9 @@ class ComponentAvailabilityWizard(models.TransientModel):
         """
         total_cost = 0
         for data in comp_data:
+            cost = data.get('Current\nCost', 0) * data.get('Remaining after\nproduction', 0)
             data.update({
-                'Cost': data.get('Current\nCost', 0)
+                'Cost': cost
             })
-            total_cost +=  data.get('Current\nCost', 0)
+            total_cost +=  cost
         return total_cost
