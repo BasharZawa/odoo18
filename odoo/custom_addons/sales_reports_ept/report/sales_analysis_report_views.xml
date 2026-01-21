@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================== ACTUAL VS BUDGET REPORT VIEWS ==================== -->
+    
+    <!-- Pivot View - Actual vs Budget
+         Header (columns): Year, Product Line
+         Rows: Region, Country, Salesperson
+         Measures: Actual, Budget, Variance, Prior Year, YoY
+    -->
+    <record id="sales_analysis_report_pivot" model="ir.ui.view">
+        <field name="name">sales.analysis.report.pivot</field>
+        <field name="model">sales.analysis.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Actual vs Budget" sample="1">
+                <!-- Row groupings: Region -> Country -> Salesperson -->
+                <field name="analytic_country_account_id" type="row"/>
+                <field name="analytic_salesperson_account_id" type="row"/>
+                <field name="analytic_product_line_account_id" type="row"/>
+                <field name="region_id" type="row"/>
+                <field name="country_id" type="row"/>
+                <field name="salesperson_id" type="row"/>
+                <!-- Column groupings: Year, Product Line -->
+                <field name="year" type="col"/>
+                <field name="product_line_id" type="col"/>
+                <!-- Measures -->
+                <field name="actual_amount" type="measure"/>
+                <field name="budget_amount" type="measure"/>
+                <field name="budget_variance" type="measure"/>
+                <field name="prior_actual" type="measure"/>
+                <field name="yoy_variance" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    
+    <!-- List View - Actual vs Budget -->
+    <record id="sales_analysis_report_list" model="ir.ui.view">
+        <field name="name">sales.analysis.report.list</field>
+        <field name="model">sales.analysis.report</field>
+        <field name="arch" type="xml">
+            <list string="Actual vs Budget" create="false" edit="false" delete="false"
+                  default_order="year desc, region_id, country_id, salesperson_id">
+                <field name="year"/>
+                                <field name="analytic_country_account_id" optional="hide"/>
+                                <field name="analytic_salesperson_account_id" optional="hide"/>
+                                <field name="analytic_product_line_account_id" optional="hide"/>
+                <field name="region_id"/>
+                <field name="country_id"/>
+                <field name="salesperson_id"/>
+                <field name="product_line_id"/>
+                <field name="is_intercompany" optional="hide"/>
+                <field name="actual_amount" sum="Total Actual" widget="monetary"/>
+                <field name="budget_amount" sum="Total Budget" widget="monetary"/>
+                <field name="budget_variance" sum="Total Variance" widget="monetary"
+                       decoration-danger="budget_variance &lt; 0" 
+                       decoration-success="budget_variance &gt; 0"/>
+                <field name="budget_variance_pct" string="Var %"
+                       decoration-danger="budget_variance_pct &lt; 0" 
+                       decoration-success="budget_variance_pct &gt; 0"/>
+                <field name="prior_actual" sum="Prior Year" widget="monetary" optional="show"/>
+                <field name="yoy_variance" sum="YoY Var" widget="monetary" optional="show"
+                       decoration-danger="yoy_variance &lt; 0" 
+                       decoration-success="yoy_variance &gt; 0"/>
+                <field name="yoy_variance_pct" string="YoY %" optional="show"/>
+                <field name="company_id" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- Graph View - Actual vs Budget -->
+    <record id="sales_analysis_report_graph" model="ir.ui.view">
+        <field name="name">sales.analysis.report.graph</field>
+        <field name="model">sales.analysis.report</field>
+        <field name="arch" type="xml">
+            <graph string="Actual vs Budget" type="bar" stacked="0" sample="1">
+                <field name="salesperson_id"/>
+                <field name="actual_amount" type="measure"/>
+                <field name="budget_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    
+    <!-- Search View - Actual vs Budget -->
+    <record id="sales_analysis_report_search" model="ir.ui.view">
+        <field name="name">sales.analysis.report.search</field>
+        <field name="model">sales.analysis.report</field>
+        <field name="arch" type="xml">
+            <search string="Actual vs Budget">
+                <field name="year"/>
+                <field name="analytic_country_account_id"/>
+                <field name="analytic_salesperson_account_id"/>
+                <field name="analytic_product_line_account_id"/>
+                <field name="region_id"/>
+                <field name="country_id"/>
+                <field name="salesperson_id"/>
+                <field name="product_line_id"/>
+                <separator/>
+                <filter name="filter_exclude_intercompany" string="Exclude Intercompany" 
+                        domain="[('is_intercompany', '=', False)]"/>
+                <separator/>
+                <filter name="filter_positive_variance" string="Above Budget" 
+                        domain="[('budget_variance', '&gt;', 0)]"/>
+                <filter name="filter_negative_variance" string="Below Budget" 
+                        domain="[('budget_variance', '&lt;', 0)]"/>
+                <separator/>
+                <filter name="filter_yoy_growth" string="YoY Growth" 
+                        domain="[('yoy_variance', '&gt;', 0)]"/>
+                <filter name="filter_yoy_decline" string="YoY Decline" 
+                        domain="[('yoy_variance', '&lt;', 0)]"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter name="group_year" string="Year" context="{'group_by': 'year'}"/>
+                    <filter name="group_analytic_country" string="Analytic Country" context="{'group_by': 'analytic_country_account_id'}"/>
+                    <filter name="group_analytic_salesperson" string="Analytic Salesperson" context="{'group_by': 'analytic_salesperson_account_id'}"/>
+                    <filter name="group_analytic_product_line" string="Analytic Product Line" context="{'group_by': 'analytic_product_line_account_id'}"/>
+                    <filter name="group_product_line" string="Product Line" context="{'group_by': 'product_line_id'}"/>
+                    <filter name="group_region" string="Region" context="{'group_by': 'region_id'}"/>
+                    <filter name="group_country" string="Country" context="{'group_by': 'country_id'}"/>
+                    <filter name="group_salesperson" string="Salesperson" context="{'group_by': 'salesperson_id'}"/>
+                    <filter name="group_company" string="Company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action - Actual vs Budget Report -->
+    <record id="action_sales_analysis_report" model="ir.actions.act_window">
+        <field name="name">Actual vs Budget</field>
+        <field name="res_model">sales.analysis.report</field>
+        <field name="view_mode">pivot,list,graph</field>
+        <field name="search_view_id" ref="sales_analysis_report_search"/>
+        <field name="context">{
+            'search_default_filter_exclude_intercompany': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Actual vs Budget Report
+            </p>
+            <p>
+                Compare actual sales vs budget by region, country, salesperson, and product line.
+                <br/><br/>
+                <b>Pivot Configuration:</b><br/>
+                • Columns: Year, Product Lines<br/>
+                • Rows: Region, Country, Salesperson<br/>
+                • Measures: Actual, Budget, Variance, Prior Year, YoY
+            </p>
+        </field>
+    </record>
+    
+</odoo>

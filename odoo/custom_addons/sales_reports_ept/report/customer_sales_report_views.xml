@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================== SALES RECOGNITION REPORT VIEWS ==================== -->
+    <!-- Order-level report: one row per sale order with recognition schedule -->
+    
+    <!-- List View - Sales Recognition (Primary) -->
+    <record id="customer_sales_report_list" model="ir.ui.view">
+        <field name="name">customer.sales.report.list</field>
+        <field name="model">customer.sales.report</field>
+        <field name="arch" type="xml">
+            <list string="Sales Recognition" create="false" edit="false" delete="false"
+                  default_order="order_date desc, order_no">
+                <field name="order_no"/>
+                <field name="partner_id" string="Customer Name"/>
+                <field name="payment_status"/>
+                <field name="end_user_id" string="End User"/>
+                <field name="sector_id" string="Sector"/>
+                <field name="salesperson_id" string="Salesperson"/>
+                <field name="country_id" string="Country"/>
+                <field name="class_of_product"/>
+                <field name="order_date"/>
+                <field name="total_amount" sum="Total" widget="monetary" decoration-bf="1"/>
+                <field name="jan_amount" sum="Jan" widget="monetary"/>
+                <field name="feb_amount" sum="Feb" widget="monetary"/>
+                <field name="mar_amount" sum="Mar" widget="monetary"/>
+                <field name="apr_amount" sum="Apr" widget="monetary"/>
+                <field name="may_amount" sum="May" widget="monetary"/>
+                <field name="jun_amount" sum="Jun" widget="monetary"/>
+                <field name="jul_amount" sum="Jul" widget="monetary"/>
+                <field name="aug_amount" sum="Aug" widget="monetary"/>
+                <field name="sep_amount" sum="Sep" widget="monetary"/>
+                <field name="oct_amount" sum="Oct" widget="monetary"/>
+                <field name="nov_amount" sum="Nov" widget="monetary"/>
+                <field name="dec_amount" sum="Dec" widget="monetary"/>
+                <field name="cf_year_1" sum="C/F +1" widget="monetary"/>
+                <field name="cf_year_2" sum="C/F +2" widget="monetary"/>
+                <field name="cf_year_3" sum="C/F +3" widget="monetary"/>
+                <field name="cf_year_4" sum="C/F +4" widget="monetary" optional="hide"/>
+                <field name="cf_year_5" sum="C/F +5" widget="monetary" optional="hide"/>
+                <field name="company_id" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- Pivot View - Sales Recognition -->
+    <record id="customer_sales_report_pivot" model="ir.ui.view">
+        <field name="name">customer.sales.report.pivot</field>
+        <field name="model">customer.sales.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Sales Recognition" sample="1">
+                <!-- Row groupings -->
+                <field name="salesperson_id" type="row"/>
+                <field name="country_id" type="row"/>
+                <field name="partner_id" type="row"/>
+                <!-- Measures -->
+                <field name="total_amount" type="measure"/>
+                <field name="jan_amount" type="measure"/>
+                <field name="feb_amount" type="measure"/>
+                <field name="mar_amount" type="measure"/>
+                <field name="apr_amount" type="measure"/>
+                <field name="may_amount" type="measure"/>
+                <field name="jun_amount" type="measure"/>
+                <field name="jul_amount" type="measure"/>
+                <field name="aug_amount" type="measure"/>
+                <field name="sep_amount" type="measure"/>
+                <field name="oct_amount" type="measure"/>
+                <field name="nov_amount" type="measure"/>
+                <field name="dec_amount" type="measure"/>
+                <field name="cf_year_1" type="measure"/>
+                <field name="cf_year_2" type="measure"/>
+                <field name="cf_year_3" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    
+    <!-- Graph View - Sales Recognition -->
+    <record id="customer_sales_report_graph" model="ir.ui.view">
+        <field name="name">customer.sales.report.graph</field>
+        <field name="model">customer.sales.report</field>
+        <field name="arch" type="xml">
+            <graph string="Sales Recognition" type="bar" stacked="0" sample="1">
+                <field name="salesperson_id"/>
+                <field name="total_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    
+    <!-- Search View - Sales Recognition -->
+    <record id="customer_sales_report_search" model="ir.ui.view">
+        <field name="name">customer.sales.report.search</field>
+        <field name="model">customer.sales.report</field>
+        <field name="arch" type="xml">
+            <search string="Sales Recognition">
+                <field name="order_no"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="end_user_id" string="End User"/>
+                <field name="salesperson_id"/>
+                <field name="country_id"/>
+                <field name="sector_id"/>
+                <separator/>
+                <filter name="filter_not_invoiced" string="Not Invoiced" 
+                        domain="[('payment_status', '=', 'Not Invoiced')]"/>
+                <filter name="filter_unpaid" string="Unpaid" 
+                        domain="[('payment_status', '=', 'Unpaid')]"/>
+                <filter name="filter_partial" string="Partial Payment" 
+                        domain="[('payment_status', '=', 'Partial')]"/>
+                <filter name="filter_paid" string="Paid" 
+                        domain="[('payment_status', '=', 'Paid')]"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter name="group_salesperson" string="Salesperson" context="{'group_by': 'salesperson_id'}"/>
+                    <filter name="group_country" string="Country" context="{'group_by': 'country_id'}"/>
+                    <filter name="group_customer" string="Customer" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_sector" string="Sector" context="{'group_by': 'sector_id'}"/>
+                    <filter name="group_payment" string="Payment Status" context="{'group_by': 'payment_status'}"/>
+                    <filter name="group_company" string="Company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    <!-- Action - Sales Recognition Report -->
+    <record id="action_customer_sales_report" model="ir.actions.act_window">
+        <field name="name">Sales Recognition</field>
+        <field name="res_model">customer.sales.report</field>
+        <field name="view_mode">pivot,list,graph</field>
+        <field name="search_view_id" ref="customer_sales_report_search"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Sales Recognition Report
+            </p>
+            <p>
+                Revenue recognition by sales order for the current year.
+                <br/><br/>
+                <b>Columns:</b><br/>
+                • Order details: Order No, Customer, Payment Status, End User, Sector, Salesperson, Country, Class of Product, Order Date, Total<br/>
+                • Monthly recognition: Jan - Dec (current year)<br/>
+                • Carry Forward: Future years with scheduled recognition
+            </p>
+        </field>
+    </record>
+    
+</odoo>

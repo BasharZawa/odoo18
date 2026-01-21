@@ -1,54 +1,61 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Sales Reports EPT',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.2.0',
     'category': 'Sales/Reports',
-    'summary': 'Sales Analysis Budget vs Actual and Sales Recognition Reports',
+    'summary': 'Actual vs Budget and Sales Recognition Reports with Interactive Pivot Views',
     'description': """
-        Sales Analysis & Sales Recognition Reporting Module
+        Sales Reporting Module - Actual vs Budget & Sales Recognition
+        ==============================================================
+        
+        This module provides two comprehensive sales reports:
+        
+        1. ACTUAL VS BUDGET REPORT
+           - Compare actual sales against budget targets
+           - Rows: Region → Country → Salesperson
+           - Columns: Year, Product Line (Legacy Prod, CVM, SS, Media Ana, Services)
+           - Measures: Actual Amount, Budget Amount, Budget Variance, Prior Year, YoY Variance
+           - Intercompany sales tracking
+           - Multi-year analysis
+        
+        2. SALES RECOGNITION REPORT
+           - Monthly revenue recognition breakdown by order
+           - Columns: Order No, Customer, Payment Status, End User, Sector, 
+             Salesperson, Country, Class of Product, Order Date, Total
+           - Monthly columns: Jan - Dec (current year)
+           - Carry Forward columns: Future years with scheduled recognition
+           - Shows only orders with recognition schedule entries
         
         Features:
-        - Sales Analysis: Budget vs Actual Report
-          * Budget entry management by Year, Salesperson, Country, Product Line
-          * Comparison of Actual vs Budget sales
-          * Year-over-year variance analysis
-          * Country/Region-wise and Salesperson-wise reports
-          * Intercompany sales tracking
-        
-        - Sales Recognition Report
-          * Monthly revenue recognition tracking
-          * Carry-forward recognition for future years
-          * Based on Recognition Schedule in Sales Orders
-        
-        Both reports:
-        - Accessible from Sales → Reports
-        - Excel download format
-        - Based on confirmed Sales Orders
-        - All values calculated including taxes
+        - Interactive Pivot/List/Graph Views
+        - Budget Entry management
+        - Sales Region master data
     """,
     'author': 'Emipro Technologies Pvt Ltd',
     'website': 'https://www.emiprotechnologies.com',
     'depends': [
         'sale',
         'sales_team',
+        'account',
+        'analytic',
+        'account_budget',
         'crm_extended_ept',
         'customer_management_ept',
     ],
     'data': [
         'security/ir.model.access.csv',
         'data/sales_region_data.xml',
+        'data/analytic_plans.xml',
         'views/sales_budget_entry_views.xml',
         'views/sales_region_views.xml',
-        'wizard/sales_analysis_report_wizard_views.xml',
-        'wizard/sales_recognition_report_wizard_views.xml',
+        'report/sales_analysis_report_views.xml',
+        'report/customer_sales_report_views.xml',
         'views/menu_items.xml',
+        'report/analytic_budget_performance_report.xml',
     ],
     'demo': [
         'data/demo_data.xml',
     ],
-    'external_dependencies': {
-        'python': ['xlsxwriter'],
-    },
     'installable': True,
     'auto_install': False,
     'application': False,

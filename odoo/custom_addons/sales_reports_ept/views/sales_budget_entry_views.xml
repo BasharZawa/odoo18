@@ -7,6 +7,9 @@
         <field name="arch" type="xml">
             <list string="Budget Entries" editable="bottom">
                 <field name="year"/>
+                <field name="analytic_country_account_id" optional="hide"/>
+                <field name="analytic_salesperson_account_id" optional="hide"/>
+                <field name="analytic_product_line_account_id" optional="hide"/>
                 <field name="salesperson_id"/>
                 <field name="country_id"/>
                 <field name="product_line_id"/>
@@ -28,9 +31,12 @@
                     <group>
                         <group string="Budget Dimensions">
                             <field name="year"/>
-                            <field name="salesperson_id"/>
-                            <field name="country_id"/>
-                            <field name="product_line_id"/>
+                            <field name="analytic_country_account_id"/>
+                            <field name="analytic_salesperson_account_id"/>
+                            <field name="analytic_product_line_account_id"/>
+                            <field name="salesperson_id" invisible="analytic_country_account_id or analytic_salesperson_account_id or analytic_product_line_account_id" required="not (analytic_country_account_id or analytic_salesperson_account_id or analytic_product_line_account_id)"/>
+                            <field name="country_id" invisible="analytic_country_account_id or analytic_salesperson_account_id or analytic_product_line_account_id" required="not (analytic_country_account_id or analytic_salesperson_account_id or analytic_product_line_account_id)"/>
+                            <field name="product_line_id" invisible="analytic_country_account_id or analytic_salesperson_account_id or analytic_product_line_account_id" required="not (analytic_country_account_id or analytic_salesperson_account_id or analytic_product_line_account_id)"/>
                         </group>
                         <group string="Budget Value">
                             <field name="budget_amount"/>
@@ -53,6 +59,9 @@
         <field name="arch" type="xml">
             <search string="Search Budget Entries">
                 <field name="year"/>
+                <field name="analytic_country_account_id"/>
+                <field name="analytic_salesperson_account_id"/>
+                <field name="analytic_product_line_account_id"/>
                 <field name="salesperson_id"/>
                 <field name="country_id"/>
                 <field name="product_line_id"/>
@@ -62,6 +71,9 @@
                 <separator/>
                 <group expand="1" string="Group By">
                     <filter string="Year" name="group_year" context="{'group_by': 'year'}"/>
+                    <filter string="Analytic Country" name="group_analytic_country" context="{'group_by': 'analytic_country_account_id'}"/>
+                    <filter string="Analytic Salesperson" name="group_analytic_salesperson" context="{'group_by': 'analytic_salesperson_account_id'}"/>
+                    <filter string="Analytic Product Line" name="group_analytic_product_line" context="{'group_by': 'analytic_product_line_account_id'}"/>
                     <filter string="Salesperson" name="group_salesperson" context="{'group_by': 'salesperson_id'}"/>
                     <filter string="Country" name="group_country" context="{'group_by': 'country_id'}"/>
                     <filter string="Product Line" name="group_product_line" context="{'group_by': 'product_line_id'}"/>
@@ -77,6 +89,9 @@
         <field name="arch" type="xml">
             <pivot string="Budget Analysis">
                 <field name="year" type="col"/>
+                <field name="analytic_country_account_id" type="row"/>
+                <field name="analytic_salesperson_account_id" type="row"/>
+                <field name="analytic_product_line_account_id" type="row"/>
                 <field name="country_id" type="row"/>
                 <field name="product_line_id" type="row"/>
                 <field name="budget_amount" type="measure"/>
@@ -96,7 +111,7 @@
                 Create your first sales budget entry
             </p>
             <p>
-                Define budget values by Year, Salesperson, Country, and Product Line.
+                Define budget values either by Salesperson/Country/Product Line, or by Analytic Account.
                 Each combination must be unique.
             </p>
         </field>
