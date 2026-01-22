@@ -81,7 +81,7 @@ class AccountMove(models.Model):
                 return self.env['account.edi.xml.ubl_20']
             if ubl_version.text in ('2.1', '2.2', '2.3'):
                 return self.env['account.edi.xml.ubl_21']
-        if customization_id is not None:
+        if customization_id is not None and customization_id.text:
             if 'xrechnung' in customization_id.text:
                 return self.env['account.edi.xml.ubl_de']
             if customization_id.text == 'urn:cen.eu:en16931:2017#compliant#urn:fdc:nen.nl:nlcius:v1.0':
@@ -139,8 +139,12 @@ class AccountMove(models.Model):
     def _need_ubl_cii_xml(self, ubl_cii_format):
         self.ensure_one()
         return not self.ubl_cii_xml_id \
-            and self.is_sale_document() \
+            and (self.is_sale_document() or self._is_exportable_as_self_invoice()) \
             and ubl_cii_format in self.env['res.partner']._get_ubl_cii_formats()
+
+    def _is_exportable_as_self_invoice(self):
+        # To override in account_peppol_selfbilling
+        return False
 
     @api.model
     def _get_line_vals_list(self, lines_vals):

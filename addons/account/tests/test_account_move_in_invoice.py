@@ -2455,22 +2455,6 @@ class TestAccountMoveInInvoiceOnchanges(AccountTestInvoicingCommon):
             if reverse_move.state == 'draft':
                 reverse_move.action_post()
 
-        def create_statement_line(move, amount):
-            statement_line = self.env['account.bank.statement.line'].create({
-                'payment_ref': 'ref',
-                'journal_id': self.company_data['default_journal_bank'].id,
-                'amount': amount,
-                'date': '2020-01-10',
-            })
-            _st_liquidity_lines, st_suspense_lines, _st_other_lines = statement_line\
-                .with_context(skip_account_move_synchronization=True)\
-                ._seek_for_lines()
-            line = move.line_ids.filtered(lambda line: line.account_type in ('asset_receivable', 'liability_payable'))
-
-            st_suspense_lines.account_id = line.account_id
-            (st_suspense_lines + line).reconcile()
-            assert_partial(st_suspense_lines, line)
-
         move = create_move(move_type, amount)
         line = move.line_ids.filtered(lambda line: line.account_type in ('asset_receivable', 'liability_payable'))
         for counterpart_move_type, counterpart_amount in counterpart_values_list:
@@ -2479,7 +2463,8 @@ class TestAccountMoveInInvoiceOnchanges(AccountTestInvoicingCommon):
             elif counterpart_move_type == 'reverse':
                 create_reverse(move, counterpart_amount)
             elif counterpart_move_type == 'statement_line':
-                create_statement_line(move, counterpart_amount)
+                reconciliation_info = self.pay_with_statement_line(move, self.company_data['default_journal_bank'].id, '2020-01-10', counterpart_amount)
+                assert_partial(reconciliation_info['statement_line_reconciled'], reconciliation_info['move_reconciled'])
             else:
                 counterpart_move = create_move(counterpart_move_type, counterpart_amount, account=line.account_id)
                 counterpart_line = counterpart_move.line_ids.filtered(lambda x: x.account_id == line.account_id)
@@ -2599,19 +2584,6 @@ class TestAccountMoveInInvoiceOnchanges(AccountTestInvoicingCommon):
         move_form.save()
         self.assertEqual(invoice.currency_id, chf,
                          "Changing to a journal with a set currency should change invoice currency")
-
-    def test_onchange_payment_reference(self):
-        """
-        Ensure payment reference propagation from move to payment term
-        line is done correctly
-        """
-        payment_term_line = self.invoice.line_ids.filtered(lambda l: l.display_type == 'payment_term')
-        with Form(self.invoice) as move_form:
-            move_form.payment_reference = 'test'
-        self.assertEqual(payment_term_line.name, 'test')
-        with Form(self.invoice) as move_form:
-            move_form.payment_reference = False
-        self.assertEqual(payment_term_line.name, False, 'Payment term line was not changed')
 
     def test_taxes_onchange_product_uom_and_price_unit(self):
         """
@@ -2796,6 +2768,19 @@ class TestAccountMoveInInvoiceOnchanges(AccountTestInvoicingCommon):
         move_form.save()
         self.invoice.action_post()
         self.assertEqual(payment_term_line.name, 'XYZ', 'Manual name of payment term line should be kept')
+
+    def test_recompute_of_line_name(self):
+        """
+        Ensure name of the line is recomputed when Customer Reference is modified
+        """
+        invoice = self.init_invoice(move_type='out_invoice', products=self.product_a, post=True)
+        line = invoice.line_ids.filtered(lambda l: l.display_type == 'payment_term')
+
+        invoice.ref = "test"
+        self.assertEqual(line.name, f'test - {invoice.payment_reference}')
+
+        invoice.ref = "ABCDEF"
+        self.assertEqual(line.name, f'ABCDEF - {invoice.payment_reference}')
 
     def test_duplicate_invoice_with_separate_discount_acccount(self):
         """When a separate discount account, make sure that discount lines don't have a tax_id set

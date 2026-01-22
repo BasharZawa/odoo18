@@ -14,6 +14,7 @@ import { omit } from "@web/core/utils/objects";
 let nextId = -1;
 const mutex = new Mutex();
 const updateRewardsMutex = new Mutex();
+const updateProgramsMutex = new Mutex();
 const pointsForProgramsCountedRules = {};
 const { DateTime } = luxon;
 
@@ -136,6 +137,13 @@ patch(PosStore.prototype, {
      * Update our couponPointChanges, meaning the points/coupons each program give etc.
      */
     async updatePrograms() {
+        return updateProgramsMutex.exec(async () => {
+            await this._updatePrograms();
+        });
+    },
+
+    // This method should never be called directly, use updatePrograms() instead
+    async _updatePrograms() {
         const order = this.get_order();
         // 'order.delivery_provider_id' check is used for UrbanPiper orders (as loyalty points and rewards are not allowed for UrbanPiper orders)
         if (!order || order.delivery_provider_id) {
@@ -538,25 +546,21 @@ patch(PosStore.prototype, {
                 const considerTheReward =
                     program.applies_on !== "both" || (program.applies_on == "both" && hasLine);
                 if (reward.reward_type === "product" && considerTheReward) {
-                    let hasPotentialQty = true;
-                    let potentialQty;
                     for (const { id } of reward.reward_product_ids) {
                         const product = this.models["product.product"].get(id);
-                        potentialQty = order._computePotentialFreeProductQty(
+                        const potentialQty = order._computePotentialFreeProductQty(
                             reward,
                             product,
                             points
                         );
-                        if (potentialQty <= 0) {
-                            hasPotentialQty = false;
+                        if (potentialQty > 0) {
+                            result.push({
+                                coupon_id: couponProgram.coupon_id,
+                                reward: reward,
+                                potentialQty,
+                            });
+                            break;
                         }
-                    }
-                    if (hasPotentialQty) {
-                        result.push({
-                            coupon_id: couponProgram.coupon_id,
-                            reward: reward,
-                            potentialQty,
-                        });
                     }
                 }
             }

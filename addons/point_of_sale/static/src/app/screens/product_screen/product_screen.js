@@ -145,7 +145,9 @@ export class ProductScreen extends Component {
                     ? `/web/image?model=pos.category&field=image_128&id=${category.id}`
                     : undefined,
             isSelected: this.getAncestorsAndCurrent().includes(category),
-            isChildren: this.getChildCategories(this.pos.selectedCategory).includes(category),
+            isChildren: this.pos.selectedCategory
+                ? this.pos.selectedCategory.child_ids.includes(category)
+                : !category.parent_id,
         };
     }
 
@@ -224,9 +226,9 @@ export class ProductScreen extends Component {
                 "find_product_by_barcode",
                 [odoo.pos_session_id, code.base_code, this.pos.config.id]
             );
-            await this.pos.processProductAttributes();
 
             if (records && records["product.product"].length > 0) {
+                await this.pos.processProductAttributesByProducts(records["product.product"]);
                 product = records["product.product"][0];
                 await this.pos._loadMissingPricelistItems([product]);
             }
@@ -299,6 +301,10 @@ export class ProductScreen extends Component {
             product.uom_id.id == qty.rule.associated_uom_id[0]
         ) {
             vals.qty = qty.value;
+        }
+        const packaging = this.pos.models["product.packaging"].getAllBy("barcode");
+        if (packaging[productBarcode.code]) {
+            vals.qty = (vals.qty || 1) * packaging[productBarcode.code].qty;
         }
 
         await this.pos.addLineToCurrentOrder(vals, { code: lotBarcode });
@@ -507,7 +513,7 @@ export class ProductScreen extends Component {
             }
         );
 
-        await this.pos.processProductAttributes();
+        await this.pos.processProductAttributesByProducts(product);
         return product;
     }
 

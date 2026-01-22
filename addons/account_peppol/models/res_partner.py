@@ -191,7 +191,11 @@ class ResPartner(models.Model):
         return decoded_response.get('result')
 
     def _check_document_type_support(self, participant_info, ubl_cii_format):
-        expected_customization_id = self.env['account.edi.xml.ubl_21']._get_customization_ids()[ubl_cii_format]
+        if self.env.context.get('check_self_billing_support'):
+            # This context key can be `True` only if the `account_peppol_selfbilling` module is installed.
+            expected_customization_id = self.env['account.edi.xml.ubl_bis3']._get_selfbilling_customization_ids()[ubl_cii_format]
+        else:
+            expected_customization_id = self.env['account.edi.xml.ubl_21']._get_customization_ids()[ubl_cii_format]
         if isinstance(participant_info, dict):
             return any(expected_customization_id in (service.get('document_id') or '') for service in participant_info.get('services', []))
 
@@ -267,9 +271,6 @@ class ResPartner(models.Model):
             self_partner.peppol_eas,
             self_partner._get_peppol_edi_format(),
         )
-        if new_value == 'valid' and not self_partner.invoice_sending_method:
-            self_partner.invoice_sending_method = 'peppol'
-
         if (
                 new_value != 'valid'
                 and self_partner.peppol_eas in ('0208', '9925')
