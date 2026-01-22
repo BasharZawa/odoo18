@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Main Menu under Sales > Reporting -->
+    <!-- ==================== MAIN MENU ==================== -->
     
-    <!-- Sales Reports Menu (parent for all reports) -->
+    <!-- Sales Reports Menu under Sales > Reporting -->
     <menuitem id="menu_sales_reports_ept"
               name="Sales Analysis Reports"
               parent="sale.menu_sale_report"
               sequence="100"/>
     
-    <!-- ==================== INTERACTIVE REPORTS (Pivot/List) ==================== -->
+    <!-- ==================== REPORTS ==================== -->
     
-    <!-- Actual vs Budget (Interactive) -->
-    <menuitem id="menu_sales_analysis_pivot"
-              name="Actual vs Budget"
+    <!-- Budget vs Actual Report -->
+    <menuitem id="menu_budget_vs_actual_report"
+              name="Budget vs Actual"
               parent="menu_sales_reports_ept"
-              action="action_sales_analysis_report"
-              sequence="5"/>
+              action="action_budget_vs_actual_report"
+              sequence="10"/>
     
-    <!-- Sales Recognition (Interactive) -->
-    <menuitem id="menu_customer_sales_pivot"
+    <!-- Sales Recognition Report -->
+    <menuitem id="menu_sales_recognition_report"
               name="Sales Recognition"
               parent="menu_sales_reports_ept"
-              action="action_customer_sales_report"
-              sequence="6"/>
+              action="action_sales_recognition_report"
+              sequence="20"/>
     
     <!-- ==================== CONFIGURATION ==================== -->
     
@@ -32,29 +32,11 @@
               parent="sale.menu_sale_config"
               sequence="50"/>
     
-    <!-- Budget Entries Menu -->
-    <menuitem id="menu_sales_budget_entries"
-              name="Budget Entries"
-              parent="menu_sales_reports_config"
-              action="sales_budget_entry_action"
-              sequence="10"/>
-    
     <!-- Sales Regions Menu -->
     <menuitem id="menu_sales_regions"
               name="Sales Regions"
               parent="menu_sales_reports_config"
               action="sales_region_action"
-              sequence="20"/>
-
-          <record id="action_analytic_budget_report" model="ir.actions.act_window">
-            <field name="name">Budget vs Sales Analysis</field>
-            <field name="res_model">analytic.budget.performance.report</field>
-            <field name="view_mode">pivot,list</field>
-          </record>
-
-  <menuitem id="menu_analytic_budget_report"
-        name="Budget vs Sales"
-        parent="account.menu_finance_reports"
-        action="action_analytic_budget_report"
-        sequence="10"/>
+              sequence="10"/>
+              
 </odoo>

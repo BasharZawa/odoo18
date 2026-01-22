@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================== BUDGET VS ACTUAL REPORT VIEWS ==================== -->
+    
+    <!-- Pivot View - Primary analysis view -->
+    <record id="budget_vs_actual_report_pivot" model="ir.ui.view">
+        <field name="name">budget.vs.actual.report.pivot</field>
+        <field name="model">budget.vs.actual.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget vs Actual" sample="1">
+                <!-- Default row grouping by Region (can be changed to Salesperson) -->
+                <field name="region_name" type="row"/>
+                <field name="fiscal_year" type="col"/>
+                <!-- Measures - Yearly + YTD -->
+                <field name="budget_amount" type="measure"/>
+                <field name="actual_amount" type="measure"/>
+                <field name="variance" type="measure"/>
+                <field name="ytd_budget" type="measure"/>
+                <field name="ytd_actual" type="measure"/>
+                <field name="ytd_variance" type="measure"/>
+                <field name="achievement_pct" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    
+    <!-- List View -->
+    <record id="budget_vs_actual_report_list" model="ir.ui.view">
+        <field name="name">budget.vs.actual.report.list</field>
+        <field name="model">budget.vs.actual.report</field>
+        <field name="arch" type="xml">
+            <list string="Budget vs Actual" create="false" edit="false" delete="false"
+                  default_order="fiscal_year desc, region_name">
+                <!-- Grouping Dimensions -->
+                <field name="region_name" optional="show"/>
+                <field name="salesperson_name" optional="show"/>
+                <field name="country_name" optional="hide"/>
+                <field name="product_line_name" optional="hide"/>
+                <field name="fiscal_year"/>
+                
+                <!-- Full Year Measures -->
+                <field name="budget_amount" sum="Total Budget"/>
+                <field name="actual_amount" sum="Total Actual"/>
+                <field name="variance" sum="Total Variance"
+                       decoration-danger="variance &lt; 0" 
+                       decoration-success="variance &gt;= 0"/>
+                <field name="variance_pct" string="Var %"
+                       decoration-danger="variance_pct &lt; -10" 
+                       decoration-warning="variance_pct &gt;= -10 and variance_pct &lt; 0"
+                       decoration-success="variance_pct &gt;= 0"/>
+                
+                <!-- YTD Measures -->
+                <field name="ytd_budget" sum="YTD Budget" optional="show"/>
+                <field name="ytd_actual" sum="YTD Actual" optional="show"/>
+                <field name="ytd_variance" sum="YTD Variance" optional="show"
+                       decoration-danger="ytd_variance &lt; 0" 
+                       decoration-success="ytd_variance &gt;= 0"/>
+                
+                <!-- Achievement -->
+                <field name="achievement_pct" string="Ach. %"
+                       decoration-danger="achievement_pct &lt; 80" 
+                       decoration-warning="achievement_pct &gt;= 80 and achievement_pct &lt; 100"
+                       decoration-success="achievement_pct &gt;= 100"/>
+                
+                <!-- Reference fields -->
+                <field name="budget_name" optional="hide"/>
+                <field name="budget_state" optional="hide" widget="badge"/>
+                <field name="company_id" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- Graph View -->
+    <record id="budget_vs_actual_report_graph" model="ir.ui.view">
+        <field name="name">budget.vs.actual.report.graph</field>
+        <field name="model">budget.vs.actual.report</field>
+        <field name="arch" type="xml">
+            <graph string="Budget vs Actual" type="bar" stacked="0" sample="1">
+                <field name="region_name"/>
+                <field name="budget_amount" type="measure"/>
+                <field name="actual_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    
+    <!-- Search View -->
+    <record id="budget_vs_actual_report_search" model="ir.ui.view">
+        <field name="name">budget.vs.actual.report.search</field>
+        <field name="model">budget.vs.actual.report</field>
+        <field name="arch" type="xml">
+            <search string="Budget vs Actual">
+                <field name="region_name"/>
+                <field name="salesperson_name"/>
+                <field name="country_name"/>
+                <field name="product_line_name"/>
+                <field name="fiscal_year"/>
+                <field name="budget_name"/>
+                <separator/>
+                
+                <!-- Year filters -->
+                <filter name="filter_current_year" string="Current Year" 
+                        domain="[('fiscal_year', '=', str(context_today().year))]"/>
+                <filter name="filter_last_year" string="Last Year" 
+                        domain="[('fiscal_year', '=', str(context_today().year - 1))]"/>
+                <separator/>
+                
+                <!-- Status filters -->
+                <filter name="filter_confirmed" string="Open Budgets" 
+                        domain="[('budget_state', '=', 'confirmed')]"/>
+                <filter name="filter_done" string="Closed Budgets" 
+                        domain="[('budget_state', '=', 'done')]"/>
+                <separator/>
+                
+                <!-- Performance filters -->
+                <filter name="filter_over_target" string="Over Target" 
+                        domain="[('variance', '&gt;', 0)]"/>
+                <filter name="filter_under_target" string="Under Target" 
+                        domain="[('variance', '&lt;', 0)]"/>
+                <filter name="filter_low_achievement" string="Low Achievement (&lt;80%)" 
+                        domain="[('achievement_pct', '&lt;', 80)]"/>
+                <separator/>
+                
+                <group expand="1" string="Group By">
+                    <!-- Primary grouping options -->
+                    <filter name="group_region" string="Region" 
+                            context="{'group_by': 'region_id'}"/>
+                    <filter name="group_salesperson" string="Salesperson" 
+                            context="{'group_by': 'salesperson_analytic_id'}"/>
+                    <filter name="group_country" string="Country" 
+                            context="{'group_by': 'country_analytic_id'}"/>
+                    <filter name="group_product_line" string="Product Line" 
+                            context="{'group_by': 'product_line_analytic_id'}"/>
+                    <separator/>
+                    <filter name="group_fiscal_year" string="Year" 
+                            context="{'group_by': 'fiscal_year'}"/>
+                    <filter name="group_budget" string="Budget" 
+                            context="{'group_by': 'budget_analytic_id'}"/>
+                    <filter name="group_company" string="Company" 
+                            context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_budget_vs_actual_report" model="ir.actions.act_window">
+        <field name="name">Budget vs Actual</field>
+        <field name="res_model">budget.vs.actual.report</field>
+        <field name="view_mode">pivot,list,graph</field>
+        <field name="search_view_id" ref="budget_vs_actual_report_search"/>
+        <field name="context">{
+            'search_default_filter_confirmed': 1,
+            'search_default_filter_current_year': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Budget vs Actual Analysis
+            </p>
+            <p>
+                Compare budget targets with actual results.
+                <br/><br/>
+                <b>Grouping Options (Left Side):</b><br/>
+                • By Region - Group countries into regional performance<br/>
+                • By Salesperson - Individual sales performance<br/>
+                • By Country / Product Line - Detailed breakdown<br/>
+                <br/>
+                <b>Measures (Header):</b><br/>
+                • Yearly: Budget, Actual, Variance<br/>
+                • YTD: YTD Budget, YTD Actual, YTD Variance<br/>
+                • Achievement %<br/>
+            </p>
+        </field>
+    </record>
+    
+</odoo>

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
 
-from . import sales_analysis_report
-from . import customer_sales_report
-from . import analytic_budget_performance_report
+from . import budget_vs_actual_report
+from . import sales_recognition_report

@@ -1,35 +1,35 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Sales Reports EPT',
-    'version': '18.0.1.2.0',
+    'version': '18.0.2.0.0',
     'category': 'Sales/Reports',
-    'summary': 'Actual vs Budget and Sales Recognition Reports with Interactive Pivot Views',
+    'summary': 'Budget vs Actual (Native Integration) & Sales Recognition Reports',
     'description': """
-        Sales Reporting Module - Actual vs Budget & Sales Recognition
+        Sales Reporting Module - Budget vs Actual & Sales Recognition
         ==============================================================
         
-        This module provides two comprehensive sales reports:
+        This module provides two comprehensive sales reports fully integrated
+        with Odoo 18 Enterprise native modules.
         
-        1. ACTUAL VS BUDGET REPORT
-           - Compare actual sales against budget targets
-           - Rows: Region → Country → Salesperson
-           - Columns: Year, Product Line (Legacy Prod, CVM, SS, Media Ana, Services)
-           - Measures: Actual Amount, Budget Amount, Budget Variance, Prior Year, YoY Variance
-           - Intercompany sales tracking
-           - Multi-year analysis
+        1. BUDGET VS ACTUAL REPORT
+           - Integrates with native account_budget module (budget.analytic / budget.line)
+           - Actual data from account.analytic.line (posted invoices)
+           - Supports all analytic plans dynamically
+           - Measures: Budget, Achieved, Committed, Variance, Achievement %
+           - Multi-year and multi-company support
         
         2. SALES RECOGNITION REPORT
-           - Monthly revenue recognition breakdown by order
-           - Columns: Order No, Customer, Payment Status, End User, Sector, 
-             Salesperson, Country, Class of Product, Order Date, Total
-           - Monthly columns: Jan - Dec (current year)
-           - Carry Forward columns: Future years with scheduled recognition
-           - Shows only orders with recognition schedule entries
+           - Revenue recognition by sales order
+           - Monthly breakdown (Jan-Dec) for selected year
+           - Carry Forward columns for future years
+           - Payment status, End User, Sector tracking
+           - Recognition coverage and status indicators
         
         Features:
+        - Native Odoo Budget Integration (budget.analytic / budget.line / budget.report)
         - Interactive Pivot/List/Graph Views
-        - Budget Entry management
         - Sales Region master data
+        - Multi-currency support with company currency conversion
     """,
     'author': 'Emipro Technologies Pvt Ltd',
     'website': 'https://www.emiprotechnologies.com',
@@ -38,26 +38,19 @@
         'sales_team',
         'account',
         'analytic',
-        'account_budget',
+        'account_budget',  # Enterprise module - native budget
         'crm_extended_ept',
         'customer_management_ept',
     ],
     'data': [
         'security/ir.model.access.csv',
-        'data/sales_region_data.xml',
-        'data/analytic_plans.xml',
-        'views/sales_budget_entry_views.xml',
         'views/sales_region_views.xml',
-        'report/sales_analysis_report_views.xml',
-        'report/customer_sales_report_views.xml',
+        'report/budget_vs_actual_report_views.xml',
+        'report/sales_recognition_report_views.xml',
         'views/menu_items.xml',
-        'report/analytic_budget_performance_report.xml',
-    ],
-    'demo': [
-        'data/demo_data.xml',
     ],
     'installable': True,
     'auto_install': False,
     'application': False,
-    'license': 'LGPL-3',
+    'license': 'OEEL-1',  # Enterprise license since it depends on account_budget
 }

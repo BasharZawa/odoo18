@@ -8,7 +8,7 @@ class CrmLead(models.Model):
     
 
     # Common 
-    product_line_id = fields.Many2one('product.line', string='Product Category')
+    product_line_id = fields.Many2one('product.line.ept', string='Product Category')
     is_service = fields.Boolean(string='Is Service', default=False)
     vertical_id = fields.Many2one('vertical', string='Vertical')
     sales_notes = fields.Text(string='Sales Notes')

@@ -7,4 +7,4 @@ class InterestedSolution(models.Model):
 
     name = fields.Char(string='Interested Solution', required=True)
     description = fields.Text(string='Description')
-    product_line_id = fields.Many2one('product.line', string='Aligned Product Category')
+    product_line_id = fields.Many2one('product.line.ept', string='Aligned Product Category')

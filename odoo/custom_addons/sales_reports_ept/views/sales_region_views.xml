@@ -41,12 +41,7 @@
                         </group>
                     </group>
                     <group string="Countries">
-                        <field name="country_ids" nolabel="1" widget="many2many_tags">
-                            <tree>
-                                <field name="name"/>
-                                <field name="code"/>
-                            </tree>
-                        </field>
+                        <field name="country_ids" nolabel="1" widget="many2many_tags"/>
                     </group>
                 </sheet>
             </form>

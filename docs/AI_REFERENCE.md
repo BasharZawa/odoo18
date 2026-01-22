@@ -61,7 +61,7 @@ class CrmLead(models.Model):
 from odoo import models, fields
 
 class ProductLine(models.Model):
-    _name = "product.line"
+    _name = "product.line.ept"
     _description = "Product Line"
 
     name = fields.Char(required=True)

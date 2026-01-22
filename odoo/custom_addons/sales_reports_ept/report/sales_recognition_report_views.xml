@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================== SALES RECOGNITION REPORT VIEWS ==================== -->
+    
+    <!-- List View - Primary view for recognition report -->
+    <record id="sales_recognition_report_list" model="ir.ui.view">
+        <field name="name">sales.recognition.report.list</field>
+        <field name="model">sales.recognition.report</field>
+        <field name="arch" type="xml">
+            <list string="Sales Recognition" create="false" edit="false" delete="false"
+                  default_order="order_date desc">
+                <!-- Order Info -->
+                <field name="order_name" decoration-bf="1"/>
+                <field name="partner_id"/>
+                <field name="payment_status" widget="badge"
+                       decoration-success="payment_status == 'paid'"
+                       decoration-warning="payment_status == 'partial'"
+                       decoration-danger="payment_status == 'unpaid'"
+                       decoration-muted="payment_status == 'not_invoiced'"/>
+                <field name="end_user_id" optional="show"/>
+                <field name="sector_id" optional="hide"/>
+                <field name="salesperson_id"/>
+                <field name="country_id" optional="show"/>
+                <field name="product_lines" optional="hide"/>
+                <field name="order_date"/>
+                
+                <!-- Totals -->
+                <field name="order_total" sum="Order Total" widget="monetary" decoration-bf="1"/>
+                <field name="total_scheduled" sum="Scheduled" widget="monetary" optional="show"/>
+                <field name="recognition_coverage_pct" string="Coverage %" optional="show"
+                       decoration-success="recognition_coverage_pct &gt;= 100"
+                       decoration-warning="recognition_coverage_pct &gt;= 50 and recognition_coverage_pct &lt; 100"
+                       decoration-danger="recognition_coverage_pct &lt; 50"/>
+                <field name="recognition_status" widget="badge" optional="show"
+                       decoration-success="recognition_status == 'complete'"
+                       decoration-warning="recognition_status == 'partial'"
+                       decoration-muted="recognition_status == 'pending'"/>
+                
+                <!-- Past -->
+                <field name="past_recognized" sum="Past" widget="monetary" optional="hide"/>
+                
+                <!-- Monthly columns -->
+                <field name="jan_amount" sum="Jan" widget="monetary"/>
+                <field name="feb_amount" sum="Feb" widget="monetary"/>
+                <field name="mar_amount" sum="Mar" widget="monetary"/>
+                <field name="apr_amount" sum="Apr" widget="monetary"/>
+                <field name="may_amount" sum="May" widget="monetary"/>
+                <field name="jun_amount" sum="Jun" widget="monetary"/>
+                <field name="jul_amount" sum="Jul" widget="monetary"/>
+                <field name="aug_amount" sum="Aug" widget="monetary"/>
+                <field name="sep_amount" sum="Sep" widget="monetary"/>
+                <field name="oct_amount" sum="Oct" widget="monetary"/>
+                <field name="nov_amount" sum="Nov" widget="monetary"/>
+                <field name="dec_amount" sum="Dec" widget="monetary"/>
+                
+                <!-- Year Total -->
+                <field name="current_year_total" sum="Year Total" widget="monetary" decoration-bf="1"/>
+                
+                <!-- Carry Forward -->
+                <field name="cf_year_1" sum="C/F +1" widget="monetary"/>
+                <field name="cf_year_2" sum="C/F +2" widget="monetary"/>
+                <field name="cf_year_3" sum="C/F +3" widget="monetary" optional="hide"/>
+                <field name="cf_year_4" sum="C/F +4" widget="monetary" optional="hide"/>
+                <field name="cf_year_5" sum="C/F +5" widget="monetary" optional="hide"/>
+                
+                <field name="company_id" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+                
+                <!-- Action buttons -->
+                <button name="action_open_order" type="object" 
+                        icon="fa-file-text-o" title="Open Order"/>
+                <button name="action_open_recognition_schedule" type="object" 
+                        icon="fa-calendar" title="Recognition Schedule"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- Pivot View -->
+    <record id="sales_recognition_report_pivot" model="ir.ui.view">
+        <field name="name">sales.recognition.report.pivot</field>
+        <field name="model">sales.recognition.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Sales Recognition" sample="1">
+                <!-- Row groupings -->
+                <field name="salesperson_id" type="row"/>
+                <field name="country_id" type="row"/>
+                <!-- Measures -->
+                <field name="order_total" type="measure"/>
+                <field name="total_scheduled" type="measure"/>
+                <field name="current_year_total" type="measure"/>
+                <field name="jan_amount" type="measure"/>
+                <field name="feb_amount" type="measure"/>
+                <field name="mar_amount" type="measure"/>
+                <field name="apr_amount" type="measure"/>
+                <field name="may_amount" type="measure"/>
+                <field name="jun_amount" type="measure"/>
+                <field name="jul_amount" type="measure"/>
+                <field name="aug_amount" type="measure"/>
+                <field name="sep_amount" type="measure"/>
+                <field name="oct_amount" type="measure"/>
+                <field name="nov_amount" type="measure"/>
+                <field name="dec_amount" type="measure"/>
+                <field name="cf_year_1" type="measure"/>
+                <field name="cf_year_2" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    
+    <!-- Graph View -->
+    <record id="sales_recognition_report_graph" model="ir.ui.view">
+        <field name="name">sales.recognition.report.graph</field>
+        <field name="model">sales.recognition.report</field>
+        <field name="arch" type="xml">
+            <graph string="Sales Recognition" type="bar" stacked="1" sample="1">
+                <field name="salesperson_id"/>
+                <field name="current_year_total" type="measure"/>
+                <field name="cf_year_1" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    
+    <!-- Search View -->
+    <record id="sales_recognition_report_search" model="ir.ui.view">
+        <field name="name">sales.recognition.report.search</field>
+        <field name="model">sales.recognition.report</field>
+        <field name="arch" type="xml">
+            <search string="Sales Recognition">
+                <field name="order_name"/>
+                <field name="partner_id"/>
+                <field name="end_user_id"/>
+                <field name="salesperson_id"/>
+                <field name="country_id"/>
+                <field name="sector_id"/>
+                <separator/>
+                <!-- Payment Status filters -->
+                <filter name="filter_not_invoiced" string="Not Invoiced" 
+                        domain="[('payment_status', '=', 'not_invoiced')]"/>
+                <filter name="filter_unpaid" string="Unpaid" 
+                        domain="[('payment_status', '=', 'unpaid')]"/>
+                <filter name="filter_partial" string="Partial Payment" 
+                        domain="[('payment_status', '=', 'partial')]"/>
+                <filter name="filter_paid" string="Fully Paid" 
+                        domain="[('payment_status', '=', 'paid')]"/>
+                <separator/>
+                <!-- Recognition Status filters -->
+                <filter name="filter_recognition_pending" string="Recognition Pending" 
+                        domain="[('recognition_status', '=', 'pending')]"/>
+                <filter name="filter_recognition_partial" string="Recognition Partial" 
+                        domain="[('recognition_status', '=', 'partial')]"/>
+                <filter name="filter_recognition_complete" string="Recognition Complete" 
+                        domain="[('recognition_status', '=', 'complete')]"/>
+                <separator/>
+                <!-- Coverage filters -->
+                <filter name="filter_low_coverage" string="Low Coverage (&lt;50%)" 
+                        domain="[('recognition_coverage_pct', '&lt;', 50)]"/>
+                <filter name="filter_needs_schedule" string="Needs Scheduling" 
+                        domain="[('total_scheduled', '=', 0)]"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter name="group_salesperson" string="Salesperson" context="{'group_by': 'salesperson_id'}"/>
+                    <filter name="group_team" string="Sales Team" context="{'group_by': 'team_id'}"/>
+                    <filter name="group_country" string="Country" context="{'group_by': 'country_id'}"/>
+                    <filter name="group_customer" string="Customer" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_sector" string="Sector" context="{'group_by': 'sector_id'}"/>
+                    <filter name="group_payment" string="Payment Status" context="{'group_by': 'payment_status'}"/>
+                    <filter name="group_recognition" string="Recognition Status" context="{'group_by': 'recognition_status'}"/>
+                    <filter name="group_company" string="Company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    <!-- Action -->
+    <record id="action_sales_recognition_report" model="ir.actions.act_window">
+        <field name="name">Sales Recognition</field>
+        <field name="res_model">sales.recognition.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="search_view_id" ref="sales_recognition_report_search"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Sales Recognition Report
+            </p>
+            <p>
+                Track revenue recognition across your sales orders.
+                <br/><br/>
+                <b>Columns:</b><br/>
+                • Order details and payment status<br/>
+                • Monthly recognition breakdown (Jan-Dec)<br/>
+                • Carry forward for future years<br/>
+                • Coverage percentage and recognition status<br/>
+                <br/>
+                <b>Tip:</b> Use filters to identify orders needing recognition schedules.
+            </p>
+        </field>
+    </record>
+    
+</odoo>

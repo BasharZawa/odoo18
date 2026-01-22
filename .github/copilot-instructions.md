@@ -42,7 +42,7 @@ class CrmLead(models.Model):
 **Create new model**:
 ```python
 class ProductLine(models.Model):
-    _name = 'product.line'
+    _name = 'product.line.ept'
     _description = 'Product Line'
     
     name = fields.Char(required=True)
