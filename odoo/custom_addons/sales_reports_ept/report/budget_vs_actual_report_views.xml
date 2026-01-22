@@ -97,11 +97,7 @@
                 <field name="budget_name"/>
                 <separator/>
                 
-                <!-- Year filters -->
-                <filter name="filter_current_year" string="Current Year" 
-                        domain="[('fiscal_year', '=', str(context_today().year))]"/>
-                <filter name="filter_last_year" string="Last Year" 
-                        domain="[('fiscal_year', '=', str(context_today().year - 1))]"/>
+                <!-- Year filters are dynamically generated in get_view() based on actual data -->
                 <separator/>
                 
                 <!-- Status filters -->
@@ -142,34 +138,15 @@
         </field>
     </record>
 
-    <!-- Action -->
-    <record id="action_budget_vs_actual_report" model="ir.actions.act_window">
+    <!-- Action - calls Python method to set dynamic current year filter -->
+    <record id="action_budget_vs_actual_report_server" model="ir.actions.server">
         <field name="name">Budget vs Actual</field>
-        <field name="res_model">budget.vs.actual.report</field>
-        <field name="view_mode">pivot,list,graph</field>
-        <field name="search_view_id" ref="budget_vs_actual_report_search"/>
-        <field name="context">{
-            'search_default_filter_confirmed': 1,
-            'search_default_filter_current_year': 1
-        }</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Budget vs Actual Analysis
-            </p>
-            <p>
-                Compare budget targets with actual results.
-                <br/><br/>
-                <b>Grouping Options (Left Side):</b><br/>
-                • By Region - Group countries into regional performance<br/>
-                • By Salesperson - Individual sales performance<br/>
-                • By Country / Product Line - Detailed breakdown<br/>
-                <br/>
-                <b>Measures (Header):</b><br/>
-                • Yearly: Budget, Actual, Variance<br/>
-                • YTD: YTD Budget, YTD Actual, YTD Variance<br/>
-                • Achievement %<br/>
-            </p>
-        </field>
+        <field name="model_id" ref="model_budget_vs_actual_report"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_report()</field>
     </record>
+    
+    <!-- Delete old act_window action if exists -->
+    <delete model="ir.actions.act_window" search="[('res_model', '=', 'budget.vs.actual.report'), ('id', '!=', False)]" />
     
 </odoo>

@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import datetime
+from lxml import etree
+
 from odoo import models, fields, tools, api, _
 
 
@@ -316,4 +319,77 @@ class BudgetVsActualReport(models.Model):
             'res_model': 'budget.analytic',
             'view_mode': 'form',
             'res_id': self.budget_analytic_id.id,
+        }
+
+    @api.model
+    def get_available_years(self):
+        """Get list of years that have budget data"""
+        self.env.cr.execute("""
+            SELECT DISTINCT EXTRACT(YEAR FROM bl.date_from)::int AS year
+            FROM budget_line bl
+            JOIN budget_analytic ba ON ba.id = bl.budget_analytic_id
+            WHERE ba.state IN ('confirmed', 'done')
+            ORDER BY year DESC
+        """)
+        years = [row[0] for row in self.env.cr.fetchall()]
+        if not years:
+            years = [datetime.date.today().year]
+        return years
+
+    def get_view(self, view_id=None, view_type='form', **options):
+        """Override to dynamically inject year filters in search view."""
+        res = super().get_view(view_id=view_id, view_type=view_type, **options)
+        
+        if view_type != 'search':
+            return res
+        
+        arch = etree.fromstring(res['arch'])
+        available_years = self.get_available_years()
+        current_year = datetime.date.today().year
+        
+        # Ensure current year is included
+        if current_year not in available_years:
+            available_years.append(current_year)
+        available_years = sorted(available_years, reverse=True)
+        
+        # Find and remove existing static year filters
+        for filter_elem in arch.xpath("//filter[starts-with(@name, 'filter_year_')]"):
+            filter_elem.getparent().remove(filter_elem)
+        
+        # Find the fiscal_year field to insert after
+        fiscal_year_field = arch.find(".//field[@name='fiscal_year']")
+        if fiscal_year_field is not None:
+            parent = fiscal_year_field.getparent()
+            
+            # Find the separator after fiscal_year
+            separators = arch.xpath("//field[@name='fiscal_year']/following-sibling::separator")
+            if separators:
+                insert_index = list(parent).index(separators[0]) + 1
+            else:
+                insert_index = list(parent).index(fiscal_year_field) + 1
+            
+            # Insert dynamic year filters
+            for i, year in enumerate(available_years):
+                filter_elem = etree.Element('filter')
+                filter_elem.set('name', f'filter_year_{year}')
+                filter_elem.set('string', str(year))
+                filter_elem.set('domain', f"[('fiscal_year', '=', '{year}')]")
+                parent.insert(insert_index + i, filter_elem)
+        
+        res['arch'] = etree.tostring(arch, encoding='unicode')
+        return res
+
+    @api.model
+    def action_open_report(self):
+        """Open the Budget vs Actual Report with current year filter active."""
+        current_year = datetime.date.today().year
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Budget vs Actual'),
+            'res_model': 'budget.vs.actual.report',
+            'view_mode': 'pivot,list,graph',
+            'context': {
+                f'search_default_filter_year_{current_year}': 1,
+                'search_default_filter_confirmed': 1,
+            },
         }

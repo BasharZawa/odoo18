@@ -129,20 +129,94 @@ class SalesRecognitionReport(models.Model):
     report_year = fields.Integer(string='Report Year', readonly=True)
 
     def _get_report_year(self):
-        """Get the year to use for the report from context or default to current year"""
-        return self.env.context.get('report_year', datetime.date.today().year)
+        """Get the year to use for the report from context or default to current year.
+        
+        Checks for:
+        1. Explicit 'report_year' in context
+        2. Active year filter (search_default_filter_year_XXXX)
+        3. Falls back to current year
+        """
+        ctx = self.env.context
+        
+        # Check explicit report_year
+        if ctx.get('report_year'):
+            return ctx['report_year']
+        
+        # Check for active year filter in context
+        for key in ctx:
+            if key.startswith('search_default_filter_year_'):
+                try:
+                    year = int(key.replace('search_default_filter_year_', ''))
+                    return year
+                except ValueError:
+                    pass
+        
+        # Default to current year
+        return datetime.date.today().year
+
+    @api.model
+    def get_available_years(self):
+        """Get list of years that have recognition data"""
+        self.env.cr.execute("""
+            SELECT DISTINCT EXTRACT(YEAR FROM recognition_date)::int AS year
+            FROM sale_order_recognition_schedule
+            WHERE recognition_date IS NOT NULL
+            ORDER BY year DESC
+        """)
+        years = [row[0] for row in self.env.cr.fetchall()]
+        if not years:
+            years = [datetime.date.today().year]
+        return years
 
     def get_view(self, view_id=None, view_type='form', **options):
-        """Override to dynamically set column labels with actual years."""
+        """Override to dynamically set column labels with actual years and inject year filters."""
         res = super().get_view(view_id=view_id, view_type=view_type, **options)
+        
+        # Handle search view - inject dynamic year filters
+        if view_type == 'search':
+            arch = etree.fromstring(res['arch'])
+            available_years = self.get_available_years()
+            current_year = datetime.date.today().year
+            
+            # Ensure current year is included
+            if current_year not in available_years:
+                available_years.append(current_year)
+            available_years = sorted(available_years, reverse=True)
+            
+            # Find the placeholder separator after report_year field
+            separator = arch.find(".//field[@name='report_year']")
+            if separator is not None:
+                parent = separator.getparent()
+                insert_index = list(parent).index(separator) + 1
+                
+                # Find and remove existing static year filters
+                for filter_elem in arch.xpath("//filter[starts-with(@name, 'filter_year_')]"):
+                    filter_elem.getparent().remove(filter_elem)
+                
+                # Add separator after report_year field if not exists
+                sep_after_field = arch.xpath("//field[@name='report_year']/following-sibling::separator[1]")
+                if sep_after_field:
+                    insert_index = list(parent).index(sep_after_field[0]) + 1
+                
+                # Insert dynamic year filters
+                for i, year in enumerate(available_years):
+                    filter_elem = etree.Element('filter')
+                    filter_elem.set('name', f'filter_year_{year}')
+                    filter_elem.set('string', str(year))
+                    filter_elem.set('domain', f"[('report_year', '=', {year})]")
+                    parent.insert(insert_index + i, filter_elem)
+            
+            res['arch'] = etree.tostring(arch, encoding='unicode')
+            return res
         
         if view_type not in ('tree', 'list', 'pivot'):
             return res
         
+        # Get the report year from context for dynamic labels
         report_year = self._get_report_year()
         arch = etree.fromstring(res['arch'])
         
-        # Map month fields to labels with year
+        # Map month fields to labels with actual year
         month_labels = {
             'jan_amount': f'Jan {report_year}',
             'feb_amount': f'Feb {report_year}',
@@ -159,7 +233,7 @@ class SalesRecognitionReport(models.Model):
             'current_year_total': f'Total {report_year}',
         }
         
-        # Map C/F fields to actual years
+        # Map C/F fields to actual future years
         cf_labels = {
             'cf_year_1': f'C/F {report_year + 1}',
             'cf_year_2': f'C/F {report_year + 2}',
@@ -179,15 +253,22 @@ class SalesRecognitionReport(models.Model):
         return res
 
     def init(self):
-        """Create the SQL view for Sales Recognition Report."""
+        """Create the SQL view for Sales Recognition Report.
+        
+        Generates one row per order per year, allowing filtering by year.
+        """
         tools.drop_view_if_exists(self.env.cr, self._table)
 
         self.env.cr.execute("""
             CREATE OR REPLACE VIEW %s AS (
                 WITH
-                    -- Get the report year (current year as default)
-                    report_params AS (
-                        SELECT EXTRACT(YEAR FROM CURRENT_DATE)::int AS report_year
+                    -- Get all distinct years from recognition schedules
+                    available_years AS (
+                        SELECT DISTINCT EXTRACT(YEAR FROM recognition_date)::int AS report_year
+                        FROM sale_order_recognition_schedule
+                        WHERE recognition_date IS NOT NULL
+                        UNION
+                        SELECT EXTRACT(YEAR FROM CURRENT_DATE)::int
                     ),
                     
                     -- Aggregate product lines per order (using correct table name)
@@ -234,90 +315,91 @@ class SalesRecognitionReport(models.Model):
                         GROUP BY so.id
                     ),
                     
-                    -- Recognition schedule aggregation
+                    -- Recognition schedule aggregation per order per year
                     recognition_agg AS (
                         SELECT
                             sors.sale_order_id AS order_id,
-                            rp.report_year,
+                            ay.report_year,
                             
-                            -- Total scheduled
+                            -- Total scheduled (all time)
                             SUM(sors.amount) AS total_scheduled,
                             
                             -- Past recognition (before report year)
                             SUM(CASE 
-                                WHEN EXTRACT(YEAR FROM sors.recognition_date)::int < rp.report_year 
+                                WHEN EXTRACT(YEAR FROM sors.recognition_date)::int < ay.report_year 
                                 THEN sors.amount ELSE 0 
                             END) AS past_recognized,
                             
                             -- Monthly amounts for report year
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 1 
                                 THEN sors.amount ELSE 0 END) AS jan_amount,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 2 
                                 THEN sors.amount ELSE 0 END) AS feb_amount,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 3 
                                 THEN sors.amount ELSE 0 END) AS mar_amount,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 4 
                                 THEN sors.amount ELSE 0 END) AS apr_amount,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 5 
                                 THEN sors.amount ELSE 0 END) AS may_amount,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 6 
                                 THEN sors.amount ELSE 0 END) AS jun_amount,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 7 
                                 THEN sors.amount ELSE 0 END) AS jul_amount,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 8 
                                 THEN sors.amount ELSE 0 END) AS aug_amount,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 9 
                                 THEN sors.amount ELSE 0 END) AS sep_amount,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 10 
                                 THEN sors.amount ELSE 0 END) AS oct_amount,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 11 
                                 THEN sors.amount ELSE 0 END) AS nov_amount,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                       AND EXTRACT(MONTH FROM sors.recognition_date) = 12 
                                 THEN sors.amount ELSE 0 END) AS dec_amount,
                             
                             -- Current year total
                             SUM(CASE 
-                                WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year 
+                                WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year 
                                 THEN sors.amount ELSE 0 
                             END) AS current_year_total,
                             
-                            -- Carry forward for future years
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year + 1 
+                            -- Carry forward for future years (relative to report_year)
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year + 1 
                                 THEN sors.amount ELSE 0 END) AS cf_year_1,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year + 2 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year + 2 
                                 THEN sors.amount ELSE 0 END) AS cf_year_2,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year + 3 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year + 3 
                                 THEN sors.amount ELSE 0 END) AS cf_year_3,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year + 4 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year + 4 
                                 THEN sors.amount ELSE 0 END) AS cf_year_4,
-                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = rp.report_year + 5 
+                            SUM(CASE WHEN EXTRACT(YEAR FROM sors.recognition_date)::int = ay.report_year + 5 
                                 THEN sors.amount ELSE 0 END) AS cf_year_5,
                             
                             -- Has recognition in or after report year
                             MAX(CASE 
-                                WHEN EXTRACT(YEAR FROM sors.recognition_date)::int >= rp.report_year 
+                                WHEN EXTRACT(YEAR FROM sors.recognition_date)::int >= ay.report_year 
                                 THEN 1 ELSE 0 
                             END) AS has_future_recognition
                             
                         FROM sale_order_recognition_schedule sors
-                        CROSS JOIN report_params rp
-                        GROUP BY sors.sale_order_id, rp.report_year
+                        CROSS JOIN available_years ay
+                        GROUP BY sors.sale_order_id, ay.report_year
                     )
                     
                 SELECT
-                    so.id AS id,
+                    -- Unique ID: combine order_id and report_year
+                    (so.id * 10000 + ra.report_year) AS id,
                     so.id AS sale_order_id,
                     so.name AS order_name,
                     so.partner_id,
@@ -384,7 +466,7 @@ class SalesRecognitionReport(models.Model):
                     COALESCE(ra.cf_year_5, 0) AS cf_year_5,
                     
                     -- Report year
-                    COALESCE(ra.report_year, EXTRACT(YEAR FROM CURRENT_DATE)::int) AS report_year,
+                    ra.report_year,
                     
                     -- Currency/Company
                     so.currency_id,
@@ -394,14 +476,18 @@ class SalesRecognitionReport(models.Model):
                 JOIN res_partner rp ON rp.id = so.partner_id
                 LEFT JOIN order_product_lines opl ON opl.order_id = so.id
                 LEFT JOIN order_payment_status ops ON ops.order_id = so.id
-                LEFT JOIN recognition_agg ra ON ra.order_id = so.id
+                JOIN recognition_agg ra ON ra.order_id = so.id
                 
                 WHERE so.state IN ('sale', 'done')
-                  -- Include orders that have recognition schedules OR are recent
+                  -- Only include rows with recognition data for the year or carry forward
                   AND (
-                      ra.has_future_recognition = 1 
-                      OR ra.total_scheduled > 0
-                      OR so.date_order >= (CURRENT_DATE - INTERVAL '1 year')
+                      ra.current_year_total > 0
+                      OR ra.cf_year_1 > 0
+                      OR ra.cf_year_2 > 0
+                      OR ra.cf_year_3 > 0
+                      OR ra.cf_year_4 > 0
+                      OR ra.cf_year_5 > 0
+                      OR ra.past_recognized > 0
                   )
             )
         """ % self._table)
@@ -427,4 +513,19 @@ class SalesRecognitionReport(models.Model):
             'view_mode': 'list',
             'domain': [('sale_order_id', '=', self.sale_order_id.id)],
             'context': {'default_sale_order_id': self.sale_order_id.id},
+        }
+
+    @api.model
+    def action_open_report(self):
+        """Open the Sales Recognition Report with current year filter active."""
+        current_year = datetime.date.today().year
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Sales Recognition'),
+            'res_model': 'sales.recognition.report',
+            'view_mode': 'pivot,list,graph',
+            'context': {
+                f'search_default_filter_year_{current_year}': 1,
+                'report_year': current_year,
+            },
         }

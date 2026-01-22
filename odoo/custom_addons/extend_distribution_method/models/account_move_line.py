@@ -1,132 +1,113 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, api
-from odoo.tools import frozendict
 
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-    @api.depends('account_id', 'partner_id', 'partner_id.country_id', 'product_id', 'product_id.product_line_id')
-    def _compute_analytic_distribution(self):
-        """
-        Override to include product_line_id in the distribution computation.
-        This ensures that analytic distribution models configured with a 
-        product line condition are automatically applied.
+    def _get_product_line_analytic_account(self):
+        """Get analytic account matching the product's product line name."""
+        self.ensure_one()
+        if not self.product_id or not self.product_id.product_line_id:
+            return self.env['account.analytic.account']
         
-        Additionally, dynamically maps:
-        - Product lines to analytic accounts under the "Product Line" plan
-        - Customer countries to analytic accounts under the "Country" plan
-        by matching names, even if no distribution model is configured.
-        """
-        cache = {}
-        # Caches for dynamic mappings
-        product_line_analytic_cache = {}
-        country_analytic_cache = {}
-        # Lazy-loaded plans
-        product_line_plan = None
-        country_plan = None
+        product_line = self.product_id.product_line_id
+        plan = self.env['account.analytic.plan'].search([
+            ('name', '=ilike', 'Product Line')
+        ], limit=1)
         
-        for line in self:
-            if line.display_type == 'product' or not line.move_id.is_invoice(include_receipts=True):
-                # Get product_line_id from the product
-                product_line = line.product_id.product_line_id if line.product_id else False
-                product_line_id = product_line.id if product_line else False
-                
-                # Get country from the partner (customer)
-                country = line.partner_id.country_id if line.partner_id else False
-                country_id = country.id if country else False
-                
-                # Arguments for standard distribution model lookup
-                # Note: product_line_id and country are handled dynamically below,
-                # not through distribution models
-                arguments = frozendict({
-                    "product_id": line.product_id.id,
-                    "product_categ_id": line.product_id.categ_id.id,
-                    "partner_id": line.partner_id.id,
-                    "partner_category_id": line.partner_id.category_id.ids,
-                    "account_prefix": line.account_id.code,
-                    "company_id": line.company_id.id,
-                })
-                
-                if arguments not in cache:
-                    distribution = self.env['account.analytic.distribution.model']._get_distribution(arguments)
-                    
-                    # Ensure distribution is a mutable dict for adding dynamic mappings
-                    if distribution is not None:
-                        distribution = dict(distribution) if distribution else {}
-                        
-                        # Get existing accounts to check which plans are already covered
-                        existing_account_ids = [int(k) for k in distribution.keys()] if distribution else []
-                        existing_accounts = self.env['account.analytic.account'].browse(existing_account_ids).exists() if existing_account_ids else self.env['account.analytic.account']
-                        
-                        # === Dynamic Product Line Mapping ===
-                        if product_line:
-                            if product_line_plan is None:
-                                product_line_plan = self.env['account.analytic.plan'].search([
-                                    ('name', '=ilike', 'Product Line')
-                                ], limit=1)
-                            
-                            if product_line_plan:
-                                has_product_line_account = any(
-                                    acc.plan_id.id == product_line_plan.id or 
-                                    acc.root_plan_id.id == product_line_plan.id 
-                                    for acc in existing_accounts
-                                )
-                                
-                                if not has_product_line_account:
-                                    if product_line_id not in product_line_analytic_cache:
-                                        analytic_account = self.env['account.analytic.account'].search([
-                                            '|',
-                                            ('plan_id', '=', product_line_plan.id),
-                                            ('plan_id.parent_id', '=', product_line_plan.id),
-                                            '|',
-                                            ('name', '=ilike', product_line.name),
-                                            ('code', '=ilike', product_line.name),
-                                        ], limit=1)
-                                        product_line_analytic_cache[product_line_id] = analytic_account
-                                    
-                                    analytic_account = product_line_analytic_cache[product_line_id]
-                                    if analytic_account:
-                                        distribution[str(analytic_account.id)] = 100.0
-                        
-                        # === Dynamic Country Mapping ===
-                        if country:
-                            if country_plan is None:
-                                country_plan = self.env['account.analytic.plan'].search([
-                                    ('name', '=ilike', 'Country')
-                                ], limit=1)
-                            
-                            if country_plan:
-                                # Re-check existing accounts (may have been updated by product line)
-                                current_account_ids = [int(k) for k in distribution.keys()] if distribution else []
-                                current_accounts = self.env['account.analytic.account'].browse(current_account_ids).exists() if current_account_ids else self.env['account.analytic.account']
-                                
-                                has_country_account = any(
-                                    acc.plan_id.id == country_plan.id or 
-                                    acc.root_plan_id.id == country_plan.id 
-                                    for acc in current_accounts
-                                )
-                                
-                                if not has_country_account:
-                                    if country_id not in country_analytic_cache:
-                                        # Match by country name or code
-                                        analytic_account = self.env['account.analytic.account'].search([
-                                            '|',
-                                            ('plan_id', '=', country_plan.id),
-                                            ('plan_id.parent_id', '=', country_plan.id),
-                                            '|', '|', '|',
-                                            ('name', '=ilike', country.name),
-                                            ('code', '=ilike', country.code),
-                                            ('name', '=ilike', country.code),
-                                            ('code', '=ilike', country.name),
-                                        ], limit=1)
-                                        country_analytic_cache[country_id] = analytic_account
-                                    
-                                    analytic_account = country_analytic_cache[country_id]
-                                    if analytic_account:
-                                        distribution[str(analytic_account.id)] = 100.0
-                    
-                    cache[arguments] = distribution
-                
-                line.analytic_distribution = cache[arguments] or line.analytic_distribution
+        if not plan:
+            return self.env['account.analytic.account']
+        
+        return self.env['account.analytic.account'].search([
+            '|',
+            ('plan_id', '=', plan.id),
+            ('plan_id.parent_id', '=', plan.id),
+            '|',
+            ('name', '=ilike', product_line.name),
+            ('code', '=ilike', product_line.name),
+        ], limit=1)
+
+    def _get_country_analytic_account(self):
+        """Get analytic account matching the partner's country name."""
+        self.ensure_one()
+        if not self.partner_id or not self.partner_id.country_id:
+            return self.env['account.analytic.account']
+        
+        country = self.partner_id.country_id
+        plan = self.env['account.analytic.plan'].search([
+            ('name', '=ilike', 'Country')
+        ], limit=1)
+        
+        if not plan:
+            return self.env['account.analytic.account']
+        
+        return self.env['account.analytic.account'].search([
+            '|',
+            ('plan_id', '=', plan.id),
+            ('plan_id.parent_id', '=', plan.id),
+            '|', '|', '|',
+            ('name', '=ilike', country.name),
+            ('code', '=ilike', country.code),
+            ('name', '=ilike', country.code),
+            ('code', '=ilike', country.name),
+        ], limit=1)
+
+    def _has_account_from_plan(self, distribution, plan):
+        """Check if distribution already has an account from the given plan."""
+        if not distribution or not plan:
+            return False
+        account_ids = []
+        for key in distribution.keys():
+            # Handle both single IDs ("123") and comma-separated IDs ("1,2,3")
+            for part in str(key).split(','):
+                part = part.strip()
+                if part.isdigit():
+                    account_ids.append(int(part))
+        if not account_ids:
+            return False
+        accounts = self.env['account.analytic.account'].browse(account_ids).exists()
+        return any(
+            acc.plan_id.id == plan.id or 
+            acc.plan_id.parent_id.id == plan.id or
+            acc.root_plan_id.id == plan.id
+            for acc in accounts
+        )
+
+    def _related_analytic_distribution(self):
+        """Override to add product line and country analytic accounts.
+        Only adds accounts if no distribution is already set (respects user edits).
+        """
+        self.ensure_one()
+        distribution = super()._related_analytic_distribution()
+        
+        # If distribution already exists (user edited or from sale order), don't modify
+        if self.analytic_distribution:
+            return distribution
+        
+        # Get plans for checking duplicates
+        product_line_plan = self.env['account.analytic.plan'].search([
+            ('name', '=ilike', 'Product Line')
+        ], limit=1)
+        country_plan = self.env['account.analytic.plan'].search([
+            ('name', '=ilike', 'Country')
+        ], limit=1)
+        
+        # Build a single dict with both accounts (only if not already in distribution)
+        additional = {}
+        
+        # Add product line account if plan not already covered
+        if not self._has_account_from_plan(distribution, product_line_plan):
+            product_line_account = self._get_product_line_analytic_account()
+            if product_line_account:
+                additional[str(product_line_account.id)] = 100.0
+        
+        # Add country account if plan not already covered
+        if not self._has_account_from_plan(distribution, country_plan):
+            country_account = self._get_country_analytic_account()
+            if country_account:
+                additional[str(country_account.id)] = 100.0
+        
+        # Merge: existing distribution first, then add our accounts
+        return distribution | additional

@@ -10,6 +10,7 @@
             <list string="Sales Recognition" create="false" edit="false" delete="false"
                   default_order="order_date desc">
                 <!-- Order Info -->
+                <field name="report_year" string="Year" optional="show"/>
                 <field name="order_name" decoration-bf="1"/>
                 <field name="partner_id"/>
                 <field name="payment_status" widget="badge"
@@ -131,6 +132,9 @@
                 <field name="salesperson_id"/>
                 <field name="country_id"/>
                 <field name="sector_id"/>
+                <field name="report_year"/>
+                <separator/>
+                <!-- Year filters are dynamically generated in get_view() based on actual data -->
                 <separator/>
                 <!-- Payment Status filters -->
                 <filter name="filter_not_invoiced" string="Not Invoiced" 
@@ -157,6 +161,7 @@
                         domain="[('total_scheduled', '=', 0)]"/>
                 <separator/>
                 <group expand="1" string="Group By">
+                    <filter name="group_year" string="Year" context="{'group_by': 'report_year'}"/>
                     <filter name="group_salesperson" string="Salesperson" context="{'group_by': 'salesperson_id'}"/>
                     <filter name="group_team" string="Sales Team" context="{'group_by': 'team_id'}"/>
                     <filter name="group_country" string="Country" context="{'group_by': 'country_id'}"/>
@@ -170,29 +175,15 @@
         </field>
     </record>
     
-    <!-- Action -->
-    <record id="action_sales_recognition_report" model="ir.actions.act_window">
+    <!-- Action - calls Python method to set dynamic current year filter -->
+    <record id="action_sales_recognition_report_server" model="ir.actions.server">
         <field name="name">Sales Recognition</field>
-        <field name="res_model">sales.recognition.report</field>
-        <field name="view_mode">list,pivot,graph</field>
-        <field name="search_view_id" ref="sales_recognition_report_search"/>
-        <field name="context">{}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Sales Recognition Report
-            </p>
-            <p>
-                Track revenue recognition across your sales orders.
-                <br/><br/>
-                <b>Columns:</b><br/>
-                • Order details and payment status<br/>
-                • Monthly recognition breakdown (Jan-Dec)<br/>
-                • Carry forward for future years<br/>
-                • Coverage percentage and recognition status<br/>
-                <br/>
-                <b>Tip:</b> Use filters to identify orders needing recognition schedules.
-            </p>
-        </field>
+        <field name="model_id" ref="model_sales_recognition_report"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_report()</field>
     </record>
+    
+    <!-- Delete old act_window action if exists -->
+    <delete model="ir.actions.act_window" search="[('res_model', '=', 'sales.recognition.report'), ('id', '!=', False)]" />
     
 </odoo>

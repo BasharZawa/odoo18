@@ -14,14 +14,14 @@
     <menuitem id="menu_budget_vs_actual_report"
               name="Budget vs Actual"
               parent="menu_sales_reports_ept"
-              action="action_budget_vs_actual_report"
+              action="action_budget_vs_actual_report_server"
               sequence="10"/>
     
     <!-- Sales Recognition Report -->
     <menuitem id="menu_sales_recognition_report"
               name="Sales Recognition"
               parent="menu_sales_reports_ept"
-              action="action_sales_recognition_report"
+              action="action_sales_recognition_report_server"
               sequence="20"/>
     
     <!-- ==================== CONFIGURATION ==================== -->
