@@ -77,7 +77,7 @@ class AccountEdiProxyClientUser(models.Model):
     @handle_demo
     def _check_company_on_peppol(self, company, edi_identification):
         if (
-            not company.account_peppol_migration_key
+            not company.sudo().account_peppol_migration_key
             and (participant_info := company.partner_id._peppol_lookup_participant(edi_identification)) is not None
             and company.partner_id._check_peppol_participant_exists(participant_info, edi_identification, check_company=True)
         ):
@@ -129,13 +129,13 @@ class AccountEdiProxyClientUser(models.Model):
         :return: `True` if the document was saved, `False` if it was not
         """
         self.ensure_one()
-        journal = self.company_id.peppol_purchase_journal_id
+        journal, move_type = self._peppol_get_import_journal_and_move_type(attachment)
         if not journal:
             return False
 
         move = self.env['account.move'].create({
             'journal_id': journal.id,
-            'move_type': 'in_invoice',
+            'move_type': move_type,
             'peppol_move_state': peppol_state,
             'peppol_message_uuid': uuid,
         })
@@ -153,6 +153,10 @@ class AccountEdiProxyClientUser(models.Model):
         move._autopost_bill()
         attachment.write({'res_model': 'account.move', 'res_id': move.id})
         return True
+
+    def _peppol_get_import_journal_and_move_type(self, attachment):
+        self.ensure_one()
+        return self.company_id.peppol_purchase_journal_id, 'in_invoice'
 
     def _peppol_get_new_documents(self):
         # Context added to not break stable policy: useful to tweak on databases processing large invoices
@@ -268,10 +272,10 @@ class AccountEdiProxyClientUser(models.Model):
                 move.peppol_move_state = content['state']
                 move._message_log(body=_('Peppol status update: %s', content['state']))
 
-                edi_user._call_peppol_proxy(
-                    "/api/peppol/1/ack",
-                    params={'message_uuids': list(message_uuids.keys())},
-                )
+            edi_user._call_peppol_proxy(
+                "/api/peppol/1/ack",
+                params={'message_uuids': list(message_uuids.keys())},
+            )
         if need_retrigger:
             self.env.ref('account_peppol.ir_cron_peppol_get_message_status')._trigger()
 
@@ -297,7 +301,7 @@ class AccountEdiProxyClientUser(models.Model):
         self.ensure_one()
         response = self._call_peppol_proxy(endpoint='/api/peppol/1/migrate_peppol_registration')
         if migration_key := response.get('migration_key'):
-            self.company_id.account_peppol_migration_key = migration_key
+            self.company_id.sudo().account_peppol_migration_key = migration_key
 
     def _get_company_details(self):
         self.ensure_one()
@@ -310,7 +314,7 @@ class AccountEdiProxyClientUser(models.Model):
             'peppol_country_code': self.company_id.country_id.code,
             'peppol_phone_number': self.company_id.account_peppol_phone_number,
             'peppol_contact_email': self.company_id.account_peppol_contact_email,
-            'peppol_migration_key': self.company_id.account_peppol_migration_key,
+            'peppol_migration_key': self.company_id.sudo().account_peppol_migration_key,
         }
 
     def _peppol_register_sender(self):
@@ -353,13 +357,13 @@ class AccountEdiProxyClientUser(models.Model):
         self._call_peppol_proxy(
             endpoint='/api/peppol/1/register_sender_as_receiver',
             params={
-                'migration_key': company.account_peppol_migration_key,
+                'migration_key': company.sudo().account_peppol_migration_key,
                 'supported_identifiers': list(company._peppol_supported_document_types())
             },
         )
         # once we sent the migration key over, we don't need it
         # but we need the field for future in case the user decided to migrate away from Odoo
-        company.account_peppol_migration_key = False
+        company.sudo().account_peppol_migration_key = False
         company.account_peppol_proxy_state = 'smp_registration'
 
         self.env.ref('account_peppol.ir_cron_peppol_get_participant_status')._trigger(at=fields.Datetime.now() + timedelta(hours=1))
@@ -378,9 +382,25 @@ class AccountEdiProxyClientUser(models.Model):
         if self.company_id.account_peppol_proxy_state != 'not_registered':
             self._call_peppol_proxy(endpoint='/api/peppol/1/cancel_peppol_registration')
 
-        self.company_id.account_peppol_proxy_state = 'not_registered'
-        self.company_id.account_peppol_migration_key = False
+        self.company_id._reset_peppol_configuration()
         self.unlink()
+
+    def _peppol_deregister_participant_to_sender(self):
+        self.ensure_one()
+
+        if self.company_id.account_peppol_proxy_state == 'receiver':
+            # fetch all documents and message statuses before unlinking the edi user
+            # so that the invoices are acknowledged
+            self._cron_peppol_get_message_status()
+            self._cron_peppol_get_new_documents()
+            if not modules.module.current_test:
+                self.env.cr.commit()
+
+        if self.company_id.account_peppol_proxy_state != 'sender':
+            self._call_peppol_proxy(endpoint='/api/peppol/1/unregister_to_sender')
+
+        self.company_id.account_peppol_proxy_state = 'sender'
+        self.company_id.sudo().account_peppol_migration_key = False
 
     @api.model
     def _peppol_auto_register_services(self, module):

@@ -373,11 +373,17 @@ class HrAttendance(models.Model):
                         # Count time before, during and after 'working hours'
                         pre_work_time, work_duration, post_work_time, planned_work_duration = attendances._get_pre_post_work_time(emp, working_times, attendance_date)
                         # Overtime within the planned work hours + overtime before/after work hours is > company threshold
-                        overtime_duration = work_duration - planned_work_duration
-                        if pre_work_time > company_threshold:
-                            overtime_duration += pre_work_time
-                        if post_work_time > company_threshold:
-                            overtime_duration += post_work_time
+                        total_overtime_duration = pre_work_time + work_duration + post_work_time - planned_work_duration
+                        if total_overtime_duration > company_threshold and total_overtime_duration > 0:
+                            company_overtime_duration = total_overtime_duration
+                        else:
+                            company_overtime_duration = 0
+
+                        if total_overtime_duration < 0 and abs(total_overtime_duration) > employee_threshold:
+                            employee_overtime_duration = total_overtime_duration
+                        else:
+                            employee_overtime_duration = 0
+                        overtime_duration = employee_overtime_duration + company_overtime_duration
                         # Global overtime including the thresholds
                         overtime_duration_real = sum(attendances.mapped('worked_hours')) - planned_work_duration
 
@@ -480,8 +486,9 @@ class HrAttendance(models.Model):
     def write(self, vals):
         if vals.get('employee_id') and \
             vals['employee_id'] not in self.env.user.employee_ids.ids and \
-            not self.env.user.has_group('hr_attendance.group_hr_attendance_officer'):
-            raise AccessError(_("Do not have access, user cannot edit the attendances that are not his own."))
+            not self.env.user.has_group('hr_attendance.group_hr_attendance_officer') or \
+            vals.get('employee_id') and self.env['hr.employee'].sudo().browse(vals['employee_id']).attendance_manager_id.id != self.env.user.id:
+            raise AccessError(_("Do not have access, user cannot edit the attendances that are not their own or if they are not the attendance manager of the employee."))
         attendances_dates = self._get_attendances_dates()
 
         if vals.get('check_out') and self.out_mode == 'technical':

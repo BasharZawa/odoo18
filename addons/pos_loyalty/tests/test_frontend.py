@@ -1307,6 +1307,37 @@ class TestUi(TestPointOfSaleHttpCommon):
             'pos_config_ids': [Command.link(self.main_pos_config.id)],
         })
 
+        # Adding a third program whose first reward should not be applied during the Tour
+        # Its purpose is to confirm that the 'not ilike' logic is properly converted into 'in'
+        self.env['loyalty.program'].create({
+            'name': 'Discount on Specific Products - Product B',
+            'program_type': 'promotion',
+            'trigger': 'auto',
+            'applies_on': 'current',
+            'rule_ids': [(0, 0, {
+                'minimum_qty': 1,
+                'reward_point_amount': 2,
+            })],
+            'reward_ids': [(0, 0, {
+                'reward_type': 'discount',
+                'required_points': 1,
+                'description': '10$ on your order - Product B - Not Saleable',
+                'discount_mode': 'per_order',
+                'discount': 10,
+                'discount_applicability': 'specific',
+                'discount_product_domain': '["&", ("categ_id", "not ilike", "Saleable"), ("name", "=", "Product B")]',
+            }),
+            (0, 0, {
+                'reward_type': 'discount',
+                'required_points': 1,
+                'description': '10$ on your order - Product B - Saleable',
+                'discount_mode': 'per_order',
+                'discount': 10,
+                'discount_applicability': 'specific',
+                'discount_product_domain': '["&", ("categ_id", "ilike", "Saleable"), ("name", "=", "Product B")]',
+            })],
+            'pos_config_ids': [Command.link(self.main_pos_config.id)],
+        })
         self.main_pos_config.open_ui()
         self.start_pos_tour("PosLoyaltySpecificDiscountWithRewardProductDomainTour")
 
@@ -2263,8 +2294,8 @@ class TestUi(TestPointOfSaleHttpCommon):
             'reward_product_tag_id': free_product_tag.id,
         })
 
-        self.product_b.active = False
-        product_c.active = False
+        self.product_b.product_tmpl_id.active = False
+        product_c.product_tmpl_id.active = False
 
         self.start_tour(
             "/pos/web?config_id=%d" % self.main_pos_config.id,
@@ -2272,7 +2303,7 @@ class TestUi(TestPointOfSaleHttpCommon):
             login="pos_user",
         )
 
-        product_c.active = True
+        product_c.product_tmpl_id.active = True
         self.start_tour(
             "/pos/web?config_id=%d" % self.main_pos_config.id,
             "PosLoyaltyArchivedRewardProductsActive",
@@ -2522,19 +2553,23 @@ class TestUi(TestPointOfSaleHttpCommon):
         )
 
         alt_pos_config = self.main_pos_config.copy()
-        pricelist_1 = self.env['product.pricelist'].create(
+        pricelist_1, pricelist_2 = self.env['product.pricelist'].create([
             {
                 "name": "test pricelist 1",
                 "currency_id": self.env.ref("base.USD").id,
-            }
-        )
+            },
+            {
+                "name": "test pricelist 2",
+                "currency_id": self.env.ref("base.USD").id,
+            },
+        ])
         alt_pos_config.write({
             'use_pricelist': True,
             'available_pricelist_ids': [(4, pricelist_1.id)],
             'pricelist_id': pricelist_1.id,
         })
 
-        self.env["loyalty.program"].create(
+        self.env["loyalty.program"].create([
             {
                 "name": "Test Loyalty Program",
                 "program_type": "promotion",
@@ -2554,9 +2589,22 @@ class TestUi(TestPointOfSaleHttpCommon):
                     }),
                 ],
                 'pos_config_ids': [Command.link(alt_pos_config.id)],
-
-            }
-        )
+            },
+            # Program with a pricelist not available in the POS should not be loaded
+            {
+                "name": "Program with a pricelist not available in the POS",
+                "program_type": "promotion",
+                "trigger": "auto",
+                "rule_ids": [(0, 0, {})],
+                "reward_ids": [(0, 0, {
+                    "reward_type": "discount",
+                    "discount": 90,
+                    "discount_mode": "percent",
+                    "discount_applicability": "cheapest",
+                })],
+                "pricelist_ids": [(4, pricelist_2.id)],
+            },
+        ])
 
         alt_pos_config.with_user(self.pos_admin).open_ui()
         self.start_tour(
@@ -3149,3 +3197,30 @@ class TestUi(TestPointOfSaleHttpCommon):
         with patch.object(pos_order, "confirm_coupon_programs", confirm_coupon_programs_patch):
             self.start_pos_tour("test_confirm_coupon_programs_one_by_one", login="pos_user")
             self.assertEqual(sync_counter['count'], 6)
+
+    def test_race_conditions_update_program(self):
+        """This test ensures that the loyalty program update are correctly applied, even if a lot of programs applies on one order."""
+        product_test = self.env['product.product'].create({
+            'name': 'Test Product',
+            'list_price': 100,
+            'available_in_pos': True,
+            'taxes_id': False,
+        })
+        self.env['loyalty.program'].search([]).write({'active': False})
+        for _ in range(10):
+            self.env['loyalty.program'].create({
+                'name': 'Combo Product Promotion',
+                'program_type': 'promotion',
+                'trigger': 'auto',
+                'rule_ids': [(0, 0, {
+                    'minimum_qty': 1,
+                })],
+                'reward_ids': [(0, 0, {
+                    'reward_type': 'discount',
+                    'discount': 10,
+                    'discount_mode': 'percent',
+                    'discount_applicability': 'specific',
+                    'discount_product_ids': product_test.ids,
+                })]
+            })
+        self.start_tour(f"/pos/ui?config_id={self.main_pos_config.id}", 'test_race_conditions_update_program', login="pos_user")

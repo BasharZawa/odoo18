@@ -163,7 +163,7 @@ TRANSLATED_ELEMENTS = {
 TRANSLATED_ATTRS = dict.fromkeys({
     'string', 'add-label', 'help', 'sum', 'avg', 'confirm', 'placeholder', 'alt', 'title', 'aria-label',
     'aria-keyshortcuts', 'aria-placeholder', 'aria-roledescription', 'aria-valuetext',
-    'value_label', 'data-tooltip', 'label', 'cancel-label', 'confirm-label',
+    'value_label', 'data-tooltip', 'label', 'cancel-label', 'confirm-label', 'confirm-title',
 }, lambda e: True)
 
 def translate_attrib_value(node):
@@ -1596,15 +1596,20 @@ class TranslationImporter:
                                 translations.update({k: v for k, v in translation_dictionary[term_en].items() if v != term_en})
                                 translation_dictionary[term_en] = translations
 
+                        changed_values = {}
                         for lang in langs:
                             # translate and confirm model_terms translations
-                            values[lang] = field.translate(lambda term: translation_dictionary.get(term, {}).get(lang), _value_en)
-                            values.pop(f'_{lang}', None)
-                        params.extend((id_, Json(values)))
+                            new_val = field.translate(lambda term: translation_dictionary.get(term, {}).get(lang), _value_en)
+                            if values.get(lang, None) != new_val:
+                                changed_values[lang] = new_val
+                            if f'_{lang}' in values:
+                                changed_values[f'_{lang}'] = None
+                        if changed_values:
+                            params.extend((id_, Json(changed_values)))
                     if params:
                         env.cr.execute(f"""
                             UPDATE "{model_table}" AS m
-                            SET "{field_name}" =  t.value
+                            SET "{field_name}" = jsonb_strip_nulls("{field_name}" || t.value)
                             FROM (
                                 VALUES {', '.join(['(%s, %s::jsonb)'] * (len(params) // 2))}
                             ) AS t(id, value)

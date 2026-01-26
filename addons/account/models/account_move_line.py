@@ -533,10 +533,7 @@ class AccountMoveLine(models.Model):
                     index = term_lines._ids.index(line.id) if line in term_lines else len(term_lines)
 
                     name = _('%(name)s installment #%(number)s', name=name if name else '', number=index + 1).lstrip()
-                if n_terms > 1 or not line.name or line._origin.name == line._origin.move_id.payment_reference or (
-                    line._origin.move_id.payment_reference and line._origin.move_id.ref
-                    and line._origin.name == f'{line._origin.move_id.ref} - {line._origin.move_id.payment_reference}'
-                ):
+                if name:
                     line.name = name
             if not line.product_id or line.display_type in ('line_section', 'line_note'):
                 continue
@@ -1525,7 +1522,7 @@ class AccountMoveLine(models.Model):
             ):
                 line.amount_currency = line.balance
             if (
-                (changed('amount_currency') or changed('currency_rate') or changed('move_type'))
+                (changed('amount_currency') or (changed('currency_rate') and line.display_type != "cogs") or changed('move_type'))
                 and not self.env.is_protected(self._fields['balance'], line)
                 and (not changed('balance') or (line not in before and not line.balance))
             ):
@@ -1570,7 +1567,6 @@ class AccountMoveLine(models.Model):
                         )
 
         lines.move_id._synchronize_business_models(['line_ids'])
-        lines._check_constrains_account_id_journal_id()
         # Remove analytic lines created for draft AMLs, after analytic_distribution has been updated
         lines.filtered(lambda l: l.parent_state == 'draft').analytic_line_ids.with_context(skip_analytic_sync=True).unlink()
         return lines
@@ -3305,7 +3301,7 @@ class AccountMoveLine(models.Model):
 
         payment_date = payment_date or fields.Date.context_today(self)
 
-        term_lines = self.sorted(key=lambda line: (line.date_maturity, line.date))
+        term_lines = self.sorted(key=lambda line: (line.date_maturity or date.max, line.date))
         sign = move.direction_sign
         installments = []
         first_installment_mode = False
@@ -3508,7 +3504,7 @@ class AccountMoveLine(models.Model):
         return res
 
     def _get_journal_items_full_name(self, name, display_name):
-        return name if not display_name or display_name in name else f"{display_name} {name}"
+        return name if not display_name or display_name in name else f"{display_name}\n{name}"
 
     def _check_edi_line_tax_required(self):
         return self.product_id.type != 'combo'

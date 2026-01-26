@@ -558,7 +558,7 @@ Please change the quantity done or the rounding precision of your unit of measur
                     continue
                 if move_update.date_deadline and delta:
                     move_update.date_deadline -= delta
-                else:
+                elif not move_update.date_deadline or move_update.date_deadline != new_deadline:
                     move_update.date_deadline = new_deadline
 
     @api.depends('move_line_ids.lot_id', 'move_line_ids.quantity')
@@ -1154,7 +1154,7 @@ Please change the quantity done or the rounding precision of your unit of measur
         float_precision = {f_name: (self.env['stock.move']._fields[f_name].get_digits(self.env) or (False, 2))[1] for f_name in float_fields}
         if 'price_unit' in float_fields:
             price_unit_prec = self.env['decimal.precision'].precision_get('Product Price')
-            currency_precision = self.company_id.currency_id.decimal_places
+            currency_precision = min(self.company_id.mapped('currency_id.decimal_places')) if self.company_id else False
             float_precision['price_unit'] = min(currency_precision, price_unit_prec) if currency_precision else price_unit_prec
 
         def _get_formatted_float_fields(move, f_name, precision):
@@ -2009,7 +2009,13 @@ Please change the quantity done or the rounding precision of your unit of measur
             if move.propagate_cancel:
                 # only cancel the next move if all my siblings are also cancelled
                 if all(state == 'cancel' for state in siblings_states):
-                    move.move_dest_ids.filtered(lambda m: m.state != 'done' and move.location_dest_id == m.location_id)._action_cancel()
+                    move_dest_to_cancel = move.move_dest_ids.filtered(lambda m: m.state != 'done' and move.location_dest_id == m.location_id)
+                    move_dest_to_cancel._action_cancel()
+                    # Unlink from dest if dest is not in the chain
+                    (move.move_dest_ids - move_dest_to_cancel).write({
+                        'procure_method': 'make_to_stock',
+                        'move_orig_ids': [Command.unlink(move.id)]
+                    })
                     if cancel_moves_origin:
                         move.move_orig_ids.sudo().filtered(lambda m: m.state != 'done')._action_cancel()
             else:

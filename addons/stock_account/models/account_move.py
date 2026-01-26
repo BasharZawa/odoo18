@@ -137,7 +137,7 @@ class AccountMove(models.Model):
 
                 # Add interim account line.
                 lines_vals_list.append({
-                    'name': line.name[:64],
+                    'name': line.name[:64] if line.name else '',
                     'move_id': move.id,
                     'partner_id': move.commercial_partner_id.id,
                     'product_id': line.product_id.id,
@@ -153,7 +153,7 @@ class AccountMove(models.Model):
 
                 # Add expense account line.
                 lines_vals_list.append({
-                    'name': line.name[:64],
+                    'name': line.name[:64] if line.name else '',
                     'move_id': move.id,
                     'partner_id': move.commercial_partner_id.id,
                     'product_id': line.product_id.id,
@@ -321,6 +321,7 @@ class AccountMoveLine(models.Model):
     def _get_exchange_journal(self, company):
         if (
             self and self.move_id.sudo().stock_valuation_layer_ids and
+            self.product_id.categ_id.property_cost_method != 'standard' and
             self.product_id.categ_id.property_valuation == 'real_time'
         ):
             return self.product_id.categ_id.property_stock_journal
@@ -329,6 +330,7 @@ class AccountMoveLine(models.Model):
     def _get_exchange_account(self, company, amount):
         if (
             self and self.move_id.sudo().stock_valuation_layer_ids and
+            self.product_id.categ_id.property_cost_method != 'standard' and
             self.product_id.categ_id.property_valuation == 'real_time'
         ):
             return self.product_id.categ_id.property_stock_valuation_account_id

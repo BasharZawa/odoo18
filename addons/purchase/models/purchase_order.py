@@ -613,7 +613,7 @@ class PurchaseOrder(models.Model):
             'name': _("Bill Matching"),
             'res_model': 'purchase.bill.line.match',
             'domain': [
-                ('partner_id', '=', self.partner_id.id),
+                ('partner_id', 'in', (self.partner_id | self.partner_id.commercial_partner_id).ids),
                 ('company_id', 'in', self.env.company.ids),
                 ('purchase_order_id', 'in', [self.id, False]),
             ],
@@ -1230,11 +1230,12 @@ class PurchaseOrder(models.Model):
                 date=pol.order_id.date_order and pol.order_id.date_order.date() or fields.Date.context_today(pol),
                 uom_id=pol.product_uom)
             if seller:
-                price = seller.price_discounted
+                price = seller.price
                 if seller.currency_id != self.currency_id:
-                    price = seller.currency_id._convert(seller.price_discounted, self.currency_id)
+                    price = seller.currency_id._convert(seller.price, self.currency_id)
                 # Fix the PO line's price on the seller's one.
                 pol.price_unit = price
+                pol.discount = seller.discount
         return pol.price_unit_discounted
 
     def _create_update_date_activity(self, updated_dates):

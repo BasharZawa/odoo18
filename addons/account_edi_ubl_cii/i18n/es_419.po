@@ -6,16 +6,16 @@
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2025
 # Wil Odoo, 2025
 # Fernanda Alvarez, 2025
-# "Fernanda Alvarez (mfar)" <mfar@odoo.com>, 2025.
+# "Fernanda Alvarez (mfar)" <mfar@odoo.com>, 2025, 2026.
 # "Patricia Gutiérrez (pagc)" <pagc@odoo.com>, 2025.
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-05 18:36+0000\n"
-"PO-Revision-Date: 2025-12-06 17:07+0000\n"
-"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"POT-Creation-Date: 2026-01-01 18:36+0000\n"
+"PO-Revision-Date: 2026-01-17 09:02+0000\n"
+"Last-Translator: \"Fernanda Alvarez (mfar)\" <mfar@odoo.com>\n"
 "Language-Team: Spanish (Latin America) <https://translate.odoo.com/projects/"
 "odoo-18/account_edi_ubl_cii/es_419/>\n"
 "Language: es_419\n"
@@ -138,6 +138,11 @@ msgid "BIS3 DE (XRechnung)"
 msgstr "BIS3 DE (XRechnung)"
 
 #. module: account_edi_ubl_cii
+#: model:ir.model,name:account_edi_ubl_cii.model_account_edi_ubl
+msgid "Base helpers for UBL"
+msgstr "Ayuda base para UBL"
+
+#. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0208
 msgid "Belgian Company Registry"
 msgstr "Bélgica - Número de registro de la empresa"
@@ -200,6 +205,7 @@ msgstr ""
 
 #. module: account_edi_ubl_cii
 #. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_20.py:0
 msgid "Conditional cash/payment discount"
 msgstr "Descuento condicional por efectivo/pago"
@@ -297,6 +303,12 @@ msgstr "Dinamarca - SE"
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0130
 msgid "Directorates of the European Commission"
 msgstr "Direcciones de la Comisión Europea"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
+msgid "Discount"
+msgstr "Descuento"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model,name:account_edi_ubl_cii.model_account_edi_xml_ubl_efff
@@ -820,6 +832,16 @@ msgstr "El impuesto \"%(tax_name)s\" no es válido: %(error_message)s"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+msgid ""
+"Tax with matching exigibility could not be retrieved: '%(exigibility)s' for "
+"line '%(line)s'."
+msgstr ""
+"No fue posible obtener el impuesto con exigibilidad coincidente: "
+"\"%(exigibility)s\" para la línea \"%(line)s\"."
+
+#. module: account_edi_ubl_cii
+#. odoo-python
 #: code:addons/account_edi_ubl_cii/models/res_partner.py:0
 msgid ""
 "The Peppol endpoint is not valid. It should contain exactly 10 digits "
@@ -965,7 +987,7 @@ msgstr "Reino Unido - NIF"
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/wizard/account_move_send_wizard.py:0
 msgid "Unspported file type via %s"
-msgstr ""
+msgstr "Tipo de archivo incompatible por %s"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9953

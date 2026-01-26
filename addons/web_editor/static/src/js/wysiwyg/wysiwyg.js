@@ -696,11 +696,10 @@ export class Wysiwyg extends Component {
 
             if ($target.is(this.customizableLinksSelector)
                     && $target.is('a')
-                    && $target[0].isContentEditable
+                    && ($target[0].isContentEditable || ($target.attr("data-mimetype") && !$target[0].dataset.mimetype.startsWith("image")))
                     && !$target.attr('data-oe-model')
                     && !$target.find('> [data-oe-model]').length
-                    && !$target[0].closest('.o_extra_menu_items')
-                    && $target[0].isContentEditable) {
+                    && !$target[0].closest('.o_extra_menu_items')) {
                 if (ev.ctrlKey || ev.metaKey) {
                     window.open($target[0].href, '_blank');
                 }
@@ -2176,7 +2175,9 @@ export class Wysiwyg extends Component {
         return backgroundGradient || $(targetElement).css(colorType === "text" ? 'color' : 'backgroundColor');
     }
     onColorpaletteDropdownHide(ev) {
-        return !(ev.clickEvent && ev.clickEvent.__isColorpickerClick);
+        const shouldHide = !(ev.clickEvent && this._isColorpickerClick);
+        delete this._isColorpickerClick;
+        return shouldHide;
     }
     onColorpaletteDropdownShow(colorType) {
         const selectedColor = this._getSelectedColor($, colorType);
@@ -2387,23 +2388,28 @@ export class Wysiwyg extends Component {
         // Unselect all media.
         this.$editable.find('.o_we_selected_image').removeClass('o_we_selected_image');
         if (isInMedia) {
-            this.odooEditor.automaticStepSkipStack();
-            // Select the media in the DOM.
-            const selection = this.odooEditor.document.getSelection();
-            const range = this.odooEditor.document.createRange();
-            range.selectNode(this.lastMediaClicked);
-            selection.removeAllRanges();
-            selection.addRange(range);
-            // Toggle the 'active' class on the active image tool buttons.
-            for (const button of this.toolbarEl.querySelectorAll('#image-shape div, #fa-spin')) {
-                button.classList.toggle('active', $(e.target).hasClass(button.id));
+            // Hide the toolbar if the media has a data-mimetype (e.g. attachment).
+            if ($target.attr("data-mimetype") && !$target[0].dataset.mimetype.startsWith("image")) {
+                this.odooEditor.toolbarHide();
+            } else {
+                this.odooEditor.automaticStepSkipStack();
+                // Select the media in the DOM.
+                const selection = this.odooEditor.document.getSelection();
+                const range = this.odooEditor.document.createRange();
+                range.selectNode(this.lastMediaClicked);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                // Toggle the 'active' class on the active image tool buttons.
+                for (const button of this.toolbarEl.querySelectorAll('#image-shape div, #fa-spin')) {
+                    button.classList.toggle('active', $(e.target).hasClass(button.id));
+                }
+                for (const button of this.toolbarEl.querySelectorAll('#image-width div')) {
+                    button.classList.toggle('active', e.target.style.width === button.id);
+                }
+                this.toolbarEl.querySelector('#image-transform').classList.toggle('active', e.target.matches('[style*="transform"]'));
+                this._updateMediaJustifyButton();
+                this._updateFaResizeButtons();
             }
-            for (const button of this.toolbarEl.querySelectorAll('#image-width div')) {
-                button.classList.toggle('active', e.target.style.width === button.id);
-            }
-            this.toolbarEl.querySelector('#image-transform').classList.toggle('active', e.target.matches('[style*="transform"]'));
-            this._updateMediaJustifyButton();
-            this._updateFaResizeButtons();
         }
         if (isInMedia && !this.options.onDblClickEditableMedia) {
             // Handle the media/link's tooltip.
@@ -3019,7 +3025,10 @@ export class Wysiwyg extends Component {
             if (
                 isVisible &&
                 (
-                    (this.options.autohideToolbar && !this.odooEditor.document.getSelection().isCollapsed) ||
+                    (this.options.autohideToolbar &&
+                        !this.odooEditor.document.getSelection().isCollapsed &&
+                        !(this.linkPopover.$target.attr("data-mimetype") &&
+                            this.linkPopover.$target[0].dataset.mimetype.startsWith("image"))) ||
                     !selectionInLink
                 )
             ) {
@@ -3049,6 +3058,9 @@ export class Wysiwyg extends Component {
                 this._pendingBlur = false;
             }
             this._shouldDelayBlur = false;
+        }
+        if (e.target.closest(".o_colorpicker_widget")) {
+            this._isColorpickerClick = true;
         }
     }
     _onBlur() {

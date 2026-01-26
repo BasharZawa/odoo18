@@ -101,6 +101,10 @@ export class PosOrder extends Base {
         return this.state !== "draft";
     }
 
+    get canBeRemovedFromIndexedDB() {
+        return (this.finalized && typeof this.id === "number") || this.state === "cancel";
+    }
+
     get totalQuantity() {
         return this.lines.reduce((sum, line) => sum + line.get_quantity(), 0);
     }
@@ -525,7 +529,7 @@ export class PosOrder extends Base {
             );
         }
         const combo_children_lines = this.lines.filter(
-            (line) => line.price_type === "automatic" && line.combo_parent_id
+            (line) => line.price_type === "original" && line.combo_parent_id
         );
         combo_children_lines.forEach((line) => {
             line.set_unit_price(

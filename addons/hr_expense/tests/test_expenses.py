@@ -948,6 +948,33 @@ class TestExpenses(TestExpenseCommon):
             'res_id': expense_2_move.id
         }])
 
+    def test_multiple_attachments_in_move_from_company_expense(self):
+        """ Checks that all attachments from expense are copied to their journal entries. """
+
+        attachments = self.env['ir.attachment'].create([{
+            'raw': b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs=",
+            'name': f'expense1_file{i}.png',
+            'res_model': 'hr.expense',
+        } for i in range(1, 3)])
+
+        expense_sheet = self.env['hr.expense.sheet'].create({
+            'name': 'Expenses paid by company',
+            'employee_id': self.expense_employee.id,
+            'expense_line_ids': [Command.create({
+                'name': 'Company expense 1',
+                'date': '2022-11-16',
+                'payment_mode': 'company_account',
+                'total_amount_currency': 1000.00,
+                'employee_id': self.expense_employee.id,
+                'attachment_ids': [Command.set(attachments.ids)],
+            })]
+        })
+        expense_sheet.action_submit_sheet()
+        expense_sheet.action_approve_expense_sheets()
+        expense_sheet.action_sheet_move_post()
+
+        self.assertEqual(len(expense_sheet.account_move_ids.attachment_ids), 2)
+
     def test_expense_payment_method(self):
         default_payment_method_line = self.company_data['default_journal_bank'].outbound_payment_method_line_ids[0]
         check_method = self.env['account.payment.method'].sudo().create({
@@ -1860,3 +1887,28 @@ class TestExpenses(TestExpenseCommon):
             expense_sheet.employee_journal_id,
             "The journal_id should be set back to the employee journal when using the 'Own Account' payment method",
         )
+
+    def test_expense_paid_company_no_autobalancing_line(self):
+        """
+        Test that when creating the move associated with an expense paid by company, no autobalancing line
+        appears when an analytic is added to a move line.
+        """
+        expense_sheet = self.create_expense_report({
+            'name': 'Expense for John Smith',
+            'expense_line_ids': [Command.create({
+                'name': 'Test expense line',
+                'employee_id': self.expense_employee.id,
+                'total_amount_currency': 100.0,
+                'product_id': self.product_c.id,
+                'payment_mode': 'company_account',
+                'company_id': self.company_data['company'].id,
+                'tax_ids': [self.tax_sale_a.id],
+            })],
+        })
+
+        expense_sheet.action_submit_sheet()
+        expense_sheet.action_approve_expense_sheets()
+        expense_sheet.account_move_ids.line_ids[0].analytic_distribution = {'1': 100.0}
+
+        # Check that there is no fourth autobalancing line on the account move
+        self.assertEqual(expense_sheet.account_move_ids.line_ids.mapped('balance'), [86.96, -100.0, 13.04])

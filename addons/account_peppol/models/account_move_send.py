@@ -1,7 +1,7 @@
 from base64 import b64encode
 from datetime import timedelta
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 
 from odoo.addons.account.models.company import PEPPOL_LIST
 from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
@@ -9,6 +9,14 @@ from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import A
 
 class AccountMoveSend(models.AbstractModel):
     _inherit = 'account.move.send'
+
+    @api.model
+    def _get_default_sending_method(self, move) -> str:
+        # EXTENDS 'account'
+        preferred_method = move.commercial_partner_id.with_company(move.company_id).invoice_sending_method
+        if not preferred_method and self._is_applicable_to_move('peppol', move):
+            return 'peppol'
+        return super()._get_default_sending_method(move)
 
     # -------------------------------------------------------------------------
     # ALERTS
@@ -64,16 +72,18 @@ class AccountMoveSend(models.AbstractModel):
                 'message': _("You can send this invoice electronically via Peppol."),
                 **what_is_peppol_alert,
             }
-        elif (peppol_not_selected_partners := filter_peppol_state(not_peppol_moves, ['valid'])) and any_moves_not_sent_peppol:
-            # Check for not peppol partners that are on the network.
-            if len(peppol_not_selected_partners) == 1:
-                alerts['account_peppol_partner_want_peppol'] = {
-                    'message': _(
-                        "%s has requested electronic invoices reception on Peppol.",
-                        peppol_not_selected_partners.display_name
-                    ),
-                    **what_is_peppol_alert,
-                }
+        elif (
+            (peppol_not_selected_partners := filter_peppol_state(not_peppol_moves, ['valid']))
+            and any_moves_not_sent_peppol
+            and len(peppol_not_selected_partners) == 1  # Check for not peppol partners that are on the network
+        ):
+            alerts['account_peppol_partner_want_peppol'] = {
+                'message': _(
+                    "%s has requested electronic invoices reception on Peppol.",
+                    peppol_not_selected_partners.display_name
+                ),
+                **what_is_peppol_alert,
+            }
         return alerts
 
     # -------------------------------------------------------------------------
@@ -155,9 +165,16 @@ class AccountMoveSend(models.AbstractModel):
                     invoice_data['error'] = _('The partner is missing Peppol EAS and/or Endpoint identifier.')
                     continue
 
-                if self.env['res.partner']._get_peppol_verification_state(partner.peppol_endpoint, partner.peppol_eas, invoice_data['invoice_edi_format']) != 'valid':
+                if (
+                    peppol_verification_state := self.env['res.partner']
+                        .with_context(check_self_billing_support=invoice._is_exportable_as_self_invoice())
+                        ._get_peppol_verification_state(partner.peppol_endpoint, partner.peppol_eas, invoice_data['invoice_edi_format'])
+                 ) != 'valid':
                     invoice.peppol_move_state = 'error'
-                    invoice_data['error'] = _('Please verify partner configuration in partner settings.')
+                    if peppol_verification_state == 'not_valid_format':
+                        invoice_data['error'] = _('The partner has indicated it does not accept this document type, so you cannot send this invoice via Peppol.')
+                    else:
+                        invoice_data['error'] = _('Please verify partner configuration in partner settings.')
                     continue
 
                 if not self._is_applicable_to_move('peppol', invoice, **invoice_data):
@@ -193,8 +210,7 @@ class AccountMoveSend(models.AbstractModel):
         if not params['documents']:
             return
 
-        edi_user = next(iter(invoices_data)).company_id.account_edi_proxy_client_ids.filtered(
-            lambda u: u.proxy_type == 'peppol')
+        edi_user = next(iter(invoices_data)).company_id.account_peppol_edi_user
 
         try:
             response = edi_user._call_peppol_proxy(
@@ -220,7 +236,7 @@ class AccountMoveSend(models.AbstractModel):
                     invoice.peppol_message_uuid = message['message_uuid']
                     invoice.peppol_move_state = 'processing'
                     attachments_linked, attachments_not_linked = self._get_ubl_available_attachments(
-                        invoice_data['mail_attachments_widget'],
+                        invoice_data.get('mail_attachments_widget', []),
                         invoice_data['invoice_edi_format']
                     )
                     if attachments_not_linked:

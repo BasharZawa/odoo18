@@ -615,7 +615,7 @@ class HrExpense(models.Model):
     def write(self, vals):
         if (
                 'state' in vals
-                and vals['state'] != 'submitted'
+                and vals['state'] not in {'draft', 'submitted'}
                 and not (self.env.user.has_group('hr_expense.group_hr_expense_manager') or self.env.su)
                 and any(state == 'draft' for state in self.mapped('state'))
         ):
@@ -972,7 +972,7 @@ class HrExpense(models.Model):
             'line_ids': [Command.create(line) for line in move_lines],
             'attachment_ids': [
                 Command.create(attachment.copy_data({'res_model': 'account.move', 'res_id': False, 'raw': attachment.raw})[0])
-                for attachment in self.message_main_attachment_id]
+                for attachment in self.attachment_ids]
         }
         return move_vals, payment_vals
 

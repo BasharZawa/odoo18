@@ -986,6 +986,8 @@ class TestPurchase(AccountTestInvoicingCommon):
         self.env['purchase.order.line'].flush_model()
         result = vendor_bill.action_purchase_matching()
         matching_records = self.env['purchase.bill.line.match'].search(result['domain'])
+        result_bill_matching = purchase_order.action_bill_matching()
+        matching_records_from_po = self.env['purchase.bill.line.match'].search(result_bill_matching['domain'])
 
         # Ensure that calling `action_add_to_po()` on multiple records
         # does not raise a singleton ValueError when the vendor is an individual
@@ -995,6 +997,9 @@ class TestPurchase(AccountTestInvoicingCommon):
         self.assertEqual(len(matching_records), 2)
         self.assertEqual(matching_records.account_move_id, vendor_bill)
         self.assertEqual(matching_records.purchase_order_id, purchase_order)
+        self.assertEqual(len(matching_records_from_po), 2)
+        self.assertEqual(matching_records_from_po.account_move_id, vendor_bill)
+        self.assertEqual(matching_records_from_po.purchase_order_id, purchase_order)
 
     def test_action_view_po_when_product_template_archived(self):
         """
@@ -1149,3 +1154,26 @@ class TestPurchase(AccountTestInvoicingCommon):
             uom_test.unlink()
 
         self.assertEqual(po.order_line[0].product_uom, uom_test)
+
+    def test_product_price_on_purchase_order_view_catalog(self):
+        """
+        Ensure vendor price & discount from supplierinfo are applied
+        properly when using the vendor catalog popup.
+        """
+        product = self.env['product.product'].create({
+            'name': 'Test Product',
+            'seller_ids': [
+                Command.create({
+                    'partner_id': self.partner_a.id,
+                    'price': 100,
+                    'discount': 10,
+                })
+            ]
+        })
+        purchase_order = self.env['purchase.order'].create({
+            'partner_id': self.partner_a.id,
+        })
+        purchase_order._update_order_line_info(product.id, 1)
+        self.assertRecordValues(purchase_order.order_line, [
+            {'price_unit': 100, 'discount': 10, 'price_unit_discounted': 90},
+        ])
