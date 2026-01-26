@@ -76,15 +76,9 @@ class AccountMoveLine(models.Model):
         )
 
     def _related_analytic_distribution(self):
-        """Override to add product line and country analytic accounts.
-        Only adds accounts if no distribution is already set (respects user edits).
-        """
+        """Override to add product line and country analytic accounts."""
         self.ensure_one()
-        distribution = super()._related_analytic_distribution()
-        
-        # If distribution already exists (user edited or from sale order), don't modify
-        if self.analytic_distribution:
-            return distribution
+        distribution = super()._related_analytic_distribution() or {}
         
         # Get plans for checking duplicates
         product_line_plan = self.env['account.analytic.plan'].search([
@@ -94,20 +88,24 @@ class AccountMoveLine(models.Model):
             ('name', '=ilike', 'Country')
         ], limit=1)
         
-        # Build a single dict with both accounts (only if not already in distribution)
-        additional = {}
+        # Collect account IDs to add
+        account_ids_to_add = []
         
         # Add product line account if plan not already covered
         if not self._has_account_from_plan(distribution, product_line_plan):
             product_line_account = self._get_product_line_analytic_account()
             if product_line_account:
-                additional[str(product_line_account.id)] = 100.0
+                account_ids_to_add.append(str(product_line_account.id))
         
         # Add country account if plan not already covered
         if not self._has_account_from_plan(distribution, country_plan):
             country_account = self._get_country_analytic_account()
             if country_account:
-                additional[str(country_account.id)] = 100.0
+                account_ids_to_add.append(str(country_account.id))
         
-        # Merge: existing distribution first, then add our accounts
-        return distribution | additional
+        # Add all accounts as a single combined key (one line)
+        if account_ids_to_add:
+            combined_key = ','.join(account_ids_to_add)
+            distribution[combined_key] = 100.0
+        
+        return distribution
