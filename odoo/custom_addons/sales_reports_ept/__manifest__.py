@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Sales Reports EPT',
-    'version': '18.0.2.0.0',
+    'version': '18.0.3.0.0',
     'category': 'Sales/Reports',
     'summary': 'Budget vs Actual (Native Integration) & Sales Recognition Reports',
     'description': """
@@ -47,6 +47,7 @@
         'views/sales_region_views.xml',
         'report/budget_vs_actual_report_views.xml',
         'report/sales_recognition_report_views.xml',
+        'report/sales_recognition_report_v2_views.xml',
         'views/menu_items.xml',
     ],
     'installable': True,

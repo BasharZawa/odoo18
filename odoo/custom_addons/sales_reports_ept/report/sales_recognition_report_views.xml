@@ -10,7 +10,6 @@
             <list string="Sales Recognition" create="false" edit="false" delete="false"
                   default_order="order_date desc">
                 <!-- Order Info -->
-                <field name="report_year" string="Year" optional="show"/>
                 <field name="order_name" decoration-bf="1"/>
                 <field name="partner_id"/>
                 <field name="payment_status" widget="badge"
@@ -37,8 +36,8 @@
                        decoration-warning="recognition_status == 'partial'"
                        decoration-muted="recognition_status == 'pending'"/>
                 
-                <!-- Past -->
-                <field name="past_recognized" sum="Past" widget="monetary" optional="hide"/>
+                <!-- Past Years Recognition (before current year) -->
+                <field name="past_recognized" sum="Past" widget="monetary" optional="show"/>
                 
                 <!-- Monthly columns -->
                 <field name="jan_amount" sum="Jan" widget="monetary"/>
@@ -132,9 +131,6 @@
                 <field name="salesperson_id"/>
                 <field name="country_id"/>
                 <field name="sector_id"/>
-                <field name="report_year"/>
-                <separator/>
-                <!-- Year filters are dynamically generated in get_view() based on actual data -->
                 <separator/>
                 <!-- Payment Status filters -->
                 <filter name="filter_not_invoiced" string="Not Invoiced" 
@@ -161,7 +157,6 @@
                         domain="[('total_scheduled', '=', 0)]"/>
                 <separator/>
                 <group expand="1" string="Group By">
-                    <filter name="group_year" string="Year" context="{'group_by': 'report_year'}"/>
                     <filter name="group_salesperson" string="Salesperson" context="{'group_by': 'salesperson_id'}"/>
                     <filter name="group_team" string="Sales Team" context="{'group_by': 'team_id'}"/>
                     <filter name="group_country" string="Country" context="{'group_by': 'country_id'}"/>

@@ -153,8 +153,40 @@ class BudgetVsActualReport(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True)
 
     def init(self):
-        """Create SQL view for Budget vs Actual analysis"""
+        """Create SQL view for Budget vs Actual analysis.
+        
+        Dynamically detects available analytic plan columns in budget_line table.
+        """
         tools.drop_view_if_exists(self.env.cr, self._table)
+        
+        # Detect which x_plan columns exist in budget_line table
+        self.env.cr.execute("""
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name = 'budget_line' 
+            AND column_name LIKE 'x_plan%_id'
+            ORDER BY column_name
+        """)
+        available_plan_cols = [row[0] for row in self.env.cr.fetchall()]
+        
+        # Map plan columns dynamically (use first 3 available, or NULL if not available)
+        plan1_col = available_plan_cols[0] if len(available_plan_cols) > 0 else None
+        plan2_col = available_plan_cols[1] if len(available_plan_cols) > 1 else None
+        plan3_col = available_plan_cols[2] if len(available_plan_cols) > 2 else None
+        
+        # Build dynamic SELECT expressions
+        plan1_select = f"bl.{plan1_col}" if plan1_col else "NULL::integer"
+        plan2_select = f"bl.{plan2_col}" if plan2_col else "NULL::integer"
+        plan3_select = f"bl.{plan3_col}" if plan3_col else "NULL::integer"
+        
+        # Build dynamic JOIN expressions
+        plan1_join = f"LEFT JOIN account_analytic_account aa1 ON aa1.id = bl.{plan1_col}" if plan1_col else ""
+        plan2_join = f"LEFT JOIN account_analytic_account aa2 ON aa2.id = bl.{plan2_col}" if plan2_col else ""
+        plan3_join = f"LEFT JOIN account_analytic_account aa3 ON aa3.id = bl.{plan3_col}" if plan3_col else ""
+        
+        plan1_name = "aa1.name" if plan1_col else "NULL::varchar"
+        plan2_name = "aa2.name" if plan2_col else "NULL::varchar"
+        plan3_name = "aa3.name" if plan3_col else "NULL::varchar"
         
         query = """
             CREATE OR REPLACE VIEW %s AS (
@@ -222,15 +254,18 @@ class BudgetVsActualReport(models.Model):
                 SELECT
                     bl.id AS id,
                     
-                    -- Grouping Dimensions
+                    -- Grouping Dimensions (dynamic based on available plans)
                     crm.region_id,
                     crm.region_name,
-                    bl.x_plan5_id AS salesperson_analytic_id,
-                    sp.name AS salesperson_name,
-                    bl.x_plan4_id AS country_analytic_id,
-                    cty.name AS country_name,
-                    bl.x_plan6_id AS product_line_analytic_id,
-                    pl.name AS product_line_name,
+                    -- Plan 1 (usually Project)
+                    {plan1_select} AS salesperson_analytic_id,
+                    {plan1_name} AS salesperson_name,
+                    -- Plan 2 (usually Departments)
+                    {plan2_select} AS country_analytic_id,
+                    {plan2_name} AS country_name,
+                    -- Plan 3 (usually Internal)
+                    {plan3_select} AS product_line_analytic_id,
+                    {plan3_name} AS product_line_name,
                     
                     -- Time Dimensions
                     EXTRACT(YEAR FROM bl.date_from)::text AS fiscal_year,
@@ -266,18 +301,18 @@ class BudgetVsActualReport(models.Model):
                     
                     -- Company/Currency
                     bl.company_id,
-                    rc.currency_id
+                    rcomp.currency_id
                     
                 FROM budget_line bl
                 JOIN budget_analytic ba ON ba.id = bl.budget_analytic_id
                 
-                -- Dimension joins (analytic accounts)
-                LEFT JOIN account_analytic_account cty ON cty.id = bl.x_plan4_id
-                LEFT JOIN account_analytic_account sp ON sp.id = bl.x_plan5_id
-                LEFT JOIN account_analytic_account pl ON pl.id = bl.x_plan6_id
+                -- Dimension joins (analytic accounts) - dynamic
+                {plan1_join}
+                {plan2_join}
+                {plan3_join}
                 
-                -- Country to Region mapping - match country name from analytic to res_country
-                LEFT JOIN res_country rc_match ON rc_match.name::text ILIKE cty.name::text
+                -- Country to Region mapping - match first plan name to res_country
+                LEFT JOIN res_country rc_match ON rc_match.name::text ILIKE {plan2_name}::text
                 LEFT JOIN country_region_map crm ON crm.country_id = rc_match.id
                 
                 -- Actual amounts
@@ -285,13 +320,23 @@ class BudgetVsActualReport(models.Model):
                 LEFT JOIN ytd_budget_calc yb ON yb.budget_line_id = bl.id
                 
                 -- Company currency
-                LEFT JOIN res_company rc ON rc.id = bl.company_id
+                LEFT JOIN res_company rcomp ON rcomp.id = bl.company_id
                 
                 WHERE ba.state IN ('confirmed', 'done')
             )
-        """ % self._table
+        """.format(
+            plan1_select=plan1_select,
+            plan2_select=plan2_select,
+            plan3_select=plan3_select,
+            plan1_name=plan1_name,
+            plan2_name=plan2_name,
+            plan3_name=plan3_name,
+            plan1_join=plan1_join,
+            plan2_join=plan2_join,
+            plan3_join=plan3_join,
+        )
         
-        self.env.cr.execute(query)
+        self.env.cr.execute(query % self._table)
 
     def action_open_budget_entries(self):
         """Open analytic lines for this budget period"""

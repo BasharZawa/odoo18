@@ -10,19 +10,26 @@
     
     <!-- ==================== REPORTS ==================== -->
     
-    <!-- Budget vs Actual Report -->
+    <!-- Budget vs Actual Report - Under Accounting > Reporting -->
     <menuitem id="menu_budget_vs_actual_report"
               name="Budget vs Actual"
-              parent="menu_sales_reports_ept"
+              parent="account.menu_finance_reports"
               action="action_budget_vs_actual_report_server"
-              sequence="10"/>
+              sequence="50"/>
     
-    <!-- Sales Recognition Report -->
+    <!-- Sales Recognition Report - Under Sales > Reporting > Sales Analysis Reports -->
     <menuitem id="menu_sales_recognition_report"
               name="Sales Recognition"
               parent="menu_sales_reports_ept"
               action="action_sales_recognition_report_server"
-              sequence="20"/>
+              sequence="10"/>
+    
+    <!-- Sales Recognition Report V2 (Simplified) - Under Sales > Reporting > Sales Analysis Reports -->
+    <menuitem id="menu_sales_recognition_report_v2"
+              name="Sales Recognition V2"
+              parent="menu_sales_reports_ept"
+              action="sales_reports_ept.action_sales_recognition_report_v2"
+              sequence="15"/>
     
     <!-- ==================== CONFIGURATION ==================== -->
     
