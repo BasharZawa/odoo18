@@ -20,7 +20,7 @@ app = Flask(__name__)
 app.secret_key = 'your-secret-key-change-this'
 
 # Configuration
-MCP_SERVER_PATH = '/home/codebind/odoo18/mcp_wrapper.sh'
+MCP_SERVER_PATH = '/home/bashar/odoo18/mcp_wrapper.sh'
 
 class FreeClaudeMCPChatbot:
     def __init__(self):
@@ -43,7 +43,7 @@ class FreeClaudeMCPChatbot:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
-                cwd='/home/codebind/odoo18'
+                cwd='/home/bashar/odoo18'
             )
             
             # Initialize MCP server

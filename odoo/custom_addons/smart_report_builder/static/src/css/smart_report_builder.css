@@ -1,0 +1,140 @@
+/* ─────────────────────────────────────
+   Smart Report Builder - Styles
+   ───────────────────────────────────── */
+
+.srb-container {
+    background: #f8f9fa;
+    min-height: calc(100vh - 46px);
+}
+
+/* Sidebar */
+.srb-sidebar {
+    width: 280px;
+    min-width: 280px;
+    overflow-y: auto;
+    transition: all 0.2s ease;
+}
+
+.srb-saved-item {
+    transition: background-color 0.15s ease;
+}
+
+.srb-saved-item:hover {
+    background-color: #e9ecef;
+}
+
+/* Header */
+.srb-header {
+    min-height: 60px;
+}
+
+.srb-header h4 {
+    color: #714B67;
+    font-weight: 600;
+}
+
+/* Query Area */
+.srb-query-area .form-control:focus {
+    box-shadow: none;
+    border-color: #714B67;
+}
+
+.srb-query-area .input-group-text {
+    border-color: #ced4da;
+}
+
+.srb-query-area .btn-primary {
+    background-color: #714B67;
+    border-color: #714B67;
+}
+
+.srb-query-area .btn-primary:hover {
+    background-color: #5a3c53;
+    border-color: #5a3c53;
+}
+
+.srb-example-chip {
+    font-size: 12px;
+    padding: 6px 12px;
+    transition: all 0.15s ease;
+    cursor: pointer;
+}
+
+.srb-example-chip:hover {
+    background-color: #714B67 !important;
+    color: white !important;
+    border-color: #714B67 !important;
+}
+
+/* Chart */
+.srb-chart-container {
+    max-height: 400px;
+    position: relative;
+}
+
+.srb-chart-container canvas {
+    max-height: 350px;
+}
+
+/* Table */
+.srb-table-container {
+    overflow-x: auto;
+}
+
+.srb-table-container table {
+    font-size: 13px;
+}
+
+.srb-table-container thead th {
+    font-weight: 600;
+    color: #495057;
+    white-space: nowrap;
+    border-bottom: 2px solid #714B67;
+}
+
+.srb-table-container tbody tr:hover {
+    background-color: #f8f0f6;
+}
+
+/* Empty state */
+.srb-empty {
+    padding: 60px 20px;
+}
+
+/* Alert styling */
+.alert code {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .srb-sidebar {
+        width: 100%;
+        min-width: 100%;
+        max-height: 200px;
+    }
+
+    .srb-container {
+        flex-direction: column;
+    }
+}
+
+/* Cursor pointer utility */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Custom scrollbar */
+.srb-sidebar::-webkit-scrollbar,
+.srb-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.srb-sidebar::-webkit-scrollbar-thumb,
+.srb-results::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}

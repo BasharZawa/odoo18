@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_smart_report_user,smart.report.user,model_smart_report,base.group_user,1,1,1,0
+access_smart_report_manager,smart.report.manager,model_smart_report,base.group_system,1,1,1,1
+access_smart_report_model_info,smart.report.model.info.user,model_smart_report_model_info,base.group_user,1,0,0,0

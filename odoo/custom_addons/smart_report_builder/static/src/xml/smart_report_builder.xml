@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="smart_report_builder.MainView">
+        <div class="srb-container d-flex h-100">
+
+            <!-- Sidebar: Saved Reports -->
+            <div class="srb-sidebar border-end bg-light p-3"
+                 t-att-class="{ 'd-none': !state.showSidebar }">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0 fw-bold text-muted">
+                        <i class="fa fa-bookmark me-1"/>Saved Reports
+                    </h6>
+                </div>
+                <div t-if="state.savedReports.length === 0"
+                     class="text-muted small p-2">
+                    No saved reports yet. Run a query and save it!
+                </div>
+                <div t-foreach="state.savedReports" t-as="report" t-key="report.id"
+                     class="srb-saved-item p-2 rounded mb-1 cursor-pointer"
+                     t-on-click="() => this.runSavedReport(report.id)">
+                    <div class="fw-semibold small text-truncate"
+                         t-out="report.name"/>
+                    <div class="text-muted small text-truncate"
+                         t-out="report.natural_query"/>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="srb-main flex-grow-1 d-flex flex-column p-0">
+
+                <!-- Header Bar -->
+                <div class="srb-header d-flex align-items-center px-4 py-3 border-bottom bg-white">
+                    <button class="btn btn-sm btn-outline-secondary me-3"
+                            t-on-click="toggleSidebar"
+                            title="Toggle saved reports">
+                        <i class="fa fa-bars"/>
+                    </button>
+                    <h4 class="mb-0 flex-grow-1">
+                        <i class="fa fa-magic me-2 text-primary"/>
+                        Smart Report Builder
+                    </h4>
+                    <span class="badge bg-info" t-if="state.lastModel">
+                        <t t-out="state.lastModel"/>
+                    </span>
+                </div>
+
+                <!-- Query Input Area -->
+                <div class="srb-query-area px-4 py-3 bg-white border-bottom">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-white">
+                            <i class="fa fa-search text-primary"/>
+                        </span>
+                        <input type="text"
+                               class="form-control border-start-0"
+                               t-att-value="state.query"
+                               t-on-input="onQueryInput"
+                               t-on-keydown="onQueryKeydown"
+                               placeholder="Ask anything... e.g. 'Total sales by salesperson this quarter'"
+                               t-ref="queryInput"/>
+                        <button class="btn btn-primary px-4"
+                                t-on-click="submitQuery"
+                                t-att-disabled="state.loading || !state.query.trim()">
+                            <t t-if="state.loading">
+                                <i class="fa fa-spinner fa-spin me-1"/>Processing...
+                            </t>
+                            <t t-else="">
+                                <i class="fa fa-bolt me-1"/>Generate
+                            </t>
+                        </button>
+                    </div>
+                    <!-- Example queries -->
+                    <div class="mt-2 d-flex gap-2 flex-wrap" t-if="!state.data">
+                        <span class="srb-example-chip badge rounded-pill bg-light text-dark border cursor-pointer"
+                              t-on-click="() => this.useExample('Total sales amount by salesperson this month')">
+                            💰 Sales by salesperson
+                        </span>
+                        <span class="srb-example-chip badge rounded-pill bg-light text-dark border cursor-pointer"
+                              t-on-click="() => this.useExample('Count of open CRM leads by stage')">
+                            📊 CRM leads by stage
+                        </span>
+                        <span class="srb-example-chip badge rounded-pill bg-light text-dark border cursor-pointer"
+                              t-on-click="() => this.useExample('Top 10 customers by total invoiced amount this year')">
+                            🏆 Top customers
+                        </span>
+                        <span class="srb-example-chip badge rounded-pill bg-light text-dark border cursor-pointer"
+                              t-on-click="() => this.useExample('Monthly revenue trend for the last 6 months')">
+                            📈 Revenue trend
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Error Display -->
+                <div t-if="state.error" class="alert alert-danger mx-4 mt-3 d-flex align-items-start">
+                    <i class="fa fa-exclamation-triangle me-2 mt-1"/>
+                    <div>
+                        <strong>Error: </strong>
+                        <span t-out="state.error"/>
+                    </div>
+                    <button class="btn-close ms-auto" t-on-click="clearError"/>
+                </div>
+
+                <!-- Results Area -->
+                <div class="srb-results flex-grow-1 overflow-auto px-4 py-3" t-if="state.data">
+
+                    <!-- Report Header + Actions -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0" t-out="state.reportTitle"/>
+                        <div class="d-flex gap-2">
+                            <!-- Chart type toggle -->
+                            <div class="btn-group btn-group-sm">
+                                <button t-foreach="['table', 'bar', 'line', 'pie']"
+                                        t-as="type" t-key="type"
+                                        class="btn"
+                                        t-att-class="{ 'btn-primary': state.chartType === type, 'btn-outline-secondary': state.chartType !== type }"
+                                        t-on-click="() => this.setChartType(type)">
+                                    <i t-att-class="{
+                                        'fa fa-table': type === 'table',
+                                        'fa fa-bar-chart': type === 'bar',
+                                        'fa fa-line-chart': type === 'line',
+                                        'fa fa-pie-chart': type === 'pie'
+                                    }"/>
+                                </button>
+                            </div>
+                            <!-- Export -->
+                            <button class="btn btn-sm btn-outline-success"
+                                    t-on-click="exportCSV">
+                                <i class="fa fa-download me-1"/>CSV
+                            </button>
+                            <!-- Save -->
+                            <button class="btn btn-sm btn-outline-primary"
+                                    t-on-click="saveReport">
+                                <i class="fa fa-save me-1"/>Save
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- AI Explanation -->
+                    <div class="alert alert-light border small mb-3" t-if="state.queryParams">
+                        <i class="fa fa-robot me-1 text-primary"/>
+                        <strong>Model:</strong> <code t-out="state.queryParams.model"/>
+                        <strong class="ms-3">Group by:</strong>
+                        <code t-out="JSON.stringify(state.queryParams.groupby)"/>
+                        <strong class="ms-3">Measures:</strong>
+                        <code t-out="JSON.stringify(state.queryParams.measures)"/>
+                    </div>
+
+                    <!-- Chart Canvas -->
+                    <div t-if="state.chartType !== 'table'" class="srb-chart-container mb-4 bg-white rounded border p-3">
+                        <canvas t-ref="chartCanvas" height="300"/>
+                    </div>
+
+                    <!-- Data Table -->
+                    <div class="srb-table-container bg-white rounded border">
+                        <table class="table table-hover table-sm mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th t-foreach="state.columns" t-as="col" t-key="col.key"
+                                        class="px-3 py-2"
+                                        t-out="col.label"/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="state.data" t-as="row" t-key="row_index">
+                                    <td t-foreach="state.columns" t-as="col" t-key="col.key"
+                                        class="px-3 py-2"
+                                        t-out="formatCell(row[col.key], col)"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="p-2 text-muted small text-end border-top">
+                            <t t-out="state.data.length"/> rows
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div t-if="!state.data &amp;&amp; !state.loading &amp;&amp; !state.error"
+                     class="srb-empty flex-grow-1 d-flex flex-column align-items-center justify-content-center text-muted">
+                    <i class="fa fa-bar-chart fa-3x mb-3 text-primary opacity-25"/>
+                    <p class="h6">Type a question above to generate a report</p>
+                    <p class="small">Powered by Claude AI — understands your Odoo data models</p>
+                </div>
+
+            </div>
+        </div>
+    </t>
+
+</templates>
