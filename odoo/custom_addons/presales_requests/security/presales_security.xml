@@ -1,8 +1,0 @@
-<odoo>
-  <record id="group_presales_manager" model="res.groups">
-    <field name="name">Presales Manager</field>
-  </record>
-  <record id="group_presales_employee" model="res.groups">
-    <field name="name">Presales Employee</field>
-  </record>
-</odoo>

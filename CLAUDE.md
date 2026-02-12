@@ -16,7 +16,7 @@
 - **Addons path:** addons, odoo/addons, custom_addons, odoo/custom_addons, odoo/ent_addons
 - **MCP server:** `odoo_mcp_server.py` (50+ tools, FastMCP, config in `~/.config/Claude/claude_desktop_config.json`)
 
-## Custom Modules (30 total in `odoo/custom_addons/`)
+## Custom Modules (18 total in `odoo/custom_addons/` and `custom_addons/`)
 
 ### Sales & Finance
 | Module | What it does |
@@ -41,36 +41,24 @@
 | Module | What it does |
 |--------|-------------|
 | customer_management_ept | Validation workflow, invoicing/recognition/distribution schedules |
-| custom_crm | CRM customizations |
 | crm_extended_ept | Model number, product line, product nature fields (template-variant sync) |
-| sedco_crm | SEDCO-specific CRM features |
-| sedco_crm_assignment_domain_bridge | Domain-based lead/opportunity assignment |
-| custom_partner_city | City-related partner features |
-| customer_import_helper | Customer data import utilities |
 
 ### Workflow & Automation
 | Module | What it does |
 |--------|-------------|
-| **sedco_bpm_engine** | BPMN visual editor (bpmn-js), JSON compilation, runtime orchestration, parallel/sequential execution. **Use for internal workflows.** |
 | quality_bulk_actions | Bulk quality check operations |
 
 ### Reporting & Integration
 | Module | What it does |
 |--------|-------------|
-| **smart_report_builder** | Claude AI + n8n integration for dynamic reports. **Reference implementation for n8n patterns.** |
-| test_report | Database view model pattern (pivot/list/form) |
-| custom_apis | HTTP routes and API endpoints |
+| test_report | Database view model pattern (pivot/list/form, in `custom_addons/`) |
 | orchida_uae_e_invoicing | UAE e-invoicing compliance |
 
 ### Utilities
 | Module | What it does |
 |--------|-------------|
-| todo_app | Task management |
 | ept_execute_python_code | Secure Python execution within Odoo |
 | extend_distribution_method | Distribution method extensions |
-| presales_requests | Pre-sales request management |
-| request | Base request model used by other modules |
-| sedco_management | General SEDCO management features |
 
 ## Key Patterns
 
@@ -86,12 +74,8 @@ approval = self.env['approval.request'].create({
 })
 ```
 
-### When to use n8n vs BPM
-- **n8n** → external APIs, AI processing, email automation, multi-service orchestration. Reference: `smart_report_builder`
-- **sedco_bpm_engine** → internal Odoo workflows, visual BPMN design, approval chains
-
 ### n8n webhook pattern
-Odoo controller sends HTTP POST to n8n webhook → n8n processes (Claude AI, transforms, etc.) → returns result to Odoo. See `smart_report_builder/controllers/` for implementation.
+Odoo controller sends HTTP POST to n8n webhook → n8n processes (Claude AI, transforms, etc.) → returns result to Odoo.
 
 ## n8n Automation Skills
 
