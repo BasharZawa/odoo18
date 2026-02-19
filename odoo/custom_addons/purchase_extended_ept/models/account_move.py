@@ -5,7 +5,10 @@ class AccountMove(models.Model):
 
     def force_set_name(self, new_name):
         self.ensure_one()
-        self.sudo().write({'name': new_name})
+        vals = {'payment_reference': new_name}
+        if self.move_type in ('in_invoice', 'in_refund', 'in_receipt'):
+            vals['ref'] = new_name
+        self.sudo().write(vals)
         return True
 
     def button_create_landed_costs(self):

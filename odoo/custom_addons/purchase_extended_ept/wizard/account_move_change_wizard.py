@@ -6,7 +6,7 @@ class AccountMoveChangeWizard(models.TransientModel):
     _description = 'Account Move Change Wizard'
 
     move_id = fields.Many2one('account.move', string='Invoice', required=True)
-    new_name = fields.Char(string='New Invoice Number', required=True)
+    new_name = fields.Char(string='New Invoice Reference', required=True)
 
     def action_apply(self):
         self.ensure_one()

@@ -3,7 +3,7 @@
         <field name="name">account.move.change.wizard.form</field>
         <field name="model">account.move.change.wizard</field>
         <field name="arch" type="xml">
-            <form string="Change Invoice Number">
+            <form string="Change Invoice Reference">
                 <group>
                     <field name="move_id" readonly="1"/>
                     <field name="new_name"/>

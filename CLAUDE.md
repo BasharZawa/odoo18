@@ -77,6 +77,11 @@ approval = self.env['approval.request'].create({
 ### n8n webhook pattern
 Odoo controller sends HTTP POST to n8n webhook → n8n processes (Claude AI, transforms, etc.) → returns result to Odoo.
 
+### Invoice change wizard pattern (purchase_extended_ept)
+- Do not write directly to `account.move.name` for posted invoices when the goal is to adjust payment memo/reference.
+- Keep sequence integrity by updating `payment_reference` (and vendor bill `ref` when needed) via wizard actions.
+- Payment memo in `account.payment.register` uses `payment_reference or ref or name`, so this approach updates memo without overriding numbering.
+
 ## n8n Automation Skills
 
 When the user asks about **n8n workflows, automation, or n8n-specific questions** (not Odoo model development), use these skills:
