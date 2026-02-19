@@ -14,7 +14,7 @@
                 /*
                 crm_extended_ept,customer_management_ept,discount_management_ept,ept_execute_python_code,mrp_extended_ept,orchida_uae_e_invoicing,pilot_order_ept,sale_below_cost_approval_ept,sale_extended_ept,stock_extended_ept,vendor_tracking_ept,quality_serial_receipt,quality_bulk_actions,purchase_extended_ept,account_budget_pivot,
                 */
-                "extend_distribution_method,sales_reports_ept,test_report",
+                "extend_distribution_method,sales_reports_ept,purchase_extended_ept",
                 "-d",
                 "OdooE"
                 // Module to update

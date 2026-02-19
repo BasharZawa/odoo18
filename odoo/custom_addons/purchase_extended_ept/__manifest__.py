@@ -14,7 +14,11 @@
     'author': 'Emipro Technologies Pvt. Ltd.',
     'website': 'https://www.emiprotechnologies.com',
     'depends': ['stock_landed_costs', 'purchase_stock'],
-    'data': [],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/purchase_order_change_wizard_views.xml',
+        'views/purchase_order_views.xml',
+    ],
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',

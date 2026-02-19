@@ -1,0 +1,26 @@
+<odoo>
+    <!-- Wizard action -->
+    <record id="action_purchase_order_change_wizard" model="ir.actions.act_window">
+        <field name="name">Change Purchase Order</field>
+        <field name="res_model">purchase.order.change.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_purchase_id': active_id}</field>
+    </record>
+
+    <!-- Add button on Purchase Order form -->
+    <record id="view_purchase_order_form_inherit_change_po_btn_ept" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.change.po.button.ept</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position="inside">
+                <button name="%(action_purchase_order_change_wizard)d"
+                        type="action"
+                        string="Change PO"
+                        class="btn-primary"
+                        groups="purchase.group_purchase_user"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
