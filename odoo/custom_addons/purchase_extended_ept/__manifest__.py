@@ -18,6 +18,8 @@
         'security/ir.model.access.csv',
         'views/purchase_order_change_wizard_views.xml',
         'views/purchase_order_views.xml',
+        'views/account_move_change_wizard_views.xml',
+        'views/account_move_views.xml',
     ],
     'installable': True,
     'auto_install': False,

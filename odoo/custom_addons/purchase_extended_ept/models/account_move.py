@@ -3,6 +3,11 @@ from odoo import models, api
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    def force_set_name(self, new_name):
+        self.ensure_one()
+        self.sudo().write({'name': new_name})
+        return True
+
     def button_create_landed_costs(self):
         """
         Override to automatically select relevant stock transfers (receipts)

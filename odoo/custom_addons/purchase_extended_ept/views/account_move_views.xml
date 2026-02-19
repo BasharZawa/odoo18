@@ -1,0 +1,24 @@
+<odoo>
+    <record id="action_account_move_change_wizard" model="ir.actions.act_window">
+        <field name="name">Change Invoice Number</field>
+        <field name="res_model">account.move.change.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_move_id': active_id}</field>
+    </record>
+
+    <record id="view_move_form_inherit_change_invoice_btn_ept" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.change.invoice.button.ept</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position="inside">
+                <button name="%(action_account_move_change_wizard)d"
+                        type="action"
+                        string="Change Invoice"
+                        class="btn-primary"
+                        groups="account.group_account_invoice"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
