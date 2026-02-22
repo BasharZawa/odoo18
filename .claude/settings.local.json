@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(snap list:*)",
+      "Bash(flatpak list:*)",
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(timeout 3 python:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(node ./.claude/get-shit-done/bin/gsd-tools.js commit:*)"
+    ]
+  }
+}
