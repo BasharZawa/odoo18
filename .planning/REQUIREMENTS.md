@@ -130,17 +130,51 @@ Deferred differentiators. Build after v1 core is proven stable.
 
 ## Traceability
 
-Updated during roadmap creation.
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| *(populated by roadmapper)* | | |
+| FOUND-01 | Phase 1 | Pending |
+| FOUND-02 | Phase 1 | Pending |
+| FOUND-03 | Phase 1 | Pending |
+| WFDEF-01 | Phase 2 | Pending |
+| WFDEF-02 | Phase 2 | Pending |
+| WFDEF-03 | Phase 2 | Pending |
+| WFDEF-04 | Phase 2 | Pending |
+| WFDEF-05 | Phase 2 | Pending |
+| WFDEF-06 | Phase 3 | Pending |
+| WFDEF-07 | Phase 3 | Pending |
+| WFDEF-08 | Phase 3 | Pending |
+| EXEC-01 | Phase 4 | Pending |
+| EXEC-05 | Phase 4 | Pending |
+| EXEC-06 | Phase 4 | Pending |
+| EXEC-09 | Phase 5 | Pending |
+| EXEC-10 | Phase 5 | Pending |
+| EXEC-02 | Phase 6 | Pending |
+| EXEC-03 | Phase 6 | Pending |
+| EXEC-04 | Phase 6 | Pending |
+| EXEC-07 | Phase 6 | Pending |
+| EXEC-08 | Phase 6 | Pending |
+| CONF-01 | Phase 6 | Pending |
+| CONF-02 | Phase 6 | Pending |
+| STEP-01 | Phase 7 | Pending |
+| STEP-02 | Phase 7 | Pending |
+| STEP-03 | Phase 7 | Pending |
+| ACTN-01 | Phase 8 | Pending |
+| ACTN-02 | Phase 8 | Pending |
+| ACTN-03 | Phase 8 | Pending |
+| ACTN-04 | Phase 8 | Pending |
+| ACTN-05 | Phase 8 | Pending |
+| ACTN-06 | Phase 8 | Pending |
+| MNTR-01 | Phase 9 | Pending |
+| MNTR-02 | Phase 9 | Pending |
+| MNTR-03 | Phase 9 | Pending |
+| MNTR-04 | Phase 9 | Pending |
+| MNTR-05 | Phase 9 | Pending |
 
 **Coverage:**
-- v1 requirements: 30 total
-- Mapped to phases: 0
-- Unmapped: 30
+- v1 requirements: 37 total
+- Mapped to phases: 37
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-22*
-*Last updated: 2026-02-22 after initial definition*
+*Last updated: 2026-02-22 after roadmap creation (traceability populated)*
