@@ -17,6 +17,8 @@ _build/
 !.vscode/
 !.mailmap
 !.weblate.json
+!.planning/
+!.claude/
 # compiled python files
 *.py[co]
 __pycache__/
