@@ -18,6 +18,44 @@ class StockPickingExtend(models.Model):
         related='company_id.is_bayan_code_applicable',
         store=False
     )
+    landed_cost_count = fields.Integer(compute='_compute_landed_cost_count', string="Landed Cost Count")
+
+    def _compute_landed_cost_count(self):
+        """
+        Computes the number of landed costs linked to this picking.
+        """
+        for picking in self:
+            picking.landed_cost_count = self.env['stock.landed.cost'].search_count([('picking_ids', 'in', picking.id)])
+
+    def action_view_landed_costs(self):
+        """
+        Returns an action to view the Landed Cost records linked to this picking.
+        """
+        self.ensure_one()
+        landed_costs = self.env['stock.landed.cost'].search([('picking_ids', 'in', self.id)])
+        action = self.env["ir.actions.actions"]._for_xml_id("stock_landed_costs.action_stock_landed_cost")
+        if len(landed_costs) > 1:
+            action['domain'] = [('id', 'in', landed_costs.ids)]
+        elif landed_costs:
+            action.update({
+                'views': [(False, 'form')],
+                'res_id': landed_costs.id,
+            })
+        return action
+
+    def button_create_landed_costs(self):
+        """
+        Returns an action to create a new Landed Cost record with the current picking selected.
+        """
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("stock_landed_costs.action_stock_landed_cost")
+        action.update({
+            'views': [(False, 'form')],
+            'context': {
+                'default_picking_ids': [self.id],
+            }
+        })
+        return action
 
     def button_validate(self):
         """

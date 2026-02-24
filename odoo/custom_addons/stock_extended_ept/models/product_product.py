@@ -156,7 +156,7 @@ class ProductVariantExtended(models.Model):
         file_content = stream.getvalue()
 
         fmt = '%m-%d-%Y'
-        attachment_name = f"Self Service Components availability({datetime.now().strftime(fmt)}).xlsx"
+        attachment_name = f"Stock Availability Report({datetime.now().strftime(fmt)}).xlsx"
 
         return self.env['ir.attachment'].create({
             'name': attachment_name,

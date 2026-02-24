@@ -78,7 +78,7 @@ class ResPartner(models.Model):
             })
         code = sequence.next_by_code(f"vendor.{country_code}")
         self.vendor_code = code
-        if self.ref:
-            self.ref = f"{self.ref} | {code}"
-        else:
-            self.ref = code
+        # if self.ref:
+        #     self.ref = f"{self.ref} | {code}"
+        # else:
+        #     self.ref = code

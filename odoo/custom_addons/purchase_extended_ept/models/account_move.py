@@ -3,14 +3,6 @@ from odoo import models, api
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    def force_set_name(self, new_name):
-        self.ensure_one()
-        vals = {'payment_reference': new_name}
-        if self.move_type in ('in_invoice', 'in_refund', 'in_receipt'):
-            vals['ref'] = new_name
-        self.sudo().write(vals)
-        return True
-
     def button_create_landed_costs(self):
         """
         Override to automatically select relevant stock transfers (receipts)

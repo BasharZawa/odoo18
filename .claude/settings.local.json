@@ -10,7 +10,17 @@
       "Bash(curl:*)",
       "Bash(python3:*)",
       "Bash(python:*)",
-      "Bash(node ./.claude/get-shit-done/bin/gsd-tools.js commit:*)"
+      "Bash(node ./.claude/get-shit-done/bin/gsd-tools.js commit:*)",
+      "mcp__n8n-mcp__search_workflows",
+      "Bash(echo no config:*)",
+      "Bash(docker exec n8n sqlite3 /home/node/.n8n/database.sqlite \"SELECT id, workflowId, status, startedAt FROM execution_entity ORDER BY id DESC LIMIT 10;\" 2>/dev/null || docker exec n8n sqlite3 /root/.n8n/database.sqlite \"SELECT id, workflowId, status, startedAt FROM execution_entity ORDER BY id DESC LIMIT 10;\" 2>/dev/null)",
+      "Bash(docker cp:*)",
+      "Bash(head:*)",
+      "Bash(docker exec:*)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "n8n-mcp"
+  ]
 }

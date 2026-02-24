@@ -89,7 +89,9 @@
                 <t t-set="is_packing_slip" t-value="is_packing_slip"/>
             </t>
         </xpath>
-        <xpath expr="//tr[@t-foreach='o.move_line_ids']/t[@t-call='stock.stock_report_delivery_has_serial_move_line']"
+
+<!--        <xpath expr="//tr[@t-foreach='o.move_line_ids']/t[@t-call='stock.stock_report_delivery_has_serial_move_line']"-->
+        <xpath expr="//t[@t-if='o.has_packages']//t[@t-call='stock.stock_report_delivery_has_serial_move_line']"
                position="replace">
             <t t-call="stock.stock_report_delivery_has_serial_move_line">
                 <t t-set="is_packing_slip" t-value="is_packing_slip"/>

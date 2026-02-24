@@ -5,7 +5,7 @@
     'description': """Inventory related modifications""",
     'author': 'Emipro Technologies Pvt. Ltd.',
     'website': 'http://www.emiprotechnologies.com/',
-    'depends': ['base', 'stock', 'approvals', 'account', 'purchase'],
+    'depends': ['base', 'stock', 'approvals', 'account', 'purchase', 'stock_landed_costs'],
     'data': [
         'security/res_groups.xml',
         'data/approval_category_rec.xml',
@@ -22,7 +22,8 @@
         'views/res_company.xml',
         'views/stock_lot.xml',
         'views/stock_picking.xml',
-        'views/res_partner.xml'
+        'views/res_partner.xml',
+        'views/stock_landed_cost.xml'
     ],
     'images': ['static/description/icon.png'],
     'installable': True,

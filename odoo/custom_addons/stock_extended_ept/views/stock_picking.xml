@@ -5,6 +5,19 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="button_create_landed_costs" string="Create Landed Costs" type="object"
+                        class="oe_highlight" data-hotkey="l"
+                        invisible="picking_type_code != 'incoming' or state != 'done'"/>
+            </xpath>
+            <div name="button_box" position="inside">
+                <button string="Landed Costs" type="object"
+                    name="action_view_landed_costs"
+                    class="oe_stat_button" icon="fa-plus-square"
+                    invisible="landed_cost_count == 0">
+                    <field name="landed_cost_count" widget="statinfo" string="Landed Costs"/>
+                </button>
+            </div>
             <field name="backorder_id" position="after">
                 <field name="bayan_code" invisible="picking_type_code != 'incoming' or not is_bayan_code_visible"
                        readonly="state in ['done', 'cancel']"/>

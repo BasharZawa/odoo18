@@ -4,9 +4,23 @@ from odoo import _, fields, models, api
 from odoo.exceptions import UserError
 from odoo.tools import float_compare, float_is_zero, format_date, groupby
 
-# NOTE: Removed invoice_policy override with company_dependent=True as it causes 
-# database column type conflicts (varchar -> jsonb conversion fails with existing data).
-# The standard invoice_policy field from sale module is used instead.
+class ProductTemplate(models.Model):
+    _inherit = "product.template"
+
+    invoice_policy = fields.Selection(
+            selection=[
+                ('order', "Ordered quantities"),
+                ('delivery', "Delivered quantities"),
+            ],
+            string="Invoicing Policy",
+            compute='_compute_invoice_policy',
+            precompute=True,
+            company_dependent=True,
+            store=True,
+            readonly=False,
+            tracking=True,
+            help="Ordered Quantity: Invoice quantities ordered by the customer.\n"
+                 "Delivered Quantity: Invoice quantities delivered to the customer.")
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
@@ -145,13 +159,13 @@ class SaleOrder(models.Model):
                     "from_approval") and order.approval_request_id.request_status != 'approved' and order.company_id.account_use_credit_limit:
                 if order._has_partner_overdue_invoices():
                     hold_reason.append("overdue invoices")
-                if order._is_credit_limit_exceeded():
+                if order.partner_id.commercial_partner_id.use_partner_credit_limit and order._is_credit_limit_exceeded():
                     hold_reason.append("credit limit exceeded")
 
                 if hold_reason:
                     order.write({
                         "state": "on_hold",
-                        "credit_on_hold": True,
+                        "credit_on_hold": order.partner_id.commercial_partner_id.use_partner_credit_limit,
                     })
                     # Create approval request
                     order._create_approval_request()

@@ -75,10 +75,10 @@ class ResPartner(models.Model):
                 })
             code = sequence.next_by_code(f"customer.{country_code}")
             self.customer_id = code
-            if self.ref:
-                self.ref = f"{self.ref} | {code}"
-            else:
-                self.ref = code
+            # if self.ref:
+            #     self.ref = f"{self.ref} | {code}"
+            # else:
+            #     self.ref = code
 
     def action_validate_customer(self):
         """Validate customer contact - Finance team only"""

@@ -15,6 +15,7 @@
 - **URL:** http://localhost:8069
 - **Addons path:** addons, odoo/addons, custom_addons, odoo/custom_addons, odoo/ent_addons
 - **MCP server:** `odoo_mcp_server.py` (50+ tools, FastMCP, config in `~/.config/Claude/claude_desktop_config.json`)
+- **n8n:** http://localhost:5678 — local instance, REST API via `X-N8N-API-KEY` header, MCP server in `.mcp.json`
 
 ## Custom Modules (18 total in `odoo/custom_addons/` and `custom_addons/`)
 
@@ -73,9 +74,24 @@ approval = self.env['approval.request'].create({
     'res_id': self.id,
 })
 ```
+### n8n integration pattern (confirmed working)
+Odoo `ir.actions.server` (automated action) sends HTTP POST to n8n webhook → n8n processes (AI, transforms, external APIs) → returns result or updates Odoo via JSON-RPC.
 
-### n8n webhook pattern
-Odoo controller sends HTTP POST to n8n webhook → n8n processes (Claude AI, transforms, etc.) → returns result to Odoo.
+**When to use n8n vs Odoo native:**
+- **n8n**: External API integrations, AI/LLM processing, multi-system notifications, data sync to external tools
+- **Odoo native**: Approval workflows, field computations, status transitions, ir.cron jobs, internal logic
+
+**Active workflows:**
+| ID | Name | Webhook URL |
+|----|------|-------------|
+| dkuwldwnKmkCgn4O | Odoo Contact Created | `POST /webhook/odoo-contact-created` |
+
+**n8n API pattern** (native MCP has no create tool — use REST API):
+```bash
+curl -X POST http://localhost:5678/api/v1/workflows \
+  -H "Content-Type: application/json" \
+  -H "X-N8N-API-KEY: $N8N_API_KEY" -d '{...}'
+```
 
 ### Invoice change wizard pattern (purchase_extended_ept)
 - Do not write directly to `account.move.name` for posted invoices when the goal is to adjust payment memo/reference.
