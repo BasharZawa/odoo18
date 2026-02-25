@@ -16,7 +16,8 @@
       "Bash(docker exec n8n sqlite3 /home/node/.n8n/database.sqlite \"SELECT id, workflowId, status, startedAt FROM execution_entity ORDER BY id DESC LIMIT 10;\" 2>/dev/null || docker exec n8n sqlite3 /root/.n8n/database.sqlite \"SELECT id, workflowId, status, startedAt FROM execution_entity ORDER BY id DESC LIMIT 10;\" 2>/dev/null)",
       "Bash(docker cp:*)",
       "Bash(head:*)",
-      "Bash(docker exec:*)"
+      "Bash(docker exec:*)",
+      "Bash(npx get-shit-done-cc:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
