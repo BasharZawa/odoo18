@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-08 18:37+0000\n"
-"PO-Revision-Date: 2026-01-10 09:15+0000\n"
+"POT-Creation-Date: 2026-03-06 18:38+0000\n"
+"PO-Revision-Date: 2026-03-07 05:13+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Slovak <https://translate.odoo.com/projects/odoo-18/web/sk/>\n"
 "Language: sk\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
 ">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.1\n"
 
 #. module: web
 #. odoo-javascript
@@ -530,7 +530,7 @@ msgstr ""
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
-msgid "<span itemprop=\"name\">Deco Addict</span>"
+msgid "<span itemprop=\"name\">Acme Corporation</span>"
 msgstr ""
 
 #. module: web
@@ -1446,7 +1446,7 @@ msgstr ""
 #: code:addons/web/static/src/views/kanban/kanban_controller.js:0
 #: code:addons/web/static/src/views/list/list_controller.js:0
 msgid "Bye-bye, record!"
-msgstr ""
+msgstr "Zbohom, záznam!"
 
 #. module: web
 #. odoo-javascript
@@ -2133,7 +2133,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/colorlist/colorlist.js:0
 msgid "Cyan"
-msgstr ""
+msgstr "Modrozelená"
 
 #. module: web
 #. odoo-javascript
@@ -2267,7 +2267,7 @@ msgstr "Predvolená hodnota"
 #. odoo-javascript
 #: code:addons/web/static/src/search/custom_favorite_item/custom_favorite_item.xml:0
 msgid "Default filter"
-msgstr ""
+msgstr "Predvolený filter"
 
 #. module: web
 #. odoo-javascript
@@ -2479,6 +2479,8 @@ msgid ""
 "Displays the value of the selected field as a textual hint. If the selected "
 "field is empty, the static placeholder attribute is displayed instead."
 msgstr ""
+"Zobrazuje hodnotu vybraného poľa ako textovú nápovedu. Ak je vybrané pole "
+"prázdne, namiesto toho sa zobrazí príslušný zástupný text."
 
 #. module: web
 #. odoo-javascript
@@ -2591,7 +2593,7 @@ msgstr "Duplikovať"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/char/char_field.js:0
 msgid "Dynamic Placeholder"
-msgstr ""
+msgstr "Dynamický zástupný text"
 
 #. module: web
 #. odoo-javascript
@@ -3346,7 +3348,7 @@ msgstr "Obrázok"
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/remaining_days/remaining_days_field.js:0
 msgid "In %s days"
-msgstr ""
+msgstr "Do %s dní"
 
 #. module: web
 #. odoo-javascript
@@ -4150,6 +4152,12 @@ msgstr ""
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/views/fields/float/float_field.js:0
+msgid "Minimum Digits"
+msgstr ""
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/views/fields/timezone_mismatch/timezone_mismatch_field.js:0
 msgid "Mismatch title"
 msgstr ""
@@ -4426,7 +4434,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web/static/src/core/tree_editor/tree_editor.xml:0
 msgid "New Rule"
-msgstr ""
+msgstr "Nové pravidlo"
 
 #. module: web
 #. odoo-javascript
@@ -4640,7 +4648,7 @@ msgstr ""
 #: code:addons/web/static/src/views/kanban/kanban_controller.js:0
 #: code:addons/web/static/src/views/list/list_controller.js:0
 msgid "No, keep it"
-msgstr ""
+msgstr "Nie, nechať tak"
 
 #. module: web
 #. odoo-javascript
@@ -5026,7 +5034,7 @@ msgstr "Súbor PDF"
 #: model_terms:ir.ui.view,arch_db:web.external_layout_striped
 #: model_terms:ir.ui.view,arch_db:web.external_layout_wave
 msgid "Page <span class=\"page\"/> / <span class=\"topage\"/>"
-msgstr ""
+msgstr "Strana<span class=\"page\"/> / <span class=\"topage\"/>"
 
 #. module: web
 #. odoo-javascript
@@ -6444,7 +6452,7 @@ msgstr "DIČ"
 #. odoo-javascript
 #: code:addons/web/static/src/core/colorlist/colorlist.js:0
 msgid "Teal"
-msgstr ""
+msgstr "Tmavo modrozelená"
 
 #. module: web
 #. odoo-javascript
@@ -6543,6 +6551,12 @@ msgid ""
 "is taking too much time."
 msgstr ""
 "Operácia bola prerušená. Obvykle to znamená, že operácia trvala pridlho."
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/core/errors/error_dialogs.js:0
+msgid "The request sent to the server was too large"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -6697,6 +6711,12 @@ msgstr "Št"
 #: code:addons/web/static/src/views/fields/float_time/float_time_field.js:0
 msgid "Time"
 msgstr "Čas"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/webclient/debug/profiling/profiling_item.xml:0
+msgid "Time Limit (seconds)"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -7215,7 +7235,7 @@ msgstr "Hodnoty"
 #: code:addons/web/static/src/views/form/form_label.js:0
 #: code:addons/web/static/src/views/form/setting/setting.xml:0
 msgid "Values set here are company-specific."
-msgstr ""
+msgstr "Hodnoty nastavené tu sú špecifické pre danú spoločnosť."
 
 #. module: web
 #. odoo-javascript
@@ -7473,7 +7493,7 @@ msgstr ""
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.webclient_offline
 msgid "You are offline"
-msgstr ""
+msgstr "Ste nepripojený"
 
 #. module: web
 #. odoo-javascript

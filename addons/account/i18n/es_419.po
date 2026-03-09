@@ -11,13 +11,13 @@
 # Fernanda Alvarez, 2025
 # "Fernanda Alvarez (mfar)" <mfar@odoo.com>, 2025, 2026.
 # "Patricia Gutiérrez (pagc)" <pagc@odoo.com>, 2025.
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 18:38+0000\n"
-"PO-Revision-Date: 2026-01-24 09:14+0000\n"
+"POT-Creation-Date: 2026-02-27 18:36+0000\n"
+"PO-Revision-Date: 2026-03-05 16:25+0000\n"
 "Last-Translator: \"Fernanda Alvarez (mfar)\" <mfar@odoo.com>\n"
 "Language-Team: Spanish (Latin America) <https://translate.odoo.com/projects/"
 "odoo-18/account/es_419/>\n"
@@ -25,9 +25,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
-" ? 1 : 2);\n"
-"X-Generator: Weblate 5.14.3\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
+"0) ? 1 : 2);\n"
+"X-Generator: Weblate 5.16.1\n"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__type
@@ -77,6 +77,16 @@ msgstr ""
 "        Por ejemplo, 180 / (1 - 10%) = 200 (sin precio incluido)\n"
 "        Por ejemplo, 200 * (1-10%) = 180 (precio incluido)\n"
 "        "
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"\n"
+"Please contact your administrator."
+msgstr ""
+"\n"
+"Comunícate con el administrador."
 
 #. module: account
 #. odoo-python
@@ -3844,6 +3854,12 @@ msgid "Bank of odoo"
 msgstr "Banco de Odoo"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Bank settings"
+msgstr "Ajustes bancarios"
+
+#. module: account
 #: model:ir.model,name:account.model_account_setup_bank_manual_config
 msgid "Bank setup manual config"
 msgstr "Configuración manual de datos bancarios"
@@ -4611,6 +4627,8 @@ msgid "Chart of accounts set!"
 msgstr "Se configuró el plan de cuentas."
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
 #: model_terms:ir.ui.view,arch_db:account.report_hash_integrity
 msgid "Check"
 msgstr "Verificación"
@@ -9927,6 +9945,7 @@ msgstr "Diario:"
 #: model:ir.actions.act_window,name:account.action_account_journal_form
 #: model:ir.model.fields,field_description:account.field_account_report__filter_journals
 #: model:ir.ui.menu,name:account.menu_action_account_journal_form
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 msgid "Journals"
 msgstr "Diarios "
 
@@ -11244,7 +11263,7 @@ msgstr "Cuentas por cobrar no comerciales"
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_account__account_type__asset_non_current
 msgid "Non-current Assets"
-msgstr "Activos no circulantes"
+msgstr "Activos no corrientes"
 
 #. module: account
 #: model:account.account,name:account.1_non_current_liabilities
@@ -13067,7 +13086,7 @@ msgstr "Cantidad:"
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_move__auto_post__quarterly
 msgid "Quarterly"
-msgstr "Trimestralmente"
+msgstr "Trimestral"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__quick_edit_mode
@@ -15702,6 +15721,16 @@ msgstr ""
 "(%s)."
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The bank account of your company is not trusted. Please ask an admin or "
+"someone with approval rights to check it."
+msgstr ""
+"La cuenta bancaria de tu empresa no es de confianza. Pídele a un "
+"administrador o a alguien con permisos de aprobación que la revise."
+
+#. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__statement_id
 msgid "The bank statement used for bank reconciliation"
 msgstr ""
@@ -15773,6 +15802,19 @@ msgstr ""
 msgid ""
 "The commercial partner has been updated for all related accounting entries."
 msgstr "Se actualizó el contacto comercial en todos los asientos relacionados."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The company bank account (%(account_number)s) linked to this invoice is not "
+"trusted. Go to the Bank Settings, double-check that it is yours or correct "
+"the number, and click on Send Money to trust it."
+msgstr ""
+"La cuenta bancaria de la empresa (%(account_number)s) vinculada a esta "
+"factura no es de confianza. Ve a los Ajustes bancarios, verifica que sea "
+"tuya o corrige el número y haz clic en \"Enviar dinero\" para indicar que es "
+"de confianza."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax_repartition_line__company_id
@@ -15931,6 +15973,14 @@ msgstr "El asiento %(name)s (id %(id)s) debe ser un borrador."
 #: model:ir.model.fields,help:account.field_account_move__secured
 msgid "The entry is secured with an inalterable hash."
 msgstr "El asiento está protegido con un hash inalterable."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The entry is using accounts (%(accounts_codes_names)s) from a different "
+"company."
+msgstr "El asiento usa cuentas (%(accounts_codes_names)s) de otra empresa."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_product_category__property_account_expense_categ_id
@@ -16422,6 +16472,16 @@ msgstr ""
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"The scheduled action 'Send Invoices automatically' is archived. You won't be "
+"able to send invoices in batch."
+msgstr ""
+"La acción programada \"Enviar facturas de forma automática\" está archivada. "
+"No podrás enviar facturas en lote."
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/account_report.py:0
 msgid "The sections defined on a report cannot have sections themselves."
 msgstr ""
@@ -16791,18 +16851,6 @@ msgstr "Esta semana"
 #: model:ir.model.fields.selection,name:account.selection__account_report__default_opening_date_filter__this_year
 msgid "This Year"
 msgstr "Este año"
-
-#. module: account
-#. odoo-python
-#: code:addons/account/models/account_account.py:0
-msgid ""
-"This account is configured in %(journal_names)s journal(s) (ids %"
-"(journal_ids)s) as payment debit or credit account. This means that this "
-"account's type should be reconcilable."
-msgstr ""
-"Esta cuenta está configurada en %(journal_names)s diario(s) (ids %"
-"(journal_ids)s) como cuenta de crédito o débito de pago. Esto significa que "
-"el tipo de esta cuenta debe poder conciliarse."
 
 #. module: account
 #. odoo-python
@@ -18093,16 +18141,15 @@ msgid ""
 "You could enter\n"
 "BRT: ([\\d,]+)"
 msgstr ""
-"Valor por el importe de la línea de cancelación\n"
-"    * Porcentaje: porcentaje del balance, entre 0 y 100.\n"
-"    * Fijo: el valor fijo de la cancelación. El importe contará como cargo "
-"si es negativo, como abono si es positivo.\n"
-"    * De la etiqueta: no se necesita un delimitador de expresiones "
-"regulares, solo se necesita la expresión regular. Por ejemplo, si desea "
-"extraer la cantidad de\n"
-"R: 9672938 10/07 AX 9415126318 T: 5L: NA BRT: 3358,07 C:\n"
-"Podría ingresar\n"
-"BRT: ([\\d,] +)"
+"Valor para el importe de la línea de cancelación\n"
+"    Porcentaje: El porcentaje del saldo, entre 0 y 100.\n"
+"    Fijo: El valor fijo de la cancelación. El sistema registra el importe "
+"como cargo si es negativo y como abono si es positivo.\n"
+"    Desde la etiqueta: No es necesario un delimitador de expresión regular, "
+"solo la expresión regular. Por ejemplo, si deseas extraer el importe de\n"
+"R:9672938 10/07 AX 9415126318 T:5L:NA BRT: 3358,07 C:\n"
+"Puedes ingresar\n"
+"BRT: ([\\d,]+)"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report__variant_report_ids
@@ -18773,6 +18820,13 @@ msgstr ""
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_payment.py:0
+msgid ""
+"You cannot change the amount of a payment with multiple liquidity lines."
+msgstr "No puedes cambiar el monto de un pago con varias líneas de liquidez."
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/company.py:0
 msgid ""
 "You cannot change the currency of the company since some journal items "
@@ -19162,8 +19216,11 @@ msgstr ""
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
-msgid "You cannot switch the type of a document which has been posted once."
-msgstr "No puede cambiar el tipo de un documento si se ha registrado una vez."
+msgid ""
+"You cannot switch the type of a document with an existing sequence number."
+msgstr ""
+"No puedes cambiar el tipo de un documento con un número de secuencia "
+"existente."
 
 #. module: account
 #. odoo-python
@@ -19281,6 +19338,16 @@ msgstr ""
 "Debe configurar el 'estado de resultados de cambio' en los ajustes de su "
 "empresa para gestionar de forma automática la reserva de los asientos "
 "contables relacionados con las diferencias entre tipos de cambio."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_journal_dashboard.py:0
+msgid ""
+"You may only use samples in demo mode, try uploading one of your invoices "
+"instead."
+msgstr ""
+"Solo puedes utilizar ejemplos en el modo de demostración, mejor intenta "
+"subir una de tus facturas."
 
 #. module: account
 #. odoo-python
@@ -19858,6 +19925,27 @@ msgid ""
 "{{ object.company_id.name }} Payment Receipt (Ref {{ object.name or 'n/a' }})"
 msgstr ""
 "{{ object.company_id.name }} Pago recibido (Ref {{ object.name or 'n/a' }})"
+
+#~ msgid ""
+#~ "The company bank account linked to this invoice is not trusted, please "
+#~ "double-check and trust it before confirming, or remove it"
+#~ msgstr ""
+#~ "La cuenta bancaria de la empresa vinculada a esta factura no es "
+#~ "confiable. Revísala y márcala como confiable antes de confirmar; de lo "
+#~ "contrario, elimínala."
+
+#~ msgid "You cannot switch the type of a document which has been posted once."
+#~ msgstr ""
+#~ "No puede cambiar el tipo de un documento si se ha registrado una vez."
+
+#~ msgid ""
+#~ "This account is configured in %(journal_names)s journal(s) (ids %"
+#~ "(journal_ids)s) as payment debit or credit account. This means that this "
+#~ "account's type should be reconcilable."
+#~ msgstr ""
+#~ "Esta cuenta está configurada en %(journal_names)s diario(s) (ids %"
+#~ "(journal_ids)s) como cuenta de crédito o débito de pago. Esto significa "
+#~ "que el tipo de esta cuenta debe poder conciliarse."
 
 #~ msgid ""
 #~ "The entry '%(move_name)s (id %(move_id)s) is using accounts from a "

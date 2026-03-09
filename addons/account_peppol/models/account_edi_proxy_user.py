@@ -2,6 +2,7 @@
 
 import logging
 from datetime import timedelta
+from lxml import etree
 
 from odoo import _, api, fields, models, modules, tools
 from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
@@ -141,22 +142,46 @@ class AccountEdiProxyClientUser(models.Model):
         })
         if 'is_in_extractable_state' in move._fields:
             move.is_in_extractable_state = False
+        try:
+            move._extend_with_attachments(attachment, new=True)
+            move._message_log(
+                body=_(
+                    "Peppol document (UUID: %(uuid)s) has been received successfully",
+                    uuid=uuid,
+                ),
+                attachment_ids=attachment.ids,
+            )
+            move._autopost_bill()
+        except Exception:
+            _logger.exception("Unexpected error occurred during the import of bill with id %s", move.id)
 
-        move._extend_with_attachments(attachment, new=True)
-        move._message_log(
-            body=_(
-                "Peppol document (UUID: %(uuid)s) has been received successfully",
-                uuid=uuid,
-            ),
-            attachment_ids=attachment.ids,
-        )
-        move._autopost_bill()
         attachment.write({'res_model': 'account.move', 'res_id': move.id})
         return True
 
     def _peppol_get_import_journal_and_move_type(self, attachment):
         self.ensure_one()
-        return self.company_id.peppol_purchase_journal_id, 'in_invoice'
+        # Self-billed invoices are invoices which your customer creates on your behalf and sends you via Peppol.
+        # In this case, the invoice needs to be created as an out_invoice in a sale journal.
+        xml_tree = etree.fromstring(attachment.raw)
+
+        invoice_type_code = xml_tree.findtext('.//{*}InvoiceTypeCode')
+        credit_note_type_code = xml_tree.findtext('.//{*}CreditNoteTypeCode')
+
+        if invoice_type_code in ['389', '527'] or credit_note_type_code == '261':
+            # 329/527: Self-billing invoice; 261: Self-billing credit note
+            journal = self.env['account.journal'].search(
+                [
+                    *self.env['account.journal']._check_company_domain(self.company_id),
+                    ('type', '=', 'sale'),
+                ],
+                limit=1,
+            )
+            move_type = 'out_invoice' if invoice_type_code else 'out_refund'
+        else:
+            journal = self.company_id.peppol_purchase_journal_id
+            move_type = 'in_invoice'
+
+        return journal, move_type
 
     def _peppol_get_new_documents(self):
         # Context added to not break stable policy: useful to tweak on databases processing large invoices
@@ -282,12 +307,15 @@ class AccountEdiProxyClientUser(models.Model):
     def _peppol_get_participant_status(self):
         for edi_user in self:
             edi_user = edi_user.with_company(edi_user.company_id)
+            if edi_user.proxy_type != 'peppol':
+                continue
             try:
-                proxy_user = self._make_request(f"{self._get_server_url()}/api/peppol/2/participant_status")
+                proxy_user = edi_user._make_request(f"{edi_user._get_server_url()}/api/peppol/2/participant_status")
             except AccountEdiProxyError as e:
                 if e.code == 'client_gone':
                     # reset the connection if it was archived/deleted on IAP side
                     edi_user.sudo().company_id._reset_peppol_configuration()
+                    edi_user.action_archive()
                 else:
                     # don't auto-deregister users on any other errors to avoid settings client-side to states
                     # that are not recoverable without user action if an error on IAP side ever occurs

@@ -94,7 +94,6 @@ class AccountEdiXmlUBLSG(models.AbstractModel):
         if not grouping_key:
             return
 
-        grouping_key['scheme_id'] = 'GST'
         grouping_key['tax_exemption_reason'] = None
         grouping_key['tax_exemption_reason_code'] = None
 
@@ -114,32 +113,34 @@ class AccountEdiXmlUBLSG(models.AbstractModel):
         discount_node['cbc:BaseAmount'] = None
         return discount_node
 
-    def _ubl_add_values_tax_currency_code(self, vals):
+    def _ubl_add_tax_currency_code_node(self, vals):
         # OVERRIDE account.edi.xml.ubl_bis3
-        self._ubl_add_values_tax_currency_code_empty(vals)
+        self._ubl_add_tax_currency_code_node_empty(vals)
 
-    def _add_invoice_tax_total_nodes(self, document_node, vals):
-        # OVERRIDE
-        document_node['cac:TaxTotal'] = [
-            self._ubl_get_tax_total_node(vals, tax_total)
-            for tax_total in vals['_ubl_values']['tax_totals_currency'].values()
-        ]
-
-    def _add_invoice_header_nodes(self, document_node, vals):
+    def _ubl_tax_totals_node_grouping_key(self, base_line, tax_data, vals, currency):
         # EXTENDS account.edi.xml.ubl_bis3
-        super()._add_invoice_header_nodes(document_node, vals)
-        document_node['cbc:CustomizationID'] = {'_text': self._get_customization_ids()['ubl_sg']}
+        tax_total_keys = super()._ubl_tax_totals_node_grouping_key(base_line, tax_data, vals, currency)
 
-    def _add_invoice_payment_means_nodes(self, document_node, vals):
-        """ https://www.peppolguide.sg/billing/bis/#_payment_means_information """
-        super()._add_invoice_payment_means_nodes(document_node, vals)
-        document_node['cac:PaymentMeans']['cbc:PaymentMeansCode'] = {
+        company_currency = vals['company'].currency_id
+        if (
+            tax_total_keys['tax_total_key']
+            and company_currency != vals['currency']
+            and tax_total_keys['tax_total_key']['currency'] == company_currency
+        ):
+            tax_total_keys['tax_total_key'] = None
+
+        return tax_total_keys
+
+    def _ubl_add_customization_id_node(self, vals):
+        # EXTENDS account.edi.xml.ubl_bis3
+        super()._ubl_add_customization_id_node(vals)
+        vals['document_node']['cbc:CustomizationID']['_text'] = 'urn:cen.eu:en16931:2017#conformant#urn:fdc:peppol.eu:2017:poacc:billing:international:sg:3.0'
+
+    def _ubl_add_payment_means_nodes(self, vals):
+        # EXTENDS account.edi.xml.ubl_bis3
+        super()._ubl_add_payment_means_nodes(vals)
+        # https://www.peppolguide.sg/billing/bis/#_payment_means_information
+        vals['document_node']['cac:PaymentMeans'][0]['cbc:PaymentMeansCode'] = {
             '_text': 54,
             'name': 'Credit Card',
         }
-
-    def _get_party_node(self, vals):
-        # EXTENDS account.edi.xml.ubl_bis3
-        party_node = super()._get_party_node(vals)
-        party_node['cac:PartyTaxScheme'][0]['cac:TaxScheme']['cbc:ID']['_text'] = 'GST'
-        return party_node

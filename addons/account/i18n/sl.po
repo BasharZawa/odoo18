@@ -19,12 +19,13 @@
 # Jan Zorko <jan.zorko@implex.si>, 2025, 2026.
 # Tadej Vengust <tadej.vengust@implex.si>, 2025.
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Žiga Trček <ziga.trcek@implex.si>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 18:38+0000\n"
-"PO-Revision-Date: 2026-01-17 09:09+0000\n"
+"POT-Creation-Date: 2026-02-27 18:36+0000\n"
+"PO-Revision-Date: 2026-03-06 16:49+0000\n"
 "Last-Translator: Jan Zorko <jan.zorko@implex.si>\n"
 "Language-Team: Slovenian <https://translate.odoo.com/projects/odoo-18/"
 "account/sl/>\n"
@@ -34,7 +35,7 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.1\n"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__type
@@ -79,6 +80,14 @@ msgstr ""
 "npr. 180 / (1 - 10 %) = 200 (cena ni vključena)\n"
 "npr. 200 * (1 - 10 %) = 180 (cena je vključena))\n"
 "        "
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"\n"
+"Please contact your administrator."
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -2527,16 +2536,14 @@ msgstr "Prilagajanje vnosa"
 #. odoo-python
 #: code:addons/account/wizard/account_automatic_entry_wizard.py:0
 msgid "Adjusting Entry {link} {percent}%% of {amount} recognized from {date}"
-msgstr ""
-"Prilagajanje vnosa {povezava} {procent}%% od {znesek} priznano od {datum}"
+msgstr "Prilagajanje vnosa {link} {percent}%% od {amount} priznano od {date}"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/wizard/account_automatic_entry_wizard.py:0
 msgid "Adjusting Entry {link} {percent}%% of {amount} recognized on {new_date}"
 msgstr ""
-"Prilagoditev vnosa {povezava} {procent}%% od {znesek}, priznana na "
-"{novi_datum}"
+"Prilagoditev vnosa {link} {percent}%% od {amount}, priznana na {new_date}"
 
 #. module: account
 #: model:res.groups,name:account.group_account_manager
@@ -3659,6 +3666,12 @@ msgid "Bank of odoo"
 msgstr "Banka od Odoo-ja"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Bank settings"
+msgstr ""
+
+#. module: account
 #: model:ir.model,name:account.model_account_setup_bank_manual_config
 msgid "Bank setup manual config"
 msgstr "Ročna konfiguracija nastavitve banke"
@@ -4407,6 +4420,8 @@ msgid "Chart of accounts set!"
 msgstr "Kontni načrt postavljen!"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
 #: model_terms:ir.ui.view,arch_db:account.report_hash_integrity
 msgid "Check"
 msgstr "Ček"
@@ -8082,7 +8097,7 @@ msgid ""
 msgstr ""
 "Živjo,\n"
 "    <br/><br/>\n"
-"    Vaš e-poštni naslov je bil zavržen. E-poštni naslov, ki ste ga "
+"    Vaše e-poštno sporočilo je bilo zavrženo. E-poštni naslov, ki ste ga "
 "uporabili, sprejema samo nove račune:"
 
 #. module: account
@@ -9687,6 +9702,7 @@ msgstr "Dnevnik:"
 #: model:ir.actions.act_window,name:account.action_account_journal_form
 #: model:ir.model.fields,field_description:account.field_account_report__filter_journals
 #: model:ir.ui.menu,name:account.menu_action_account_journal_form
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 msgid "Journals"
 msgstr "Dnevniki"
 
@@ -13346,7 +13362,7 @@ msgstr "Obrnjen od: %s"
 #: model:ir.actions.act_window,name:account.action_view_account_move_reversal
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_reversal
 msgid "Reverse"
-msgstr "Obrnjen"
+msgstr "Obrni"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -14460,9 +14476,7 @@ msgstr "Izpisek"
 #. odoo-python
 #: code:addons/account/models/account_bank_statement.py:0
 msgid "Statement %(date)s"
-msgstr ""
-"Izjava\n"
-"%(date)s"
+msgstr "Izpisek %(date)s"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__statement_line_id
@@ -15413,6 +15427,14 @@ msgid ""
 msgstr "Bančni račun bančnega dnevnika mora pripadati istemu podjetju. (%s)."
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The bank account of your company is not trusted. Please ask an admin or "
+"someone with approval rights to check it."
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__statement_id
 msgid "The bank statement used for bank reconciliation"
 msgstr "Bančni izpisek, ki se uporablja pri uskladitvi"
@@ -15481,6 +15503,15 @@ msgid ""
 "The commercial partner has been updated for all related accounting entries."
 msgstr ""
 "Komercialni partner je bil posodobljen za vse povezane računovodske vnose."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The company bank account (%(account_number)s) linked to this invoice is not "
+"trusted. Go to the Bank Settings, double-check that it is yours or correct "
+"the number, and click on Send Money to trust it."
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax_repartition_line__company_id
@@ -15641,6 +15672,14 @@ msgstr ""
 #: model:ir.model.fields,help:account.field_account_move__secured
 msgid "The entry is secured with an inalterable hash."
 msgstr "Vnos je zavarovan z nespremenljivim zgoščenim ključem (hash)."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The entry is using accounts (%(accounts_codes_names)s) from a different "
+"company."
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,help:account.field_product_category__property_account_expense_categ_id
@@ -16099,6 +16138,14 @@ msgstr "Tekoče stanje (%s) se ne ujema z določenim končnim stanjem."
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"The scheduled action 'Send Invoices automatically' is archived. You won't be "
+"able to send invoices in batch."
+msgstr ""
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/account_report.py:0
 msgid "The sections defined on a report cannot have sections themselves."
 msgstr "Razdelki, definirani v poročilu, ne morejo imeti samih razdelkov."
@@ -16463,18 +16510,6 @@ msgstr "Ta teden"
 #: model:ir.model.fields.selection,name:account.selection__account_report__default_opening_date_filter__this_year
 msgid "This Year"
 msgstr "To leto"
-
-#. module: account
-#. odoo-python
-#: code:addons/account/models/account_account.py:0
-msgid ""
-"This account is configured in %(journal_names)s journal(s) (ids %"
-"(journal_ids)s) as payment debit or credit account. This means that this "
-"account's type should be reconcilable."
-msgstr ""
-"Ta račun je konfiguriran v %(journal_names)s dnevniku (identifikacije) %"
-"(journal_ids)s) kot plačilni debetni ali kreditni račun. To pomeni, da mora "
-"biti ta vrsta računa uskladljiva."
 
 #. module: account
 #. odoo-python
@@ -18423,6 +18458,13 @@ msgstr ""
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_payment.py:0
+msgid ""
+"You cannot change the amount of a payment with multiple liquidity lines."
+msgstr ""
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/company.py:0
 msgid ""
 "You cannot change the currency of the company since some journal items "
@@ -18814,8 +18856,9 @@ msgstr ""
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
-msgid "You cannot switch the type of a document which has been posted once."
-msgstr "Vrste dokumenta, ki je bil že enkrat objavljen, ni mogoče spremeniti."
+msgid ""
+"You cannot switch the type of a document with an existing sequence number."
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -18935,6 +18978,14 @@ msgstr ""
 "konfigurirati »Dnevnik tečajnih dobičkov ali izgub«, da boste samodejno "
 "upravljali knjiženje računovodskih vnosov, povezanih z razlikami med "
 "menjalnimi tečaji."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_journal_dashboard.py:0
+msgid ""
+"You may only use samples in demo mode, try uploading one of your invoices "
+"instead."
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -19103,7 +19154,7 @@ msgstr "po e-pošti"
 #. odoo-python
 #: code:addons/account/wizard/account_automatic_entry_wizard.py:0
 msgid "cancelling {percent}%% of {amount}"
-msgstr "preklic {procent}%% od {zneska}"
+msgstr "preklic {percent}%% od {amount}"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_default_terms_and_conditions
@@ -19366,7 +19417,7 @@ msgstr "plačila bodo preskočena zaradi"
 #. odoo-python
 #: code:addons/account/wizard/account_automatic_entry_wizard.py:0
 msgid "postponing it to {new_date}"
-msgstr "prestavitev na {nov_datum}"
+msgstr "zamik na {new_date}"
 
 #. module: account
 #. odoo-python
@@ -19511,6 +19562,19 @@ msgid ""
 msgstr ""
 "{{ object.company_id.name }} Potrdilo o plačilu (Ref {{ object.name or 'n/"
 "a' }})"
+
+#~ msgid "You cannot switch the type of a document which has been posted once."
+#~ msgstr ""
+#~ "Vrste dokumenta, ki je bil že enkrat objavljen, ni mogoče spremeniti."
+
+#~ msgid ""
+#~ "This account is configured in %(journal_names)s journal(s) (ids %"
+#~ "(journal_ids)s) as payment debit or credit account. This means that this "
+#~ "account's type should be reconcilable."
+#~ msgstr ""
+#~ "Ta račun je konfiguriran v %(journal_names)s dnevniku (identifikacije) %"
+#~ "(journal_ids)s) kot plačilni debetni ali kreditni račun. To pomeni, da "
+#~ "mora biti ta vrsta računa uskladljiva."
 
 #~ msgid "This setting cannot be changed after an invoice is created."
 #~ msgstr "Te nastavitve ni mogoče spremeniti po ustvarjanju računa."

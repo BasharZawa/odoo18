@@ -5,6 +5,7 @@ try:
 except ImportError:
     contents = None
 
+from odoo.exceptions import UserError
 from odoo.tests import tagged
 
 
@@ -66,8 +67,6 @@ class TestUblExportBis3BE(TestUblBis3Common, TestUblCiiBECommon):
 
     def test_invoice_price_unit_more_decimals(self):
         tax_21 = self.percent_tax(21.0)
-        decimal_precision = self.env['decimal.precision'].search([('name', '=', 'Product Price')], limit=1)
-        decimal_precision.digits = 4
         product = self._create_product(lst_price=0.4567, taxes_id=tax_21)
         invoice = self._create_invoice_one_line(
             product_id=product,
@@ -78,6 +77,27 @@ class TestUblExportBis3BE(TestUblBis3Common, TestUblCiiBECommon):
 
         self._generate_invoice_ubl_file(invoice)
         self._assert_invoice_ubl_file(invoice, 'test_invoice_price_unit_more_decimals')
+
+    def test_invoice_BR_CO_10_line_extension_amount_sum_lines(self):
+        """ [BR_CO_10] Sum of Invoice line net amount (BT-106) = Σ Invoice line net amount (BT-131). """
+        tax_21 = self.percent_tax(21.0)
+        product = self._create_product(lst_price=0.4567, taxes_id=tax_21)
+        invoice = self._create_invoice(
+            partner_id=self.partner_be,
+            invoice_line_ids=[
+                self._prepare_invoice_line(product_id=product),
+                self._prepare_invoice_line(product_id=product),
+                self._prepare_invoice_line(product_id=product),
+                self._prepare_invoice_line(product_id=product),
+                self._prepare_invoice_line(product_id=product),
+                self._prepare_invoice_line(product_id=product),
+                self._prepare_invoice_line(product_id=product, price_unit=1000.45),
+            ],
+            post=True,
+        )
+
+        self._generate_invoice_ubl_file(invoice)
+        self._assert_invoice_ubl_file(invoice, 'test_invoice_BR_CO_10_line_extension_amount_sum_lines')
 
     def test_invoice_price_amount_rounding_precision_with_price_included_taxes(self):
         tax_21 = self.percent_tax(21.0, price_include_override='tax_included')
@@ -120,7 +140,7 @@ class TestUblExportBis3BE(TestUblBis3Common, TestUblCiiBECommon):
         self._generate_invoice_ubl_file(invoice)
         self._assert_invoice_ubl_file(invoice, 'test_invoice_tax_exempt')
 
-    def test_invoice_tax_reverse_charge(self):
+    def test_invoice_tax_withholding(self):
         tax_21 = self.percent_tax(21.0)
         tax_minus_10_67 = self.percent_tax(-10.67)
         product = self._create_product(lst_price=1000.0, taxes_id=tax_21 + tax_minus_10_67)
@@ -131,7 +151,40 @@ class TestUblExportBis3BE(TestUblBis3Common, TestUblCiiBECommon):
         )
 
         self._generate_invoice_ubl_file(invoice)
-        self._assert_invoice_ubl_file(invoice, 'test_invoice_tax_reverse_charge')
+        self._assert_invoice_ubl_file(invoice, 'test_invoice_tax_withholding')
+
+    def test_invoice_BR_S_08_tax_subtotal_taxable_amount(self):
+        """ [BR-S-08] For each different value of VAT category rate (BT-119) where the VAT category code (BT-118) is "Standard rated",
+        the VAT category taxable amount (BT-116) in a VAT breakdown (BG-23) shall equal the sum of Invoice line net amounts (BT-131)
+        plus the sum of document level charge amounts (BT-99) minus the sum of document level allowance amounts (BT-92)
+        where the VAT category code (BT-151, BT-102, BT-95) is "Standard rated" and the VAT rate (BT-152, BT-103, BT-96)
+        equals the VAT category rate (BT-119)
+
+        Note: There is a tolerance of 1 euro for the delta. This test is only producing a difference of 0.01 so,
+        technically, the xml is still valid.
+        """
+        tax_recupel = self.fixed_tax(1.254, name="RECUPEL", include_base_amount=True)
+        tax_auvibel = self.fixed_tax(1.254, name="AUVIBEL", include_base_amount=True)
+        tax_21 = self.percent_tax(21.0)
+        invoice = self._create_invoice(
+            partner_id=self.partner_be,
+            invoice_line_ids=[
+                self._prepare_invoice_line(
+                    product_id=self.product_a,
+                    price_unit=100.0,
+                    tax_ids=tax_recupel + tax_21,
+                ),
+                self._prepare_invoice_line(
+                    product_id=self.product_a,
+                    price_unit=100.0,
+                    tax_ids=tax_auvibel + tax_21,
+                ),
+            ],
+            post=True,
+        )
+
+        self._generate_invoice_ubl_file(invoice)
+        self._assert_invoice_ubl_file(invoice, 'test_invoice_BR_S_08_tax_subtotal_taxable_amount')
 
     def test_invoice_allowance_charge_fixed_tax_recycling_contribution(self):
         """ Ensure the recycling contribution taxes are turned into allowance/charges at the document line level. """
@@ -218,6 +271,38 @@ class TestUblExportBis3BE(TestUblBis3Common, TestUblCiiBECommon):
 
         self._generate_invoice_ubl_file(invoice)
         self._assert_invoice_ubl_file(invoice, 'test_invoice_fixed_tax_emptying_turned_as_extra_invoice_lines')
+
+    def test_invoice_multiple_fixed_tax_emptying_turned_as_extra_invoice_lines(self):
+        tax_emptying_1 = self.fixed_tax(0.1, name="Vidange")
+        tax_emptying_2 = self.fixed_tax(0.2, name="Vidange x2")
+        tax_21 = self.percent_tax(21.0)
+        invoice = self._create_invoice(
+            partner_id=self.partner_be,
+            invoice_line_ids=[
+                self._prepare_invoice_line(
+                    product_id=self.product_a,
+                    price_unit=20.0,
+                    quantity=2.0,
+                    tax_ids=tax_emptying_1 + tax_21,
+                ),
+                self._prepare_invoice_line(
+                    product_id=self.product_a,
+                    price_unit=0.0,
+                    quantity=-4.0,
+                    tax_ids=tax_emptying_1 + tax_21,
+                ),
+                self._prepare_invoice_line(
+                    product_id=self.product_a,
+                    price_unit=40.0,
+                    quantity=2.0,
+                    tax_ids=tax_emptying_2 + tax_21,
+                ),
+            ],
+            post=True,
+        )
+
+        self._generate_invoice_ubl_file(invoice)
+        self._assert_invoice_ubl_file(invoice, 'test_invoice_multiple_fixed_tax_emptying_turned_as_extra_invoice_lines')
 
     def test_invoice_custom_tax_emptying_turned_as_extra_invoice_lines(self):
         """ Ensure the emptying taxes (a.k.a 'vidange') are turned into extra invoice lines inside the xml. """
@@ -476,16 +561,211 @@ class TestUblExportBis3BE(TestUblBis3Common, TestUblCiiBECommon):
         with the appropriate UNCL 7161 reason code (ADK) instead of an Allowance.
         """
         tax_21 = self.percent_tax(21.0)
-        product = self._create_product(lst_price=10.0, taxes_id=tax_21)
+        product = self._create_product(lst_price=5.76, taxes_id=tax_21)
         invoice = self._create_invoice_one_line(
             product_id=product,
             quantity=10.0,
-            price_unit=5.76,
             discount=-1.09,
             partner_id=self.partner_be,
             post=True,
         )
 
         self._generate_invoice_ubl_file(invoice)
-
         self._assert_invoice_ubl_file(invoice, 'test_invoice_negative_discount_upsell')
+
+    def test_invoice_product_commodity_code_intrastat(self):
+        self.ensure_installed('account_intrastat')
+        tax_21 = self.percent_tax(21.0)
+        product = self._create_product(
+            lst_price=10.0,
+            taxes_id=tax_21,
+            intrastat_code_id=self.env.ref('account_intrastat.commodity_code_2018_25309000'),
+        )
+        invoice = self._create_invoice_one_line(
+            product_id=product,
+            partner_id=self.partner_be,
+            post=True,
+        )
+
+        self._generate_invoice_ubl_file(invoice)
+        self._assert_invoice_ubl_file(invoice, 'test_invoice_product_commodity_code_intrastat')
+
+    def test_invoice_product_commodity_code_unspsc(self):
+        self.ensure_installed('product_unspsc')
+        tax_21 = self.percent_tax(21.0)
+        product = self._create_product(
+            lst_price=10.0,
+            taxes_id=tax_21,
+            unspsc_code_id=self.env.ref('product_unspsc.unspsc_code_12141906'),
+        )
+        invoice = self._create_invoice_one_line(
+            product_id=product,
+            partner_id=self.partner_be,
+            post=True,
+        )
+
+        self._generate_invoice_ubl_file(invoice)
+        self._assert_invoice_ubl_file(invoice, 'test_invoice_product_commodity_code_unspsc')
+
+    def test_invoice_product_commodity_code_cpv(self):
+        self.ensure_installed('l10n_ro_cpv_code')
+        tax_21 = self.percent_tax(21.0)
+        product = self._create_product(
+            lst_price=10.0,
+            taxes_id=tax_21,
+            cpv_code_id=self.env.ref('l10n_ro_cpv_code.351131100'),
+        )
+        invoice = self._create_invoice_one_line(
+            product_id=product,
+            partner_id=self.partner_be,
+            post=True,
+        )
+
+        self._generate_invoice_ubl_file(invoice)
+        self._assert_invoice_ubl_file(invoice, 'test_invoice_product_commodity_code_cpv')
+
+    def _assert_invoice_partner_party_identifiers(self, partner, test_file):
+        tax_21 = self.percent_tax(21.0)
+        product = self._create_product(lst_price=100.0, taxes_id=tax_21)
+        invoice = self._create_invoice_one_line(
+            product_id=product,
+            partner_id=partner,
+            post=True,
+        )
+        self._generate_invoice_ubl_file(invoice)
+        self._assert_invoice_ubl_file(invoice, test_file)
+
+    def test_invoice_customer_party_identifiers_partner_be(self):
+        # VAT and company registry set.
+        # PartyIdentification is filled using the company registry.
+        # PartyTaxScheme is filled using the VAT.
+        # PartyLegalEntity is filled using the company registry.
+        self._assert_invoice_partner_party_identifiers(
+            partner=self.partner_be,
+            test_file='test_invoice_customer_party_identifiers_partner_be_vat_and_company_registry',
+        )
+
+        # With only VAT.
+        # PartyIdentification is not there.
+        # PartyTaxScheme / PartyLegalEntity are filled using the VAT.
+        self.partner_be.company_registry = None
+        self._assert_invoice_partner_party_identifiers(
+            partner=self.partner_be,
+            test_file='test_invoice_customer_party_identifiers_partner_be_vat',
+        )
+
+        # With a VAT and a reference.
+        # PartyIdentification is filled using the reference.
+        # PartyTaxScheme / PartyLegalEntity are filled using the VAT.
+        self.partner_be.ref = 'PARTNER_BE'
+        self._assert_invoice_partner_party_identifiers(
+            partner=self.partner_be,
+            test_file='test_invoice_customer_party_identifiers_partner_be_vat_and_ref',
+        )
+
+        # No VAT, no ref, only EAS/Endpoint.
+        # PartyIdentification is not there.
+        # PartyTaxScheme is filled using EAS/Endpoint.
+        # PartyLegalEntity is filled using the Endpoint only.
+        self.partner_be.vat = None
+        self.partner_be.ref = None
+        self._assert_invoice_partner_party_identifiers(
+            partner=self.partner_be,
+            test_file='test_invoice_customer_party_identifiers_partner_be_only_eas_endpoint',
+        )
+
+        # Invoice address without any name.
+        # PartyIdentification is not there.
+        # PartyTaxScheme is filled using EAS/Endpoint.
+        # PartyLegalEntity is filled using the Endpoint only.
+        self.partner_be.company_registry = '0477472701'
+        self.partner_be.vat = 'BE0477472701'
+        partner_be_invoice_address = self._create_partner_be(
+            name=False,
+            type='invoice',
+            parent_id=self.partner_be.id,
+        )
+        self._assert_invoice_partner_party_identifiers(
+            partner=partner_be_invoice_address,
+            test_file='test_invoice_customer_party_identifiers_partner_be_invoice_address',
+        )
+
+        # VAT in company_registry should render the CBE Numer only
+        self.partner_be.company_registry = 'BE0477472701'
+        self._assert_invoice_partner_party_identifiers(
+            partner=self.partner_be,
+            test_file='test_invoice_customer_party_identifiers_partner_be_vat_and_company_registry',
+        )
+
+        # Malformed company_registry should raise
+        self.partner_be.company_registry = 'BEWrongOne'
+        with self.assertRaises(UserError):
+            self._assert_invoice_partner_party_identifiers(
+                partner=self.partner_be,
+                test_file='test_invoice_customer_party_identifiers_partner_be_vat_and_company_registry',
+            )
+
+    def test_invoice_customer_party_identifiers_partner_lu(self):
+        # Both VAT and company registry are not set.
+        # PartyIdentification is not there.
+        # PartyTaxScheme is filled using EAS/Endpoint.
+        # PartyTaxScheme is filled using the Endpoint only.
+        self._assert_invoice_partner_party_identifiers(
+            partner=self.partner_lu_dig,
+            test_file='test_invoice_customer_party_identifiers_partner_lu_only_eas_endpoint',
+        )
+
+        # Company registry is set.
+        # PartyIdentification is not there.
+        # PartyTaxScheme is filled using EAS/Endpoint.
+        # PartyLegalEntity is filled using the company registry.
+        self.partner_lu_dig.company_registry = "123456789"
+        self._assert_invoice_partner_party_identifiers(
+            partner=self.partner_lu_dig,
+            test_file='test_invoice_customer_party_identifiers_partner_lu_company_registry',
+        )
+
+    def test_invoice_customer_party_identifiers_partner_nl(self):
+        # VAT is set plus a KVK number as EAS/Endpoint.
+        # PartyIdentification is not there.
+        # PartyTaxScheme is filled using VAT.
+        # PartyLegalEntity is filled using the EAS/Endpoint.
+        self._assert_invoice_partner_party_identifiers(
+            partner=self.partner_nl,
+            test_file='test_invoice_customer_party_identifiers_partner_nl_vat_kvk_eas',
+        )
+
+        # VAT is set plus an OIN number as EAS/Endpoint.
+        # PartyIdentification is not there.
+        # PartyTaxScheme is filled using VAT.
+        # PartyLegalEntity is filled using the EAS/Endpoint.
+        self.partner_nl.peppol_eas = '0190'
+        self.partner_nl.peppol_endpoint = '00000001822477348000'
+        self._assert_invoice_partner_party_identifiers(
+            partner=self.partner_nl,
+            test_file='test_invoice_customer_party_identifiers_partner_nl_vat_oin_eas',
+        )
+
+        # VAT in EAS/Endpoint, KVK number in company registry.
+        # PartyIdentification is not there.
+        # PartyTaxScheme is filled using VAT.
+        # PartyLegalEntity is filled using the EAS/Endpoint.
+        self.partner_nl.company_registry = '77777677'
+        self.partner_nl.peppol_eas = '9944'
+        self.partner_nl.peppol_endpoint = 'NL000099998B57'
+        self._assert_invoice_partner_party_identifiers(
+            partner=self.partner_nl,
+            test_file='test_invoice_customer_party_identifiers_partner_nl_vat_eas_kvk_company_registry',
+        )
+
+        # VAT in EAS/Endpoint, OIN number in company registry.
+        # PartyIdentification is not there.
+        # PartyTaxScheme is filled using VAT.
+        # PartyLegalEntity is filled using the EAS/Endpoint.
+        self.partner_nl.company_registry = '00000001822477348000'
+        self.partner_nl.peppol_eas = '9944'
+        self.partner_nl.peppol_endpoint = 'NL000099998B57'
+        self._assert_invoice_partner_party_identifiers(
+            partner=self.partner_nl,
+            test_file='test_invoice_customer_party_identifiers_partner_nl_vat_eas_oin_company_registry',
+        )

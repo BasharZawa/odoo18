@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 18:38+0000\n"
-"PO-Revision-Date: 2026-01-10 09:14+0000\n"
-"Last-Translator: \"Thi Huong Nguyen (thng)\" <thng@odoo.com>\n"
+"POT-Creation-Date: 2026-02-27 18:36+0000\n"
+"PO-Revision-Date: 2026-03-07 18:00+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Vietnamese <https://translate.odoo.com/projects/odoo-18/"
 "account/vi/>\n"
 "Language: vi\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.1\n"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__type
@@ -69,6 +69,16 @@ msgstr ""
 "        VD: 180 / (1 - 10%) = 200 (chưa bao gồm trong giá)\n"
 "        VD: 200 * (1 - 10%) = 180 (đã gồm trong giá)\n"
 "        "
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"\n"
+"Please contact your administrator."
+msgstr ""
+"\n"
+"Vui lòng liên hệ với quản trị viên của bạn."
 
 #. module: account
 #. odoo-python
@@ -3805,6 +3815,12 @@ msgid "Bank of odoo"
 msgstr "Ngân hàng Odoo"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Bank settings"
+msgstr "Cài đặt ngân hàng"
+
+#. module: account
 #: model:ir.model,name:account.model_account_setup_bank_manual_config
 msgid "Bank setup manual config"
 msgstr "Thiết lập ngân hàng thủ công"
@@ -4567,6 +4583,8 @@ msgid "Chart of accounts set!"
 msgstr "Hệ thống tài khoản đã được thiết lập!"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
 #: model_terms:ir.ui.view,arch_db:account.report_hash_integrity
 msgid "Check"
 msgstr "Kiểm tra"
@@ -9843,6 +9861,7 @@ msgstr "Sổ nhật ký:"
 #: model:ir.actions.act_window,name:account.action_account_journal_form
 #: model:ir.model.fields,field_description:account.field_account_report__filter_journals
 #: model:ir.ui.menu,name:account.menu_action_account_journal_form
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 msgid "Journals"
 msgstr "Sổ nhật ký"
 
@@ -15570,6 +15589,16 @@ msgstr ""
 "(%s)."
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The bank account of your company is not trusted. Please ask an admin or "
+"someone with approval rights to check it."
+msgstr ""
+"Tài khoản ngân hàng của công ty bạn không đáng tin cậy. Vui lòng yêu cầu một "
+"quản trị viên hoặc người có quyền phê duyệt kiểm tra tài khoản đó."
+
+#. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__statement_id
 msgid "The bank statement used for bank reconciliation"
 msgstr "Sao kê ngân hàng này được sử dụng cho việc đối chiếu ngân hàng"
@@ -15639,6 +15668,19 @@ msgid ""
 "The commercial partner has been updated for all related accounting entries."
 msgstr ""
 "Đối tác thương mại đã được cập nhật cho tất cả bút toán kế toán liên quan."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The company bank account (%(account_number)s) linked to this invoice is not "
+"trusted. Go to the Bank Settings, double-check that it is yours or correct "
+"the number, and click on Send Money to trust it."
+msgstr ""
+"Tài khoản ngân hàng của công ty (%(account_number)s) liên kết với hóa đơn "
+"này không đáng tin cậy. Vui lòng truy cập vào Cài đặt ngân hàng, kiểm tra "
+"lại xem đó có phải là tài khoản của bạn hay không hoặc sửa lại số tài khoản, "
+"sau đó nhấp vào Gửi tiền để xác nhận đó là tài khoản đáng tin cậy."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax_repartition_line__company_id
@@ -15798,6 +15840,16 @@ msgstr "Bút toán %(name)s (id %(id)s) phải ở trạng thái nháp."
 #: model:ir.model.fields,help:account.field_account_move__secured
 msgid "The entry is secured with an inalterable hash."
 msgstr "Bút toán được bảo mật bằng hash không thể thay đổi."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The entry is using accounts (%(accounts_codes_names)s) from a different "
+"company."
+msgstr ""
+"Bút toán này đang sử dụng các tài khoản (%(accounts_codes_names)s) thuộc một "
+"công ty khác."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_product_category__property_account_expense_categ_id
@@ -16274,6 +16326,16 @@ msgstr "Số dư hiện tại (%s) không khớp với số dư cuối kỳ đã
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"The scheduled action 'Send Invoices automatically' is archived. You won't be "
+"able to send invoices in batch."
+msgstr ""
+"Tác vụ đã lên lịch 'Gửi hóa đơn tự động' đã được lưu trữ. Bạn sẽ không thể "
+"gửi hóa đơn theo lô."
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/account_report.py:0
 msgid "The sections defined on a report cannot have sections themselves."
 msgstr "Những phần được xác định trên báo cáo không thể chứa các phần."
@@ -16638,18 +16700,6 @@ msgstr "Năm nay"
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_account.py:0
-msgid ""
-"This account is configured in %(journal_names)s journal(s) (ids %"
-"(journal_ids)s) as payment debit or credit account. This means that this "
-"account's type should be reconcilable."
-msgstr ""
-"Tài khoản này được cấu hình trong (các) sổ nhật ký %(journal_names)s (id %"
-"(journal_ids)s) là tài khoản ghi nợ hoặc ghi có thanh toán. Điều này có "
-"nghĩa là loại tài khoản này phải có thể đối chiếu được."
-
-#. module: account
-#. odoo-python
-#: code:addons/account/models/account_account.py:0
 msgid "This account was split off from %(account_name)s (%(company_name)s)."
 msgstr "Tài khoản này được tách ra từ %(account_name)s (%(company_name)s)."
 
@@ -16958,7 +17008,7 @@ msgstr "Bút toán định kỳ này sẽ được vào sổ cho đến và bao 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "This setting locks once a journal entry is created."
-msgstr "Cài đặt này sẽ khóa sau khi một mục nhập sổ nhật ký được tạo."
+msgstr "Cài đặt này sẽ khóa sau khi một bút toán được tạo."
 
 #. module: account
 #. odoo-python
@@ -18601,6 +18651,15 @@ msgstr ""
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_payment.py:0
+msgid ""
+"You cannot change the amount of a payment with multiple liquidity lines."
+msgstr ""
+"Bạn không thể thay đổi số tiền của một khoản thanh toán khi khoản đó có "
+"nhiều dòng thanh khoản."
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/company.py:0
 msgid ""
 "You cannot change the currency of the company since some journal items "
@@ -18985,8 +19044,9 @@ msgstr ""
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
-msgid "You cannot switch the type of a document which has been posted once."
-msgstr "Bạn không thể chuyển đổi loại chứng từ đã được ghi sổ một lần."
+msgid ""
+"You cannot switch the type of a document with an existing sequence number."
+msgstr "Bạn không thể thay đổi loại chứng từ khi chứng từ đó đã có số thứ tự."
 
 #. module: account
 #. odoo-python
@@ -19106,6 +19166,16 @@ msgstr ""
 "Bạn phải định cấu hình 'Sổ nhật ký lãi hoặc lỗ tỷ giá' trong phần cài đặt "
 "công ty của mình, để tự động quản lý việc ghi sổ các bút toán liên quan đến "
 "chênh lệch tỷ giá hối đoái."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_journal_dashboard.py:0
+msgid ""
+"You may only use samples in demo mode, try uploading one of your invoices "
+"instead."
+msgstr ""
+"Bạn chỉ có thể sử dụng mẫu trong chế độ demo. Thay vào đó, hãy thử tải lên "
+"một trong các hóa đơn của bạn."
 
 #. module: account
 #. odoo-python
@@ -19681,6 +19751,18 @@ msgid ""
 msgstr ""
 "{{ object.company_id.name }} Biên lai thanh toán (Mã {{ object.name or "
 "'Không có' }})"
+
+#~ msgid "You cannot switch the type of a document which has been posted once."
+#~ msgstr "Bạn không thể chuyển đổi loại chứng từ đã được ghi sổ một lần."
+
+#~ msgid ""
+#~ "This account is configured in %(journal_names)s journal(s) (ids %"
+#~ "(journal_ids)s) as payment debit or credit account. This means that this "
+#~ "account's type should be reconcilable."
+#~ msgstr ""
+#~ "Tài khoản này được cấu hình trong (các) sổ nhật ký %(journal_names)s (id %"
+#~ "(journal_ids)s) là tài khoản ghi nợ hoặc ghi có thanh toán. Điều này có "
+#~ "nghĩa là loại tài khoản này phải có thể đối chiếu được."
 
 #~ msgid "This setting cannot be changed after an invoice is created."
 #~ msgstr "Không thể thay đổi cài đặt này sau khi hóa đơn được tạo."

@@ -17,6 +17,7 @@ import { getContent, setSelection } from "./_helpers/selection";
 import { insertText, tripleClick } from "./_helpers/user_actions";
 import { callbacksForCursorUpdate } from "@html_editor/utils/selection";
 import { withSequence } from "@html_editor/utils/resource";
+import { SelectionPlugin } from "@html_editor/core/selection_plugin";
 
 test("getEditableSelection should work, even if getSelection returns null", async () => {
     const { editor } = await setupEditor("<p>a[b]</p>");
@@ -118,6 +119,29 @@ describe("documentSelectionIsInEditable", () => {
     });
 });
 
+test("getSelectionData should validate the offsets of activeSelection", async () => {
+    const { editor } = await setupEditor("<p>a[b]</p>");
+    let selection = editor.shared.selection.getEditableSelection();
+    expect(selection.startOffset).toBe(1);
+    expect(selection.endOffset).toBe(2);
+
+    // We simulate getSelection() returning null while activeSelection has an
+    // offset pointing to a deleted element. This is an edge case that occurs in
+    // Chrome (see commit message).
+    patchWithCleanup(document, {
+        getSelection: () => null,
+    });
+    patchWithCleanup(SelectionPlugin.prototype, {
+        getSelectionData() {
+            this.activeSelection = { ...this.activeSelection, anchorOffset: 5 };
+            return super.getSelectionData();
+        },
+    });
+
+    selection = editor.shared.selection.getEditableSelection();
+    expect(selection.anchorOffset).toBe(0);
+});
+
 test("setEditableSelection should not crash if getSelection returns null", async () => {
     const { editor } = await setupEditor("<p>a[b]</p>");
     let selection = editor.shared.selection.getEditableSelection();
@@ -137,6 +161,74 @@ test("setEditableSelection should not crash if getSelection returns null", async
     // Selection could not be set, so it remains unchanged.
     expect(selection.startOffset).toBe(1);
     expect(selection.endOffset).toBe(2);
+});
+
+test("getSelectionData should use the range of the document selection to set offsets (specifically for safari)", async () => {
+    const { editor } = await setupEditor("[]");
+    let selection = editor.shared.selection.getEditableSelection();
+    expect(selection.startOffset).toBe(0);
+    expect(selection.endOffset).toBe(0);
+
+    // Simulate the broken behavior of Safari where getSelection returns a selection
+    // with offsets outside of the actual node length, and the range is correct.
+    patchWithCleanup(document, {
+        getSelection: () => {
+            return {
+                ...selection,
+                anchorOffset: 1,
+                focusOffset: 1,
+                rangeCount: 1,
+                getRangeAt: () => {
+                    return {
+                        commonAncestorContainer: selection.anchorNode,
+                        startContainer: selection.anchorNode,
+                        endContainer: selection.focusNode,
+                        startOffset: 0,
+                        endOffset: 0,
+                    };
+                },
+            };
+        },
+    });
+
+    selection = editor.shared.selection.getEditableSelection();
+    expect(selection.anchorOffset).toBe(0);
+});
+
+test("active selection shouldn't change when document selection is inconsistent with its range", async () => {
+    const { editor } = await setupEditor("<p>[]</p>abc");
+    let selection = editor.shared.selection.getEditableSelection();
+    const originalAnchorNode = selection.anchorNode;
+    expect(selection.startOffset).toBe(0);
+    expect(selection.endOffset).toBe(0);
+
+    // Simulate a very broken DOM selection with inconsistent anchor/focus nodes
+    // comparing its range.
+    patchWithCleanup(document, {
+        getSelection: () => {
+            return {
+                ...selection,
+                anchorNode: selection.anchorNode.parentNode,
+                focusNode: selection.focusNode.parentNode,
+                anchorOffset: 0,
+                focusOffset: 0,
+                rangeCount: 1,
+                getRangeAt: () => {
+                    return {
+                        commonAncestorContainer: selection.anchorNode,
+                        startContainer: selection.anchorNode,
+                        endContainer: selection.focusNode,
+                        startOffset: 0,
+                        endOffset: 0,
+                    };
+                },
+            };
+        },
+    });
+
+    selection = editor.shared.selection.getEditableSelection();
+    expect(selection.anchorNode).toBe(originalAnchorNode);
+    expect(selection.anchorOffset).toBe(0);
 });
 
 test("modifySelection should not crash if getSelection returns null", async () => {
@@ -1046,6 +1138,9 @@ describe("getTargetedNodes", () => {
                 const { el: editable, editor } = await setupEditor(
                     "<table><tbody><tr><td>abcd[e</td><td>f]g</td></tr></tbody></table>"
                 );
+                // Table selection happens on selectionchange
+                // event which is fired in the next tick.
+                await tick();
                 // The special table selection implies the two table cells are
                 // fully marked as selected.
                 const td1 = editable.querySelector("td"); // The selection crossed `</td>` -> include it.
@@ -1060,6 +1155,9 @@ describe("getTargetedNodes", () => {
                 const { el: editable, editor } = await setupEditor(
                     "<table><tbody><tr><td>abcd<br>[<br>e</td><td>f]g</td></tr></tbody></table>"
                 );
+                // Table selection happens on selectionchange
+                // event which is fired in the next tick.
+                await tick();
                 // The special table selection implies the two table cells are
                 // fully marked as selected.
                 const td1 = editable.querySelector("td"); // The selection crossed `</td>` -> include it.

@@ -214,14 +214,14 @@ patch(PosStore.prototype, {
                 }, {});
 
                 oldChanges.forEach((pointObj) => {
-                    const { points, barcode = "", gift_code = "" } = pointObj;
+                    const { points, barcode = "", code = "" } = pointObj;
                     const key =
-                        barcode && gift_code
-                            ? `${points}-${barcode}-${gift_code}`
+                        barcode && code
+                            ? `${points}-${barcode}-${code}`
                             : barcode
                             ? `${points}-${barcode}`
-                            : gift_code
-                            ? `${points}--${gift_code}`
+                            : code
+                            ? `${points}--${code}`
                             : `${points}`;
 
                     if (pointsCount[key] && pointsCount[key] > 0) {
@@ -283,14 +283,35 @@ patch(PosStore.prototype, {
         const rule = this.models["loyalty.rule"].find((rule) => {
             return rule.mode === "with_code" && (rule.promo_barcode === code || rule.code === code);
         });
-        const loyaltyCard = this.models["loyalty.card"].find(
+        let loyaltyCard = this.models["loyalty.card"].find(
             (card) => card.code === code && card.program_id?.program_type === "loyalty"
         );
+        let partner = loyaltyCard?.partner_id;
+        if (!loyaltyCard) {
+            loyaltyCard = await this.data.searchRead(
+                "loyalty.card",
+                [
+                    ["code", "=", code],
+                    ["program_type", "=", "loyalty"],
+                ],
+                this.data.fields["loyalty.card"],
+                {
+                    limit: 1,
+                }
+            );
+            loyaltyCard = loyaltyCard.at(-1);
+            partner = loyaltyCard?.partner_id;
+        } else if (!partner && loyaltyCard.raw.partner_id) {
+            partner = await this.data.read("res.partner", [loyaltyCard.raw.partner_id]);
+            partner = partner.at(-1);
+        }
         let claimableRewards = null;
         let coupon = null;
         // If the code belongs to a loyalty card we just set the partner
-        if (loyaltyCard && loyaltyCard.partner_id) {
-            order.set_partner(loyaltyCard.partner_id);
+        if (partner) {
+            order.set_partner(partner);
+            this.updateRewards();
+            return true;
         } else if (rule) {
             const date_order = DateTime.fromSQL(order.date_order);
             if (
@@ -784,7 +805,9 @@ patch(PosStore.prototype, {
                     });
                 }
             }
-            await this._postProcessLoyalty(order);
+            if (!["draft", "cancel"].includes(order.state)) {
+                await this._postProcessLoyalty(order);
+            }
         }
     },
     async _postProcessLoyalty(order) {

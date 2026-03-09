@@ -285,7 +285,15 @@ class Repair(models.Model):
         # Force to prefetch more than 1000 by 1000
         all_moves._fields['forecast_availability'].compute_value(all_moves)
         for repair in repairs:
-            if any(float_compare(move.forecast_availability, move.product_qty, precision_rounding=move.product_id.uom_id.rounding) < 0 for move in repair.move_ids):
+            if any(
+                move.product_id
+                and float_compare(
+                    move.forecast_availability,
+                    move.product_qty,
+                    precision_rounding=move.product_id.uom_id.rounding
+                ) < 0
+                for move in repair.move_ids
+            ):
                 repair.parts_availability = _('Not Available')
                 repair.parts_availability_state = 'late'
                 continue
@@ -415,7 +423,7 @@ class Repair(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_confirmed(self):
-        repairs_to_cancel = self.filtered(lambda ro: ro.state not in ('draft', 'cancel'))
+        repairs_to_cancel = self.filtered(lambda ro: ro.state != 'cancel')
         repairs_to_cancel.action_repair_cancel()
 
     def action_assign(self):

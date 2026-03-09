@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 18:38+0000\n"
-"PO-Revision-Date: 2026-01-24 18:00+0000\n"
+"POT-Creation-Date: 2026-02-27 18:36+0000\n"
+"PO-Revision-Date: 2026-02-24 23:37+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Latvian <https://translate.odoo.com/projects/odoo-18/account/"
 "lv/>\n"
@@ -67,6 +67,16 @@ msgid ""
 "        e.g 200 * (1 - 10%) = 180 (price included)\n"
 "        "
 msgstr ""
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"\n"
+"Please contact your administrator."
+msgstr ""
+"\n"
+"Lūdzu, sazinieties ar Jūsu administratoru."
 
 #. module: account
 #. odoo-python
@@ -3754,6 +3764,12 @@ msgid "Bank of odoo"
 msgstr "Odoo banka"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Bank settings"
+msgstr ""
+
+#. module: account
 #: model:ir.model,name:account.model_account_setup_bank_manual_config
 msgid "Bank setup manual config"
 msgstr "Bankas iestatīšanas manuālā konfigurācija"
@@ -4506,6 +4522,8 @@ msgid "Chart of accounts set!"
 msgstr "Kontu plāns ir iestatīts!"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
 #: model_terms:ir.ui.view,arch_db:account.report_hash_integrity
 msgid "Check"
 msgstr "Pārbaudīt"
@@ -9746,6 +9764,7 @@ msgstr "Reģistrs:"
 #: model:ir.actions.act_window,name:account.action_account_journal_form
 #: model:ir.model.fields,field_description:account.field_account_report__filter_journals
 #: model:ir.ui.menu,name:account.menu_action_account_journal_form
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 msgid "Journals"
 msgstr "Žurnāli"
 
@@ -15450,6 +15469,14 @@ msgid ""
 msgstr "Bankas žurnāla bankas kontam ir piederēt tam pašam uzņēmumam (%s)."
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The bank account of your company is not trusted. Please ask an admin or "
+"someone with approval rights to check it."
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__statement_id
 msgid "The bank statement used for bank reconciliation"
 msgstr "Bankas izraksts, kas tiek izmantots bankas saskaņošanai"
@@ -15511,6 +15538,15 @@ msgstr "References modeļa un references veida kombinācija žurnālā nav ievie
 #: code:addons/account/models/partner.py:0
 msgid ""
 "The commercial partner has been updated for all related accounting entries."
+msgstr ""
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The company bank account (%(account_number)s) linked to this invoice is not "
+"trusted. Go to the Bank Settings, double-check that it is yours or correct "
+"the number, and click on Send Money to trust it."
 msgstr ""
 
 #. module: account
@@ -15658,6 +15694,14 @@ msgstr "Ierakstam %(name)s (id %(id)s) jābūt melnrakstā."
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__secured
 #: model:ir.model.fields,help:account.field_account_move__secured
 msgid "The entry is secured with an inalterable hash."
+msgstr ""
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The entry is using accounts (%(accounts_codes_names)s) from a different "
+"company."
 msgstr ""
 
 #. module: account
@@ -16127,6 +16171,14 @@ msgstr "Tekošais atlikums (%s) nesakrīt ar norādīto beigu atlikumu."
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"The scheduled action 'Send Invoices automatically' is archived. You won't be "
+"able to send invoices in batch."
+msgstr ""
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/account_report.py:0
 msgid "The sections defined on a report cannot have sections themselves."
 msgstr "Ziņojumā definētajām sadaļām pašām par sevi nevar būt sadaļas."
@@ -16476,18 +16528,6 @@ msgstr "Šī nedēļa"
 #: model:ir.model.fields.selection,name:account.selection__account_report__default_opening_date_filter__this_year
 msgid "This Year"
 msgstr "Šis gads"
-
-#. module: account
-#. odoo-python
-#: code:addons/account/models/account_account.py:0
-msgid ""
-"This account is configured in %(journal_names)s journal(s) (ids %"
-"(journal_ids)s) as payment debit or credit account. This means that this "
-"account's type should be reconcilable."
-msgstr ""
-"Šis konts ir konfigurēts %(journal_names)s žurnālā(-os) (ids %"
-"(journal_ids)s) kā maksājumu debeta vai kredīta konts. Tas nozīmē, ka šī "
-"konta tipam jābūt saskaņojamam."
 
 #. module: account
 #. odoo-python
@@ -18402,6 +18442,13 @@ msgstr ""
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_payment.py:0
+msgid ""
+"You cannot change the amount of a payment with multiple liquidity lines."
+msgstr ""
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/company.py:0
 msgid ""
 "You cannot change the currency of the company since some journal items "
@@ -18760,7 +18807,8 @@ msgstr ""
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
-msgid "You cannot switch the type of a document which has been posted once."
+msgid ""
+"You cannot switch the type of a document with an existing sequence number."
 msgstr ""
 
 #. module: account
@@ -18873,6 +18921,14 @@ msgstr ""
 "Uzņēmuma iestatījumos jākonfigurē \"Valūtas maiņas guvumu vai zaudējumu "
 "žurnāls\", lai automātiski pārvaldītu grāmatvedības ierakstu iegrāmatošanu "
 "saistībā ar valūtas kursu starpību."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_journal_dashboard.py:0
+msgid ""
+"You may only use samples in demo mode, try uploading one of your invoices "
+"instead."
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -19449,6 +19505,15 @@ msgid ""
 msgstr ""
 "{{ object.company_id.name }} Maksājuma kvīts (Reference {{ object.name or 'n/"
 "a' }})"
+
+#~ msgid ""
+#~ "This account is configured in %(journal_names)s journal(s) (ids %"
+#~ "(journal_ids)s) as payment debit or credit account. This means that this "
+#~ "account's type should be reconcilable."
+#~ msgstr ""
+#~ "Šis konts ir konfigurēts %(journal_names)s žurnālā(-os) (ids %"
+#~ "(journal_ids)s) kā maksājumu debeta vai kredīta konts. Tas nozīmē, ka šī "
+#~ "konta tipam jābūt saskaņojamam."
 
 #~ msgid ""
 #~ "%(tax_account)s (%(account_name)s) should be an account of type \"%"

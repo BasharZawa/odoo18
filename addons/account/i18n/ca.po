@@ -50,7 +50,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 18:38+0000\n"
+"POT-Creation-Date: 2026-02-27 18:36+0000\n"
 "PO-Revision-Date: 2026-01-24 09:14+0000\n"
 "Last-Translator: \"Noemi Pla Garcia (nopl)\" <nopl@odoo.com>\n"
 "Language-Team: Catalan <https://translate.odoo.com/projects/odoo-18/account/"
@@ -108,6 +108,14 @@ msgstr ""
 "        p. ex.: 180 / (1 - 10%) = 200 (preu no inclòs)\n"
 "        p. ex.: 200 * (1 - 10%) = 180 (preu inclòs)\n"
 "        "
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"\n"
+"Please contact your administrator."
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -3851,6 +3859,12 @@ msgid "Bank of odoo"
 msgstr "Banc de Odoo"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Bank settings"
+msgstr ""
+
+#. module: account
 #: model:ir.model,name:account.model_account_setup_bank_manual_config
 msgid "Bank setup manual config"
 msgstr "Configuració manual de configuració del banc"
@@ -4609,6 +4623,8 @@ msgid "Chart of accounts set!"
 msgstr "Pla comptable configurat"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move_send.py:0
 #: model_terms:ir.ui.view,arch_db:account.report_hash_integrity
 msgid "Check"
 msgstr "Comprovar"
@@ -7950,9 +7966,8 @@ msgid ""
 "expression), in case it is different from the parent line."
 msgstr ""
 "Fórmula al format line_code.expression_label. Això permet establir el destí "
-"del traspàs per a aquesta expressió "
-"(a una expressió etiquetada com a _carryover_* ), en cas que sigui diferent "
-"de la línia pare."
+"del traspàs per a aquesta expressió (a una expressió etiquetada com a "
+"_carryover_* ), en cas que sigui diferent de la línia pare."
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_group_form
@@ -9927,6 +9942,7 @@ msgstr "Diari:"
 #: model:ir.actions.act_window,name:account.action_account_journal_form
 #: model:ir.model.fields,field_description:account.field_account_report__filter_journals
 #: model:ir.ui.menu,name:account.menu_action_account_journal_form
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 msgid "Journals"
 msgstr "Diaris"
 
@@ -15706,6 +15722,14 @@ msgstr ""
 "(%s)."
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The bank account of your company is not trusted. Please ask an admin or "
+"someone with approval rights to check it."
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__statement_id
 msgid "The bank statement used for bank reconciliation"
 msgstr "L'extracte bancari utilitzat per la conciliació amb el banc"
@@ -15779,6 +15803,15 @@ msgid ""
 msgstr ""
 "El soci comercial s'ha actualitzat per a tots els assentaments comptables "
 "relacionats."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The company bank account (%(account_number)s) linked to this invoice is not "
+"trusted. Go to the Bank Settings, double-check that it is yours or correct "
+"the number, and click on Send Money to trust it."
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax_repartition_line__company_id
@@ -15942,6 +15975,14 @@ msgstr "L'assentament %(name)s (id %(id)s) ha de ser un esborrany."
 #: model:ir.model.fields,help:account.field_account_move__secured
 msgid "The entry is secured with an inalterable hash."
 msgstr "L'assentament està bloquejat amb un hash inalterable."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid ""
+"The entry is using accounts (%(accounts_codes_names)s) from a different "
+"company."
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,help:account.field_product_category__property_account_expense_categ_id
@@ -16427,6 +16468,14 @@ msgstr ""
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_move_send.py:0
+msgid ""
+"The scheduled action 'Send Invoices automatically' is archived. You won't be "
+"able to send invoices in batch."
+msgstr ""
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/account_report.py:0
 msgid "The sections defined on a report cannot have sections themselves."
 msgstr ""
@@ -16793,18 +16842,6 @@ msgstr "Aquesta setmana"
 #: model:ir.model.fields.selection,name:account.selection__account_report__default_opening_date_filter__this_year
 msgid "This Year"
 msgstr "Aquest any"
-
-#. module: account
-#. odoo-python
-#: code:addons/account/models/account_account.py:0
-msgid ""
-"This account is configured in %(journal_names)s journal(s) (ids %"
-"(journal_ids)s) as payment debit or credit account. This means that this "
-"account's type should be reconcilable."
-msgstr ""
-"Aquest compte es configurat en %(journal_names)s dia(s) (ids %"
-"(journal_ids)s) com a compte de crèdit o dèbit de pagament. Això vol dir que "
-"el tipus d'aquest compte hauria de ser conciliable."
 
 #. module: account
 #. odoo-python
@@ -18773,6 +18810,13 @@ msgstr ""
 
 #. module: account
 #. odoo-python
+#: code:addons/account/models/account_payment.py:0
+msgid ""
+"You cannot change the amount of a payment with multiple liquidity lines."
+msgstr ""
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/company.py:0
 msgid ""
 "You cannot change the currency of the company since some journal items "
@@ -19162,9 +19206,9 @@ msgstr ""
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
-msgid "You cannot switch the type of a document which has been posted once."
+msgid ""
+"You cannot switch the type of a document with an existing sequence number."
 msgstr ""
-"No és possible modificar el tipus d'un document que ja ha estat publicat."
 
 #. module: account
 #. odoo-python
@@ -19281,6 +19325,14 @@ msgstr ""
 "Heu d'establir el 'compte de pèrdues i guanys' a la configuració de la "
 "vostra empresa, per tal de gestionar automàticament el registre dels "
 "assentaments relacionats amb les diferències entre tipus de canvi."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_journal_dashboard.py:0
+msgid ""
+"You may only use samples in demo mode, try uploading one of your invoices "
+"instead."
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -19860,6 +19912,19 @@ msgid ""
 msgstr ""
 "{{ object.company_id.name }} Rebut de pagament (Ref {{ object.name or 'n/"
 "a' }})"
+
+#~ msgid "You cannot switch the type of a document which has been posted once."
+#~ msgstr ""
+#~ "No és possible modificar el tipus d'un document que ja ha estat publicat."
+
+#~ msgid ""
+#~ "This account is configured in %(journal_names)s journal(s) (ids %"
+#~ "(journal_ids)s) as payment debit or credit account. This means that this "
+#~ "account's type should be reconcilable."
+#~ msgstr ""
+#~ "Aquest compte es configurat en %(journal_names)s dia(s) (ids %"
+#~ "(journal_ids)s) com a compte de crèdit o dèbit de pagament. Això vol dir "
+#~ "que el tipus d'aquest compte hauria de ser conciliable."
 
 #~ msgid "This setting cannot be changed after an invoice is created."
 #~ msgstr ""

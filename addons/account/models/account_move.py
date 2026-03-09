@@ -28,6 +28,7 @@ from odoo.tools import (
     float_repr,
     format_amount,
     format_date,
+    format_list,
     formatLang,
     frozendict,
     get_lang,
@@ -1030,9 +1031,9 @@ class AccountMove(models.Model):
     @api.depends('bank_partner_id')
     def _compute_partner_bank_id(self):
         for move in self:
-            # This will get the bank account from the partner in an order with the trusted first
+            # This will get the trusted bank accounts from the partner
             bank_ids = move.bank_partner_id.bank_ids.filtered(
-                lambda bank: not bank.company_id or bank.company_id == move.company_id
+                lambda bank: (not bank.company_id or bank.company_id == move.company_id)
             ).sorted(lambda bank: not bank.allow_out_payment)
             move.partner_bank_id = bank_ids[:1]
 
@@ -4396,10 +4397,14 @@ class AccountMove(models.Model):
                         if success or file_data['type'] == 'pdf' or file_data['attachment'].mimetype in ALLOWED_MIMETYPES:
                             (invoice.invoice_line_ids - existing_lines).is_imported = True
                             if not extend_with_existing_lines:
-                                invoice.with_context(default_move_type=invoice.move_type)._link_bill_origin_to_purchase_orders(timeout=4)
+                                try:
+                                    invoice.with_context(default_move_type=invoice.move_type)._link_bill_origin_to_purchase_orders(timeout=4)
+                                except (UserError, ValueError):
+                                    _logger.exception("Failed to link bill to purchase order")
                             invoices |= invoice
                             current_invoice = self.env['account.move']
                             add_file_data_results(file_data, invoice)
+                            self._post_process_link_to_purchase_order(invoice)
 
                 except RedirectWarning:
                     raise
@@ -4422,6 +4427,11 @@ class AccountMove(models.Model):
             close_file(file_data)
 
         return attachments_by_invoice
+
+    @api.model
+    def _post_process_link_to_purchase_order(self, invoice):
+        # To be implemented in modules needing to process the invoice after it was linked (or not) to a PO
+        pass
 
     # -------------------------------------------------------------------------
     # BUSINESS METHODS
@@ -5078,6 +5088,22 @@ class AccountMove(models.Model):
                     "The recipient bank account linked to this invoice is archived.\n"
                     "So you cannot confirm the invoice."
                 ))
+            if invoice.partner_bank_id and invoice.is_inbound() and not invoice.partner_bank_id.allow_out_payment:
+                if self.env.user.id == SUPERUSER_ID or self.env.user.has_group('base.group_public') or self.env.user.has_group('base.group_portal'):
+                    # Do not block in case of automated flows, simply remove the information
+                    invoice.partner_bank_id = False
+                elif invoice.partner_bank_id._user_can_trust():
+                    raise RedirectWarning(
+                        _(
+                            "The company bank account (%(account_number)s) linked to this invoice is not trusted. "
+                            "Go to the Bank Settings, double-check that it is yours or correct the number, and click on Send Money to trust it.",
+                            account_number=invoice.partner_bank_id.display_name,
+                        ),
+                        invoice.partner_bank_id._get_records_action(),
+                        _("Bank settings")
+                    )
+                else:
+                    raise UserError(_("The bank account of your company is not trusted. Please ask an admin or someone with approval rights to check it."))
             if float_compare(invoice.amount_total, 0.0, precision_rounding=invoice.currency_id.rounding) < 0:
                 validation_msgs.add(_(
                     "You cannot validate an invoice with a negative total amount. "
@@ -5127,6 +5153,14 @@ class AccountMove(models.Model):
             # If the field autocheck_on_post is set, we want the checked field on the move to be checked
             if move.journal_id.autocheck_on_post:
                 move.checked = move.journal_id.autocheck_on_post
+
+            move_company_and_parents = move.company_id.sudo().parent_ids
+            mismatched_accounts = move.line_ids.mapped('account_id').filtered(lambda account: not move_company_and_parents & account.sudo().company_ids)
+            if mismatched_accounts:
+                validation_msgs.add(self.env._(
+                    "The entry is using accounts (%(accounts_codes_names)s) from a different company.",
+                    accounts_codes_names=format_list(self.env, mismatched_accounts.mapped('display_name'))
+                ))
 
         if validation_msgs:
             msg = "\n".join([line for line in validation_msgs])
@@ -5363,8 +5397,8 @@ class AccountMove(models.Model):
         }
 
     def action_switch_move_type(self):
-        if any(move.posted_before for move in self):
-            raise ValidationError(_("You cannot switch the type of a document which has been posted once."))
+        if any((move.posted_before and move.name) for move in self):
+            raise ValidationError(_("You cannot switch the type of a document with an existing sequence number."))
         if any(move.move_type == "entry" for move in self):
             raise ValidationError(_("This action isn't available for this document."))
 

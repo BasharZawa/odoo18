@@ -1393,15 +1393,8 @@ class WebsiteSale(payment_portal.PaymentPortal):
             elif value:  # The value cannot be saved on the `res.partner` model.
                 extra_form_data[key] = value
 
-        if (
-            hasattr(ResPartner, 'check_vat')  # The `base_vat` module is installed.
-            and address_values.get('vat')
-            and address_values.get('country_id')
-        ):
-            address_values['vat'] = ResPartner.fix_eu_vat_number(
-                address_values['country_id'],
-                address_values['vat'],
-            )
+        if address_values.get('vat'):
+            address_values['vat'] = self._fix_eu_vat_number(address_values['vat'], address_values.get('country_id'))
 
         return address_values, extra_form_data
 
@@ -1469,10 +1462,15 @@ class WebsiteSale(payment_portal.PaymentPortal):
                     " the account settings or contact your administrator."
                 ))
 
+            if vat := partner_sudo.vat:
+                vat = self._fix_eu_vat_number(
+                    vat,
+                    partner_sudo.country_id.id or address_values['country_id'],
+                )
             # Prevent changing the VAT number if invoices have been issued.
             if (
                 'vat' in address_values
-                and address_values['vat'] != partner_sudo.vat
+                and address_values['vat'] != vat
                 and not partner_sudo.can_edit_vat()
             ):
                 invalid_fields.add('vat')
@@ -1883,8 +1881,11 @@ class WebsiteSale(payment_portal.PaymentPortal):
     def express_checkout_shipping_address_compute_taxes(self):
         order_sudo = request.website.sale_get_order()
         order_sudo._recompute_taxes()
+        amount_without_delivery = order_sudo._compute_amount_total_without_delivery()
 
-        return payment_utils.to_minor_currency_units(order_sudo.amount_total, order_sudo.currency_id)
+        return payment_utils.to_minor_currency_units(
+            amount_without_delivery, order_sudo.currency_id
+        )
 
     def _get_shop_payment_errors(self, order):
         """ Check that there is no error that should block the payment.
@@ -2281,6 +2282,19 @@ class WebsiteSale(payment_portal.PaymentPortal):
                 domain += [('product_id.product_tmpl_id', '=', int(product_template_id))]
             request.env['website.track'].sudo().search(domain).unlink()
         return {}
+
+    @staticmethod
+    def _fix_eu_vat_number(vat, country_id):
+        ResPartner = request.env['res.partner']
+        if (
+            hasattr(ResPartner, 'check_vat')  # The `base_vat` module is installed.
+            and country_id
+        ):
+            vat = ResPartner.fix_eu_vat_number(
+                country_id,
+                vat,
+            )
+        return vat
 
     @staticmethod
     def _populate_currency_and_pricelist(kwargs):

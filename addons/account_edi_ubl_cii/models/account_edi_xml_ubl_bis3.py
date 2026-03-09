@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
 
 from odoo import _, api, models
+from odoo.tools import html2plaintext
 from odoo.tools.misc import formatLang, str2bool, NON_BREAKING_SPACE
 from odoo.addons.account.tools import dict_to_xml
-from odoo.addons.account_edi_ubl_cii.models.account_edi_common import FloatFmt
+from odoo.addons.account_edi_ubl_cii.models.account_edi_common import (
+    FloatFmt,
+    GST_COUNTRY_CODES,
+    EUROPEAN_ECONOMIC_AREA_COUNTRY_CODES,
+)
 from odoo.addons.account_edi_ubl_cii.models.account_edi_xml_ubl_20 import UBL_NAMESPACES
 
 from stdnum.no import mva
+from stdnum.be import vat as be_vat
 
 CHORUS_PRO_PEPPOL_ID = "0009:11000201100044"
 
@@ -179,9 +185,8 @@ class AccountEdiXmlUBLBIS3(models.AbstractModel):
         supplier = invoice.company_id.partner_id.commercial_partner_id
         customer = invoice.partner_id
 
-        economic_area = self.env.ref('base.europe').country_ids.mapped('code') + ['NO']
-        intracom_delivery = (customer.country_id.code in economic_area
-                             and supplier.country_id.code in economic_area
+        intracom_delivery = (customer.country_id.code in EUROPEAN_ECONOMIC_AREA_COUNTRY_CODES
+                             and supplier.country_id.code in EUROPEAN_ECONOMIC_AREA_COUNTRY_CODES
                              and supplier.country_id != customer.country_id)
 
         # [BR-IC-12]-In an Invoice with a VAT breakdown (BG-23) where the VAT category code (BT-118) is
@@ -502,6 +507,18 @@ class AccountEdiXmlUBLBIS3(models.AbstractModel):
                     "The VAT number of the supplier does not seem to be valid. It should be of the form: NO179728982MVA."
                 ) if not mva.is_valid(vat) or len(vat) != 14 or vat[:2] != 'NO' or vat[-3:] != 'MVA' else "",
             })
+
+        if vals['supplier'].country_id.code == 'BE' and vals['supplier'].company_registry:
+            if not be_vat.is_valid(vals['supplier'].company_registry):
+                constraints.update({
+                    'PEPPOL-COMMON-R043_supplier': _('%s should have a valid KBO/BCE number in the Company ID field', vals['supplier'].display_name),
+                })
+
+        if vals['customer'].country_id.code == 'BE' and vals['customer'].company_registry:
+            if not be_vat.is_valid(vals['customer'].company_registry):
+                constraints.update({
+                    'PEPPOL-COMMON-R043_customer': _('%s should have a valid KBO/BCE number in the Company ID field', vals['customer'].display_name),
+                })
         return constraints
 
     def _import_retrieve_partner_vals(self, tree, role):
@@ -546,197 +563,322 @@ class AccountEdiXmlUBLBIS3(models.AbstractModel):
         # Overridden in `account_peppol_selfbilling`
         return False
 
-    def _add_invoice_header_nodes(self, document_node, vals):
-        # Call the parent method from UBL 2.1
-        super()._add_invoice_header_nodes(document_node, vals)
-        invoice = vals['invoice']
+    def _ubl_add_customization_id_node(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_customization_id_node(vals)
+        vals['document_node']['cbc:CustomizationID']['_text'] = 'urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0'
+
+    def _ubl_add_profile_id_node(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_profile_id_node(vals)
+        vals['document_node']['cbc:ProfileID']['_text'] = 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0'
+
+    def _ubl_add_id_node(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_id_node(vals)
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
+
+        vals['document_node']['cbc:ID']['_text'] = invoice.name
+
+    def _ubl_add_issue_date_node(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_issue_date_node(vals)
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
+
+        vals['document_node']['cbc:IssueDate']['_text'] = invoice.invoice_date
+
+    def _ubl_add_due_date_node(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_due_date_node(vals)
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
+
+        vals['document_node']['cbc:DueDate']['_text'] = invoice.invoice_date_due
+
+    def _ubl_add_invoice_type_code_node(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_invoice_type_code_node(vals)
+        if vals['document_type'] != 'invoice':
+            return
+
+        vals['document_node']['cbc:InvoiceTypeCode']['_text'] = 380
+
+    def _ubl_add_credit_note_type_code_node(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_credit_note_type_code_node(vals)
+        if vals['document_type'] != 'credit_note':
+            return
+
+        vals['document_node']['cbc:CreditNoteTypeCode']['_text'] = 381
+
+    def _bis3_merge_notes_nodes(self, vals):
+        nodes = vals['document_node']['cbc:Note']
+        notes = []
+        for node in nodes:
+            notes.append(node['_text'])
+        if notes:
+            vals['document_node']['cbc:Note'] = [{'_text': ' '.join(notes)}]
+
+    def _ubl_add_notes_nodes(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_notes_nodes(vals)
+        invoice = vals.get('invoice')
+
+        if invoice:
+            terms_and_condition = html2plaintext(invoice.narration) if invoice.narration else None
+            if terms_and_condition:
+                vals['document_node']['cbc:Note'].append({'_text': terms_and_condition})
+
+        # WithholdingTaxTotal is not allowed.
+        # Instead, withholding tax amounts are reported as a PrepaidAmount.
+        AccountTax = self.env['account.tax']
+        base_lines = vals['base_lines']
+        currency = vals['currency']
+
+        def grouping_function(base_line, tax_data):
+            if not tax_data:
+                return
+            tax_grouping_key = self._ubl_default_tax_category_grouping_key(base_line, tax_data, vals, currency)
+            if not tax_grouping_key:
+                return
+            return tax_grouping_key['is_withholding']
+
+        base_lines_aggregated_values = AccountTax._aggregate_base_lines_tax_details(base_lines, grouping_function)
+        values_per_grouping_key = AccountTax._aggregate_base_lines_aggregated_values(base_lines_aggregated_values)
         ubl_values = vals['_ubl_values']
+        ubl_values['tax_withholding_amount'] = 0.0
+        for grouping_key, values in values_per_grouping_key.items():
+            if not grouping_key:
+                continue
 
-        # Override specific BIS3 values
-        document_node.update({
-            'cbc:UBLVersionID': None,
-            'cbc:CustomizationID': {'_text': self._get_customization_ids()['ubl_bis3']},
-            'cbc:ProfileID': {'_text': 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0'},
-            'cbc:TaxCurrencyCode': {'_text': vals['tax_currency_code']},
-        })
+            tax_amount = values['tax_amount_currency']
+            ubl_values['tax_withholding_amount'] -= tax_amount
 
-        if tax_withholding_amount := ubl_values['payable_amount_tax_withholding_currency']:
-            note = _(
-                "The prepaid amount of %s corresponds to the withholding tax applied.",
-                formatLang(self.env, tax_withholding_amount, currency_obj=vals['currency_id']).replace(NON_BREAKING_SPACE, ''),
-            )
-            narration_note = document_node['cbc:Note']['_text']
-            if narration_note:
-                note = f'{note} {narration_note}'
-            document_node['cbc:Note']['_text'] = note
+        if currency.is_zero(ubl_values['tax_withholding_amount']):
+            return
 
+        nodes = vals['document_node']['cbc:Note']
+        nodes.insert(0, {'_text': _(
+            "The prepaid amount of %s corresponds to the withholding tax applied.",
+            formatLang(self.env, ubl_values['tax_withholding_amount'], currency_obj=vals['currency']).replace(NON_BREAKING_SPACE, ''),
+        )})
+
+        # BIS3 allows only one Note.
+        self._bis3_merge_notes_nodes(vals)
+
+    def _ubl_add_document_currency_code_node(self, vals):
+        # OVERRIDE
+        self._ubl_add_document_currency_code_node_foreign_currency(vals)
+
+    def _ubl_add_tax_currency_code_node(self, vals):
+        # OVERRIDE
+        self._ubl_add_tax_currency_code_node_company_currency_if_foreign_currency(vals)
+
+    def _ubl_add_buyer_reference_node(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_buyer_reference_node(vals)
+
+        # For B2G transactions in Germany: set the buyer_reference to the Leitweg-ID (code 0204)
+        customer = vals['customer']
+        if customer.peppol_eas == "0204":
+            vals['document_node']['cbc:BuyerReference']['_text'] = customer.peppol_endpoint
+        elif customer_ref := customer.commercial_partner_id.ref:
+            vals['document_node']['cbc:BuyerReference']['_text'] = customer_ref
+
+    def _ubl_add_order_reference_node(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_order_reference_node(vals)
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
+
+        order_ref_node = vals['document_node']['cac:OrderReference']
+        order_ref_node['cbc:ID']['_text'] = invoice.ref or invoice.name
+
+        if self.module_installed('sale'):
+            so_names = set(invoice.invoice_line_ids.sale_line_ids.order_id.mapped('name'))
+            if so_names:
+                order_ref_node['cbc:SalesOrderID']['_text'] = ",".join(so_names)
+
+    def _ubl_add_billing_reference_nodes(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_billing_reference_nodes(vals)
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
+
+        nodes = vals['document_node']['cac:BillingReference']
         # [NL-R-001] For suppliers in the Netherlands, if the document is a creditnote, the document MUST
         # contain an invoice reference (cac:BillingReference/cac:InvoiceDocumentReference/cbc:ID)
-        if vals['supplier'].country_id.code == 'NL' and 'refund' in invoice.move_type:
-            document_node['cac:BillingReference'] = {
+        if (
+            vals['supplier'].country_code == 'NL'
+            and vals['document_type'] == 'credit_note'
+            and invoice.ref
+        ):
+            nodes.append({
                 'cac:InvoiceDocumentReference': {
                     'cbc:ID': {'_text': invoice.ref},
                 }
-            }
-
-        # For B2G transactions in Germany: set the buyer_reference to the Leitweg-ID (code 0204)
-        if vals['customer'].peppol_eas == "0204":
-            document_node.update({
-                'cbc:BuyerReference': {'_text': vals['customer'].peppol_endpoint},
             })
 
-    def _add_invoice_delivery_nodes(self, document_node, vals):
-        """ [BR-IC-12]-In an Invoice with a VAT breakdown (BG-23) where the VAT category code (BT-118) is
-        "Intra-community supply" the Deliver to country code (BT-80) shall not be blank.
+    def _ubl_add_legal_monetary_total_payable_rounding_amount_node(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_legal_monetary_total_payable_rounding_amount_node(vals)
 
-        [BR-IC-11]-In an Invoice with a VAT breakdown (BG-23) where the VAT category code (BT-118) is
-        "Intra-community supply" the Actual delivery date (BT-72) or the Invoicing period (BG-14)
-        shall not be blank.
-        """
-        super()._add_invoice_delivery_nodes(document_node, vals)
+        # Cash rounding lines should not appear as lines but in PayableRoundingAmount.
+        self._ubl_add_legal_monetary_total_payable_rounding_amount_node_from_cash_rounding(vals)
 
-        invoice = vals['invoice']
-        customer = vals['customer']
-        supplier = vals['supplier']
-        shipping_partner = vals['partner_shipping']
+    def _ubl_add_legal_monetary_total_prepaid_payable_amount_node(self, vals, in_foreign_currency=True):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_legal_monetary_total_prepaid_payable_amount_node(vals, in_foreign_currency=in_foreign_currency)
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
 
-        intracom_delivery = (
-            customer.country_id.code in (economic_area := self.env.ref('base.europe').country_ids.mapped('code') + ['NO'])
-            and supplier.country_id.code in economic_area
-            and supplier.country_id != customer.country_id
+        currency = vals['currency_id'] if in_foreign_currency else vals['company_currency']
+        node = vals['legal_monetary_total_node']
+
+        if in_foreign_currency:
+            amount_total = invoice.amount_total
+            amount_residual = invoice.amount_residual
+        else:
+            amount_total = invoice.amount_total_signed * -invoice.direction_sign
+            amount_residual = invoice.amount_residual_signed * -invoice.direction_sign
+
+        node['cbc:PayableAmount']['_text'] = FloatFmt(
+            amount_residual,
+            min_dp=currency.decimal_places,
         )
-        delivery_date = invoice.invoice_date if intracom_delivery else invoice.delivery_date
+        node['cbc:PrepaidAmount']['_text'] = FloatFmt(
+            amount_total
+            - amount_residual
+            # WithholdingTaxTotal is not allowed.
+            # Instead, withholding tax amounts are reported as a PrepaidAmount.
+            # Suppose an invoice of 1000 with a tax 21% +100 -100.
+            # The super will compute a PrepaidAmount or 0.0 and a PayableAmount or 1000.
+            # This extension is there to increase PrepaidAmount to 210 and PayableAmount to 1210.
+            + vals['_ubl_values']['tax_withholding_amount'],
+            min_dp=currency.decimal_places,
+        )
 
-        document_node['cac:Delivery'] = {
-            'cbc:ActualDeliveryDate': {'_text': delivery_date},
-            'cac:DeliveryParty': {
-                'cac:PartyName': {
-                    'cbc:Name': {'_text': shipping_partner.name or customer.name},
-                }
-            },
-            'cac:DeliveryLocation': {
-                'cac:Address': self._get_address_node({'partner': shipping_partner})
-            },
+    def _add_invoice_monetary_total_nodes(self, document_node, vals):
+        # OVERRIDE
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
+
+        sub_vals = {
+            **vals,
+            'document_node': document_node,
+            'currency': vals['currency_id'],
         }
-        # TODO master: clean that code a bit hacky, when the module account_add_gln is merged with account
-        if gln := 'global_location_number' in shipping_partner._fields and shipping_partner.global_location_number:
-            document_node['cac:Delivery']['cac:DeliveryLocation'].update({
-                'cbc:ID': {'schemeID': '0088', '_text': gln},
-            })
+        self._ubl_add_legal_monetary_total_node(sub_vals)
+
+    def _ubl_get_payment_means_payee_financial_account_institution_branch_node_from_partner_bank(self, vals, partner_bank):
+        # EXTENDS
+        node = super()._ubl_get_payment_means_payee_financial_account_institution_branch_node_from_partner_bank(vals, partner_bank)
+        if node:
+            node['cbc:ID']['schemeID'] = None
+            node['cac:FinancialInstitution'] = None
+        return node
+
+    def _ubl_add_payment_means_nodes(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_payment_means_nodes(vals)
+        nodes = vals['document_node']['cac:PaymentMeans']
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
+
+        if invoice.move_type == 'out_invoice':
+            if invoice.partner_bank_id:
+                payment_means_code, payment_means_name = 30, 'credit transfer'
+            else:
+                payment_means_code, payment_means_name = 'ZZZ', 'mutually defined'
+        else:
+            payment_means_code, payment_means_name = 57, 'standing agreement'
+
+        # TODO: This override is probably no longer necessary
+        # in Denmark payment code 30 is not allowed. we hardcode it to 1 ("unknown") for now
+        # as we cannot deduce this information from the invoice
+        customer = vals['customer'].commercial_partner_id
+        if customer.country_code == 'DK':
+            payment_means_code, payment_means_name = 1, 'unknown'
+
+        partner_bank = invoice.partner_bank_id
+        payment_means_node = {
+            'cbc:PaymentMeansCode': {
+                '_text': payment_means_code,
+                'name': payment_means_name,
+            },
+            'cbc:PaymentID': {'_text': invoice.payment_reference or invoice.name},
+        }
+
+        if partner_bank:
+            payment_means_node['cac:PayeeFinancialAccount'] = self._ubl_get_payment_means_payee_financial_account_node_from_partner_bank(vals, partner_bank)
+        else:
+            payment_means_node['cac:PayeeFinancialAccount'] = None
+
+        nodes.append(payment_means_node)
 
     def _add_invoice_payment_means_nodes(self, document_node, vals):
-        super()._add_invoice_payment_means_nodes(document_node, vals)
-        document_node['cac:PaymentMeans']['cbc:PaymentDueDate'] = None
-        document_node['cac:PaymentMeans']['cbc:InstructionID'] = None
+        # OVERRIDE
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
 
-    def _get_address_node(self, vals):
-        # schematron/openpeppol/3.13.0/xslt/CEN-EN16931-UBL.xslt
-        # [UBL-CR-225]-A UBL invoice should not include the AccountingCustomerParty Party PostalAddress CountrySubentityCode
-        address_node = super()._get_address_node(vals)
-        address_node['cbc:CountrySubentityCode'] = None
-        address_node['cac:Country']['cbc:Name'] = None
-        return address_node
+        sub_vals = {
+            **vals,
+            'document_node': document_node,
+            'currency': vals['currency_id'],
+        }
+        self._ubl_add_payment_means_nodes(sub_vals)
 
-    def _get_party_node(self, vals):
-        party_node = super()._get_party_node(vals)
+    def _add_invoice_payment_terms_nodes(self, document_node, vals):
+        # OVERRIDE
+        sub_vals = {
+            **vals,
+            'document_node': document_node,
+            'currency': vals['currency_id'],
+        }
+        self._ubl_add_payment_terms_nodes(sub_vals)
 
-        partner = vals['partner']
-        role = vals['role']
-        commercial_partner = partner.commercial_partner_id
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
 
-        if commercial_partner.peppol_endpoint:
-            party_node['cbc:EndpointID'] = {
-                '_text': commercial_partner.peppol_endpoint,
-                'schemeID': commercial_partner.peppol_eas
-            }
+        nodes = document_node['cac:PaymentTerms']
+        nodes.append(self._ubl_get_payment_terms_node_from_payment_term(vals, invoice.invoice_payment_term_id))
 
-        if commercial_partner.country_code == 'NL' and commercial_partner.peppol_endpoint:
-            # [UBL-SR-16] Buyer identifier shall occur maximum once
-            if role == 'customer':
-                party_node['cac:PartyIdentification'] = [{'cbc:ID': {'_text': commercial_partner.peppol_endpoint}}]
-            else:
-                party_node['cac:PartyIdentification'] = [
-                    party_node['cac:PartyIdentification'],
-                    {
-                        'cbc:ID': {'_text': commercial_partner.peppol_endpoint}
-                    }
-                ]
-        elif commercial_partner.country_code == 'BE' and commercial_partner.company_registry:
-            party_node['cac:PartyIdentification'] = {
-                'cbc:ID': {'_text': commercial_partner.company_registry}
-            }
-
-        party_node['cac:PartyTaxScheme'] = party_tax_scheme = [
-            {
-                'cbc:CompanyID': {'_text': commercial_partner.vat if commercial_partner.vat and commercial_partner.vat != '/' else commercial_partner.peppol_endpoint},
-                'cac:TaxScheme': {
-                    # [BR-CO-09] if the PartyTaxScheme/TaxScheme/ID == 'VAT', CompanyID must start with a country code prefix.
-                    # In some countries however, the CompanyID can be with or without country code prefix and still be perfectly
-                    # valid (RO, HU, non-EU countries).
-                    # We have to handle their cases by changing the TaxScheme/ID to 'something other than VAT',
-                    # preventing the trigger of the rule.
-                    'cbc:ID': {'_text': (
-                        'NOT_EU_VAT' if commercial_partner.country_id and commercial_partner.vat and not commercial_partner.vat[:2].isalpha() and commercial_partner.vat != '/'
-                        else 'VAT' if commercial_partner.vat and commercial_partner.vat != '/'
-                        else commercial_partner.peppol_eas
-                    )},
-                },
-            }
-        ]
-        if partner.country_id.code == "NO" and role == 'supplier':
-            party_tax_scheme.append({
-                'cbc:CompanyID': {'_text': "Foretaksregisteret"},
-                'cac:TaxScheme': {'cbc:ID': {'_text': 'TAX'}},
-            })
-
-        if commercial_partner.country_code == 'NL':
-            # For NL, VAT can be used as a Peppol endpoint, but KVK/OIN has to be used as PartyLegalEntity/CompanyID
-            # To implement a workaround on stable, company_registry field is used without recording whether
-            # the number is a KVK or OIN, and the length of the number (8 = KVK, 9 = OIN) is used to determine the type
-            nl_id = commercial_partner.company_registry if commercial_partner.peppol_eas not in ('0106', '0190') else commercial_partner.peppol_endpoint
-            party_node['cac:PartyLegalEntity']['cbc:CompanyID'] = {
-                '_text': nl_id,
-                'schemeID': '0190' if nl_id and len(nl_id) == 20 else '0106'
-            }
-        elif commercial_partner.country_id.code == 'LU' and commercial_partner.company_registry:
-            party_node['cac:PartyLegalEntity']['cbc:CompanyID'] = {
-                '_text': commercial_partner.company_registry
-            }
-        elif commercial_partner.country_code == 'SE' and commercial_partner.company_registry:
-            party_node['cac:PartyLegalEntity']['cbc:CompanyID'] = {
-                '_text': ''.join(char for char in commercial_partner.company_registry if char.isdigit
-                ())
-            }
-        elif commercial_partner.country_code == 'BE' and commercial_partner.company_registry:
-            party_node['cac:PartyLegalEntity']['cbc:CompanyID'] = {
-                '_text': commercial_partner.company_registry
-            }
-        else:
-            party_node['cac:PartyLegalEntity']['cbc:CompanyID'] = {
-                '_text': commercial_partner.vat or commercial_partner.peppol_endpoint,
-                # DK-R-014: For Danish Suppliers it is mandatory to specify schemeID as "0184" (DK CVR-number) when
-                # PartyLegalEntity/CompanyID is used for AccountingSupplierParty
-                'schemeID': '0184' if commercial_partner.country_id.code == 'DK' else None
-            }
-
-        party_node['cac:PartyLegalEntity']['cac:RegistrationAddress'] = None
-
-        party_node['cac:Contact']['cbc:ID'] = None
-        return party_node
-
-    def _get_financial_account_node(self, vals):
-        # schematron/openpeppol/3.13.0/xslt/CEN-EN16931-UBL.xslt
-        # [UBL-CR-664]-A UBL invoice should not include the FinancialInstitutionBranch FinancialInstitution
-        # xpath test: not(//cac:FinancialInstitution)
-        financial_account_node = super()._get_financial_account_node(vals)
-
-        if financial_account_node['cac:FinancialInstitutionBranch']:
-            financial_account_node['cac:FinancialInstitutionBranch']['cac:FinancialInstitution'] = None
-
-            if financial_account_node['cac:FinancialInstitutionBranch']['cbc:ID']:
-                financial_account_node['cac:FinancialInstitutionBranch']['cbc:ID']['schemeID'] = None
-
-        return financial_account_node
+    def _add_invoice_header_nodes(self, document_node, vals):
+        # OVERRIDE
+        sub_vals = {
+            **vals,
+            'document_node': document_node,
+            'currency': vals['currency_id'],
+        }
+        self._ubl_add_version_id_node(sub_vals)
+        self._ubl_add_customization_id_node(sub_vals)
+        self._ubl_add_profile_id_node(sub_vals)
+        self._ubl_add_id_node(sub_vals)
+        self._ubl_add_copy_indicator_node(sub_vals)
+        self._ubl_add_issue_date_node(sub_vals)
+        if vals['document_type'] == 'invoice':
+            self._ubl_add_due_date_node(sub_vals)
+            self._ubl_add_invoice_type_code_node(sub_vals)
+        elif vals['document_type'] == 'credit_note':
+            self._ubl_add_credit_note_type_code_node(sub_vals)
+        self._ubl_add_notes_nodes(sub_vals)
+        self._ubl_add_document_currency_code_node(sub_vals)
+        self._ubl_add_tax_currency_code_node(sub_vals)
+        self._ubl_add_buyer_reference_node(sub_vals)
+        self._ubl_add_order_reference_node(sub_vals)
+        self._ubl_add_billing_reference_nodes(sub_vals)
 
     # -------------------------------------------------------------------------
     # EXPORT: Constraints for new helpers
@@ -766,13 +908,6 @@ class AccountEdiXmlUBLBIS3(models.AbstractModel):
         nsmap = self._get_document_nsmap(vals)
 
         constraints = {
-            # [BR-61]-If the Payment means type code (BT-81) means SEPA credit transfer, Local credit transfer or
-            # Non-SEPA international credit transfer, the Payment account identifier (BT-84) shall be present.
-            # note: Payment account identifier is <cac:PayeeFinancialAccount>
-            # note: no need to check account_number, because it's a required field for a partner_bank
-            'cen_en16931_payment_account_identifier': self._check_required_fields(
-                invoice, 'partner_bank_id'
-            ) if vals['document_node']['cac:PaymentMeans']['cbc:PaymentMeansCode']['_text'] in (30, 58) else None,
             # [BR-IC-12]-In an Invoice with a VAT breakdown (BG-23) where the VAT category code (BT-118) is
             # "Intra-community supply" the Deliver to country code (BT-80) shall not be blank.
             'cen_en16931_delivery_country_code': (
@@ -792,6 +927,14 @@ class AccountEdiXmlUBLBIS3(models.AbstractModel):
                 else None
             )
         }
+
+        # [BR-61]-If the Payment means type code (BT-81) means SEPA credit transfer, Local credit transfer or
+        # Non-SEPA international credit transfer, the Payment account identifier (BT-84) shall be present.
+        # note: Payment account identifier is <cac:PayeeFinancialAccount>
+        # note: no need to check account_number, because it's a required field for a partner_bank
+        for node in vals['document_node']['cac:PaymentMeans']:
+            if node['cbc:PaymentMeansCode']['_text'] in (30, 58):
+                constraints['cen_en16931_payment_account_identifier'] = self._check_required_fields(invoice, 'partner_bank_id')
 
         line_tag = self._get_tags_for_document_type(vals)['document_line']
         line_nodes = vals['document_node'][line_tag]
@@ -908,11 +1051,36 @@ class AccountEdiXmlUBLBIS3(models.AbstractModel):
                     "The VAT number of the supplier does not seem to be valid. It should be of the form: NO179728982MVA."
                 ) if not mva.is_valid(vat) or len(vat) != 14 or vat[:2] != 'NO' or vat[-3:] != 'MVA' else "",
             })
+
+        if vals['supplier'].country_id.code == 'BE' and vals['supplier'].company_registry:
+            if not be_vat.is_valid(vals['supplier'].company_registry):
+                constraints.update({
+                    'PEPPOL-COMMON-R043_supplier': _('%s should have a valid KBO/BCE number in the Company ID field', vals['supplier'].display_name),
+                })
+
+        if vals['customer'].country_id.code == 'BE' and vals['customer'].company_registry:
+            if not be_vat.is_valid(vals['customer'].company_registry):
+                constraints.update({
+                    'PEPPOL-COMMON-R043_customer': _('%s should have a valid KBO/BCE number in the Company ID field', vals['customer'].display_name),
+                })
         return constraints
 
     # -------------------------------------------------------------------------
     # EXPORT: Gathering data
     # -------------------------------------------------------------------------
+
+    def _ubl_add_values_company(self, vals, company):
+        # EXTENDS account.edi.ubl
+        super()._ubl_add_values_company(vals, company)
+
+    def _add_invoice_config_vals(self, vals):
+        # EXTENDS account.edi.ubl
+        super()._add_invoice_config_vals(vals)
+        invoice = vals['invoice']
+        self._ubl_add_values_company(vals, invoice.company_id)
+        self._ubl_add_values_currency(vals, invoice.currency_id)
+        self._ubl_add_values_customer(vals, invoice.partner_id)
+        self._ubl_add_values_delivery(vals, invoice.partner_shipping_id or invoice.partner_id)
 
     def _setup_base_lines(self, vals):
         # OVERRIDE
@@ -934,46 +1102,8 @@ class AccountEdiXmlUBLBIS3(models.AbstractModel):
         AccountTax._round_raw_total_excluded(vals['base_lines'], company, in_foreign_currency=False)
         AccountTax._add_and_round_raw_gross_total_excluded_and_discount(vals['base_lines'], company)
         AccountTax._add_and_round_raw_gross_total_excluded_and_discount(vals['base_lines'], company, in_foreign_currency=False)
-
-        # Turn recycling contribution taxes such as RECUPEL / AUVIBEL into allowance/charges.
-        self._ubl_add_base_line_ubl_values_allowance_charges_recycling_contribution(vals)
-
-        # Turn belgium excises taxes into allowance/charges.
-        self._ubl_add_base_line_ubl_values_allowance_charges_excise(vals)
-
-        # Turn 'discount' field into allowance/charges.
-        self._ubl_add_base_line_ubl_values_allowance_charges_discount(vals)
-
-        # Add 'line_extension_amount' being the total without tax.
-        self._ubl_add_base_line_ubl_values_line_extension_amount(vals)
-
-        # Add 'price_amount' being the original price unit without tax.
-        self._ubl_add_base_line_ubl_values_price(vals)
-
-        # Add 'item' being information about item taxes.
-        self._ubl_add_base_line_ubl_values_item(vals)
-
-        # Add 'tax_currency_code'.
-        self._ubl_add_values_tax_currency_code(vals)
-
-        # Add 'payable_rounding_amount' to manage cash rounding.
-        self._ubl_add_values_payable_rounding_amount(vals)
-
-        # Extract cash rounding lines.
-        vals['base_lines'] = [
-            base_line
-            for base_line in vals['base_lines']
-            if base_line not in vals['_ubl_values']['payable_rounding_base_lines']
-        ]
-
-        # Add 'tax_totals'.
-        self._ubl_add_values_tax_totals(vals)
-
-        # Add 'payable_amount' to manage withholding taxes.
-        self._ubl_add_values_payable_amount_tax_withholding(vals)
-
-        # Add 'allowance_charge_early_payment' to manage the early payment discount.
-        self._ubl_add_values_allowance_charge_early_payment(vals)
+        AccountTax._round_raw_gross_total_excluded_and_discount(vals['base_lines'], company)
+        AccountTax._round_raw_gross_total_excluded_and_discount(vals['base_lines'], company, in_foreign_currency=False)
 
     def _add_invoice_line_vals(self, vals):
         # OVERRIDE
@@ -986,158 +1116,476 @@ class AccountEdiXmlUBLBIS3(models.AbstractModel):
     # EXPORT: Build Nodes
     # -------------------------------------------------------------------------
 
-    def _add_invoice_line_amount_nodes(self, line_node, vals):
+    def _ubl_default_tax_category_grouping_key(self, base_line, tax_data, vals, currency):
+        # EXTENDS
+        # Recycling contribution taxes / excises should not appear anywhere as taxes but as allowances/charges.
+        # Cash rounding lines should not appear as lines but in PayableRoundingAmount.
+        # Since this method produces a default 0% tax automatically when no tax is set on the line by default,
+        # we have to do something here to avoid it.
+        if (
+            self._ubl_is_cash_rounding_base_line(base_line)
+            or self._ubl_is_recycling_contribution_tax(tax_data)
+            or self._ubl_is_excise_tax(tax_data)
+        ):
+            return
+        return super()._ubl_default_tax_category_grouping_key(base_line, tax_data, vals, currency)
+
+    def _add_invoice_line_id_nodes(self, line_node, vals):
         # OVERRIDE
-        base_line = vals['base_line']
-        currency = vals['currency_id']
+        sub_vals = {
+            **vals,
+            'line_node': line_node,
+            'base_line': vals['line_vals']['base_line'],
+        }
+        self._ubl_add_line_id_node(sub_vals)
 
-        quantity_tag = self._get_tags_for_document_type(vals)['line_quantity']
-
-        line_node.update({
-            quantity_tag: {
-                '_text': base_line['quantity'],
-                'unitCode': self._get_uom_unece_code(base_line['product_uom_id']),
-            },
-            'cbc:LineExtensionAmount': {
-                '_text': FloatFmt(base_line['_ubl_values']['line_extension_amount_currency'], min_dp=currency.decimal_places),
-                'currencyID': currency.name,
-            },
-        })
+    def _add_invoice_line_note_nodes(self, line_node, vals):
+        # OVERRIDE
+        sub_vals = {
+            **vals,
+            'line_node': line_node,
+            'base_line': vals['line_vals']['base_line'],
+        }
+        self._ubl_add_line_note_nodes(sub_vals)
 
     def _add_invoice_line_allowance_charge_nodes(self, line_node, vals):
         # OVERRIDE
-        base_line = vals['base_line']
-        ubl_values = base_line['_ubl_values']
-        allowance_charges_nodes = line_node['cac:AllowanceCharge'] = []
+        sub_vals = {
+            **vals,
+            'line_node': line_node,
+            'base_line': vals['line_vals']['base_line'],
+        }
+        self._ubl_add_line_allowance_charge_nodes(sub_vals)
 
         # Discount.
-        discount_values = ubl_values['allowance_charge_discount_currency']
-        if discount_values:
-            allowance_charges_nodes.append(self._ubl_get_line_allowance_charge_discount_node(vals, discount_values))
+        self._ubl_add_line_allowance_charge_nodes_for_discount(sub_vals)
 
         # Recycling contribution taxes.
-        for recycling_contribution_values in base_line['_ubl_values']['allowance_charges_recycling_contribution_currency']:
-            allowance_charges_nodes.append(self._ubl_get_line_allowance_charge_recycling_contribution_node(vals, recycling_contribution_values))
+        self._ubl_add_line_allowance_charge_nodes_for_recycling_contribution_taxes(sub_vals)
 
         # Excise taxes.
-        for excise_values in base_line['_ubl_values']['allowance_charges_excise_currency']:
-            allowance_charges_nodes.append(self._ubl_get_line_allowance_charge_excise_node(vals, excise_values))
+        self._ubl_add_line_allowance_charge_nodes_for_excise_taxes(sub_vals)
+
+    def _add_invoice_line_amount_nodes(self, line_node, vals):
+        # OVERRIDE
+        sub_vals = {
+            **vals,
+            'line_node': line_node,
+            'base_line': vals['line_vals']['base_line'],
+        }
+
+        if vals['document_type'] == 'credit_note':
+            self._ubl_add_line_credited_quantity_node(sub_vals)
+        else:
+            self._ubl_add_line_invoiced_quantity_node(sub_vals)
+
+        self._ubl_add_line_extension_amount_node(sub_vals)
+
+    def _ubl_add_line_period_nodes(self, vals):
+        # EXTENDS account.edi.xml.ubl
+        super()._ubl_add_line_period_nodes(vals)
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
+
+        base_line = vals['line_vals']['base_line']
+        nodes = vals['line_node']['cac:InvoicePeriod']
+        if base_line.get('deferred_start_date') or base_line.get('deferred_end_date'):
+            nodes.append({
+                'cbc:StartDate': {'_text': base_line['deferred_start_date']},
+                'cbc:EndDate': {'_text': base_line['deferred_end_date']},
+            })
+
+    def _add_invoice_line_period_nodes(self, line_node, vals):
+        # OVERRIDE
+        sub_vals = {
+            **vals,
+            'line_node': line_node,
+            'base_line': vals['line_vals']['base_line'],
+        }
+        self._ubl_add_line_period_nodes(sub_vals)
+
+    def _add_invoice_line_tax_total_nodes(self, line_node, vals):
+        # OVERRIDE
+        sub_vals = {
+            **vals,
+            'line_node': line_node,
+            'base_line': vals['line_vals']['base_line'],
+        }
+        self._ubl_add_line_tax_totals_nodes(sub_vals)
 
     def _add_invoice_line_item_nodes(self, line_node, vals):
         # OVERRIDE
-        item_values = vals['base_line']['_ubl_values']['item_currency']
-        line_node['cac:Item'] = self._ubl_get_line_item_node(vals, item_values)
+        sub_vals = {
+            **vals,
+            'line_node': line_node,
+            'base_line': vals['line_vals']['base_line'],
+        }
+        self._ubl_add_line_item_node(sub_vals)
+
+    def _add_invoice_line_pricing_reference_nodes(self, line_node, vals):
+        # OVERRIDE
+        sub_vals = {
+            **vals,
+            'line_node': line_node,
+            'base_line': vals['line_vals']['base_line'],
+        }
+        self._ubl_add_line_pricing_reference_node(sub_vals)
 
     def _add_invoice_line_tax_category_nodes(self, line_node, vals):
         # OVERRIDE
         pass
 
-    def _add_invoice_line_tax_total_nodes(self, line_node, vals):
-        # OVERRIDE
-        pass
-
     def _add_invoice_line_price_nodes(self, line_node, vals):
         # OVERRIDE
-        base_line = vals['base_line']
-        ubl_values = base_line['_ubl_values']
-
-        line_node['cac:Price'] = {
-            'cbc:PriceAmount': {
-                '_text': FloatFmt(ubl_values['price_amount_currency'], min_dp=1, max_dp=6),
-                'currencyID': vals['currency_name'],
-            },
+        sub_vals = {
+            **vals,
+            'line_node': line_node,
+            'base_line': vals['line_vals']['base_line'],
         }
+        self._ubl_add_line_price_node(sub_vals)
+
+    def _line_nodes_filter_base_lines(self, vals, filter_function=None):
+        # EXTENDS account.edi.xml.ubl
+        # Early payment discount lines should not appear as lines but as allowances/charges.
+        # Cash rounding lines should not appear as lines but in PayableRoundingAmount.
+        def new_filter_function(base_line):
+            if self._ubl_is_early_payment_base_line(base_line) or self._ubl_is_cash_rounding_base_line(base_line):
+                return False
+            return not filter_function or filter_function(base_line)
+
+        return super()._line_nodes_filter_base_lines(vals, filter_function=new_filter_function)
+
+    def _ubl_add_invoice_line_node(self, vals):
+        # OVERRIDE. For retro-compatibility, ensure '_get_invoice_line_node' is called.
+        sub_vals = {
+            **vals,
+            'base_line': vals['line_vals']['base_line'],
+        }
+        vals['line_node'].update(self._get_invoice_line_node(sub_vals))
+
+    def _ubl_add_credit_note_line_node(self, vals):
+        # OVERRIDE. For retro-compatbility, ensure '_get_invoice_line_node' is called.
+        sub_vals = {
+            **vals,
+            'base_line': vals['line_vals']['base_line'],
+        }
+        vals['line_node'].update(self._get_invoice_line_node(sub_vals))
+
+    def _add_invoice_line_nodes(self, document_node, vals):
+        # OVERRIDE
+        sub_vals = {
+            **vals,
+            'document_node': document_node,
+            'currency': vals['currency_id'],
+        }
+        if vals['document_type'] == 'invoice':
+            self._ubl_add_invoice_line_nodes(sub_vals)
+        elif vals['document_type'] == 'credit_note':
+            self._ubl_add_credit_note_line_nodes(sub_vals)
+
+    def _ubl_get_partner_address_node(self, vals, partner):
+        # EXTENDS account.edi.ubl
+        node = super()._ubl_get_partner_address_node(vals, partner)
+        node['cbc:CountrySubentityCode'] = None
+        node['cac:Country']['cbc:Name'] = None
+        return node
+
+    def _ubl_add_party_endpoint_id_node(self, vals):
+        # EXTENDS account.edi.ubl
+        super()._ubl_add_party_endpoint_id_node(vals)
+        partner = vals['party_vals']['partner']
+        commercial_partner = partner.commercial_partner_id
+        if commercial_partner.peppol_endpoint and commercial_partner.peppol_eas:
+            vals['party_node']['cbc:EndpointID']['_text'] = commercial_partner.peppol_endpoint
+            vals['party_node']['cbc:EndpointID']['schemeID'] = commercial_partner.peppol_eas
+
+    def _ubl_add_party_identification_nodes(self, vals):
+        # EXTENDS account.edi.ubl
+        super()._ubl_add_party_identification_nodes(vals)
+        nodes = vals['party_node']['cac:PartyIdentification']
+        partner = vals['party_vals']['partner']
+        commercial_partner = partner.commercial_partner_id
+        country_code = commercial_partner.country_code
+        if country_code == 'BE' and commercial_partner.company_registry:
+            nodes.append({
+                'cbc:ID': {
+                    '_text': be_vat.compact(commercial_partner.company_registry),
+                    'schemeID': '0208',
+                },
+            })
+        elif commercial_partner.ref and country_code != 'DK':  # DK-R-013
+            nodes.append({
+                'cbc:ID': {
+                    '_text': commercial_partner.ref,
+                    'schemeID': None,
+                },
+            })
+
+    def _ubl_add_party_tax_scheme_nodes(self, vals):
+        # EXTENDS account.edi.ubl
+        super()._ubl_add_party_tax_scheme_nodes(vals)
+        nodes = vals['party_node']['cac:PartyTaxScheme']
+        partner = vals['party_vals']['partner']
+        commercial_partner = partner.commercial_partner_id
+
+        if commercial_partner.vat and commercial_partner.vat != '/':
+            country_code = commercial_partner.country_id.code
+            if country_code in GST_COUNTRY_CODES:
+                tax_scheme_id = 'GST'
+            else:
+                tax_scheme_id = 'VAT'
+
+            nodes.append({
+                'cbc:CompanyID': {'_text': commercial_partner.vat},
+                'cac:TaxScheme': {
+                    'cbc:ID': {'_text': tax_scheme_id},
+                },
+            })
+        elif commercial_partner.peppol_endpoint and commercial_partner.peppol_eas:
+            # TaxScheme based on partner's EAS/Endpoint.
+            nodes.append({
+                'cbc:CompanyID': {'_text': commercial_partner.peppol_endpoint},
+                'cac:TaxScheme': {
+                    'cbc:ID': {'_text': commercial_partner.peppol_eas},
+                },
+            })
+
+    def _ubl_add_party_legal_entity_nodes(self, vals):
+        # EXTENDS account.edi.ubl
+        super()._ubl_add_party_legal_entity_nodes(vals)
+        nodes = vals['party_node']['cac:PartyLegalEntity']
+        partner = vals['party_vals']['partner']
+        commercial_partner = partner.commercial_partner_id
+
+        if commercial_partner.peppol_eas in ('0106', '0190'):
+            nl_id = commercial_partner.peppol_endpoint
+        else:
+            nl_id = commercial_partner.company_registry
+
+        if commercial_partner.country_code == 'NL' and nl_id:
+            # For NL, VAT can be used as a Peppol endpoint, but KVK/OIN has to be used as PartyLegalEntity/CompanyID
+            # To implement a workaround on stable, company_registry field is used without recording whether
+            # the number is a KVK or OIN, and the length of the number (8 = KVK, 20 = OIN) is used to determine the type
+            nodes.append({
+                'cbc:RegistrationName': {'_text': commercial_partner.name},
+                'cbc:CompanyID': {
+                    '_text': nl_id,
+                    'schemeID': '0190' if len(nl_id) == 20 else '0106',
+                },
+            })
+        elif commercial_partner.country_code == 'LU' and commercial_partner.company_registry:
+            nodes.append({
+                'cbc:RegistrationName': {'_text': commercial_partner.name},
+                'cbc:CompanyID': {
+                    '_text': commercial_partner.company_registry,
+                    'schemeID': None,
+                },
+            })
+        elif commercial_partner.country_code == 'SE' and commercial_partner.company_registry:
+            nodes.append({
+                'cbc:RegistrationName': {'_text': commercial_partner.name},
+                'cbc:CompanyID': {
+                    '_text': ''.join(char for char in commercial_partner.company_registry if char.isdigit()),
+                },
+            })
+        elif commercial_partner.country_code == 'BE' and commercial_partner.company_registry:
+            nodes.append({
+                'cbc:RegistrationName': {'_text': commercial_partner.name},
+                'cbc:CompanyID': {
+                    '_text': be_vat.compact(commercial_partner.company_registry),
+                    'schemeID': '0208',
+                },
+            })
+        elif (
+            commercial_partner.country_code == 'DK'
+            and commercial_partner.peppol_eas == '0184'
+            and commercial_partner.peppol_endpoint
+        ):
+            nodes.append({
+                'cbc:RegistrationName': {'_text': commercial_partner.name},
+                'cbc:CompanyID': {
+                    '_text': commercial_partner.peppol_endpoint,
+                    'schemeID': '0184',
+                },
+            })
+        elif commercial_partner.vat and commercial_partner.vat != '/':
+            nodes.append({
+                'cbc:RegistrationName': {'_text': commercial_partner.name},
+                'cbc:CompanyID': {
+                    '_text': commercial_partner.vat,
+                    'schemeID': None,
+                },
+            })
+        elif commercial_partner.peppol_endpoint:
+            nodes.append({
+                'cbc:RegistrationName': {'_text': commercial_partner.name},
+                'cbc:CompanyID': {
+                    '_text': commercial_partner.peppol_endpoint,
+                    'schemeID': None,
+                },
+            })
+
+    def _ubl_add_accounting_supplier_party_tax_scheme_nodes(self, vals):
+        # EXTENDS account.edi.ubl
+        super()._ubl_add_accounting_supplier_party_tax_scheme_nodes(vals)
+        nodes = vals['party_node']['cac:PartyTaxScheme']
+        partner = vals['party_vals']['partner']
+        commercial_partner = partner.commercial_partner_id
+
+        if commercial_partner.country_code == 'NO':
+            nodes.append({
+                'cbc:CompanyID': {'_text': "Foretaksregisteret"},
+                'cac:TaxScheme': {
+                    'cbc:ID': {'_text': "TAX"},
+                },
+            })
+
+    def _add_invoice_accounting_supplier_party_nodes(self, document_node, vals):
+        # OVERRIDE
+        sub_vals = {
+            **vals,
+            'document_node': document_node,
+        }
+        self._ubl_add_accounting_supplier_party_node(sub_vals)
+
+    def _add_invoice_accounting_customer_party_nodes(self, document_node, vals):
+        # OVERRIDE
+        sub_vals = {
+            **vals,
+            'document_node': document_node,
+        }
+        self._ubl_add_accounting_customer_party_node(sub_vals)
+
+    def _ubl_get_delivery_node_from_delivery_address(self, vals):
+        # EXTENDS account.edi.ubl
+        node = super()._ubl_get_delivery_node_from_delivery_address(vals)
+        invoice = vals['invoice']
+
+        if invoice.delivery_date:
+            node['cbc:ActualDeliveryDate']['_text'] = invoice.delivery_date
+
+        # Intracom delivery inside European area.
+        customer = vals['customer']
+        supplier = vals['supplier']
+        if (
+            customer.country_id.code in EUROPEAN_ECONOMIC_AREA_COUNTRY_CODES
+            and supplier.country_id.code in EUROPEAN_ECONOMIC_AREA_COUNTRY_CODES
+            and supplier.country_id != customer.country_id
+        ):
+            node['cbc:ActualDeliveryDate']['_text'] = invoice.invoice_date
+        return node
+
+    def _add_invoice_delivery_nodes(self, document_node, vals):
+        # OVERRIDE
+        sub_vals = {
+            **vals,
+            'document_node': document_node,
+        }
+        self._ubl_add_invoice_delivery_nodes(sub_vals)
+        # Retro-compatibility with the "old" code.
+        if document_node['cac:Delivery']:
+            document_node['cac:Delivery'] = document_node['cac:Delivery'][0]
 
     def _add_invoice_allowance_charge_nodes(self, document_node, vals):
         # OVERRIDE
-        ubl_values = vals['_ubl_values']
-        document_node['cac:AllowanceCharge'] = [
-            self._ubl_get_allowance_charge_early_payment(vals, early_payment_values)
-            for early_payment_values in ubl_values['allowance_charges_early_payment_currency']
+        sub_vals = {
+            **vals,
+            'document_node': document_node,
+            'currency': vals['currency_id'],
+        }
+        self._ubl_add_allowance_charge_nodes(sub_vals)
+
+        invoice = vals.get('invoice')
+        if not invoice:
+            return
+
+        # Early payment discount lines are treated as allowances/charges.
+        self._ubl_add_allowance_charge_nodes_early_payment_discount(sub_vals)
+
+    def _ubl_get_tax_subtotal_node(self, vals, tax_subtotal):
+        # EXTENDS account.edi.xml.ubl
+        node = super()._ubl_get_tax_subtotal_node(vals, tax_subtotal)
+
+        # [BR-S-08] cac:TaxSubtotal -> cbc:TaxableAmount should be computed based on the
+        # cbc:LineExtensionAmount of each line linked to the tax when cac:TaxCategory -> cbc:ID is S
+        # (Standard Rate).
+        currency = tax_subtotal['currency']
+        corresponding_line_node_amounts = [
+            line_node['cbc:LineExtensionAmount']['_text']
+            for tax_category_node in node['cac:TaxCategory']
+            if tax_category_node['cbc:ID']['_text'] == 'S'
+            for line_key in ('cac:InvoiceLine', 'cac:CreditNoteLine', 'cac:DebitNoteLine')
+            for line_node in vals['document_node'].get(line_key, [])
+            for line_node_tax_category_node in line_node['cac:Item']['cac:ClassifiedTaxCategory']
+            if (
+                line_node_tax_category_node['cbc:ID']['_text'] == 'S'
+                and line_node_tax_category_node['cbc:Percent']['_text'] == tax_category_node['cbc:Percent']['_text']
+                and line_node_tax_category_node['_currency'] == tax_category_node['_currency']
+            )
+        ] + [
+            -allowance_node['cbc:Amount']['_text']
+            for tax_category_node in node['cac:TaxCategory']
+            if tax_category_node['cbc:ID']['_text'] == 'S'
+            for allowance_node in vals['document_node']['cac:AllowanceCharge']
+            if allowance_node['cbc:ChargeIndicator']['_text'] == 'false'
+            for allowance_node_tax_category_node in allowance_node['cac:TaxCategory']
+            if (
+                allowance_node_tax_category_node['cbc:ID']['_text'] == 'S'
+                and allowance_node_tax_category_node['cbc:Percent']['_text'] == tax_category_node['cbc:Percent']['_text']
+                and allowance_node_tax_category_node['_currency'] == tax_category_node['_currency']
+            )
+        ] + [
+            allowance_node['cbc:Amount']['_text']
+            for tax_category_node in node['cac:TaxCategory']
+            if tax_category_node['cbc:ID']['_text'] == 'S'
+            for allowance_node in vals['document_node']['cac:AllowanceCharge']
+            if allowance_node['cbc:ChargeIndicator']['_text'] == 'true'
+            for allowance_node_tax_category_node in allowance_node['cac:TaxCategory']
+            if (
+                allowance_node_tax_category_node['cbc:ID']['_text'] == 'S'
+                and allowance_node_tax_category_node['cbc:Percent']['_text'] == tax_category_node['cbc:Percent']['_text']
+                and allowance_node_tax_category_node['_currency'] == tax_category_node['_currency']
+            )
         ]
+        if corresponding_line_node_amounts:
+            node['cbc:TaxableAmount'] = {
+                '_text': FloatFmt(sum(corresponding_line_node_amounts), min_dp=currency.decimal_places),
+                'currencyID': currency.name,
+            }
+
+        return node
+
+    def _ubl_tax_totals_node_grouping_key(self, base_line, tax_data, vals, currency):
+        # EXTENDS account.edi.xml.ubl
+        tax_total_keys = super()._ubl_tax_totals_node_grouping_key(base_line, tax_data, vals, currency)
+
+        # WithholdingTaxTotal is not allowed.
+        # Instead, withholding tax amounts are reported as a PrepaidAmount.
+        if tax_total_keys['tax_total_key'] and tax_total_keys['tax_total_key']['is_withholding']:
+            tax_total_keys['tax_total_key'] = None
+
+        # In case of multi-currencies, there will be 2 TaxTotals but the one expressed in
+        # foreign currency must not have any TaxSubtotal.
+        company_currency = vals['company'].currency_id
+        if (
+            tax_total_keys['tax_subtotal_key']
+            and company_currency != vals['currency']
+            and tax_total_keys['tax_subtotal_key']['currency'] == company_currency
+        ):
+            tax_total_keys['tax_subtotal_key'] = None
+
+        return tax_total_keys
 
     def _add_invoice_tax_total_nodes(self, document_node, vals):
         # OVERRIDE
-        ubl_values = vals['_ubl_values']
-        company = vals['company']
-        company_currency = company.currency_id
-        currency = vals['currency_id']
-
-        tax_total_nodes = document_node['cac:TaxTotal'] = []
-        for tax_total in ubl_values['tax_totals_currency'].values():
-            tax_total_node = self._ubl_get_tax_total_node(vals, tax_total)
-            tax_total_nodes.append(tax_total_node)
-
-        # Only one subtotal expressed in foreign currency in case of multi currencies.
-        if currency != company_currency:
-            for tax_total in ubl_values['tax_totals'].values():
-                tax_total_node = self._ubl_get_tax_total_node(vals, tax_total)
-                tax_total_node['cac:TaxSubtotal'] = []
-                tax_total_nodes.append(tax_total_node)
+        sub_vals = {
+            **vals,
+            'document_node': document_node,
+            'currency': vals['currency_id'],
+        }
+        self._ubl_add_tax_totals_nodes(sub_vals)
 
     def _add_invoice_monetary_total_vals(self, vals):
         # OVERRIDE
         pass
-
-    def _add_invoice_monetary_total_nodes(self, document_node, vals):
-        monetary_total_tag = self._get_tags_for_document_type(vals)['monetary_total']
-        ubl_values = vals['_ubl_values']
-        invoice = vals['invoice']
-        line_tag = self._get_tags_for_document_type(vals)['document_line']
-
-        line_extension_amount = sum(
-            line_node['cbc:LineExtensionAmount']['_text']
-            for line_node in document_node[line_tag]
-        )
-        tax_amount = sum(
-            tax_total['cbc:TaxAmount']['_text']
-            for tax_total in document_node['cac:TaxTotal']
-            if tax_total['cbc:TaxAmount']['currencyID'] == vals['currency_id'].name
-        )
-        total_allowance = sum(
-            allowance_charge['cbc:Amount']['_text']
-            for allowance_charge in document_node['cac:AllowanceCharge']
-            if allowance_charge['cbc:ChargeIndicator']['_text'] == 'false'
-        )
-        total_charge = sum(
-            allowance_charge['cbc:Amount']['_text']
-            for allowance_charge in document_node['cac:AllowanceCharge']
-            if allowance_charge['cbc:ChargeIndicator']['_text'] == 'true'
-        )
-        payable_rounding_amount = ubl_values['payable_rounding_amount_currency']
-        payable_amount_tax_withholding_currency = ubl_values['payable_amount_tax_withholding_currency']
-
-        document_node[monetary_total_tag] = {
-            'cbc:LineExtensionAmount': {
-                '_text': FloatFmt(line_extension_amount, min_dp=vals['currency_dp']),
-                'currencyID': vals['currency_name'],
-            },
-            'cbc:TaxExclusiveAmount': {
-                '_text': FloatFmt(line_extension_amount, min_dp=vals['currency_dp']),
-                'currencyID': vals['currency_name'],
-            },
-            'cbc:TaxInclusiveAmount': {
-                '_text': FloatFmt(line_extension_amount + tax_amount, min_dp=vals['currency_dp']),
-                'currencyID': vals['currency_name'],
-            },
-            'cbc:AllowanceTotalAmount': {
-                '_text': FloatFmt(total_allowance, min_dp=vals['currency_dp']),
-                'currencyID': vals['currency_name'],
-            } if total_allowance else None,
-            'cbc:ChargeTotalAmount': {
-                '_text': FloatFmt(total_charge, min_dp=vals['currency_dp']),
-                'currencyID': vals['currency_name'],
-            } if total_charge else None,
-            'cbc:PrepaidAmount': {
-                '_text': FloatFmt(payable_amount_tax_withholding_currency + invoice.amount_total - invoice.amount_residual, min_dp=vals['currency_dp']),
-                'currencyID': vals['currency_name'],
-            },
-            'cbc:PayableRoundingAmount': {
-                '_text': FloatFmt(payable_rounding_amount, min_dp=vals['currency_dp']),
-                'currencyID': vals['currency_name'],
-            } if payable_rounding_amount else None,
-            'cbc:PayableAmount': {
-                '_text': FloatFmt(invoice.amount_residual, min_dp=vals['currency_dp']),
-                'currencyID': vals['currency_name'],
-            },
-        }
