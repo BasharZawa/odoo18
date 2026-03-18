@@ -17,7 +17,13 @@
       "Bash(docker cp:*)",
       "Bash(head:*)",
       "Bash(docker exec:*)",
-      "Bash(npx get-shit-done-cc:*)"
+      "Bash(npx get-shit-done-cc:*)",
+      "Bash(pg_lsclusters)",
+      "Bash(service postgresql:*)",
+      "Bash(systemctl status:*)",
+      "Bash(sudo -u postgres psql -l)",
+      "Bash(PGPASSWORD=admin psql -U admin -h 127.0.0.1 -d OdooE -c \"\\\\l\")",
+      "Bash(timeout:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

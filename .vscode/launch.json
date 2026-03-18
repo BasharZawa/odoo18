@@ -1,34 +1,24 @@
 {
-    // Configurations for launching Odoo with the virtual environment
     "version": "0.2.0",
     "configurations": [
-        {
+{
             "name": "Launch Odoo with venv",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/odoo-bin", // Path to the Odoo binary
+            "program": "${workspaceFolder}/odoo-bin",
             "args": [
                 "-c",
-                "${workspaceFolder}/odoo.conf", // Path to your Odoo configuration file
-                "-u",
-                /*
-                crm_extended_ept,customer_management_ept,discount_management_ept,ept_execute_python_code,mrp_extended_ept,orchida_uae_e_invoicing,pilot_order_ept,sale_below_cost_approval_ept,sale_extended_ept,stock_extended_ept,vendor_tracking_ept,quality_serial_receipt,quality_bulk_actions,purchase_extended_ept,account_budget_pivot,
-                */
-                "extend_distribution_method,sales_reports_ept,account_extended_ept,purchase_extended_ept,cr_backdate_entries_ept,customer_management_ept,ept_execute_python_code,mrp_extended_ept,orchida_uae_e_invoicing,pilot_order_ept,sale_extended_ept,stock_extended_ept,vendor_tracking_ept,sale_below_cost_approval_ept,stock_barcode",
+                "${workspaceFolder}/odoo.conf",
                 "-d",
                 "OdooE"
-                // Module to update
-                // "--max-cron-threads", "2", // Enable cron workers for BPM orchestrator
-                // Uncomment and modify the following lines to override database settings:
-                // "--db_host", "localhost",
-                // "--db_port", "5432",
-                // "--db_user", "odoo",
-                // "--db_password", "your_password",
-                // "--db_name", "your_database_name"
             ],
             "python": "${workspaceFolder}/.venv/bin/python3",
-            "justMyCode": false, // Allows debugging third-party and Odoo code
-            "stopOnEntry": false // Set to true if you want to pause execution at the start
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONUNBUFFERED": "1"
+            }
         }
     ]
 }
