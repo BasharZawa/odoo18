@@ -10,6 +10,17 @@
         "--header",
         "authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMmUzNWNmMS0yMzNiLTQ5NmEtODYwOS0wNTMyY2MzNjgwNmMiLCJpc3MiOiJuOG4iLCJhdWQiOiJtY3Atc2VydmVyLWFwaSIsImp0aSI6IjZkMGRkNjkwLTYwMTktNDEyNy05YjAyLWQxYTFjMGY0ZDMyZSIsImlhdCI6MTc3MTkzNjExMX0.HS0JFslcSVJbYKAVO7maxGYBp5ijJBxylKjbBi0awqQ"
       ]
+    },
+    "mcp-obsidian": {
+      "command": "uvx",
+      "args": [
+        "mcp-obsidian"
+      ],
+      "env": {
+        "OBSIDIAN_API_KEY": "d3ae96128a224b6d2f5fbadfa96f544764e6eb25a2f7e4570d810498b98ffe94",
+        "OBSIDIAN_HOST": "127.0.0.1",
+        "OBSIDIAN_PORT": "27124"
+      }
     }
   },
   "hooks": {

@@ -2,5 +2,6 @@
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python3",
     "python.analysis.extraPaths": [
         "${workspaceFolder}"
-    ]
+    ],
+    "github.copilot.chat.agentDebugLog.enabled": true
 }

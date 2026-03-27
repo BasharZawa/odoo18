@@ -1,5 +1,3 @@
-from pygments.lexer import default
-
 from odoo import models, fields, _
 
 
