@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!--
+        Seeds ONLY the site_url placeholder. jwt_secret is deliberately NOT
+        seeded — a dummy value would silently pass the controller's "is the
+        secret set?" check and produce broken embeds. The controller
+        fast-fails with 403 while jwt_secret is missing, which is the
+        correct signal to the operator during setup.
+
+        Set BOTH values after install via:
+          Settings → Technical → Parameters → System Parameters
+        or `odoo-bin shell`:
+          ir_config.set_param('sedco_metabase_reports.site_url', 'http://...')
+          ir_config.set_param('sedco_metabase_reports.jwt_secret', '<hex>')
+    -->
+
+    <record id="config_site_url" model="ir.config_parameter">
+        <field name="key">sedco_metabase_reports.site_url</field>
+        <field name="value">http://localhost:3000</field>
+    </record>
+
+</odoo>

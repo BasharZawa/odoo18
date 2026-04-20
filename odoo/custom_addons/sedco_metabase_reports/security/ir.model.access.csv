@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_metabase_dashboard_viewer,metabase.dashboard.viewer,model_metabase_dashboard,group_mb_viewer,1,0,0,0
+access_metabase_dashboard_ops,metabase.dashboard.ops,model_metabase_dashboard,group_mb_ops,1,0,0,0
+access_metabase_dashboard_manager,metabase.dashboard.manager,model_metabase_dashboard,group_mb_manager,1,1,1,1

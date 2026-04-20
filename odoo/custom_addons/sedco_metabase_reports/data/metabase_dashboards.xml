@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!--
+        noupdate="1" is critical: without it, a `-u sedco_metabase_reports`
+        module upgrade would reapply these records and reset real metabase_id
+        values back to 0, silently breaking production dashboards.
+        Set real Metabase IDs via the Odoo UI after publishing in Metabase.
+    -->
+
+    <record id="dashboard_sales_orders" model="metabase.dashboard">
+        <field name="name">Sales Orders</field>
+        <field name="code">sales_orders</field>
+        <field name="metabase_id">0</field>
+        <field name="sequence">10</field>
+        <field name="filter_mode">salesperson_bypass_manager</field>
+        <field name="bypass_group_id" ref="group_mb_manager"/>
+        <field name="allowed_group_ids" eval="[(6, 0, [ref('group_mb_viewer'), ref('group_mb_manager')])]"/>
+    </record>
+
+    <record id="dashboard_accounts" model="metabase.dashboard">
+        <field name="name">Accounts</field>
+        <field name="code">accounts</field>
+        <field name="metabase_id">0</field>
+        <field name="sequence">20</field>
+        <field name="filter_mode">none</field>
+        <field name="allowed_group_ids" eval="[(6, 0, [ref('group_mb_viewer'), ref('group_mb_manager')])]"/>
+    </record>
+
+    <record id="dashboard_contacts" model="metabase.dashboard">
+        <field name="name">Contacts</field>
+        <field name="code">contacts</field>
+        <field name="metabase_id">0</field>
+        <field name="sequence">30</field>
+        <field name="filter_mode">none</field>
+        <field name="allowed_group_ids" eval="[(6, 0, [ref('group_mb_viewer'), ref('group_mb_manager')])]"/>
+    </record>
+
+    <record id="dashboard_migration_kpis" model="metabase.dashboard">
+        <field name="name">Migration KPIs</field>
+        <field name="code">migration_kpis</field>
+        <field name="metabase_id">0</field>
+        <field name="sequence">40</field>
+        <field name="filter_mode">none</field>
+        <field name="allowed_group_ids" eval="[(6, 0, [ref('group_mb_manager'), ref('group_mb_ops')])]"/>
+    </record>
+
+    <record id="dashboard_sync_health" model="metabase.dashboard">
+        <field name="name">Sync Health</field>
+        <field name="code">sync_health</field>
+        <field name="metabase_id">0</field>
+        <field name="sequence">50</field>
+        <field name="filter_mode">none</field>
+        <field name="allowed_group_ids" eval="[(6, 0, [ref('group_mb_ops')])]"/>
+    </record>
+
+</odoo>

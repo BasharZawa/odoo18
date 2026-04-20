@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="embed_page" name="Metabase Embed Page">
+        <t t-set="doctype" t-value="'&lt;!DOCTYPE html&gt;'"/>
+        <t t-out="doctype"/>
+        <html>
+        <head>
+            <meta charset="utf-8"/>
+            <title t-esc="dashboard.name"/>
+            <link rel="stylesheet" href="/web/static/src/webclient/webclient.scss"/>
+            <style>
+                html, body { margin: 0; padding: 0; height: 100%; font-family: -apple-system, Segoe UI, Roboto, sans-serif; }
+                .mb-topbar {
+                    height: 42px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 0 16px;
+                    background: #714B67;
+                    color: white;
+                    font-size: 14px;
+                }
+                .mb-topbar a { color: white; text-decoration: none; font-weight: 500; }
+                .mb-topbar a:hover { text-decoration: underline; }
+                .mb-frame-wrap { height: calc(100% - 42px); }
+                .mb-frame-wrap iframe { width: 100%; height: 100%; border: 0; }
+            </style>
+        </head>
+        <body>
+            <div class="mb-topbar">
+                <span t-esc="dashboard.name"/>
+                <a href="/odoo">← Back to Odoo</a>
+            </div>
+            <div class="mb-frame-wrap">
+                <iframe t-att-src="iframe_src" allowtransparency="true"/>
+            </div>
+        </body>
+        </html>
+    </template>
+
+</odoo>

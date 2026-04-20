@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="module_category_metabase_reports" model="ir.module.category">
+        <field name="name">Metabase Reports</field>
+        <field name="description">Access levels for embedded Metabase dashboards.</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_mb_viewer" model="res.groups">
+        <field name="name">Viewer</field>
+        <field name="category_id" ref="module_category_metabase_reports"/>
+        <field name="comment">Reads Sales Orders, Accounts, Contacts dashboards. Row-filtered where applicable.</field>
+    </record>
+
+    <record id="group_mb_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_metabase_reports"/>
+        <field name="implied_ids" eval="[(4, ref('group_mb_viewer'))]"/>
+        <field name="comment">Viewer access plus Migration KPIs. Bypasses salesperson_id row filter on Sales Orders.</field>
+    </record>
+
+    <record id="group_mb_ops" model="res.groups">
+        <field name="name">Ops</field>
+        <field name="category_id" ref="module_category_metabase_reports"/>
+        <field name="comment">Access to Migration KPIs and Sync Health dashboards.</field>
+    </record>
+
+</odoo>

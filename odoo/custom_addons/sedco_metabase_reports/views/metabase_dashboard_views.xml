@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_metabase_dashboard_tree" model="ir.ui.view">
+        <field name="name">metabase.dashboard.tree</field>
+        <field name="model">metabase.dashboard</field>
+        <field name="arch" type="xml">
+            <list string="Metabase Dashboards">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="metabase_id"/>
+                <field name="filter_mode"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_metabase_dashboard_form" model="ir.ui.view">
+        <field name="name">metabase.dashboard.form</field>
+        <field name="model">metabase.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Metabase Dashboard">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Sales Orders"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" placeholder="sales_orders"/>
+                            <field name="metabase_id"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="filter_mode"/>
+                            <field name="bypass_group_id"
+                                   invisible="filter_mode != 'salesperson_bypass_manager'"
+                                   required="filter_mode == 'salesperson_bypass_manager'"/>
+                        </group>
+                    </group>
+                    <group string="Allowed Groups">
+                        <field name="allowed_group_ids" nolabel="1" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_metabase_dashboard" model="ir.actions.act_window">
+        <field name="name">Metabase Dashboards</field>
+        <field name="res_model">metabase.dashboard</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -10,7 +10,9 @@
                 "-c",
                 "${workspaceFolder}/odoo.conf",
                 "-d",
-                "OdooE"
+                "OdooE",
+                "-u",
+                "sedco_metabase_reports"
             ],
             "python": "${workspaceFolder}/.venv/bin/python3",
             "cwd": "${workspaceFolder}",
