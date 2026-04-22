@@ -42,6 +42,20 @@ class MetabaseDashboard(models.Model):
     )
     active = fields.Boolean(default=True)
     sequence = fields.Integer(default=10)
+    # Stage E — on-demand sync
+    sync_model_ids = fields.Many2many(
+        'metabase.sync.model',
+        'metabase_dashboard_sync_model_rel',
+        'dashboard_id', 'sync_model_id',
+        string='Models to refresh on open',
+        help="Odoo models synced to SQL Server before this dashboard's embed is rendered. "
+             "Leave empty to skip on-demand sync (e.g. Migration KPIs, Sync Health).",
+    )
+    sync_timeout_seconds = fields.Integer(
+        default=25,
+        help="Maximum seconds to wait for UXServer to complete the sync. "
+             "On timeout the iframe still renders with a stale-data warning.",
+    )
 
     _sql_constraints = [
         ('code_unique', 'unique(code)', 'Dashboard code must be unique.'),

@@ -42,6 +42,12 @@
                     <group string="Allowed Groups">
                         <field name="allowed_group_ids" nolabel="1" widget="many2many_tags"/>
                     </group>
+                    <group string="On-Demand Sync (Stage E)">
+                        <field name="sync_model_ids" widget="many2many_tags"
+                               options="{'no_create': True}"
+                               help="Models synced from Odoo before this dashboard renders. Leave empty to skip on-demand sync."/>
+                        <field name="sync_timeout_seconds"/>
+                    </group>
                 </sheet>
             </form>
         </field>

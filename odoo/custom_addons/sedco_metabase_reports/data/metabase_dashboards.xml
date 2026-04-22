@@ -15,6 +15,14 @@
         <field name="filter_mode">salesperson_bypass_manager</field>
         <field name="bypass_group_id" ref="group_mb_manager"/>
         <field name="allowed_group_ids" eval="[(6, 0, [ref('group_mb_viewer'), ref('group_mb_manager')])]"/>
+        <field name="sync_model_ids" eval="[(6, 0, [
+            ref('sync_model_sale_order'),
+            ref('sync_model_sale_order_line'),
+            ref('sync_model_res_partner'),
+            ref('sync_model_res_users'),
+            ref('sync_model_res_currency'),
+            ref('sync_model_crm_tag'),
+        ])]"/>
     </record>
 
     <record id="dashboard_accounts" model="metabase.dashboard">
@@ -24,6 +32,11 @@
         <field name="sequence">20</field>
         <field name="filter_mode">none</field>
         <field name="allowed_group_ids" eval="[(6, 0, [ref('group_mb_viewer'), ref('group_mb_manager')])]"/>
+        <field name="sync_model_ids" eval="[(6, 0, [
+            ref('sync_model_res_partner'),
+            ref('sync_model_res_partner_category'),
+            ref('sync_model_res_country'),
+        ])]"/>
     </record>
 
     <record id="dashboard_contacts" model="metabase.dashboard">
@@ -33,6 +46,10 @@
         <field name="sequence">30</field>
         <field name="filter_mode">none</field>
         <field name="allowed_group_ids" eval="[(6, 0, [ref('group_mb_viewer'), ref('group_mb_manager')])]"/>
+        <field name="sync_model_ids" eval="[(6, 0, [
+            ref('sync_model_res_partner'),
+            ref('sync_model_res_country'),
+        ])]"/>
     </record>
 
     <record id="dashboard_migration_kpis" model="metabase.dashboard">
@@ -42,6 +59,7 @@
         <field name="sequence">40</field>
         <field name="filter_mode">none</field>
         <field name="allowed_group_ids" eval="[(6, 0, [ref('group_mb_manager'), ref('group_mb_ops')])]"/>
+        <!-- sync_model_ids intentionally empty: KPIs come from identity_mapping, not live Odoo sync -->
     </record>
 
     <record id="dashboard_sync_health" model="metabase.dashboard">
@@ -51,6 +69,7 @@
         <field name="sequence">50</field>
         <field name="filter_mode">none</field>
         <field name="allowed_group_ids" eval="[(6, 0, [ref('group_mb_ops')])]"/>
+        <!-- sync_model_ids intentionally empty: syncing the health dashboard itself would be circular -->
     </record>
 
 </odoo>
