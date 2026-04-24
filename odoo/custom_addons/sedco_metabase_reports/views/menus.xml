@@ -2,6 +2,12 @@
 <odoo>
 
     <!-- URL actions (one per dashboard) -->
+    <record id="action_reports_index" model="ir.actions.act_url">
+        <field name="name">Reports</field>
+        <field name="url">/metabase/reports</field>
+        <field name="target">self</field>
+    </record>
+
     <record id="action_embed_sales_orders" model="ir.actions.act_url">
         <field name="name">Sales Orders</field>
         <field name="url">/metabase/embed/sales_orders</field>
@@ -35,6 +41,7 @@
     <!-- Top-level Reports menu (visible to anyone in a Metabase group) -->
     <menuitem id="menu_reports_root"
               name="Reports"
+              action="action_reports_index"
               sequence="85"
               groups="group_mb_viewer,group_mb_manager,group_mb_ops"
               web_icon="sedco_metabase_reports,static/description/icon.png"/>

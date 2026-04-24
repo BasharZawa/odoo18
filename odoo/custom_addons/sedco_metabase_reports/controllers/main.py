@@ -28,6 +28,27 @@ class MetabaseEmbedController(http.Controller):
     """
 
     @http.route(
+        '/metabase/reports',
+        type='http', auth='user', website=False, csrf=False,
+    )
+    def reports_index(self, **_kwargs):
+        user = request.env.user
+        dashboards = request.env['metabase.dashboard'].sudo().search(
+            [('active', '=', True)],
+            order='sequence, name',
+        )
+        allowed_dashboards = dashboards.filtered(
+            lambda dashboard: bool(user.groups_id & dashboard.allowed_group_ids)
+        )
+        return request.render(
+            'sedco_metabase_reports.reports_index',
+            {
+                'dashboards': allowed_dashboards,
+                'can_configure': user.has_group('sedco_metabase_reports.group_mb_manager'),
+            },
+        )
+
+    @http.route(
         '/metabase/embed/<string:code>',
         type='http', auth='user', website=False, csrf=False,
     )
@@ -69,6 +90,7 @@ class MetabaseEmbedController(http.Controller):
                 'dashboard': dashboard,
                 'iframe_src': iframe_src,
                 'sync_warning': sync_warning,
+                'can_configure': user.has_group('sedco_metabase_reports.group_mb_manager'),
             },
         )
 
@@ -125,12 +147,15 @@ class MetabaseEmbedController(http.Controller):
         mode = dashboard.filter_mode
         if mode == 'none':
             return {}
-        if mode == 'salesperson':
-            return {'salesperson_id': user.id}
-        if mode == 'salesperson_bypass_manager':
+
+        parameter_name = dashboard.locked_parameter_name or 'salesperson_id'
+
+        if mode in ('owner', 'salesperson'):
+            return {parameter_name: user.id}
+        if mode in ('owner_bypass_manager', 'salesperson_bypass_manager'):
             if dashboard.bypass_group_id and dashboard.bypass_group_id in user.groups_id:
-                return {'salesperson_id': []}
-            return {'salesperson_id': user.id}
+                return {parameter_name: []}
+            return {parameter_name: user.id}
         return {}
 
     @staticmethod

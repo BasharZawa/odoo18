@@ -1,8 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <template id="reports_index" name="Metabase Reports Index">
+        <html>
+        <head>
+            <meta charset="utf-8"/>
+            <title>Reports</title>
+            <link rel="stylesheet" href="/web/static/src/webclient/webclient.scss"/>
+            <style>
+                html, body {
+                    margin: 0;
+                    min-height: 100%;
+                    font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+                    background: #f6f7f9;
+                    color: #1f2933;
+                }
+                .mb-topbar {
+                    height: 42px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 0 16px;
+                    background: #714B67;
+                    color: white;
+                    font-size: 14px;
+                }
+                .mb-topbar a { color: white; text-decoration: none; font-weight: 500; }
+                .mb-topbar a:hover { text-decoration: underline; }
+                .mb-topbar-actions {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                }
+                .mb-index {
+                    max-width: 1120px;
+                    margin: 0 auto;
+                    padding: 32px 20px;
+                }
+                .mb-index h1 {
+                    margin: 0 0 24px;
+                    font-size: 28px;
+                    font-weight: 650;
+                    color: #243241;
+                }
+                .mb-report-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                    gap: 14px;
+                }
+                .mb-report-link {
+                    display: flex;
+                    align-items: center;
+                    min-height: 76px;
+                    padding: 18px 20px;
+                    border: 1px solid #d8dde6;
+                    border-radius: 8px;
+                    background: white;
+                    color: #243241;
+                    text-decoration: none;
+                    font-size: 16px;
+                    font-weight: 600;
+                    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+                    transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+                }
+                .mb-report-link:hover {
+                    border-color: #714B67;
+                    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.10);
+                    transform: translateY(-1px);
+                }
+                .mb-empty {
+                    padding: 18px 20px;
+                    border: 1px solid #d8dde6;
+                    border-radius: 8px;
+                    background: white;
+                    color: #52606d;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="mb-topbar">
+                <span>Reports</span>
+                <div class="mb-topbar-actions">
+                    <a t-if="can_configure" href="/odoo/action-sedco_metabase_reports.action_metabase_dashboard">Configuration</a>
+                    <a href="/odoo">Back to Odoo</a>
+                </div>
+            </div>
+            <main class="mb-index">
+                <h1>Reports</h1>
+                <div t-if="dashboards" class="mb-report-grid">
+                    <a t-foreach="dashboards"
+                       t-as="dashboard"
+                       t-key="dashboard.id"
+                       class="mb-report-link"
+                       t-att-href="'/metabase/embed/%s' % dashboard.code">
+                        <span t-esc="dashboard.name"/>
+                    </a>
+                </div>
+                <div t-else="" class="mb-empty">No reports available.</div>
+            </main>
+        </body>
+        </html>
+    </template>
+
     <template id="embed_page" name="Metabase Embed Page">
-        <t t-set="doctype" t-value="'&lt;!DOCTYPE html&gt;'"/>
+        <t t-set="doctype" t-value=""/>
         <t t-out="doctype"/>
         <html>
         <head>
@@ -23,6 +124,11 @@
                 }
                 .mb-topbar a { color: white; text-decoration: none; font-weight: 500; }
                 .mb-topbar a:hover { text-decoration: underline; }
+                .mb-topbar-actions {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                }
                 .mb-sync-warn {
                     background: #fff3cd; color: #664d03; border-bottom: 1px solid #ffecb5;
                     padding: 6px 16px; font-size: 13px;
@@ -35,7 +141,11 @@
         <body>
             <div class="mb-topbar">
                 <span t-esc="dashboard.name"/>
-                <a href="/odoo">← Back to Odoo</a>
+                <div class="mb-topbar-actions">
+                    <a href="/metabase/reports">Reports</a>
+                    <a t-if="can_configure" href="/odoo/action-sedco_metabase_reports.action_metabase_dashboard">Configuration</a>
+                    <a href="/odoo">Back to Odoo</a>
+                </div>
             </div>
             <t t-if="sync_warning">
                 <div class="mb-sync-warn">⚠ <t t-esc="sync_warning"/></div>

@@ -13,6 +13,7 @@
         <field name="metabase_id">0</field>
         <field name="sequence">10</field>
         <field name="filter_mode">salesperson_bypass_manager</field>
+        <field name="locked_parameter_name">salesperson_id</field>
         <field name="bypass_group_id" ref="group_mb_manager"/>
         <field name="allowed_group_ids" eval="[(6, 0, [ref('group_mb_viewer'), ref('group_mb_manager')])]"/>
         <field name="sync_model_ids" eval="[(6, 0, [

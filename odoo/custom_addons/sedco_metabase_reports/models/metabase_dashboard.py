@@ -28,15 +28,21 @@ class MetabaseDashboard(models.Model):
     filter_mode = fields.Selection(
         [
             ('none', 'No filter'),
-            ('salesperson', 'Salesperson (always filter by user)'),
-            ('salesperson_bypass_manager', 'Salesperson (bypass for managers)'),
+            ('salesperson', 'Owner (always filter by current user)'),
+            ('salesperson_bypass_manager', 'Owner (bypass for managers)'),
         ],
         default='none',
         required=True,
     )
+    locked_parameter_name = fields.Char(
+        default='owner_id',
+        help="Name of the locked Metabase parameter sent in the embed JWT. "
+             "Use the same name in the SQL variable, dashboard filter slug, "
+             "and Metabase embed parameter. Examples: owner_id, salesperson_id, assigned_user_id.",
+    )
     bypass_group_id = fields.Many2one(
         'res.groups',
-        help="Only used when filter_mode = salesperson_bypass_manager. "
+        help="Only used by bypass filter modes. "
              "Users in this group receive an empty locked-param array, "
              "effectively disabling the row-level filter.",
     )

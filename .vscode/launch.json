@@ -12,7 +12,7 @@
                 "-d",
                 "OdooE",
                 "-u",
-                "sedco_metabase_reports,account_extended_ept "
+                "sedco_metabase_reports,account_extended_ept"
             ],
             "python": "${workspaceFolder}/.venv/bin/python3",
             "cwd": "${workspaceFolder}",
