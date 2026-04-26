@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 18:38+0000\n"
-"PO-Revision-Date: 2026-03-06 15:06+0000\n"
+"POT-Creation-Date: 2026-04-10 18:38+0000\n"
+"PO-Revision-Date: 2026-03-29 12:12+0000\n"
 "Last-Translator: Saara Hakanen <sahak@odoo.com>\n"
 "Language-Team: Finnish <https://translate.odoo.com/projects/odoo-18/"
 "pos_self_order/fi/>\n"
@@ -34,7 +34,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.1\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: pos_self_order
 #: model:ir.actions.report,print_report_name:pos_self_order.report_self_order_qr_codes_page
@@ -474,7 +474,7 @@ msgstr "Tiedoston suoratoistomalli ohjaimille"
 #. module: pos_self_order
 #: model:ir.model,name:pos_self_order.model_account_fiscal_position
 msgid "Fiscal Position"
-msgstr "Verokanta"
+msgstr "Verokantasääntö"
 
 #. module: pos_self_order
 #. odoo-javascript
@@ -880,27 +880,27 @@ msgstr "Kassapäätteen kategoria"
 #. module: pos_self_order
 #: model:ir.model,name:pos_self_order.model_pos_config
 msgid "Point of Sale Configuration"
-msgstr "Kassan asetukset"
+msgstr "Kassajärjestelmän asetukset"
 
 #. module: pos_self_order
 #: model:ir.model,name:pos_self_order.model_pos_order_line
 msgid "Point of Sale Order Lines"
-msgstr "Kassan tilausrivit"
+msgstr "Kassajärjestelmän tilausrivit"
 
 #. module: pos_self_order
 #: model:ir.model,name:pos_self_order.model_pos_order
 msgid "Point of Sale Orders"
-msgstr "Kassan tilaukset"
+msgstr "Kassajärjestelmän tilaukset"
 
 #. module: pos_self_order
 #: model:ir.model,name:pos_self_order.model_pos_payment_method
 msgid "Point of Sale Payment Methods"
-msgstr "Kassan maksutavat"
+msgstr "Kassajärjestelmän maksutavat"
 
 #. module: pos_self_order
 #: model:ir.model,name:pos_self_order.model_pos_session
 msgid "Point of Sale Session"
-msgstr "Kassan istunto"
+msgstr "Kassajärjestelmän istunto"
 
 #. module: pos_self_order
 #: model_terms:ir.ui.view,arch_db:pos_self_order.qr_codes_page
@@ -1400,6 +1400,11 @@ msgid "Your order status has been changed"
 msgstr "Tilauksesi tilaa on muutettu"
 
 #. module: pos_self_order
+#: model_terms:ir.ui.view,arch_db:pos_self_order.res_config_settings_view_form_menu
+msgid "a"
+msgstr ""
+
+#. module: pos_self_order
 #: model_terms:ir.ui.view,arch_db:pos_self_order.pos_self_order_product_pos_category_form_view
 msgid "and"
 msgstr "ja"
@@ -1424,3 +1429,9 @@ msgstr "odoo"
 #: code:addons/pos_self_order/static/src/app/pages/product_page/product_page.xml:0
 msgid "options"
 msgstr "vaihtoehdot"
+
+#. module: pos_self_order
+#. odoo-javascript
+#: code:addons/pos_self_order/static/src/app/pages/cart_page/cart_page.xml:0
+msgid "x"
+msgstr ""

@@ -323,6 +323,78 @@ class TestEdiZatca(TestSaEdiCommon):
                         move=refund_invoice,
                     )
 
+    @freeze_time('2022-09-05')
+    def test_invoice_with_reversed_downpayment_invoice(self):
+        """ SO with a reversed downpayment + a new downpayment must
+        not crash when generating the ZATCA XML of the final invoice.
+        """
+        if 'sale' not in self.env["ir.module.module"]._installed():
+            self.skipTest("Sale module is not installed")
+
+        saudi_pricelist = self.env['product.pricelist'].create({
+            'name': 'SAR',
+            'currency_id': self.env.ref('base.SAR').id,
+        })
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.partner_sa.id,
+            'pricelist_id': saudi_pricelist.id,
+            'order_line': [Command.create({
+                'product_id': self.product_a.id,
+                'price_unit': 1000,
+                'product_uom_qty': 1,
+                'tax_id': [Command.set(self.tax_15.ids)],
+            })],
+        })
+        sale_order.action_confirm()
+
+        context = {
+            'active_model': 'sale.order',
+            'active_ids': [sale_order.id],
+            'active_id': sale_order.id,
+            'default_journal_id': self.customer_invoice_journal.id,
+        }
+
+        # Mark the product SOL as delivered so the final invoice contains it.
+        sale_order.order_line.filtered(lambda l: not l.is_downpayment).qty_delivered = 1
+
+        # 1. First downpayment, then reverse it through the Credit Note
+        dp1_wizard = self.env['sale.advance.payment.inv'].with_context(context).create({
+            'advance_payment_method': 'fixed',
+            'fixed_amount': 115,
+        })
+        dp1 = dp1_wizard._create_invoices(sale_order)
+        dp1.invoice_date_due = '2022-09-22'
+        dp1.action_post()
+
+        reversal_wizard = self.env['account.move.reversal'].with_context(
+            active_model='account.move',
+            active_ids=dp1.ids,
+        ).create({
+            'journal_id': dp1.journal_id.id,
+            'reason': 'Repro opw-6116265',
+        })
+        reversal_wizard.reverse_moves(is_modify=True)
+        self.assertEqual(dp1.payment_state, 'reversed')
+
+        # 2. DP2 is the draft produced by the reversal wizard; post it.
+        dp2 = reversal_wizard.new_move_ids
+        self.assertEqual(len(dp2), 1)
+        dp2.invoice_date_due = '2022-09-22'
+        dp2.action_post()
+
+        # 3. Final invoice — should not raise "Expected singleton" during XML generation
+        final_wizard = self.env['sale.advance.payment.inv'].with_context(context).create({})
+        final = final_wizard._create_invoices(sale_order)
+        final.invoice_line_ids.filtered('is_downpayment').name = 'Down Payment'
+        final.invoice_date_due = '2022-09-22'
+        final.action_post()
+        final.l10n_sa_confirmation_datetime = datetime.now()
+
+        # Must not raise: previously crashed with "Expected singleton: account.move(dp1, dp2)"
+        final._l10n_sa_generate_unsigned_data()
+        generated_file = self.env['account.edi.format']._l10n_sa_generate_zatca_template(final)
+        self.assertIn(dp2.name, generated_file.decode() if isinstance(generated_file, bytes) else generated_file)
+
     def testInvoiceWithRetention(self):
         """Test standard invoice generation."""
 
@@ -532,3 +604,58 @@ class TestEdiZatca(TestSaEdiCommon):
             '<p>Please, make sure all the following fields have been '
             'correctly set on the Company:\n - Street</p>'
         )
+
+    def test_child_company_api_mode_change_does_not_reset_parent_journal(self):
+        """Changing a child company's ZATCA API mode must not reset the parent company's journal."""
+        self.customer_invoice_journal._l10n_sa_load_edi_demo_data()
+        self.assertTrue(self.customer_invoice_journal.l10n_sa_production_csid_json)
+
+        child_journal = self.env['account.journal'].create({
+            'name': 'Child Sales Journal',
+            'code': 'CSAL',
+            'type': 'sale',
+            'company_id': self.sa_branch.id,
+        })
+        child_journal._l10n_sa_load_edi_demo_data()
+        self.assertTrue(child_journal.l10n_sa_production_csid_json)
+
+        self.sa_branch.l10n_sa_api_mode = 'preprod'
+
+        self.assertFalse(child_journal.l10n_sa_production_csid_json,
+            "Child journal should be reset after API mode change")
+        self.assertTrue(self.customer_invoice_journal.l10n_sa_production_csid_json,
+            "Parent journal must not be reset when child company API mode changes")
+
+    def test_invoice_cash_rounding_payable_amount(self):
+        """Test that payable_amount is correctly computed when using cash rounding"""
+        cash_rounding = self.env['account.cash.rounding'].create({
+            'name': 'add_invoice_line',
+            'rounding': 1.00,
+            'strategy': 'add_invoice_line',
+            'profit_account_id': self.company_data['default_account_revenue'].copy().id,
+            'loss_account_id': self.company_data['default_account_expense'].copy().id,
+            'rounding_method': 'UP',
+        })
+
+        move_data = {
+            'name': 'INV/2022/00014',
+            'invoice_date': '2022-09-05',
+            'invoice_date_due': '2022-09-22',
+            'partner_id': self.partner_sa,
+            'invoice_cash_rounding_id': cash_rounding.id,
+            'invoice_line_ids': [{
+                'product_id': self.product_a.id,
+                'price_unit': 99.55,
+                'tax_ids': self.tax_15.ids,
+            }],
+        }
+
+        invoice = self._create_invoice(**move_data)
+        invoice.action_post()
+        xml_content = self.env['account.edi.format']._l10n_sa_generate_zatca_template(invoice)
+        xml_root = etree.fromstring(xml_content)
+        payable_amount = xml_root.xpath(
+            "//cbc:PayableAmount",
+            namespaces=self.env['account.edi.xml.ubl_21.zatca']._l10n_sa_get_namespaces()
+        )[0].text.strip()
+        self.assertEqual(payable_amount, '115.00')

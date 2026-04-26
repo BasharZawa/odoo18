@@ -1429,6 +1429,12 @@
                                         <field name="partner_bank_id"
                                                context="{'default_partner_id': bank_partner_id, 'display_account_trust': True}"
                                                domain="[('partner_id.ref_company_ids', 'parent_of', company_id)]"
+                                               invisible="move_type != 'out_invoice'"
+                                               readonly="is_move_sent and state != 'draft'"/>
+                                        <field name="partner_bank_id"
+                                               context="{'default_partner_id': bank_partner_id, 'display_account_trust': True}"
+                                               domain="[('partner_id', '=', bank_partner_id)]"
+                                               invisible="move_type != 'out_refund'"
                                                readonly="is_move_sent and state != 'draft'"/>
                                         <field name="payment_reference"
                                             invisible="move_type not in ('out_invoice', 'out_refund')"
@@ -2060,5 +2066,17 @@ if records:
             </field>
         </record>
 
+        <record id="action_move_export_zip" model="ir.actions.server">
+            <field name="name">Export ZIP</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="sequence">7</field>
+            <field name="code">
+                if records:
+                    action = records.action_export_zip()
+            </field>
+        </record>
     </data>
 </odoo>

@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-06 18:38+0000\n"
-"PO-Revision-Date: 2026-02-28 18:01+0000\n"
+"POT-Creation-Date: 2026-04-17 18:37+0000\n"
+"PO-Revision-Date: 2026-04-18 13:58+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Turkish <https://translate.odoo.com/projects/odoo-18/"
 "account_edi_ubl_cii/tr/>\n"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -59,19 +59,31 @@ msgid "(Un)Group lines by tax"
 msgstr ""
 
 #. module: account_edi_ubl_cii
+#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.report_invoice_document
+msgid "<span class=\"text-muted\">FROM</span>"
+msgstr ""
+
+#. module: account_edi_ubl_cii
+#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.report_invoice_document
+msgid "<span class=\"text-muted\">TO</span>"
+msgstr ""
+
+#. module: account_edi_ubl_cii
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
-msgid "1.0"
-msgstr "1.0"
+msgid "A"
+msgstr ""
 
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "A payment of %s was detected."
 msgstr "%s ödemesi belirlendi."
 
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "A rounding amount of %s was detected."
 msgstr "%s tutarında bir yuvarlama farkı tespit edildi."
 
@@ -104,12 +116,6 @@ msgstr "Arnavutluk KDV"
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9922
 msgid "Andorra VAT"
 msgstr "Andorra KDV"
-
-#. module: account_edi_ubl_cii
-#. odoo-python
-#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
-msgid "Articles 226 items 11 to 15 Directive 2006/112/EN"
-msgstr "2006/112/EN sayılı Direktifin 226. maddesi, 11–15 numaralı bentler"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -191,6 +197,12 @@ msgstr "Ticaret Sicil Ağı"
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_move.py:0
+msgid "Cannot decode origin file, try by importing it again"
+msgstr ""
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_move.py:0
 msgid "Cannot find the origin file, try by importing it again"
 msgstr ""
 
@@ -249,6 +261,7 @@ msgstr "Kontak"
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid ""
 "Could not retrieve a partner corresponding to '%s'. A new partner was "
 "created."
@@ -257,6 +270,7 @@ msgstr "'%s' ile eşleşen bir partner bulunamadı. Yeni bir partner oluşturuld
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid ""
 "Could not retrieve currency: %s. Did you enable the multicurrency option and "
 "activate the currency?"
@@ -273,6 +287,7 @@ msgstr "'%(line)s' satırı için %(amount)s %% oranındaki vergi alınamadı."
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "Could not retrieve the tax: %(tax_percentage)s %% for line '%(line)s'."
 msgstr ""
 "'%(line)s' satırı için %(tax_percentage)s %% oranındaki vergi alınamadı."
@@ -280,6 +295,7 @@ msgstr ""
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "Could not retrieve the tax: %s for the document level allowance/charge."
 msgstr "Belge seviyesindeki iskonto/masraf için %s vergisi alınamadı."
 
@@ -397,6 +413,7 @@ msgstr "Estonya KDV"
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_bis3.py:0
 msgid "Exempt from tax"
 msgstr "Vergiden muaf"
 
@@ -450,6 +467,7 @@ msgstr "Topluluk içi teslimatlarda teslimat adresi belirtilmelidir."
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "Format used to import the invoice: %s"
 msgstr "Fatura içe aktarmada kullanılan format: %s"
 
@@ -492,6 +510,11 @@ msgstr "GS1 tanımlama anahtarları"
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "Generated by Odoo"
+msgstr ""
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0246
+msgid "German Electronic Business Address"
 msgstr ""
 
 #. module: account_edi_ubl_cii
@@ -690,13 +713,9 @@ msgid "Netherlands VAT"
 msgstr "Hollanda KDV Numarası"
 
 #. module: account_edi_ubl_cii
-#. odoo-python
-#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
-msgid ""
-"No gross price, net price nor line subtotal amount found for line in xml"
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0244
+msgid "Nigeria Tax Identification"
 msgstr ""
-"xml'de satır için brüt fiyat, net fiyat veya satır alt toplam tutarı "
-"bulunamadı"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0192
@@ -781,6 +800,7 @@ msgstr "Romanya KDV Numarası"
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "Rounding"
 msgstr "Yuvarlama"
 
@@ -808,6 +828,11 @@ msgstr "SI-UBL 2.0 (NLCIUS)"
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0135
 msgid "SIA Object Identifiers"
 msgstr "SIA Nesne Tanımlayıcıları"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0245
+msgid "SK Tax identification number (DIČ)"
+msgstr ""
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9951
@@ -871,6 +896,11 @@ msgid "Tax '%(tax_name)s' is invalid: %(error_message)s"
 msgstr "'%(tax_name)s' vergisi geçersiz: %(error_message)s"
 
 #. module: account_edi_ubl_cii
+#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.report_invoice_document
+msgid "Tax ID"
+msgstr "VKN/TCKN"
+
+#. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
 msgid ""
@@ -921,6 +951,7 @@ msgstr "%s KDV numarasının başında ülke kodu bulunmalıdır."
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "The bank account couldn't be fetched: %s"
 msgstr ""
 
@@ -933,6 +964,7 @@ msgstr "%s için ülke bilgisi gereklidir."
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "The currency '%s' is not active."
 msgstr "'%s' para birimi etkin değil."
 
@@ -956,6 +988,7 @@ msgstr "Alıcı bankada 'Temizlenmiş Hesap Numarası' alanı zorunludur."
 
 #. module: account_edi_ubl_cii
 #. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_cii_facturx.py:0
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_20.py:0
 msgid ""
@@ -1057,6 +1090,11 @@ msgid "Vatican VAT"
 msgstr "Vatikan KDV Numarası"
 
 #. module: account_edi_ubl_cii
+#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.report_invoice_document
+msgid "Vendor Bill"
+msgstr "Tedarikçi Faturası"
+
+#. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_move_send.py:0
 msgid "View Partner(s)"
@@ -1092,7 +1130,7 @@ msgstr ""
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_move.py:0
-msgid "You can only (un)group lines of a incoming invoice (vendor bill)"
+msgid "You can only group lines of an invoice"
 msgstr ""
 
 #. module: account_edi_ubl_cii
@@ -1127,6 +1165,18 @@ msgstr "fx"
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
 msgid "urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#"
 msgstr "urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0 #"
+
+#~ msgid "1.0"
+#~ msgstr "1.0"
+
+#~ msgid "Articles 226 items 11 to 15 Directive 2006/112/EN"
+#~ msgstr "2006/112/EN sayılı Direktifin 226. maddesi, 11–15 numaralı bentler"
+
+#~ msgid ""
+#~ "No gross price, net price nor line subtotal amount found for line in xml"
+#~ msgstr ""
+#~ "xml'de satır için brüt fiyat, net fiyat veya satır alt toplam tutarı "
+#~ "bulunamadı"
 
 #~ msgid "Your endpoint"
 #~ msgstr "Uç noktanız"

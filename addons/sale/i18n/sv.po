@@ -34,8 +34,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 18:39+0000\n"
-"PO-Revision-Date: 2026-02-21 18:01+0000\n"
+"POT-Creation-Date: 2026-04-10 18:38+0000\n"
+"PO-Revision-Date: 2026-04-14 08:24+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Swedish <https://translate.odoo.com/projects/odoo-18/sale/sv/>"
 "\n"
@@ -44,7 +44,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_payment_provider_onboarding_wizard___data_fetched
@@ -96,21 +96,6 @@ msgid ""
 msgstr ""
 "(object.state in ('draft', 'sent') and 'Offert - %s' % (object.name)) or "
 "'Order - %s' % (object.name)"
-
-#. module: sale
-#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
-msgid "2023-12-31"
-msgstr "2023-12-31"
-
-#. module: sale
-#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
-msgid "27.00"
-msgstr "27.00"
-
-#. module: sale
-#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
-msgid "31.05"
-msgstr "31.05"
 
 #. module: sale
 #. odoo-javascript
@@ -5351,7 +5336,7 @@ msgstr "Transaktioner"
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__translated_product_name
 msgid "Translated Product Name"
-msgstr ""
+msgstr "Översatt produktnamn"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__type_name
@@ -5831,6 +5816,12 @@ msgid "units"
 msgstr "enheter"
 
 #. module: sale
+#. odoo-javascript
+#: code:addons/sale/static/src/xml/sale_product_field.xml:0
+msgid "x"
+msgstr ""
+
+#. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_template
 msgid "you confirm acceptance on the behalf of"
 msgstr "du bekräftar acceptans på uppdrag av"
@@ -5866,6 +5857,15 @@ msgid ""
 msgstr ""
 "{{ object.company_id.name }} {{ object.type_name }} Cancelled (Ref "
 "{{ object.name or 'n/a' }})"
+
+#~ msgid "2023-12-31"
+#~ msgstr "2023-12-31"
+
+#~ msgid "27.00"
+#~ msgstr "27.00"
+
+#~ msgid "31.05"
+#~ msgstr "31.05"
 
 #~ msgid ""
 #~ "<span class=\"fa fa-lg fa-building-o p-2\" title=\"Values set here are "

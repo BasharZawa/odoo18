@@ -49,8 +49,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 18:39+0000\n"
-"PO-Revision-Date: 2026-03-04 10:36+0000\n"
+"POT-Creation-Date: 2026-04-10 18:38+0000\n"
+"PO-Revision-Date: 2026-04-24 07:53+0000\n"
 "Last-Translator: Saara Hakanen <sahak@odoo.com>\n"
 "Language-Team: Finnish <https://translate.odoo.com/projects/odoo-18/sale/fi/>"
 "\n"
@@ -59,7 +59,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.1\n"
+"X-Generator: Weblate 5.17\n"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_payment_provider_onboarding_wizard___data_fetched
@@ -111,21 +111,6 @@ msgid ""
 msgstr ""
 "(object.state in ('draft', 'sent') and 'Tarjous - %s' % (object.name)) or "
 "'Tilaus - %s' % (object.name)"
-
-#. module: sale
-#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
-msgid "2023-12-31"
-msgstr "2023-12-31"
-
-#. module: sale
-#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
-msgid "27.00"
-msgstr "27.00"
-
-#. module: sale
-#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
-msgid "31.05"
-msgstr "31.05"
 
 #. module: sale
 #. odoo-javascript
@@ -1311,7 +1296,7 @@ msgstr "<strong>Vanhentuminen:</strong><br/>"
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
 msgid "<strong>Fiscal Position Remark:</strong>"
-msgstr "<strong>Verokannan huomautus:</strong>"
+msgstr "<strong>Verokantasäännön huomautus:</strong>"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
@@ -1455,7 +1440,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model,name:sale.model_account_chart_template
 msgid "Account Chart Template"
-msgstr "Tilikarttamalli"
+msgstr "Tilikartan mallipohja"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_payment_provider_onboarding_wizard__acc_number
@@ -2659,7 +2644,7 @@ msgstr "Dokumentaatio"
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
 msgid "Documents"
-msgstr "Dokumentit"
+msgstr "Asiakirjat"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_account_analytic_applicability__business_domain
@@ -2858,7 +2843,7 @@ msgstr "FedEx Connector"
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__fiscal_position_id
 msgid "Fiscal Position"
-msgstr "Verokanta"
+msgstr "Verokantasääntö"
 
 #. module: sale
 #: model:ir.model.fields,help:sale.field_sale_order__fiscal_position_id
@@ -2866,8 +2851,8 @@ msgid ""
 "Fiscal positions are used to adapt taxes and accounts for particular "
 "customers or sales orders/invoices.The default value comes from the customer."
 msgstr ""
-"Verokantoja käytetään muokkaamaan veroja ja kirjanpidon tilejä tietyille "
-"asiakkaille tai myynneille/laskuille. Oletusarvo tulee asiakkaalta."
+"Verokantasääntöjä käytetään verojen ja tilien mukauttamiseen tietyille "
+"asiakkaille tai tilauksille/laskuille. Oletusarvo tulee asiakkaalta."
 
 #. module: sale
 #: model:ir.model.fields.selection,name:sale.selection__sale_order_discount__discount_type__amount
@@ -2921,7 +2906,7 @@ msgstr "Koko summa <br/>"
 #: model:ir.model.fields.selection,name:sale.selection__sale_report__line_invoice_status__invoiced
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
 msgid "Fully Invoiced"
-msgstr "Kaikki laskutettu"
+msgstr "Täysin laskutettu"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
@@ -3009,7 +2994,7 @@ msgstr "On vahvistanut tilauksen"
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__show_update_fpos
 msgid "Has Fiscal Position Changed"
-msgstr "Onko verokanta muuttunut"
+msgstr "Sisältää muuttuneen verokantasäännön"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__has_message
@@ -3375,7 +3360,7 @@ msgstr "Päiväkirjan kirjaus"
 #. module: sale
 #: model:ir.model,name:sale.model_account_move_line
 msgid "Journal Item"
-msgstr "Päiväkirjamerkintä"
+msgstr "Kirjausrivi"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_cancel__lang
@@ -4319,7 +4304,7 @@ msgstr "Tuotteiden hinnat on laskettu uudelleen."
 #. odoo-python
 #: code:addons/sale/models/sale_order.py:0
 msgid "Product taxes have been recomputed according to fiscal position %s."
-msgstr "Tuoteverot on laskettu uudelleen verokannan %s mukaisesti."
+msgstr "Tuoteverot on laskettu uudelleen verokantasäännön %s mukaisesti."
 
 #. module: sale
 #: model:ir.actions.act_window,name:sale.product_template_action
@@ -4526,7 +4511,7 @@ msgstr "Laske uudelleen hinnoittelu tämän hinnaston perusteella"
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Recompute all taxes based on this fiscal position"
-msgstr "Laske kaikki verot uudelleen tämän verokannan perusteella"
+msgstr "Laske kaikki verot uudelleen tämän verokantasäännön perusteella"
 
 #. module: sale
 #: model:ir.model.fields,help:sale.field_sale_order__origin
@@ -5293,7 +5278,7 @@ msgstr "Veroton."
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
 msgid "Tax ID"
-msgstr "ALV-numero"
+msgstr "Verotunnus"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
@@ -5741,7 +5726,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid ""
 "This will update all taxes based on the currently selected fiscal position."
-msgstr "Tämä päivittää kaikki verot nykyisen verokannan perusteella."
+msgstr "Tämä päivittää kaikki verot nykyisen verokantasäännön perusteella."
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
@@ -5834,7 +5819,7 @@ msgstr "Tapahtumat"
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__translated_product_name
 msgid "Translated Product Name"
-msgstr "Käännetty tuotteen nimi"
+msgstr "Tuotteen käännetty nimi"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__type_name
@@ -6314,6 +6299,12 @@ msgid "units"
 msgstr "yksiköt"
 
 #. module: sale
+#. odoo-javascript
+#: code:addons/sale/static/src/xml/sale_product_field.xml:0
+msgid "x"
+msgstr ""
+
+#. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_template
 msgid "you confirm acceptance on the behalf of"
 msgstr "vahvistat hyväksynnän seuraavien puolesta"
@@ -6349,6 +6340,15 @@ msgid ""
 msgstr ""
 "{{ object.company_id.name }} {{ object.type_name }} Peruutettu (viite "
 "{{ object.name or 'n/a' }})"
+
+#~ msgid "2023-12-31"
+#~ msgstr "2023-12-31"
+
+#~ msgid "27.00"
+#~ msgstr "27.00"
+
+#~ msgid "31.05"
+#~ msgstr "31.05"
 
 #~ msgid ""
 #~ "<span class=\"fa fa-lg fa-building-o p-2\" title=\"Values set here are "

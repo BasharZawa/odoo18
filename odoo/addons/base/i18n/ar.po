@@ -7,13 +7,14 @@
 # Wil Odoo, 2025
 # Malaz Abuidris <msea@odoo.com>, 2025
 # Weblate <noreply-mt-weblate@weblate.org>, 2026.
+# "Malaz Siddig Elsayed Abuidris (msea)" <msea@odoo.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-16 16:38+0000\n"
-"PO-Revision-Date: 2026-02-25 02:16+0000\n"
-"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"PO-Revision-Date: 2026-04-15 09:55+0000\n"
+"Last-Translator: \"Malaz Siddig Elsayed Abuidris (msea)\" <msea@odoo.com>\n"
 "Language-Team: Arabic <https://translate.odoo.com/projects/odoo-18/base/ar/>"
 "\n"
 "Language: ar\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_at_reports
@@ -281,6 +282,84 @@ msgid ""
 "\n"
 "**Købskonto:**      4010 Restaurationsbesøg\n"
 msgstr ""
+"\n"
+"\n"
+"Localization Module for Denmark\n"
+"===============================\n"
+"\n"
+"This is the module to manage the **accounting chart for Denmark**. Cover "
+"both one-man business as well as I/S, IVS, ApS and A/S\n"
+"\n"
+"**Modulet opsætter:**\n"
+"\n"
+"- **Dansk kontoplan**\n"
+"\n"
+"- Dansk moms\n"
+"        - 25 % moms\n"
+"        - Restaurationsmoms 6,25 %\n"
+"        - Omvendt betalingspligt\n"
+"\n"
+"- Konteringsgrupper\n"
+"        - EU (Virksomhed)\n"
+"        - EU (Privat)\n"
+"        - Tredjelande\n"
+"\n"
+"- Finansrapporter\n"
+"        - Resultatopgørelse\n"
+"        - Balance\n"
+"        - Momsafregning\n"
+"            - Afregning\n"
+"            - Rubrik A, B og C\n"
+"\n"
+"- **Anglo-saksisk regnskabsmetode**\n"
+"\n"
+".\n"
+"\n"
+"Produktopsætning:\n"
+"=================\n"
+"\n"
+"**Vare**\n"
+"\n"
+"**Salgsmoms:**      Salgsmoms 25 %\n"
+"\n"
+"**Salgskonto:**     1.010 Salg af varer inkl. moms\n"
+"\n"
+"**Købsmoms:**       Købsmoms 25 %\n"
+"\n"
+"**Købskonto:**      2.010 Direkte vareomkostninger inkl. moms\n"
+"\n"
+".\n"
+"\n"
+"**Ydelse**\n"
+"\n"
+"**Salgsmoms:**      Salgsmoms 25 %, ydelser\n"
+"\n"
+"**Salgskonto:**     1.011 Salg af ydelser inkl. moms\n"
+"\n"
+"**Købsmoms:**       Købsmoms 25 %, ydelser\n"
+"\n"
+"**Købskonto:**      2.011 Direkte omkostninger ydelser inkl. moms\n"
+"\n"
+".\n"
+"\n"
+"**Vare med omvendt betalingspligt**\n"
+"\n"
+"**Salgsmoms:**      Salg med omvendt betalingspligt\n"
+"\n"
+"**Salgskonto:**     1.012 Salg af varer ekskl. moms\n"
+"\n"
+"**Købsmoms:**       Køb med omvendt betalingspligt\n"
+"\n"
+"**Købskonto:**      2.012 Direkte vareomkostninger ekskl. moms\n"
+"\n"
+"\n"
+".\n"
+"\n"
+"**Restauration**\n"
+"\n"
+"**Købsmoms:**       Restaurationsmoms 6,25 %, købsmoms\n"
+"\n"
+"**Købskonto:**      4010 Restaurationsbesøg\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_do
@@ -2563,6 +2642,8 @@ msgid ""
 "\n"
 "Adds the support for services intrastat codes.\n"
 msgstr ""
+"\n"
+"يضيف الدعم لرموز خدمات إينتراستات.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_quality_mrp
@@ -4162,6 +4243,9 @@ msgid ""
 "Bridge module to support the debit notes (nota di debito - NDD) by adding "
 "debit note fields.\n"
 msgstr ""
+"\n"
+"وحدة Bridge لدعم إشعارات الخصم (nota di debito - NDD) عن طريق إضافة حقول "
+"إشعارات الخصم.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_base_automation_hr_contract
@@ -5952,6 +6036,9 @@ msgid ""
 "Extension for Poland - Accounting to add support for taxable supply date\n"
 "========================================================================\n"
 msgstr ""
+"\n"
+"امتداد لبولندا - المحاسبة لإضافة دعم لتاريخ التوريد الخاضع للضريبة\n"
+"========================================================================\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_generator_sale
@@ -7293,6 +7380,11 @@ msgid ""
 "transport\n"
 "modes classified as Air or Sea in the e-Way Bill system.\n"
 msgstr ""
+"\n"
+"الهند - موانئ الشحن في نظام الفواتير الإلكترونية\n"
+"====================================\n"
+"تم إدخال وحدة نمطية جديدة لإدارة رموز الموانئ الهندية، خاصة لوسائل النقل\n"
+"المصنفة على أنها جوية أو بحرية في نظام الفواتير الإلكترونية.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_in
@@ -7410,6 +7502,9 @@ msgid ""
 "Intrastat Reports for Services\n"
 "==============================\n"
 msgstr ""
+"\n"
+"تقارير Intrastat للخدمات\n"
+"==============================\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_dk_intrastat
@@ -8279,6 +8374,11 @@ msgid ""
 "-Profit and Loss\n"
 "-Balance Sheet\n"
 msgstr ""
+"\n"
+"التقارير المحاسبية لموريتانيا.\n"
+"====================================================\n"
+"-الأرباح والخسائر\n"
+"-الميزانية العمومية\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_mr
@@ -8287,6 +8387,9 @@ msgid ""
 "Mauritania basic package that contains the chart of accounts, the taxes, tax "
 "reports, etc.\n"
 msgstr ""
+"\n"
+"الباقة الأساسية لموريتانيا والتي تحتوي على شجرة الحسابات والضرائب والتقارير "
+"الضريبية وما إلى ذلك.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_mx_hr_payroll
@@ -9708,6 +9811,10 @@ msgid ""
 "============================\n"
 "Submit your Tax Reports to the Danish tax authorities\n"
 msgstr ""
+"\n"
+"توطين RSU الدنمارك.\n"
+"============================\n"
+"أرسل تقاريرك الضريبية إلى السلطات الضريبية الدنماركية\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_hr_payroll_expense
@@ -11700,6 +11807,11 @@ msgid ""
 "categorisation of products sold to be included in the details of the line of "
 "an invoice.\n"
 msgstr ""
+"\n"
+"هذه هي الوحدة النمطية لإضافة رقم تعريف CPV (مفردات الشراء المشتركة) على "
+"المنتج.\n"
+"يتطلب تنسيق CIUS-RO الروماني، في بعض الحالات، التصنيف الدقيق للمنتجات المباعة "
+"ليتم تضمينها في تفاصيل سطر الفاتورة.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_ro
@@ -12826,6 +12938,8 @@ msgid ""
 "This module also provides the possibility to generate the JPK_KR_PD in xml, "
 "for Poland.\n"
 msgstr ""
+"\n"
+"توفر هذه الوحدة أيضًا إمكانية إنشاء JPK_KR_PD بتنسيق xml، بالنسبة لبولندا.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_hr_hourly_cost
@@ -13164,6 +13278,16 @@ msgid ""
 "    3.Configuration of withholding reasons and exemption reasons\n"
 "    4.Addition of Tax Offices.\n"
 msgstr ""
+"\n"
+"تعزز هذه الوحدة التكامل الأساسي لـ Nilvera من خلال إضافة سيناريوهات وأنواع "
+"فواتير إضافية مطلوبة للامتثال للفواتير الإلكترونية التركية.\n"
+"\n"
+"تشمل الميزات ما يلي:\n"
+"1. دعم سيناريوهات الفواتير: الأساسية، والتصدير، والقطاع العام.\n"
+"2. دعم أنواع الفواتير: المبيعات، والاقتطاع، والإعفاء الضريبي، والتسجيل "
+"للتصدير.\n"
+"3. تكوين أسباب الاقتطاع وأسباب الإعفاء.\n"
+"4. إضافة مكاتب الضرائب.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_ch_hr_payroll_elm_transmission_5_3
@@ -13642,6 +13766,11 @@ msgid ""
 "       1. Adds support for different invoice types and payment methods.\n"
 "       2. Introduces demo mode.\n"
 msgstr ""
+"\n"
+"يعمل هذا التطبيق على تحسين نظام إصدار ومعالجة الفواتير الإلكترونية ف الأردن "
+"(JoFotara) من خلال ما يلي:\n"
+"       1. إضافة الدعم لمختلف أنواع الفواتير وطرق الدفع.\n"
+"       2. إضافة خاصية الوضع التجريبي.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_my_edi_extended
@@ -14905,6 +15034,8 @@ msgid ""
 "\n"
 "e-invoicing for Croatia\n"
 msgstr ""
+"\n"
+"الفواتير الإلكترونية لكرواتيا\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_rs_edi
@@ -16710,7 +16841,7 @@ msgstr "استخراج فاتورة الحساب للمشتريات "
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_no_followup
 msgid "Account No Followup"
-msgstr ""
+msgstr "لم تتم المتابعة في الحساب"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_partner_bank__acc_number
@@ -16853,6 +16984,10 @@ msgid ""
 "productive,\n"
 "                responsive and profitable."
 msgstr ""
+"تقوم شركة Acme Corporation بتصميم وتطوير ودمج ودعم عمليات الموارد البشرية "
+"وإدارة سلاسل\n"
+"                التوريد لمساعدة عملائنا على تحقيق أكبر قدر ممكن من الإنتاجية\n"
+"                وسرعة الاستجابة والربحية."
 
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_2
@@ -16862,6 +16997,9 @@ msgid ""
 "Chain processes in order to make our customers more productive, responsive "
 "and profitable."
 msgstr ""
+"تقوم شركة Acme Corporation بتصميم وتطوير ودمج ودعم عمليات الموارد البشرية "
+"وإدارة سلاسل التوريد لمساعدة عملائنا على تحقيق أكبر قدر ممكن من الإنتاجية وسرعة "
+"الاستجابة والربحية."
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_2
@@ -16871,6 +17009,10 @@ msgid ""
 "                with Open Sources software to manage their businesses. Our\n"
 "                consultants are experts in the following areas:"
 msgstr ""
+"تقوم شركة Acme Corporation بدمج نظام تخطيط موارد المؤسسات (ERP) للشركات "
+"العالمية وتدعم الشركات الصغيرة والمتوسطة\n"
+"                ببرامج مفتوحة المصدر لإدارة أعمالها. يتمتع مستشارونا\n"
+"                بخبرة واسعة في المجالات التالية:"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__act_window_id
@@ -17047,7 +17189,7 @@ msgstr "إضافة"
 #. module: base
 #: model:ir.module.module,summary:base.module_account_no_followup
 msgid "Add \"no followup\" field to journal items."
-msgstr ""
+msgstr "أضف حقل \"لم تتم المتابعة\" إلى عناصر دفتر اليومية."
 
 #. module: base
 #: model:ir.module.module,summary:base.module_pos_avatax
@@ -17143,7 +17285,7 @@ msgstr "إضافة قصاصة الموقع الإلكتروني لمجموعات
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_uy_website_sale
 msgid "Add address Uruguay localisation fields in address page. "
-msgstr ""
+msgstr "أضف حقول توطين أوروغواي في صفحة العنوان. "
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account_reports_cash_basis
@@ -17284,7 +17426,7 @@ msgstr "جاري إضافة "
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_address_31
 msgid "Addison Olson is a mighty sales representative at Acme Corporation."
-msgstr ""
+msgstr "أديسون أولسون هو مندوب مبيعات خبير في شركة Acme Corporation."
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_address_31
@@ -17300,7 +17442,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_ro_efactura_synchronize
 msgid "Additional module to synchronize bills with the SPV"
-msgstr ""
+msgstr "وحدة إضافية لمزامنة الفواتير مع SPV"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_pos_self_order
@@ -20496,7 +20638,7 @@ msgstr "Avatax Brazil"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_edi_fiscal_reform
 msgid "Avatax Brazil Fiscal Reform"
-msgstr ""
+msgstr "إصلاح النظام الضريبي في البرازيل"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_avatax_sale
@@ -20506,12 +20648,12 @@ msgstr "Avatax Brazil Sale"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_edi_sale_fiscal_reform
 msgid "Avatax Brazil Sale Fiscal Reform"
-msgstr ""
+msgstr "إصلاح الضرائب على المبيعات في البرازيل"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_website_sale_fiscal_reform
 msgid "Avatax Brazil eCommerce Fiscal Reform"
-msgstr ""
+msgstr "إصلاح النظام الضريبي للتجارة الإلكترونية في البرازيل"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_avatax_stock
@@ -21034,7 +21176,7 @@ msgstr "تصريح الشروط التجارية البلجيكية "
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_intrastat_services
 msgid "Belgian Intrastat Declaration (Services)"
-msgstr ""
+msgstr "إقرار Intrastat البلجيكي (الخدمات)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_pos_restaurant
@@ -23467,6 +23609,8 @@ msgid ""
 "have a 'company_id' or 'company_ids' field, and isn't company-dependent "
 "either."
 msgstr ""
+"تعذر إنشاء نطاق يعتمد على الشركة لحقل %s. لا يحتوي النموذج على حقل "
+"\"company_id\" أو \"company_ids\"، كما أنه لا يعتمد على الشركة."
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model__count
@@ -23992,7 +24136,7 @@ msgstr "Croatia - Accounting Reports"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_hr_edi
 msgid "Croatia - e-invoicing"
-msgstr ""
+msgstr "كرواتيا - الفواتير الإلكترونية"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_cron_progress__cron_id
@@ -24786,7 +24930,7 @@ msgstr "Denmark - Intrastat"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_dk_rsu
 msgid "Denmark - RSU"
-msgstr ""
+msgstr "الدنمارك - RSU"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_dk_saft_import
@@ -24801,7 +24945,7 @@ msgstr "Denmark EDI - Nemhandel"
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_dk_rsu
 msgid "Denmark Localization - RSU"
-msgstr ""
+msgstr "توطين الدنمارك - RSU"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_fields__depends
@@ -25518,7 +25662,7 @@ msgstr "Dong"
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_address_3
 msgid "Douglas Fletcher is a mighty functional consultant at Acme Corporation"
-msgstr ""
+msgstr "دوغلاس فليتشر هو مستشار وظيفي متمرس في شركة Acme Corporation"
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_address_3
@@ -25585,6 +25729,12 @@ msgid ""
 "back in 19.0.\n"
 "    This module ports the feature back in 18.0"
 msgstr ""
+"كجزء من التحسينات التي أُجريت على تقرير المتابعة في الإصدار 18.0،\n"
+"    تمت إزالة حقل ”لم تتم المتابعة“ من بنود دفتر اليومية، مما جعل من "
+"المستحيل استبعاد\n"
+"    بنود دفتر اليومية الفردية من تشغيل عملية المتابعة. وقد أُعيدت هذه الميزة "
+"في الإصدار 19.0.\n"
+"    يعيد هذا التطبيق توفير هذه الميزة في الإصدار 18.0"
 
 #. module: base
 #: model:ir.module.module,description:base.module_pos_no_followup
@@ -25596,6 +25746,12 @@ msgid ""
 "back in 19.0.\n"
 "    This module ports the feature back in 18.0 for point of sale."
 msgstr ""
+"كجزء من التحسينات التي أُجريت على تقرير المتابعة في الإصدار 18.0،\n"
+"    تمت إزالة حقل ”لم تتم المتابعة“ من بنود دفتر اليومية، مما جعل من "
+"المستحيل استبعاد\n"
+"    بنود دفتر اليومية الفردية من تشغيل عملية المتابعة. وقد أُعيدت هذه الميزة "
+"في الإصدار 19.0.\n"
+"    يعيد هذا التطبيق توفير هذه الميزة في الإصدار 18.0 لنقطة البيع."
 
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_nl_reports_sbr
@@ -27165,7 +27321,7 @@ msgstr "اكتمل التصدير"
 #: model:ir.module.module,description:base.module_l10n_pl_edi
 msgid ""
 "Export FA(3) compliant XML invoices and prepare for integration with KSeF."
-msgstr ""
+msgstr "تصدير فواتير XML متوافقة مع FA(3) والاستعداد للتكامل مع KSeF."
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_exports__export_fields
@@ -27298,7 +27454,7 @@ msgstr "العناوين التفصيلية "
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_jo_edi_extended
 msgid "Extended features for JoFotara"
-msgstr ""
+msgstr "الخصائص الإضافية لـ JoFotara"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_my_edi_extended
@@ -28031,7 +28187,7 @@ msgstr "بائع زهور، حدائق، زهور، طبيعة، أخضر، جم
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_address_4
 msgid "Floyd Steward is a mighty analyst at Acme Corporation."
-msgstr ""
+msgstr "فلويد ستيوارد هو محلل خبير في شركة Acme Corporation."
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_address_4
@@ -28265,7 +28421,7 @@ msgstr "France - Payroll with Accounting"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_fr_facturx_chorus_pro
 msgid "France - Peppol integration with Chorus Pro"
-msgstr ""
+msgstr "فرنسا - تكامل Peppol مع Chorus Pro"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_fr_hr_holidays
@@ -28297,7 +28453,7 @@ msgstr "French Intrastat Declaration"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_fr_intrastat_services
 msgid "French Intrastat Declaration (Services)"
-msgstr ""
+msgstr "إقرار Intrastat الفرنسي (الخدمات)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_fr_hr_payroll
@@ -28380,6 +28536,8 @@ msgid ""
 "Functionality to manage GSTR Document Summary (Table 13) for India GST "
 "returns."
 msgstr ""
+"وظيفة لإدارة ملخص مستند GSTR (الجدول 13) لإقرارات ضريبة السلع والخدمات (GST) "
+"في الهند."
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_furniture_store
@@ -28470,7 +28628,7 @@ msgstr "GSTIN"
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_in_reports_gstr_document_summary
 msgid "GSTR Document Summary Management"
-msgstr ""
+msgstr "إدارة ملخص مستندات GSTR"
 
 #. module: base
 #: model:res.country,name:base.ga
@@ -30421,7 +30579,7 @@ msgstr "Indian - E-waybill Stock"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_in_reports_gstr_document_summary
 msgid "Indian - GSTR Document Summary"
-msgstr ""
+msgstr "الهندية - ملخص وثيقة GSTR"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_in_reports_gstr
@@ -30451,7 +30609,7 @@ msgstr "Indian - Sale Report(GST)"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_in_ewaybill_port
 msgid "Indian - Shipping Ports for E-waybill"
-msgstr ""
+msgstr "الهندية - موانئ الشحن لفاتورة الشحن الإلكترونية"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_in_stock
@@ -30935,7 +31093,7 @@ msgstr "تقارير نظام إحصاءات التجارة بين دول الا
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_intrastat_services
 msgid "Intrastat Reports for Services"
-msgstr ""
+msgstr "تقارير Intrastat للخدمات"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.report_irmodulereference
@@ -31458,6 +31616,8 @@ msgstr ""
 msgid ""
 "Italy - E-invoicing - Bridge module between Italy NDD and Account Debit Note"
 msgstr ""
+"إيطاليا - الفواتير الإلكترونية - وحدة جسر بين NDD الإيطالية وإشعار الخصم من "
+"الحساب"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_it_pos
@@ -31558,7 +31718,7 @@ msgstr "الفوترة الإلكترونية الأردنية "
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_jo_edi_extended
 msgid "Jordan E-Invoicing Extended Features"
-msgstr ""
+msgstr "الخصائص الإضافية للفواتير الإلكترونية في الأردن"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__exclude_journal_item
@@ -33653,12 +33813,12 @@ msgstr "موريتانيا"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_mr
 msgid "Mauritania - Accounting"
-msgstr ""
+msgstr "موريتانيا - المحاسبة"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_mr_reports
 msgid "Mauritania - Accounting Reports"
-msgstr ""
+msgstr "موريتانيا - التقارير المحاسبية"
 
 #. module: base
 #: model:res.country,name:base.mu
@@ -34072,7 +34232,7 @@ msgstr "الآنسة"
 #. odoo-python
 #: code:addons/template_inheritance.py:0
 msgid "Missing 'expr' attribute in xpath specification"
-msgstr ""
+msgstr "يوجد \"expr\" مفقود في مواصفات xpath"
 
 #. module: base
 #. odoo-python
@@ -34995,7 +35155,7 @@ msgstr "لا توجد مجموعة تسمح بهذه العملية حالياً
 #. odoo-python
 #: code:addons/fields.py:0
 msgid "No inverse field \"%(inverse_field)s\" found for \"%(comodel)s\""
-msgstr ""
+msgstr "لم يتم العثور على نطاق عكسي \"%(inverse_field)s\" لـ \"%(comodel)s\""
 
 #. module: base
 #. odoo-python
@@ -38314,7 +38474,7 @@ msgstr "POEdit"
 #. module: base
 #: model:ir.module.module,summary:base.module_pos_no_followup
 msgid "POS \"no followup\" handeling."
-msgstr ""
+msgstr "معالجة \"بدون متابعة\" في نقاط البيع."
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_pos_barcodelookup
@@ -38399,7 +38559,7 @@ msgstr "POS Mercado Pago"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_pos_no_followup
 msgid "POS No Followup"
-msgstr ""
+msgstr "عدم المتابعة في نقاط البيع "
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_pos_paytm
@@ -39268,7 +39428,7 @@ msgstr "Peppol"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_peppol_selfbilling
 msgid "Peppol Self Billing"
-msgstr ""
+msgstr "Peppol Self Billing"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_theme_personal
@@ -39643,17 +39803,17 @@ msgstr "بولندا - كشوف المرتبات مع المحاسبة "
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_pl_reports_account_saft
 msgid "Poland - SAFT Income Tax Report (JPK KR PD)"
-msgstr ""
+msgstr "بولندا - تقرير ضريبة الدخل SAFT (JPK KR PD)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_pl_taxable_supply_date
 msgid "Poland - Taxable Supply Date"
-msgstr ""
+msgstr "بولندا - تاريخ التوريد الخاضع للضريبة"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_pl_edi
 msgid "Polish E-Invoicing FA(3)"
-msgstr ""
+msgstr "الفواتير الإلكترونية البولندية FA(3)"
 
 #. module: base
 #: model:res.groups,name:base.group_portal
@@ -41552,7 +41712,7 @@ msgstr "Romania - Accounting Reports"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ro_cpv_code
 msgid "Romania - CPV Code"
-msgstr ""
+msgstr "رومانيا - رمز CPV"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ro_edi_stock
@@ -41587,7 +41747,7 @@ msgstr "Romania - SAF-T Import"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ro_efactura_synchronize
 msgid "Romania - Synchronize E-Factura"
-msgstr ""
+msgstr "رومانيا - مزامنة E-Factura"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ro_saft
@@ -42660,7 +42820,7 @@ msgstr "أرسل إشعارات Webhook "
 #. module: base
 #: model:ir.module.module,summary:base.module_account_peppol_selfbilling
 msgid "Send and receive self-billing invoices on PEPPOL"
-msgstr ""
+msgstr "إرسال واستلام فواتير الفوترة الذاتية على PEPPOL"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_sign
@@ -44229,7 +44389,7 @@ msgstr "سلسلة توريد "
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_pl_edi
 msgid "Support for FA(3) electronic invoices in Poland via KSeF"
-msgstr ""
+msgstr "دعم الفواتير الإلكترونية FA(3) في بولندا عبر KSeF"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_event_track_live
@@ -47170,7 +47330,7 @@ msgstr "Türkiye - Nilvera E-Invoice"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_tr_nilvera_einvoice_extended
 msgid "Türkiye - Nilvera E-Invoice Extended"
-msgstr ""
+msgstr "تركيا - نيلفيرا الفاتورة الإلكترونية الموسعة"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_tr_hr_payroll
@@ -47769,7 +47929,7 @@ msgstr "Uruguay - Electronic Invoice"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_uy_website_sale
 msgid "Uruguay Website"
-msgstr ""
+msgstr "موقع أوروغواي"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_uy_pos

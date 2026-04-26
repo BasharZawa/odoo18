@@ -18,6 +18,9 @@ class TestAccrualAllocations(TestHrHolidaysCommon):
     @classmethod
     def setUpClass(cls):
         super(TestAccrualAllocations, cls).setUpClass()
+        cls.department = cls.env['hr.department'].create({
+            'name': 'Test Department',
+        })
         cls.leave_type = cls.env['hr.leave.type'].create({
             'name': 'Paid Time Off',
             'time_type': 'leave',
@@ -4483,3 +4486,85 @@ class TestAccrualAllocations(TestHrHolidaysCommon):
             allocation.action_refuse()
             self.env['hr.leave']._cancel_invalid_leaves()
             self.assertEqual(leave.state, 'cancel')
+
+    def test_timeoff_allocation_with_unused_accrual_lost(self):
+        """
+        Create an accrual plan:
+           * Set the accrued gain time to "At the start of the accrual period"
+           * Set the carry-over time to "At the start of the year"
+        Create a milestone:
+           * Set the number of accrued days to 1
+           * Set the accrual frequency to "monthly" and
+            the carry over to "None.Accrued time reset to 0"
+        Create an allocation:
+           * Set the start date to 2025-01-01
+           * Set the accrual plan to the one created above
+        Use future allocations to see the number of days accrued on
+        2026-02-01(feb). It should be 2.
+        """
+        with freeze_time('2025-01-01'):
+            accrual_plan = self.env['hr.leave.accrual.plan'].with_context(tracking_disable=True).create({
+                'name': 'Accrual Plan For Test',
+                'accrued_gain_time': 'start',
+                'level_ids': [Command.create({
+                    'start_count': 0,
+                    'frequency': 'monthly',
+                    'action_with_unused_accruals': 'lost',
+                })],
+            })
+            allocation = self.env['hr.leave.allocation'].create({
+                'name': 'Accrual allocation for employee',
+                'accrual_plan_id': accrual_plan.id,
+                'employee_id': self.employee_emp.id,
+                'holiday_status_id': self.leave_type.id,
+                'date_from': '2025-01-01',
+                'allocation_type': 'accrual',
+                'number_of_days': 0,
+                'already_accrued': False,
+            })
+            allocation.action_validate()
+            assertions = (
+                # Do not run the update on 2026-01-01 otherwise the bug disappears on 2026-02-01
+                # ('2026-01-01', 1),
+                ('2026-02-01', 2),
+                ('2026-03-01', 3),
+            )
+            for test_date, expected_remaining_leaves in assertions:
+                with freeze_time(test_date):
+                    allocation._update_accrual()
+                    self.assertEqual(allocation.number_of_days, expected_remaining_leaves)
+
+    def test_department_accrual_allocation(self):
+        """
+        Make sure when creating a multi employee accrual allocation the correct
+        number of days will be assigned to each child allocation
+        """
+        self.env['hr.employee'].create([
+            {
+                'name': 'Test Department Employee',
+                'company_id': self.company.id,
+                'department_id': self.department.id,
+            },
+            {
+                'name': 'Department Employee 1',
+                'company_id': self.company.id,
+                'department_id': self.department.id,
+            },
+        ])
+        with Form(self.env['hr.leave.allocation.generate.multi.wizard']) as f:
+            f.allocation_type = "accrual"
+            f.accrual_plan_id = self.accrual_plan_yearly_max_postponed_days_start
+            f.date_from = '2026-01-01'
+            f.allocation_mode = 'department'
+            f.department_id = self.department
+            f.holiday_status_id = self.leave_type
+            f.name = "Department Allocation"
+
+        department_allocation = f.record
+        department_allocation.action_generate_allocations()
+
+        children_allocations = self.env['hr.leave.allocation'].search(
+            [('employee_id', 'in', self.department.member_ids.ids)])
+        self.assertEqual(len(children_allocations), 2)
+        self.assertEqual(children_allocations[0].number_of_days, 21.0)
+        self.assertEqual(children_allocations[1].number_of_days, 21.0)

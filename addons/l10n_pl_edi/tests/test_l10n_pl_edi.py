@@ -122,6 +122,16 @@ class TestL10nPlEdi(AccountTestInvoicingCommon, CronMixinCase):
             ae.args = (ae.args[0] + f"\nFile used for comparison: {filename}", )
             raise
 
+    def _assert_import_invoice(self, filename, expected_values):
+        path = f'l10n_pl_edi/tests/import_xmls/{filename}'
+        with tools.file_open(path, mode='rb') as fd:
+            invoice = self.env['account.move'].create(self.env['account.move'].l10n_pl_edi_get_ksef_bill_vals_from_xml(fd.read()))
+        try:
+            self.assertRecordValues(invoice.invoice_line_ids, expected_values)
+        except AssertionError as ae:
+            ae.args = (ae.args[0] + f"\nFile used for comparison: {filename}", )
+            raise
+
     @freeze_time('2026-01-23')
     def test_ksef_fa3_standard_vat(self):
         """
@@ -396,6 +406,25 @@ class TestL10nPlEdi(AccountTestInvoicingCommon, CronMixinCase):
         )
 
     @freeze_time('2026-01-23')
+    def test_invoice_in_foreign_currency(self):
+        self.env.ref('base.EUR').active = True
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_pl.id,
+            'invoice_date': fields.Date.today(),
+            'currency_id': self.env.ref('base.EUR').id,
+            'invoice_line_ids': [Command.create({
+                'product_id': self.product_a.id,
+                'quantity': 1,
+                'price_unit': 10.0,
+            })],
+            'invoice_currency_rate': '2',
+        })
+        invoice.action_post()
+        self._assert_export_invoice(invoice, 'fa3_invoice_foreign_currency.xml')
+
+    @freeze_time('2026-01-23')
     def test_scenario_correction_values_are_negative(self):
         """
         Verification of Negative Values for Corrections (Difference Method).
@@ -601,6 +630,7 @@ class TestL10nPlEdi(AccountTestInvoicingCommon, CronMixinCase):
                     return {'xml_content': file.read()}
             return {'error': {'retry_after': 120, 'message': 'Too Many Requests'}}
 
+        start = fields.Datetime.now()
         with (
             patch.object(KsefApiService, 'query_invoice_metadata', side_effect=query_invoice_metadata),
             patch.object(KsefApiService, 'get_invoice_by_ksef_number', side_effect=get_invoice_by_ksef_number),
@@ -616,5 +646,27 @@ class TestL10nPlEdi(AccountTestInvoicingCommon, CronMixinCase):
         self.assertFalse(bill_2)
 
         self.assertEqual(len(capt.records), cron_runs_before + 1)
-        self.assertGreaterEqual(capt.records[-1].call_at, fields.Datetime.now() + timedelta(seconds=120))
-        self.assertLessEqual(capt.records[-1].call_at, fields.Datetime.now() + timedelta(seconds=240))
+        self.assertGreaterEqual(capt.records[-1].call_at, start + timedelta(seconds=120))
+        self.assertLessEqual(capt.records[-1].call_at, start + timedelta(seconds=240))
+
+    def test_import_invoice_with_net_and_gross_unit_price(self):
+        self._assert_import_invoice('invoice_with_net_and_gross_unit_price.xml', [
+            {
+                'name': '[FURN_0006] Podstawka pod monitor',
+                'price_unit': 3.19,
+                'price_total': 3.92,
+                'tax_ids': self.env['account.chart.template'].ref('vz_kraj_23').ids,
+            },
+            {
+                'name': '[FOOD_0001] Chleb pszenny',
+                'price_unit': 5.0,
+                'price_total': 13.5,
+                'tax_ids': self.env['account.chart.template'].ref('vz_kraj_8').ids,
+            },
+            {
+                'name': '[BOOK_0001] Podręcznik szkolny',
+                'price_unit': 5.0,
+                'price_total': 21.0,
+                'tax_ids': self.env['account.chart.template'].ref('vz_kraj_5').ids,
+            },
+        ])

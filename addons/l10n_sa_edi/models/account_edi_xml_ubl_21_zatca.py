@@ -247,8 +247,8 @@ class AccountEdiXmlUBL21Zatca(models.AbstractModel):
         line_extension_amount = vals['vals']['monetary_total_vals']['line_extension_amount']
         tax_inclusive_amount = total_amount
         tax_exclusive_amount = abs(vals['taxes_vals']['base_amount_currency'])
+        payable_rounding_amount = vals['vals']['monetary_total_vals']['payable_rounding_amount'] or 0
         prepaid_amount = 0
-        payable_amount = total_amount
         # - When we calculate the tax values, we filter out taxes and invoice lines linked to downpayments.
         #   As such, when we calculate the TaxInclusiveAmount, it already accounts for the tax amount of the downpayment
         #   Same goes for the TaxExclusiveAmount, and we do not need to add the Tax amount of the downpayment
@@ -259,7 +259,7 @@ class AccountEdiXmlUBL21Zatca(models.AbstractModel):
         if downpayment_vals:
             # - BR-KSA-80: To calculate payable amount, we deduct prepaid amount from total tax inclusive amount
             prepaid_amount = downpayment_vals['total_amount']
-            payable_amount = tax_inclusive_amount - prepaid_amount
+        payable_amount = invoice.currency_id.round(tax_inclusive_amount - prepaid_amount + payable_rounding_amount)
         return {
             'line_extension_amount': line_extension_amount - allowance_total_amount,
             'tax_inclusive_amount': tax_inclusive_amount,
@@ -380,6 +380,8 @@ class AccountEdiXmlUBL21Zatca(models.AbstractModel):
         """
         if not line.move_id._is_downpayment() and line.sale_line_ids and all(sale_line.is_downpayment for sale_line in line.sale_line_ids):
             prepayment_move_id = line.sale_line_ids.invoice_lines.move_id.filtered(lambda m: m.move_type == 'out_invoice' and m._is_downpayment())
+            if non_reversed := prepayment_move_id.filtered(lambda m: m.payment_state != 'reversed'):
+                prepayment_move_id = non_reversed
             return {
                 'prepayment_id': prepayment_move_id.name,
                 'issue_date': fields.Datetime.context_timestamp(self.with_context(tz='Asia/Riyadh'),

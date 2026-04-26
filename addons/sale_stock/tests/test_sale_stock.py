@@ -706,6 +706,8 @@ class TestSaleStock(TestSaleStockCommon, ValuationReconciliationTestCommon):
         return_picking.button_validate()
         # Checks the delivery amount (must be 0).
         self.assertEqual(sale_order.order_line.qty_delivered, 0)
+        self.assertEqual(sale_order.order_line.invoice_status, 'no')
+        self.assertEqual(sale_order.invoice_status, 'no')
 
     def test_12_return_without_refund(self):
         """ Do the exact thing than in `test_11_return_with_refund` except we
@@ -2639,3 +2641,33 @@ class TestSaleStock(TestSaleStockCommon, ValuationReconciliationTestCommon):
         lot.invalidate_recordset()
         self.assertEqual(lot.with_user(user).sale_order_count, 1)
         self.assertEqual(lot.with_user(user).sale_order_ids, sale_order_2)
+
+    def test_validate_picking_creates_sale_line_for_so_with_no_sol(self):
+        """Test that validating a picking creates a sale order line for a sale order with no lines"""
+        warehouse = self.company_data['default_warehouse']
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.partner_a.id
+        })
+        sale_order.action_confirm()
+        self.assertFalse(sale_order.order_line)
+
+        delivery = self.env['stock.picking'].create({
+            'picking_type_id': warehouse.out_type_id.id,
+            'sale_id': sale_order.id,
+            'move_ids': [
+                Command.create({
+                    'name': 'test_out_1',
+                    'product_id': self.new_product.id,
+                    'product_uom_qty': 3,
+                }),
+            ],
+        })
+        delivery.button_validate()
+
+        self.assertEqual(delivery.state, 'done')
+        self.assertRecordValues(delivery.move_ids, [
+            {'product_id': self.new_product.id, 'sale_line_id': sale_order.order_line.id}
+        ])
+        self.assertRecordValues(sale_order.order_line, [
+            {'product_id': self.new_product.id, 'product_uom_qty': 0, 'qty_delivered': 3}
+        ])

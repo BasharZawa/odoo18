@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-29 18:37+0000\n"
-"PO-Revision-Date: 2026-02-07 10:34+0000\n"
+"POT-Creation-Date: 2026-04-10 18:38+0000\n"
+"PO-Revision-Date: 2026-03-29 12:11+0000\n"
 "Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>\n"
 "Language-Team: Ukrainian <https://translate.odoo.com/projects/odoo-18/"
 "loyalty/uk/>\n"
@@ -18,12 +18,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
-"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && "
-"(n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && "
-"(n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 ))"
-" ? 2: 3);\n"
-"X-Generator: Weblate 5.14.3\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
+"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
+"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
+"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: loyalty
 #: model:ir.model.fields,help:loyalty.field_loyalty_program__trigger
@@ -73,11 +72,6 @@ msgid " (Max %s)"
 msgstr " (Макс. %s)"
 
 #. module: loyalty
-#: model_terms:ir.ui.view,arch_db:loyalty.loyalty_report
-msgid "$100"
-msgstr "$100"
-
-#. module: loyalty
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_reward.py:0
 msgid "%g%% on "
@@ -87,7 +81,7 @@ msgstr "%g%% на "
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_reward.py:0
 msgid "%s on "
-msgstr ""
+msgstr "%s на "
 
 #. module: loyalty
 #. odoo-python
@@ -120,7 +114,7 @@ msgstr "(без ПДВ)"
 #. odoo-javascript
 #: code:addons/loyalty/static/src/js/portal/loyalty_card_dialog/loyalty_card_dialog.xml:0
 msgid "-> View History"
-msgstr ""
+msgstr "-> Переглянути історію"
 
 #. module: loyalty
 #: model:loyalty.program,name:loyalty.10_percent_coupon
@@ -134,25 +128,10 @@ msgid "10% on your order"
 msgstr "10% на ваше замовлення"
 
 #. module: loyalty
-#: model_terms:ir.ui.view,arch_db:loyalty.gift_card_report
-msgid "1000"
-msgstr "1000"
-
-#. module: loyalty
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_program.py:0
 msgid "2+1 Free"
 msgstr "2+1 Безкоштовно"
-
-#. module: loyalty
-#: model_terms:ir.ui.view,arch_db:loyalty.loyalty_report
-msgid "2023-08-20"
-msgstr "2023-08-20"
-
-#. module: loyalty
-#: model_terms:ir.ui.view,arch_db:loyalty.gift_card_report
-msgid "2023-12-31"
-msgstr "2023-12-31"
 
 #. module: loyalty
 #: model:mail.template,body_html:loyalty.mail_template_gift_card
@@ -372,7 +351,7 @@ msgstr ""
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.portal_loyalty_history_breadcrumbs
 msgid "<span>History</span>"
-msgstr ""
+msgstr "<span>Історія</span>"
 
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_report
@@ -463,6 +442,66 @@ msgid ""
 "</tbody></table>\n"
 "        "
 msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; "
+"margin:0px auto; background:#ffffff; color:#333333;\"><tbody>\n"
+"<tr>\n"
+"    <td valign=\"top\" style=\"text-align: center; font-size: 14px;\">\n"
+"        <t t-if=\"object._get_mail_partner().name\">\n"
+"            Вітаємо <t t-out=\"object._get_mail_partner().name or "
+"''\">Brandon Freeman</t>,<br/>\n"
+"        </t>\n"
+"\n"
+"        Це ваша нагорода від <t t-out=\"object.program_id.company_id.name or "
+"''\">YourCompany</t>.<br/>\n"
+"\n"
+"        <t t-foreach=\"object.program_id.reward_ids\" t-as=\"reward\">\n"
+"            <t t-if=\"reward.required_points &lt;= object.points\">\n"
+"                <span style=\"font-size: 50px; color: #875A7B; font-weight: "
+"bold;\" t-esc=\"reward.description\">Опис нагороди</span>\n"
+"                <br/>\n"
+"            </t>\n"
+"        </t>\n"
+"    </td>\n"
+"</tr>\n"
+"<tr style=\"margin-top: 16px\">\n"
+"    <td valign=\"top\" style=\"text-align: center; font-size: 14px;\">\n"
+"        Використайте цей промокод\n"
+"        <t t-if=\"object.expiration_date\">\n"
+"            до <t t-out=\"format_date(object.expiration_date) or "
+"''\">2021-06-16</t>\n"
+"        </t>\n"
+"        <p style=\"margin-top: 16px;\">\n"
+"            <strong style=\"padding: 16px 8px 16px 8px; border-radius: 3px; "
+"background-color: #F1F1F1;\" t-out=\"object.code or "
+"''\">15637502648479132902</strong>\n"
+"        </p>\n"
+"        <t t-foreach=\"object.program_id.rule_ids\" t-as=\"rule\">\n"
+"            <t t-if=\"rule.minimum_qty not in [0, 1]\">\n"
+"                <span style=\"font-size: 14px;\">\n"
+"                    Мінімальна кількість покупок <t t-out=\"rule.minimum_qty "
+"or ''\">10</t> товарів\n"
+"                </span><br/>\n"
+"            </t>\n"
+"            <t t-if=\"rule.minimum_amount != 0.00\">\n"
+"                <span style=\"font-size: 14px;\">\n"
+"                    Дійсно для покупки вище <t t-"
+"out=\"rule.company_id.currency_id.symbol or ''\">$</t><t t-out=\"'%0.2f' % "
+"float(rule.minimum_amount) or ''\">10.00</t>\n"
+"                </span><br/>\n"
+"            </t>\n"
+"        </t>\n"
+"        <br/>\n"
+"        Дякуємо,\n"
+"        <t t-if=\"object._get_signature()\" data-o-mail-quote-"
+"container=\"1\">\n"
+"            <br/>\n"
+"            <t t-out=\"object._get_signature() or ''\" data-o-mail-"
+"quote=\"1\">--<br data-o-mail-quote=\"1\"/>Mitchell Admin</t>\n"
+"        </t>\n"
+"    </td>\n"
+"</tr>\n"
+"</tbody></table>\n"
+"        "
 
 #. module: loyalty
 #. odoo-python
@@ -484,13 +523,13 @@ msgstr "Програма повинна мати принаймні одну в�
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_buttons
 msgid "A reward is waiting for you"
-msgstr ""
+msgstr "Нагорода очікує вас"
 
 #. module: loyalty
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_reward.py:0
 msgid "A reward product can't be of type \"combo\"."
-msgstr ""
+msgstr "Продукт-бонус не може бути типу «комбінований»."
 
 #. module: loyalty
 #. odoo-python
@@ -555,7 +594,7 @@ msgstr "Серед"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_rule_view_kanban
 msgid "Among:"
-msgstr ""
+msgstr "Серед:"
 
 #. module: loyalty
 #: model:ir.model.fields.selection,name:loyalty.selection__loyalty_generate_wizard__mode__anonymous
@@ -570,7 +609,7 @@ msgstr "Додаток"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_reward_view_kanban
 msgid "Applied to:"
-msgstr ""
+msgstr "Застосовано до:"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_program__applies_on
@@ -1070,7 +1109,7 @@ msgstr "Кінцева дата"
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_card_update_balance_form
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_generate_wizard_view_form
 msgid "Example: Gift for customer"
-msgstr ""
+msgstr "Приклад: Подарунок для клієнта"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_card__expiration_date
@@ -1081,7 +1120,7 @@ msgstr "Термін дії"
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_card.py:0
 msgid "Expiration date cannot be set on a loyalty card."
-msgstr ""
+msgstr "Термін дії картки лояльності не можна встановити."
 
 #. module: loyalty
 #. odoo-python
@@ -1120,7 +1159,7 @@ msgstr "Для"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_generate_wizard_view_form
 msgid "For all customers"
-msgstr ""
+msgstr "Для всіх клієнтів"
 
 #. module: loyalty
 #. odoo-python
@@ -1261,7 +1300,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/loyalty/wizard/loyalty_generate_wizard.py:0
 msgid "Gift For Customer"
-msgstr ""
+msgstr "Подарунок для клієнта"
 
 #. module: loyalty
 #: model:ir.actions.act_window,name:loyalty.loyalty_program_gift_ewallet_action
@@ -1272,7 +1311,7 @@ msgstr "Подарункові картки та електронний гама
 #. odoo-python
 #: code:addons/loyalty/wizard/loyalty_card_update_balance.py:0
 msgid "Gift for customer"
-msgstr ""
+msgstr "Подарунок для клієнта"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_generate_wizard__points_granted
@@ -1313,12 +1352,12 @@ msgstr "Історія"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_card_view_form
 msgid "History Lines"
-msgstr ""
+msgstr "Рядки історії"
 
 #. module: loyalty
 #: model:ir.model,name:loyalty.model_loyalty_history
 msgid "History for Loyalty cards and Ewallets"
-msgstr ""
+msgstr "Історія карток лояльності та електронних гаманців"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_card__id
@@ -1391,7 +1430,7 @@ msgstr "Програма оплати"
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_history__issued
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_card_history_template
 msgid "Issued"
-msgstr ""
+msgstr "Видано"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_program__coupon_count_display
@@ -1408,7 +1447,7 @@ msgstr "John Doe"
 #. odoo-javascript
 #: code:addons/loyalty/static/src/js/portal/loyalty_card_dialog/loyalty_card_dialog.xml:0
 msgid "Last Transactions"
-msgstr ""
+msgstr "Останні транзакції"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_card__write_uid
@@ -1491,7 +1530,7 @@ msgstr "Правило лояльності"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_card_history_template
 msgid "Loyalty Transaction"
-msgstr ""
+msgstr "Транзакція лояльності"
 
 #. module: loyalty
 #. odoo-python
@@ -1554,13 +1593,13 @@ msgstr "Мульти-товар"
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_card_update_balance__new_balance
 msgid "New Balance"
-msgstr ""
+msgstr "Новий баланс"
 
 #. module: loyalty
 #. odoo-python
 #: code:addons/loyalty/wizard/loyalty_card_update_balance.py:0
 msgid "New Balance should be positive and different then old balance."
-msgstr ""
+msgstr "Новий баланс має бути позитивним і відрізнятися від старого балансу."
 
 #. module: loyalty
 #. odoo-python
@@ -1625,7 +1664,7 @@ msgstr "Замовлення"
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_history__order_model
 msgid "Order Model"
-msgstr ""
+msgstr "Модель замовлення"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_card__partner_id
@@ -1945,7 +1984,7 @@ msgstr "Податки"
 #. module: loyalty
 #: model:ir.model.fields,help:loyalty.field_loyalty_reward__tax_ids
 msgid "Taxes to add on the discount line."
-msgstr ""
+msgstr "Податки, які потрібно додати до рядка знижок."
 
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_report
@@ -2004,7 +2043,7 @@ msgstr ""
 #: code:addons/loyalty/static/src/js/portal/loyalty_card_dialog/loyalty_card_dialog.xml:0
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_card_history_template
 msgid "There are currently no transaction lines for this card."
-msgstr ""
+msgstr "Наразі для цієї картки немає рядків транзакцій."
 
 #. module: loyalty
 #: model_terms:ir.actions.act_window,help:loyalty.loyalty_card_action
@@ -2031,6 +2070,8 @@ msgid ""
 "This pricelist may not be archived. It is being used for active promotion "
 "programs: %s"
 msgstr ""
+"Цей прайс-лист не може бути заархівований. Він використовується для активних "
+"рекламних програм: %s"
 
 #. module: loyalty
 #. odoo-python
@@ -2044,7 +2085,7 @@ msgstr ""
 #. module: loyalty
 #: model:ir.model.fields,help:loyalty.field_loyalty_program__pricelist_ids
 msgid "This program is specific to this pricelist set."
-msgstr ""
+msgstr "Ця програма стосується саме цього набору прайс-листів."
 
 #. module: loyalty
 #: model:product.template,name:loyalty.ewallet_product_50_product_template
@@ -2065,19 +2106,19 @@ msgstr "Запуск"
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_reward.py:0
 msgid "Unsupported search operator"
-msgstr ""
+msgstr "Непідтримуваний оператор пошуку"
 
 #. module: loyalty
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_card.py:0
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_card_update_balance_form
 msgid "Update Balance"
-msgstr ""
+msgstr "Оновити баланс"
 
 #. module: loyalty
 #: model:ir.model,name:loyalty.model_loyalty_card_update_balance
 msgid "Update Loyalty Card Points"
-msgstr ""
+msgstr "Оновити бали картки лояльності"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_card__use_count
@@ -2122,7 +2163,7 @@ msgstr "Дійсний до"
 #. odoo-javascript
 #: code:addons/loyalty/static/src/js/portal/loyalty_card_dialog/loyalty_card_dialog.xml:0
 msgid "Valid until"
-msgstr ""
+msgstr "Дійсний до"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_card__website_message_ids
@@ -2190,7 +2231,7 @@ msgstr "З промокодом"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_card_update_balance_form
 msgid "You are about to change the balance of the card"
-msgstr ""
+msgstr "Ви збираєтеся змінити баланс картки"
 
 #. module: loyalty
 #. odoo-python
@@ -2216,6 +2257,8 @@ msgid ""
 "You're about to generate %(program_type)s with a value of %(value)s for %"
 "(customer_number)i customers"
 msgstr ""
+"Ви збираєтеся згенерувати %(program_type)s зі значенням%(value)s для %"
+"(customer_number)i клієнтів"
 
 #. module: loyalty
 #: model:mail.template,subject:loyalty.mail_template_gift_card
@@ -2294,7 +2337,7 @@ msgstr "Винагорода лояльності"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_reward_view_kanban
 msgid "on the cheapest product"
-msgstr ""
+msgstr "на найдешевший товар"
 
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_report
@@ -2304,7 +2347,7 @@ msgstr "на ваше наступне замовлення"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_reward_view_kanban
 msgid "on your order"
-msgstr ""
+msgstr "на ваше замовлення"
 
 #. module: loyalty
 #. odoo-python
@@ -2338,12 +2381,12 @@ msgstr "витрачений"
 #. module: loyalty
 #: model:ir.model.fields.selection,name:loyalty.selection__loyalty_rule__minimum_amount_tax_mode__excl
 msgid "tax excluded"
-msgstr ""
+msgstr "без ПДВ"
 
 #. module: loyalty
 #: model:ir.model.fields.selection,name:loyalty.selection__loyalty_rule__minimum_amount_tax_mode__incl
 msgid "tax included"
-msgstr ""
+msgstr "з ПДВ"
 
 #. module: loyalty
 #. odoo-python
@@ -2354,7 +2397,7 @@ msgstr "найдешевший товар"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_rule_view_kanban
 msgid "the value of the coupon"
-msgstr ""
+msgstr "вартість купону"
 
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_program_view_form
@@ -2369,6 +2412,11 @@ msgstr "використання"
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_program_view_form
 msgid "used)"
+msgstr "використовується)"
+
+#. module: loyalty
+#: model_terms:ir.ui.view,arch_db:loyalty.loyalty_reward_view_kanban
+msgid "x"
 msgstr ""
 
 #. module: loyalty
@@ -2376,3 +2424,15 @@ msgstr ""
 #: code:addons/loyalty/models/loyalty_reward.py:0
 msgid "your order"
 msgstr "ваше замовлення"
+
+#~ msgid "$100"
+#~ msgstr "$100"
+
+#~ msgid "1000"
+#~ msgstr "1000"
+
+#~ msgid "2023-08-20"
+#~ msgstr "2023-08-20"
+
+#~ msgid "2023-12-31"
+#~ msgstr "2023-12-31"

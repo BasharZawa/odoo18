@@ -698,7 +698,7 @@ class PosOrder(models.Model):
                 partner_bank_id = journal_bank
 
         # Case 3: fallback → company bank
-        elif self.amount_total >= 0 and self.company_id.partner_id.bank_ids:
+        if not partner_bank_id and self.amount_total >= 0 and self.company_id.partner_id.bank_ids:
             partner_bank_id = _first_allowed(self.company_id.partner_id.bank_ids)
 
         return partner_bank_id.id if partner_bank_id else False
@@ -710,7 +710,7 @@ class PosOrder(models.Model):
             .with_context(default_move_type=move_vals['move_type'], linked_to_pos=True)\
             .create(move_vals)
 
-        if self.config_id.cash_rounding:
+        if self.config_id.cash_rounding and invoice.invoice_cash_rounding_id:
             line_ids_commands = []
             rate = invoice.invoice_currency_rate
             sign = invoice.direction_sign
@@ -793,7 +793,7 @@ class PosOrder(models.Model):
             'pos_refunded_invoice_ids': pos_refunded_invoice_ids,
             'pos_order_ids': self.ids,
             'journal_id': self.session_id.config_id.invoice_journal_id.id,
-            'move_type': 'out_invoice' if self.amount_total >= 0 else 'out_refund',
+            'move_type': 'out_invoice' if float_compare(self.amount_total, 0, precision_rounding=self.currency_id.rounding) >= 0 else 'out_refund',
             'ref': self.name,
             'partner_id': self.partner_id.address_get(['invoice'])['invoice'],
             'partner_shipping_id': self.partner_id.address_get(['delivery'])['delivery'],
@@ -1184,6 +1184,8 @@ class PosOrder(models.Model):
 
     def _create_order_picking(self):
         self.ensure_one()
+        if self.picking_ids:
+            return
         if self.shipping_date:
             self.sudo().lines._launch_stock_rule_from_pos_order_lines()
         else:
@@ -1739,7 +1741,7 @@ class PosOrderLine(models.Model):
         if fiscal_position:
             account = fiscal_position.map_account(account)
 
-        is_refund_order = line.order_id.amount_total < 0.0
+        is_refund_order = float_compare(line.order_id.amount_total, 0, precision_rounding=self.order_id.currency_id.rounding) < 0.0
         is_refund_line = line.qty * line.price_unit < 0
 
         product_name = line.product_id \

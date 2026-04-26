@@ -10,12 +10,13 @@
 # "Manon Rondou (ronm)" <ronm@odoo.com>, 2025.
 # "Dylan Kiss (dyki)" <dyki@odoo.com>, 2025.
 # Bren Driesen <brdri@odoo.com>, 2025, 2026.
+# Weblate <noreply-mt-weblate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-29 18:36+0000\n"
-"PO-Revision-Date: 2026-02-21 10:14+0000\n"
+"POT-Creation-Date: 2026-04-10 18:37+0000\n"
+"PO-Revision-Date: 2026-04-15 13:13+0000\n"
 "Last-Translator: Bren Driesen <brdri@odoo.com>\n"
 "Language-Team: Dutch <https://translate.odoo.com/projects/odoo-18/stock/nl/>"
 "\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: stock
 #. odoo-python
@@ -49,6 +50,16 @@ msgid ""
 msgstr ""
 "\n"
 "(%(serial_number)s) bestaat op locatie %(location)s"
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/stock_move.py:0
+msgid ""
+"\n"
+"Package: %s"
+msgstr ""
+"\n"
+"Pakket: %s"
 
 #. module: stock
 #. odoo-python
@@ -442,46 +453,9 @@ msgid "1 Week"
 msgstr "1 week"
 
 #. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-msgid "12.0"
-msgstr "12.0"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_generic_barcode
-msgid "1234567890"
-msgstr "1234567890"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_lot_label
-msgid "12345678901"
-msgstr "12345678901"
-
-#. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__stock_picking_type__product_label_format__2x7xprice
 msgid "2 x 7 with price"
 msgstr "2 x 7 met prijs"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-msgid "2021-9-01"
-msgstr "2021-9-01"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_small
-msgid "2023-01-01"
-msgstr "01-01-2023"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_picking
-msgid "2023-09-24"
-msgstr "2023-09-24"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_delivery_document
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-#: model_terms:ir.ui.view,arch_db:stock.report_picking
-msgid "3.00"
-msgstr "3.00"
 
 #. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__lot_label_layout__print_format__4x12
@@ -508,11 +482,6 @@ msgstr "4 x 12 met prijs"
 #: model:ir.model.fields.selection,name:stock.selection__stock_picking_type__product_label_format__4x7xprice
 msgid "4 x 7 with price"
 msgstr "4 x 7 met prijs"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-msgid "54326786758"
-msgstr "54326786758"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.stock_warn_insufficient_qty_form_view
@@ -1008,7 +977,7 @@ msgstr "Er bestaat al een aanvullingsregel voor dit product op deze locatie."
 #: model:ir.model.fields,help:stock.field_product_template__is_storable
 #: model:ir.model.fields,help:stock.field_stock_move__is_storable
 msgid "A storable product is a product for which you manage stock."
-msgstr "Een houdbaar product is een product waarvan je de voorraad beheert."
+msgstr "Een voorraadproduct is een product waarvan je de voorraad beheert."
 
 #. module: stock
 #: model:res.groups,name:stock.group_warning_stock
@@ -2372,8 +2341,8 @@ msgstr "Maak eenvoudig producten aan door te scannen aan de hand van"
 #: model_terms:ir.actions.act_window,help:stock.action_product_stock_view
 msgid "Create some storable products to see their stock info in this view."
 msgstr ""
-"Maak een aantal producten die kunnen worden opgeslagen om hun "
-"voorraadinformatie in deze weergave te zien."
+"Maak een aantal voorraadproducten om hun voorraadinformatie in deze weergave "
+"te zien."
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_lot_label_layout__create_uid
@@ -3042,7 +3011,7 @@ msgstr "Weergavenaam demo"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_lot_label
 msgid "Demo Lot/SN"
-msgstr "Demokavel/SN"
+msgstr "Demo partij/SN"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_lot_label
@@ -3495,9 +3464,7 @@ msgstr ""
 #: model:ir.model.fields,help:stock.field_stock_scrap__tracking
 #: model:ir.model.fields,help:stock.field_stock_track_line__tracking
 msgid "Ensure the traceability of a storable product in your warehouse."
-msgstr ""
-"Zorg voor de traceerbaarheid van een product dat kan worden opgeslagen in je "
-"magazijn."
+msgstr "Zorg voor de traceerbaarheid van een voorraadproduct in je magazijn."
 
 #. module: stock
 #: model_terms:ir.actions.act_window,help:stock.action_location_form
@@ -10308,9 +10275,7 @@ msgstr "Beheer productlocaties in je magazijn"
 #. module: stock
 #: model_terms:ir.actions.act_window,help:stock.product_template_action_product
 msgid "Track your stock quantities by creating storable products."
-msgstr ""
-"Houd je voorraadhoeveelheden bij door producten te maken die kunnen worden "
-"opgeslagen."
+msgstr "Houd je voorraadhoeveelheden bij door voorraadproducten te maken."
 
 #. module: stock
 #. odoo-python
@@ -11672,6 +11637,9 @@ msgid ""
 "You cannot validate a transfer if no quantities are reserved, or if only non-"
 "reserved moves are picked.To force the transfer, encode quantities."
 msgstr ""
+"Je kunt een transfer niet valideren als er geen hoeveelheden zijn "
+"gereserveerd, of als er alleen niet-gereserveerde verplaatsingen zijn "
+"geselecteerd. Om de transfer te forceren, moet u hoeveelheden coderen."
 
 #. module: stock
 #. odoo-python
@@ -12101,6 +12069,30 @@ msgid ""
 "{{ object.company_id.name }} Delivery Order (Ref {{ object.name or 'n/a' }})"
 msgstr ""
 "{{ object.company_id.name }} Leveringsorder (Ref {{ object.name or 'nvt' }})"
+
+#~ msgid "12.0"
+#~ msgstr "12.0"
+
+#~ msgid "1234567890"
+#~ msgstr "1234567890"
+
+#~ msgid "12345678901"
+#~ msgstr "12345678901"
+
+#~ msgid "2021-9-01"
+#~ msgstr "2021-9-01"
+
+#~ msgid "2023-01-01"
+#~ msgstr "01-01-2023"
+
+#~ msgid "2023-09-24"
+#~ msgstr "2023-09-24"
+
+#~ msgid "3.00"
+#~ msgstr "3.00"
+
+#~ msgid "54326786758"
+#~ msgstr "54326786758"
 
 #~ msgid ""
 #~ "You cannot validate a transfer if no quantities are reserved. To force "

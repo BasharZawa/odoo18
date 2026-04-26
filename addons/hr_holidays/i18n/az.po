@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-29 18:36+0000\n"
-"PO-Revision-Date: 2026-02-26 14:43+0000\n"
+"POT-Creation-Date: 2026-04-17 18:36+0000\n"
+"PO-Revision-Date: 2026-04-24 07:52+0000\n"
 "Last-Translator: ERPGo Odoo <erpgo.odoo@gmail.com>\n"
 "Language-Team: Azerbaijani <https://translate.odoo.com/projects/odoo-18/"
 "hr_holidays/az/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.17\n"
 
 #. module: hr_holidays
 #. odoo-python
@@ -121,7 +121,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/hr_holidays/models/hr_leave_type.py:0
 msgid "%(name)s (%(time)g remaining out of %(maximum)g days)"
-msgstr ""
+msgstr "%(name)s (%(time)g gün qalır %(maximum)g gündən)"
 
 #. module: hr_holidays
 #. odoo-python
@@ -200,11 +200,6 @@ msgstr ""
 #. module: hr_holidays
 #: model_terms:ir.ui.view,arch_db:hr_holidays.hr_accrual_plan_view_form
 msgid "- Valid for"
-msgstr ""
-
-#. module: hr_holidays
-#: model_terms:ir.ui.view,arch_db:hr_holidays.hr_leave_view_form
-msgid "00:00"
 msgstr ""
 
 #. module: hr_holidays
@@ -2770,7 +2765,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/hr_holidays/static/src/dashboard/time_off_dashboard.xml:0
 msgid "Pending Requests"
-msgstr ""
+msgstr "Gözlənilən sorğular"
 
 #. module: hr_holidays
 #: model_terms:ir.ui.view,arch_db:hr_holidays.hr_leave_mandatory_day_view_search
@@ -4212,8 +4207,26 @@ msgstr ""
 
 #. module: hr_holidays
 #. odoo-python
+#: code:addons/hr_holidays/report/hr_leave_report_calendar.py:0
+msgid "You are not allowed to approve this leave request."
+msgstr ""
+
+#. module: hr_holidays
+#. odoo-python
+#: code:addons/hr_holidays/report/hr_leave_report_calendar.py:0
+msgid "You are not allowed to refuse this leave request."
+msgstr ""
+
+#. module: hr_holidays
+#. odoo-python
 #: code:addons/hr_holidays/models/hr_leave.py:0
 msgid "You are not allowed to request time off on a Mandatory Day"
+msgstr ""
+
+#. module: hr_holidays
+#. odoo-python
+#: code:addons/hr_holidays/report/hr_leave_report_calendar.py:0
+msgid "You are not allowed to validate this leave request."
 msgstr ""
 
 #. module: hr_holidays

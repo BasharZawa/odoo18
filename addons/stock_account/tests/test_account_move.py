@@ -5,6 +5,7 @@ from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.stock_account.tests.test_stockvaluation import _create_accounting_data
 from odoo.tests import Form, tagged
 from odoo import fields, Command
+from unittest.mock import patch
 
 class TestAccountMoveStockCommon(AccountTestInvoicingCommon):
     @classmethod
@@ -442,3 +443,136 @@ class TestAccountMove(TestAccountMoveStockCommon):
         self.assertFalse(move.invoice_line_ids.name)
         # ensure the invoice is posted successfully
         self.assertEqual(move.state, 'posted')
+
+    def test_product_standard_price_multicompany_with_taxes(self):
+        """Test updating standard price on storable product with taxes from multiple companies."""
+        def _mock_get_product_accounts(p_self):
+            tax_income = p_self.taxes_id.filtered_domain(p_self.env['account.tax']._check_company_domain(p_self.env.company))
+            tax_expense = p_self.supplier_taxes_id.filtered_domain(p_self.env['account.tax']._check_company_domain(p_self.env.company))
+            return {
+                'income': p_self.env['account.account'].search([
+                    ('internal_group', '=', 'income'),
+                    ('tax_ids', 'in', tax_income.ids),
+                ], limit=1),
+                'expense': p_self.env['account.account'].search([
+                    ('internal_group', '=', 'expense'),
+                    ('tax_ids', 'in', tax_expense.ids),
+                ], limit=1),
+            }
+        product = self.env['product.product'].create({
+            'name': 'Test Product',
+            'type': 'consu',
+            'is_storable': True,
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'taxes_id': [Command.set(self.company_data['default_tax_sale'].ids)],
+        })
+        with patch('odoo.addons.account.models.product.ProductTemplate._get_product_accounts', _mock_get_product_accounts):
+            product.quantity_svl = 10.0
+            product.standard_price = 100
+            specification = {
+                'standard_price': {},
+                'taxes_id': {'fields': {'name': {}}},
+            }
+            product.web_read(specification)
+
+    def test_return_inter_company_delivery(self):
+        stock_location = self.env['stock.warehouse'].search([
+            ('company_id', '=', self.env.company.id),
+        ], limit=1).lot_stock_id
+        transit_loc = self.env.ref('stock.stock_location_inter_company')
+
+        # Provide stock in the source location so returns and their reservations work correctly
+        self.env['stock.quant']._update_available_quantity(self.product_A, stock_location, 1.0)
+
+        delivery = self.env['stock.picking'].create({
+            'location_id': stock_location.id,
+            'location_dest_id': transit_loc.id,
+            'partner_id': self.branch_a['company'].partner_id.id,
+            'picking_type_id': stock_location.warehouse_id.out_type_id.id,
+            'move_ids': [Command.create({
+                'name': self.product_A.name,
+                'product_id': self.product_A.id,
+                'product_uom_qty': 1,
+                'product_uom': self.product_A.uom_id.id,
+                'location_id': stock_location.id,
+                'location_dest_id': transit_loc.id,
+            })]
+        })
+        delivery.action_confirm()
+        delivery.move_ids.quantity = 1
+        delivery.button_validate()
+        stock_output_lines = delivery.move_ids.stock_valuation_layer_ids.account_move_id.line_ids.filtered(lambda l: l.account_id == self.stock_output_account)
+
+        self.assertTrue(stock_output_lines, "Inter-company delivery was not accounted to output account")
+
+        return_wizard = self.env['stock.return.picking'].with_context(active_id=delivery.id, active_model='stock.picking').create({})
+        res = return_wizard.action_create_returns_all()
+        return_picking = self.env['stock.picking'].browse(res['res_id'])
+        return_picking.button_validate()
+        return_stock_output_lines = return_picking.move_ids.stock_valuation_layer_ids.account_move_id.line_ids.filtered(lambda l: l.account_id == self.stock_output_account)
+
+        self.assertTrue(return_stock_output_lines, "Inter-company delivery return was not accounted to output account")
+        self.assertEqual(
+            stock_output_lines.full_reconcile_id,
+            return_stock_output_lines.full_reconcile_id,
+            "Inter-company delivery return accounting was not reconciled against the original delivery",
+        )
+
+        return_return_wizard = self.env['stock.return.picking'].with_context(active_id=return_picking.id, active_model='stock.picking').create({})
+        res = return_return_wizard.action_create_returns_all()
+        return_return_picking = self.env['stock.picking'].browse(res['res_id'])
+        return_return_picking.button_validate()
+        return_return_stock_output_lines = return_return_picking.move_ids.stock_valuation_layer_ids.account_move_id.line_ids.filtered(lambda l: l.account_id == self.stock_output_account)
+
+        self.assertTrue(return_return_stock_output_lines, "Inter-company delivery return return (a delivery) was not accounted to the output account")
+
+    def test_return_inter_company_receipt(self):
+        stock_location = self.env['stock.warehouse'].search([
+            ('company_id', '=', self.env.company.id),
+        ], limit=1).lot_stock_id
+        transit_loc = self.env.ref('stock.stock_location_inter_company')
+
+        # Provide stock in the source location so returns and their reservations work correctly
+        self.env['stock.quant']._update_available_quantity(self.product_A, transit_loc, 1.0)
+
+        receipt = self.env['stock.picking'].create({
+            'location_id': transit_loc.id,
+            'location_dest_id': stock_location.id,
+            'partner_id': self.branch_a['company'].partner_id.id,
+            'picking_type_id': stock_location.warehouse_id.in_type_id.id,
+            'move_ids': [Command.create({
+                'name': self.product_A.name,
+                'product_id': self.product_A.id,
+                'product_uom_qty': 1,
+                'product_uom': self.product_A.uom_id.id,
+                'location_id': transit_loc.id,
+                'location_dest_id': stock_location.id,
+            })]
+        })
+        receipt.action_confirm()
+        receipt.move_ids.quantity = 1
+        receipt.button_validate()
+        stock_input_lines = receipt.move_ids.stock_valuation_layer_ids.account_move_id.line_ids.filtered(lambda l: l.account_id == self.stock_input_account)
+
+        self.assertTrue(stock_input_lines, "Inter-company receipt was not accounted to input account")
+
+        return_wizard = self.env['stock.return.picking'].with_context(active_id=receipt.id, active_model='stock.picking').create({})
+        res = return_wizard.action_create_returns_all()
+        return_picking = self.env['stock.picking'].browse(res["res_id"])
+        return_picking.button_validate()
+        return_stock_input_lines = return_picking.move_ids.stock_valuation_layer_ids.account_move_id.line_ids.filtered(lambda l: l.account_id == self.stock_input_account)
+
+        self.assertTrue(return_stock_input_lines, "Inter-company receipt return was not accounted to input account")
+        self.assertEqual(
+            stock_input_lines.full_reconcile_id,
+            return_stock_input_lines.full_reconcile_id,
+            "Inter-company receipt return accounting was not reconciled against the original receipt",
+        )
+
+        return_return_wizard = self.env['stock.return.picking'].with_context(active_id=return_picking.id, active_model='stock.picking').create({})
+        res = return_return_wizard.action_create_returns_all()
+        return_return_picking = self.env['stock.picking'].browse(res['res_id'])
+        return_return_picking.button_validate()
+        return_return_stock_input_lines = return_return_picking.move_ids.stock_valuation_layer_ids.account_move_id.line_ids.filtered(lambda l: l.account_id == self.stock_input_account)
+
+        self.assertTrue(return_return_stock_input_lines, "Inter-company receipt return return (a receipt) was not accounted to the input account")

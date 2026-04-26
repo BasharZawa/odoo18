@@ -48,8 +48,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 18:38+0000\n"
-"PO-Revision-Date: 2026-02-26 09:19+0000\n"
+"POT-Creation-Date: 2026-04-17 18:36+0000\n"
+"PO-Revision-Date: 2026-04-24 07:53+0000\n"
 "Last-Translator: Saara Hakanen <sahak@odoo.com>\n"
 "Language-Team: Finnish <https://translate.odoo.com/projects/odoo-18/mail/fi/>"
 "\n"
@@ -58,7 +58,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.17\n"
 
 #. module: mail
 #. odoo-python
@@ -3842,7 +3842,7 @@ msgstr "Salli järjestetty seuranta"
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/composer.js:0
 msgid "Enter"
-msgstr "Käy sisään"
+msgstr "Lisää"
 
 #. module: mail
 #. odoo-javascript
@@ -4034,19 +4034,24 @@ msgstr "Viestin lähettäminen epäonnistui. Napsauta yrittääksesi uudelleen"
 #. odoo-python
 #: code:addons/mail/models/mail_render_mixin.py:0
 msgid ""
-"Failed to render QWeb template: %(template_src)s\n"
+"Failed to render QWeb template for %(template_label)s\n"
+"Target Model: %(model_name)s\n"
+"Language context: %(lang_context)s\n"
+"Error: %(error_details)s\n"
 "\n"
-"%(template_traceback)s)"
+"Template Source Snippet:\n"
+"%(template_src)s"
 msgstr ""
-"QWeb-mallin renderöinti epäonnistui: %(template_src)s\n"
-"\n"
-"%(template_traceback)s)"
 
 #. module: mail
 #. odoo-python
 #: code:addons/mail/models/mail_render_mixin.py:0
-msgid "Failed to render inline_template template: %(template_txt)s"
-msgstr "Inline_template-mallin renderöinti epäonnistui: %(template_txt)s)"
+msgid ""
+"Failed to render inline_template template: %(template_txt)s\n"
+"Error details: %(error)s"
+msgstr ""
+"inline_template -mallipohjan renderöinti epäonnistui: %(template_txt)s\n"
+"Virhetidot: %(error)s"
 
 #. module: mail
 #. odoo-python
@@ -5967,9 +5972,15 @@ msgid "Mail Template Reset"
 msgstr "Sähköpostimallin nollaus"
 
 #. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+msgid "Mail Template: '%(name)s' (ID: %(record_id)s)"
+msgstr "Viestipohja: '%(name)s' (Tunnus: %(record_id)s)"
+
+#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.model_search_view
 msgid "Mail Thread"
-msgstr "Sähköpostiketju"
+msgstr "Viestiketju"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_tracking_value
@@ -6114,6 +6125,12 @@ msgstr "Lukematta"
 #: code:addons/mail/static/src/core/web/activity_list_popover_item.xml:0
 msgid "Mark as done"
 msgstr "Merkitse tehdyksi"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+msgid "Mass Mailing Template: '%(name)s' (ID: %(record_id)s)"
+msgstr ""
 
 #. module: mail
 #. odoo-javascript
@@ -6756,6 +6773,12 @@ msgstr "Keskustelua ei ole vielä..."
 #: code:addons/mail/static/src/core/web/thread_patch.xml:0
 msgid "No history messages"
 msgstr "Ei viestihistoriaa"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+msgid "No language detected in context"
+msgstr "Kieltä ei tunnistettu kontekstista"
 
 #. module: mail
 #. odoo-python
@@ -9586,7 +9609,7 @@ msgstr "Kohdemalli"
 #: model:ir.model.fields,field_description:mail.field_res_partner__vat
 #: model:ir.model.fields,field_description:mail.field_res_users__vat
 msgid "Tax ID"
-msgstr "ALV-numero"
+msgstr "Verotunnus"
 
 #. module: mail
 #. odoo-javascript
@@ -9649,6 +9672,12 @@ msgstr "Mallin nollaus mixin"
 #: code:addons/mail/wizard/mail_compose_message.py:0
 msgid "Template creation from composer requires a valid model."
 msgstr "Mallien luominen editoijalta edellyttää kelvollista mallia."
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+msgid "Template name not identified"
+msgstr "Mallipohjan nimeä ei tunnistettu"
 
 #. module: mail
 #. odoo-python
@@ -10638,10 +10667,28 @@ msgid "Unmute Conversation"
 msgstr "Keskustelun mykistyksen poistaminen"
 
 #. module: mail
+#. odoo-javascript
+#: code:addons/mail/static/src/core/common/message.js:0
+msgid "Unnamed"
+msgstr "Nimetön"
+
+#. module: mail
 #. odoo-python
 #: code:addons/mail/models/mail_tracking_value.py:0
 msgid "Unnamed %(record_model_name)s (%(record_id)s)"
 msgstr "Nimeämätön %(record_model_name)s (%(record_id)s)"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+msgid "Unnamed Mail Template"
+msgstr "Nimeämätön viestipohja"
+
+#. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_render_mixin.py:0
+msgid "Unnamed Mailing"
+msgstr "Nimeämätön postitus"
 
 #. module: mail
 #. odoo-javascript
@@ -10763,7 +10810,7 @@ msgstr "Lataa tiedosto"
 #. odoo-javascript
 #: code:addons/mail/static/src/discuss/call/common/call_context_menu.xml:0
 msgid "Upload:"
-msgstr "Lähetä:"
+msgstr "Lataa:"
 
 #. module: mail
 #. odoo-javascript
@@ -12253,6 +12300,21 @@ msgstr "{{ object.partner_id.lang }}"
 #: code:addons/mail/models/discuss/discuss_channel_member.py:0
 msgid "“%(member_name)s” in “%(channel_name)s”"
 msgstr "\"%(member_name)s\" kohdassa \"%(channel_name)s\""
+
+#. module: mail
+#. odoo-javascript
+#: code:addons/mail/static/src/core/web/activity.js:0
+msgid "“%s”"
+msgstr ""
+
+#~ msgid ""
+#~ "Failed to render QWeb template: %(template_src)s\n"
+#~ "\n"
+#~ "%(template_traceback)s)"
+#~ msgstr ""
+#~ "QWeb-mallin renderöinti epäonnistui: %(template_src)s\n"
+#~ "\n"
+#~ "%(template_traceback)s)"
 
 #~ msgid "%(user)s connected. This is their first connection. Wish them luck."
 #~ msgstr ""

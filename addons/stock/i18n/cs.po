@@ -18,18 +18,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-29 18:36+0000\n"
-"PO-Revision-Date: 2026-02-25 12:25+0000\n"
-"Last-Translator: \"Marta (wacm)\" <wacm@odoo.com>\n"
+"POT-Creation-Date: 2026-04-10 18:37+0000\n"
+"PO-Revision-Date: 2026-04-24 16:31+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Czech <https://translate.odoo.com/projects/odoo-18/stock/cs/>"
 "\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : "
-"(n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 5.14.3\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
+"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"X-Generator: Weblate 5.17\n"
 
 #. module: stock
 #. odoo-python
@@ -54,6 +54,16 @@ msgid ""
 msgstr ""
 "\n"
 "(%(serial_number)s) existuje v místě %(location)s"
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/stock_move.py:0
+msgid ""
+"\n"
+"Package: %s"
+msgstr ""
+"\n"
+"Balík: %s"
 
 #. module: stock
 #. odoo-python
@@ -430,46 +440,9 @@ msgid "1 Week"
 msgstr "1 Týden"
 
 #. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-msgid "12.0"
-msgstr "12.0"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_generic_barcode
-msgid "1234567890"
-msgstr "1234567890"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_lot_label
-msgid "12345678901"
-msgstr "12345678901"
-
-#. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__stock_picking_type__product_label_format__2x7xprice
 msgid "2 x 7 with price"
 msgstr "2 x 7 s cenou"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-msgid "2021-9-01"
-msgstr "2021-9-01"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_small
-msgid "2023-01-01"
-msgstr "2023-01-01"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_picking
-msgid "2023-09-24"
-msgstr "2023-09-24"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_delivery_document
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-#: model_terms:ir.ui.view,arch_db:stock.report_picking
-msgid "3.00"
-msgstr "3.00"
 
 #. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__lot_label_layout__print_format__4x12
@@ -496,11 +469,6 @@ msgstr "4 x 12 s cenou"
 #: model:ir.model.fields.selection,name:stock.selection__stock_picking_type__product_label_format__4x7xprice
 msgid "4 x 7 with price"
 msgstr "4 x 7 s cenou"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-msgid "54326786758"
-msgstr "54326786758"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.stock_warn_insufficient_qty_form_view
@@ -1975,11 +1943,10 @@ msgid ""
 "                                    <strong>(please go to Home&gt;Apps to "
 "install)</strong>"
 msgstr ""
-"Vypočítejte náklady na dopravu a odešlete zásilku prostřednictvím služby DHL<"
-"br/>\n"
-"                                    <strong>"
-"(přejděte na domovskou stránku&gt;aplikace a nainstalujte si aplikaci)"
-".</strong>"
+"Vypočítejte náklady na dopravu a odešlete zásilku prostřednictvím služby "
+"DHL<br/>\n"
+"                                    <strong>(přejděte na domovskou "
+"stránku&gt;aplikace a nainstalujte si aplikaci).</strong>"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -2000,9 +1967,8 @@ msgid ""
 msgstr ""
 "Vypočítejte náklady na dopravu a odesílejte zásilky prostřednictvím služby "
 "FedEx<br/>\n"
-"                                    <strong>"
-"(přejděte na domovskou stránku&gt;aplikace a nainstalujte si aplikaci)"
-".</strong>"
+"                                    <strong>(přejděte na domovskou "
+"stránku&gt;aplikace a nainstalujte si aplikaci).</strong>"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -2032,8 +1998,8 @@ msgid ""
 "install)</strong>"
 msgstr ""
 "Vypočítejte náklady na dopravu a odešlete zásilku pomocí aplikace UPS<br/>\n"
-"                                    <strong>"
-"(přejděte na domovskou stránku&gt;aplikace a nainstalujte aplikaci).</strong>"
+"                                    <strong>(přejděte na domovskou "
+"stránku&gt;aplikace a nainstalujte aplikaci).</strong>"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -2048,9 +2014,8 @@ msgid ""
 "install)</strong>"
 msgstr ""
 "Vypočítejte náklady na dopravu a odešlete zásilku pomocí služby USPS<br/>\n"
-"                                    <strong>"
-"(přejděte na domovskou stránku&gt;aplikace a nainstalujte si aplikaci)"
-".</strong>"
+"                                    <strong>(přejděte na domovskou "
+"stránku&gt;aplikace a nainstalujte si aplikaci).</strong>"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -6014,8 +5979,8 @@ msgid ""
 "routing of the reports.\n"
 "                                        <br/>"
 msgstr ""
-"Odoo ve výchozím nastavení otevírá náhled PDF. Pokud chcete "
-"(pouze uživatelé Enterprise) tisknout okamžitě,\n"
+"Odoo ve výchozím nastavení otevírá náhled PDF. Pokud chcete (pouze uživatelé "
+"Enterprise) tisknout okamžitě,\n"
 "nainstalujte aplikaci IoT na počítač, který je ve stejné místní síti jako\n"
 "operátor čárových kódů, a nakonfigurujte směrování zpráv.\n"
 "                                       <br/>"
@@ -6348,7 +6313,7 @@ msgstr "Vlastník"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.message_body
 msgid "Owner:"
-msgstr ""
+msgstr "Majitel :"
 
 #. module: stock
 #. odoo-python
@@ -6375,7 +6340,7 @@ msgstr "Datum balení"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_small
 msgid "Pack Date Demo"
-msgstr ""
+msgstr "Datum balíku Demo"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_small
@@ -6405,12 +6370,12 @@ msgstr "Balení"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_picking
 msgid "Package A"
-msgstr ""
+msgstr "Balení A"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_picking
 msgid "Package B"
-msgstr ""
+msgstr "Balení B"
 
 #. module: stock
 #: model:ir.actions.report,name:stock.action_report_quant_package_barcode_small
@@ -6425,7 +6390,7 @@ msgstr "Čárový kód balení (ZPL)"
 #. module: stock
 #: model:ir.actions.report,name:stock.action_report_quant_package_barcode
 msgid "Package Barcode with Contents"
-msgstr ""
+msgstr "Čárový kód s obsahem"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_storage_category__package_capacity_ids
@@ -6442,12 +6407,12 @@ msgstr "Obsah balení"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_picking_type_form
 msgid "Package Label"
-msgstr ""
+msgstr "Štítek balení"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking_type__package_label_to_print
 msgid "Package Label to Print"
-msgstr ""
+msgstr "Štítek balíku pro tisk"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move__package_level_id
@@ -6492,7 +6457,7 @@ msgstr "Typ balení"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_small
 msgid "Package Type Demo"
-msgstr ""
+msgstr "Typ balíku demo"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_small
@@ -6515,7 +6480,7 @@ msgstr "Použití balíku"
 #. odoo-python
 #: code:addons/stock/models/stock_quant.py:0
 msgid "Package manually relocated"
-msgstr ""
+msgstr "Balík přemístěn ručně"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_quant_package__valid_sscc
@@ -6617,7 +6582,7 @@ msgstr "Částečný"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_quant_relocate__partial_package_names
 msgid "Partial Package Names"
-msgstr ""
+msgstr "Názvy částečných balíků"
 
 #. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__stock_move__state__partially_available
@@ -8434,7 +8399,7 @@ msgstr "Sekvence"
 #. odoo-python
 #: code:addons/stock/models/stock_picking.py:0
 msgid "Sequence %(code)s"
-msgstr ""
+msgstr "Sekvence %(code)s"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking_type__sequence_code
@@ -8843,7 +8808,7 @@ msgstr "Zdrojový balík"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.message_body
 msgid "Source Package:"
-msgstr ""
+msgstr "Zdrojový balík:"
 
 #. module: stock
 #: model:ir.actions.server,name:stock.stock_split_picking
@@ -11823,3 +11788,27 @@ msgid ""
 "{{ object.company_id.name }} Delivery Order (Ref {{ object.name or 'n/a' }})"
 msgstr ""
 "{{ object.company_id.name }} Objednávka (Ref {{ object.name or 'n/a' }})"
+
+#~ msgid "12.0"
+#~ msgstr "12.0"
+
+#~ msgid "1234567890"
+#~ msgstr "1234567890"
+
+#~ msgid "12345678901"
+#~ msgstr "12345678901"
+
+#~ msgid "2021-9-01"
+#~ msgstr "2021-9-01"
+
+#~ msgid "2023-01-01"
+#~ msgstr "2023-01-01"
+
+#~ msgid "2023-09-24"
+#~ msgstr "2023-09-24"
+
+#~ msgid "3.00"
+#~ msgstr "3.00"
+
+#~ msgid "54326786758"
+#~ msgstr "54326786758"

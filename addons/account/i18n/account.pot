@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-27 18:36+0000\n"
-"PO-Revision-Date: 2026-02-27 18:36+0000\n"
+"POT-Creation-Date: 2026-04-24 17:38+0000\n"
+"PO-Revision-Date: 2026-04-24 17:38+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -325,18 +325,8 @@ msgid "/ if not applicable"
 msgstr ""
 
 #. module: account
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_template
-msgid "1.05"
-msgstr ""
-
-#. module: account
 #: model:account.payment.term,name:account.account_payment_term_30_days_end_month_the_10
 msgid "10 Days after End of Next Month"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "100.0"
 msgstr ""
 
 #. module: account
@@ -345,94 +335,13 @@ msgid "100.00 USD"
 msgstr ""
 
 #. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "1000.0"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "11.05"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "12345"
-msgstr ""
-
-#. module: account
 #: model:account.payment.term,name:account.account_payment_term_15days
 msgid "15 Days"
 msgstr ""
 
 #. module: account
-#: model:account.tax,name:account.1_purchase_tax_template
-#: model:account.tax,name:account.1_sale_tax_template
-msgid "15%"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "1500.0"
-msgstr ""
-
-#. module: account
 #: model:account.payment.term,name:account.account_payment_term_30days_early_discount
 msgid "2/7 Net 30"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "20.00"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "2021-09-19"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
-msgid "2023-01-01"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
-msgid "2023-01-05"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "2023-08-11"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "2023-08-15"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "2023-08-31"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "2023-09-12"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "2023-09-25"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "2023-10-31"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "2024-01-01"
 msgstr ""
 
 #. module: account
@@ -451,18 +360,6 @@ msgid "25.00 USD"
 msgstr ""
 
 #. module: account
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_company_currency_template
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_template
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "27.00"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "3.00"
-msgstr ""
-
-#. module: account
 #: model:account.payment.term,name:account.account_payment_term_30days
 msgid "30 Days"
 msgstr ""
@@ -478,24 +375,6 @@ msgid "30% Now, Balance 60 Days"
 msgstr ""
 
 #. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "30.00"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_company_currency_template
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_template
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "31.05"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_company_currency_template
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_template
-msgid "4.05"
-msgstr ""
-
-#. module: account
 #: model:account.payment.term,name:account.account_payment_term_45days
 msgid "45 Days"
 msgstr ""
@@ -508,16 +387,6 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
 msgid "50.00 EUR"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "534677881234"
-msgstr ""
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "9.00"
 msgstr ""
 
 #. module: account
@@ -3665,6 +3534,12 @@ msgstr ""
 
 #. module: account
 #. odoo-python
+#: code:addons/account/wizard/account_automatic_entry_wizard.py:0
+msgid "C"
+msgstr ""
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/chart_template.py:0
 msgid "CABA"
 msgstr ""
@@ -5385,6 +5260,12 @@ msgid "Cut-off {label} {percent}%"
 msgstr ""
 
 #. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_automatic_entry_wizard.py:0
+msgid "D"
+msgstr ""
+
+#. module: account
 #: model:account.incoterms,name:account.incoterm_DAP
 msgid "DELIVERED AT PLACE"
 msgstr ""
@@ -6861,6 +6742,11 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_lock_exception__state__expired
 msgid "Expired"
+msgstr ""
+
+#. module: account
+#: model:ir.actions.server,name:account.action_move_export_zip
+msgid "Export ZIP"
 msgstr ""
 
 #. module: account
@@ -10248,6 +10134,12 @@ msgid "Need Cancel Request"
 msgstr ""
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/chart_template.py:0
+msgid "Need to update"
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__needed_terms
 #: model:ir.model.fields,field_description:account.field_account_move__needed_terms
 msgid "Needed Terms"
@@ -10575,6 +10467,12 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position__note
 msgid "Notes"
+msgstr ""
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Nothing to export."
 msgstr ""
 
 #. module: account
@@ -12686,11 +12584,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_user_id
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_user_id
 msgid "Responsible User"
-msgstr ""
-
-#. module: account
-#: model:ir.model.fields,help:account.field_account_tax__tax_scope
-msgid "Restrict the use of taxes to a type of product."
 msgstr ""
 
 #. module: account
@@ -16557,6 +16450,12 @@ msgid "Update Terms & Conditions"
 msgstr ""
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/chart_template.py:0
+msgid "Update app"
+msgstr ""
+
+#. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Update exchange rates automatically"
 msgstr ""
@@ -18025,6 +17924,12 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.validate_account_move_view
 msgid "dates for"
+msgstr ""
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "documents"
 msgstr ""
 
 #. module: account

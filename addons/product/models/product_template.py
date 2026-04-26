@@ -650,7 +650,7 @@ class ProductTemplate(models.Model):
                     %s
                 </p>
                 <p>
-                    <a class="oe_link" href="https://www.odoo.com/documentation/18.0/_downloads/c2c6ce32294dfddffcfefcf2775f7a09/pdfquotebuilderexamples.zip">
+                    <a class="oe_link" href="https://www.odoo.com/documentation/18.0/_downloads/eaa2883bd361273b475c9765f64e3e0c/pdfquotebuilderexamples.zip">
                     %s
                     </a>
                 </p>
@@ -795,7 +795,8 @@ class ProductTemplate(models.Model):
             variants_to_unlink += all_variants - current_variants_to_activate
 
         if variants_to_activate:
-            variants_to_activate.write({'active': True})
+            # Only activate variants whose template is active
+            variants_to_activate.filtered(lambda v: v.product_tmpl_id.active).write({'active': True})
         if variants_to_create:
             Product.create(variants_to_create)
         if variants_to_unlink:

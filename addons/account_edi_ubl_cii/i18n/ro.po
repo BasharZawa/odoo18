@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-06 18:38+0000\n"
-"PO-Revision-Date: 2026-02-28 18:01+0000\n"
+"POT-Creation-Date: 2026-04-17 18:37+0000\n"
+"PO-Revision-Date: 2026-04-18 14:01+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Romanian <https://translate.odoo.com/projects/odoo-18/"
 "account_edi_ubl_cii/ro/>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -52,19 +52,31 @@ msgid "(Un)Group lines by tax"
 msgstr ""
 
 #. module: account_edi_ubl_cii
+#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.report_invoice_document
+msgid "<span class=\"text-muted\">FROM</span>"
+msgstr ""
+
+#. module: account_edi_ubl_cii
+#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.report_invoice_document
+msgid "<span class=\"text-muted\">TO</span>"
+msgstr ""
+
+#. module: account_edi_ubl_cii
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
-msgid "1.0"
-msgstr "1.0"
+msgid "A"
+msgstr ""
 
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "A payment of %s was detected."
 msgstr "A fost detectată o plată de %s."
 
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "A rounding amount of %s was detected."
 msgstr "A fost detectată o sumă de rotunjire de %s."
 
@@ -97,12 +109,6 @@ msgstr "TVA Albania"
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9922
 msgid "Andorra VAT"
 msgstr "TVA Andorra"
-
-#. module: account_edi_ubl_cii
-#. odoo-python
-#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
-msgid "Articles 226 items 11 to 15 Directive 2006/112/EN"
-msgstr "Articolele 226 punctele 11-15 Directiva 2006/112/EN"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -184,6 +190,12 @@ msgstr "Rețeaua Registrelor de Afaceri"
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_move.py:0
+msgid "Cannot decode origin file, try by importing it again"
+msgstr ""
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_move.py:0
 msgid "Cannot find the origin file, try by importing it again"
 msgstr ""
 
@@ -244,6 +256,7 @@ msgstr "Contact"
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid ""
 "Could not retrieve a partner corresponding to '%s'. A new partner was "
 "created."
@@ -254,6 +267,7 @@ msgstr ""
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid ""
 "Could not retrieve currency: %s. Did you enable the multicurrency option and "
 "activate the currency?"
@@ -270,6 +284,7 @@ msgstr "Nu s-a putut prelua taxa: %(amount)s %% pentru linia '%(line)s'."
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "Could not retrieve the tax: %(tax_percentage)s %% for line '%(line)s'."
 msgstr ""
 "Nu s-a putut prelua taxa: %(tax_percentage)s %% pentru linia '%(line)s'."
@@ -277,6 +292,7 @@ msgstr ""
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "Could not retrieve the tax: %s for the document level allowance/charge."
 msgstr ""
 "Nu s-a putut prelua taxa: %s pentru reducerea/majorarea la nivel de document."
@@ -395,6 +411,7 @@ msgstr "TVA Estonia"
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_bis3.py:0
 msgid "Exempt from tax"
 msgstr "Scutit de taxă"
 
@@ -448,6 +465,7 @@ msgstr "Pentru livrări intracomunitare, adresa de livrare ar trebui inclusă."
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "Format used to import the invoice: %s"
 msgstr "Format folosit pentru importul facturii: %s"
 
@@ -490,6 +508,11 @@ msgstr "Chei de identificare GS1"
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "Generated by Odoo"
+msgstr ""
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0246
+msgid "German Electronic Business Address"
 msgstr ""
 
 #. module: account_edi_ubl_cii
@@ -688,13 +711,9 @@ msgid "Netherlands VAT"
 msgstr "TVA Olanda"
 
 #. module: account_edi_ubl_cii
-#. odoo-python
-#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
-msgid ""
-"No gross price, net price nor line subtotal amount found for line in xml"
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0244
+msgid "Nigeria Tax Identification"
 msgstr ""
-"Nu s-a găsit niciun preț brut, preț net sau sumă subtotală pentru linia din "
-"xml"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0192
@@ -781,6 +800,7 @@ msgstr "TVA România"
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "Rounding"
 msgstr "Rotunjire"
 
@@ -808,6 +828,11 @@ msgstr "SI-UBL 2.0 (NLCIUS)"
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0135
 msgid "SIA Object Identifiers"
 msgstr "Identificatori de obiect SIA"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0245
+msgid "SK Tax identification number (DIČ)"
+msgstr ""
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9951
@@ -871,6 +896,11 @@ msgid "Tax '%(tax_name)s' is invalid: %(error_message)s"
 msgstr "Taxa '%(tax_name)s' este invalidă: %(error_message)s"
 
 #. module: account_edi_ubl_cii
+#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.report_invoice_document
+msgid "Tax ID"
+msgstr "CIF"
+
+#. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
 msgid ""
@@ -923,6 +953,7 @@ msgstr "TVA-ul %s ar trebui să fie prefixat cu codul țării sale."
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "The bank account couldn't be fetched: %s"
 msgstr ""
 
@@ -935,6 +966,7 @@ msgstr "Țara este necesară pentru %s."
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 msgid "The currency '%s' is not active."
 msgstr "Valuta '%s' nu este activă."
 
@@ -958,6 +990,7 @@ msgstr "Câmpul 'Număr de cont curățat' este obligatoriu la Banca Destinatar�
 
 #. module: account_edi_ubl_cii
 #. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_cii_facturx.py:0
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_20.py:0
 msgid ""
@@ -1059,6 +1092,11 @@ msgid "Vatican VAT"
 msgstr "TVA Vatican"
 
 #. module: account_edi_ubl_cii
+#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.report_invoice_document
+msgid "Vendor Bill"
+msgstr "Factură furnizor"
+
+#. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_move_send.py:0
 msgid "View Partner(s)"
@@ -1094,7 +1132,7 @@ msgstr ""
 #. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_move.py:0
-msgid "You can only (un)group lines of a incoming invoice (vendor bill)"
+msgid "You can only group lines of an invoice"
 msgstr ""
 
 #. module: account_edi_ubl_cii
@@ -1129,6 +1167,18 @@ msgstr "fx"
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
 msgid "urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#"
 msgstr "urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#"
+
+#~ msgid "1.0"
+#~ msgstr "1.0"
+
+#~ msgid "Articles 226 items 11 to 15 Directive 2006/112/EN"
+#~ msgstr "Articolele 226 punctele 11-15 Directiva 2006/112/EN"
+
+#~ msgid ""
+#~ "No gross price, net price nor line subtotal amount found for line in xml"
+#~ msgstr ""
+#~ "Nu s-a găsit niciun preț brut, preț net sau sumă subtotală pentru linia "
+#~ "din xml"
 
 #~ msgid "Your endpoint"
 #~ msgstr "Punctul tău final"

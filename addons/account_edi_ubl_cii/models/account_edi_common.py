@@ -1,3 +1,4 @@
+from datetime import datetime
 from markupsafe import Markup
 
 from odoo import _, api, models
@@ -7,7 +8,6 @@ from odoo.tools import float_compare, float_is_zero, float_repr, format_list
 from odoo.tools.float_utils import float_round
 from odoo.tools.misc import clean_context, formatLang, html_escape
 from odoo.tools.xml_utils import find_xml_value
-from datetime import datetime
 
 # -------------------------------------------------------------------------
 # UNIT OF MEASURE
@@ -32,7 +32,7 @@ UOM_TO_UNECE_CODE = {
     'uom.product_uom_foot': 'FOT',
     'uom.product_uom_mile': 'SMI',
     'uom.product_uom_floz': 'OZA',
-    'uom.product_uom_qt': 'QT',
+    'uom.product_uom_qt': 'QTL',
     'uom.product_uom_gal': 'GLL',
     'uom.product_uom_cubic_inch': 'INQ',
     'uom.product_uom_cubic_foot': 'FTQ',
@@ -58,7 +58,7 @@ EAS_MAPPING = {
     'CH': {'9927': 'vat', '0183': None},
     'CY': {'9928': 'vat'},
     'CZ': {'9929': 'vat'},
-    'DE': {'9930': 'vat'},
+    'DE': {'9930': 'vat', '0246': 'l10n_de_widnr'},
     'DK': {'0184': 'vat', '0198': 'vat'},
     'EE': {'9931': 'vat'},
     'ES': {'9920': 'vat'},
@@ -84,6 +84,7 @@ EAS_MAPPING = {
     'MY': {'0230': None},
     # Do not add the vat for NL, since: "[NL-R-003] For suppliers in the Netherlands, the legal entity identifier
     # MUST be either a KVK or OIN number (schemeID 0106 or 0190)" in the Bis 3 rules (in PartyLegalEntity/CompanyID).
+    'NG': {'0244': 'vat'},
     'NL': {'0106': None, '0190': None},
     'NO': {'0192': 'l10n_no_bronnoysund_number'},
     'NZ': {'0088': 'company_registry'},
@@ -93,7 +94,7 @@ EAS_MAPPING = {
     'RS': {'9948': 'vat'},
     'SE': {'0007': 'company_registry', '9955': 'vat'},
     'SI': {'9949': 'vat'},
-    'SK': {'9950': 'vat'},
+    'SK': {'9950': 'vat', '0245': 'company_registry'},
     'SM': {'9951': 'vat'},
     'TR': {'9952': 'vat'},
     'VA': {'9953': 'vat'},
@@ -147,39 +148,40 @@ class FloatFmt(float):
     """ A float with a given precision.
     The precision is used when formatting the float.
     """
-    def __new__(cls, value, min_dp=2, max_dp=None):
+    def __new__(cls, value, min_dp=None, max_dp=None):
         return super().__new__(cls, value)
 
-    def __init__(self, value, min_dp=2, max_dp=None):
+    def __init__(self, value, min_dp=None, max_dp=None):
+        if min_dp is None and max_dp is None:
+            self.min_dp = 2
+            self.max_dp = 2
+            return
+        if min_dp is None and max_dp is not None:
+            self.min_dp = self.max_dp = max_dp
+            return
+        if min_dp is not None and max_dp is None:
+            # Determine the most suitable max_dp.
+            # We want 180.74999999999997 to compute a max_dp of 2 but 0.01110515963896 to stay with the full number of decimals.
+            max_dp = max(len(str(float(value or 0.0)).split('.')[1]), min_dp)
+            while True:
+                if max_dp == min_dp:
+                    break
+                if not float_is_zero(round(value, max_dp - 1) - value, precision_digits=11):
+                    break
+                max_dp = max_dp - 1
+
         self.min_dp = min_dp
         self.max_dp = max_dp
 
     def __str__(self):
-        if not isinstance(self.min_dp, int) or (self.max_dp is not None and not isinstance(self.max_dp, int)):
-            return "<FloatFmt()>"
         self_float = float(self)
-        min_dp_int = int(self.min_dp)
-        if self.max_dp is None:
-            return float_repr(self_float, min_dp_int)
-        else:
-            # Format the float to between self.min_dp and self.max_dp decimal places.
-            # We start by formatting to self.max_dp, and then remove trailing zeros,
-            # but always keep at least self.min_dp decimal places.
-            max_dp_int = int(self.max_dp)
-            amount_max_dp = float_repr(self_float, max_dp_int)
-            num_trailing_zeros = len(amount_max_dp) - len(amount_max_dp.rstrip('0'))
-            return float_repr(self_float, max(max_dp_int - num_trailing_zeros, min_dp_int))
+        amount_str = float_repr(self_float, self.max_dp)
+        num_trailing_zeros = len(amount_str) - len(amount_str.rstrip('0'))
+        return float_repr(self_float, max(self.max_dp - num_trailing_zeros, self.min_dp))
 
     def __repr__(self):
-        if not isinstance(self.min_dp, int) or (self.max_dp is not None and not isinstance(self.max_dp, int)):
-            return "<FloatFmt()>"
         self_float = float(self)
-        min_dp_int = int(self.min_dp)
-        if self.max_dp is None:
-            return f"FloatFmt({self_float!r}, {min_dp_int!r})"
-        else:
-            max_dp_int = int(self.max_dp)
-            return f"FloatFmt({self_float!r}, {min_dp_int!r}, {max_dp_int!r})"
+        return f"FloatFmt({self_float!r}, {self.min_dp!r}, {self.max_dp!r})"
 
 
 class AccountEdiCommon(models.AbstractModel):
@@ -204,8 +206,7 @@ class AccountEdiCommon(models.AbstractModel):
 
     def _get_uom_unece_code(self, uom):
         """
-        list of codes: https://docs.peppol.eu/poacc/billing/3.0/codelist/UNECERec20/
-        or https://unece.org/fileadmin/DAM/cefact/recommendations/bkup_htm/add2c.htm (sorted by letter)
+        list of codes: https://docs.peppol.eu/poacc/billing/3.0/codelist/UNECERec20/ (sorted by letter)
         """
         xmlid = uom.get_external_id()
         if xmlid and uom.id in xmlid:
@@ -271,7 +272,7 @@ class AccountEdiCommon(models.AbstractModel):
         if supplier.country_id == customer.country_id:
             if not tax or tax.amount == 0:
                 # in theory, you should indicate the precise law article
-                return create_dict(tax_category_code='E', tax_exemption_reason=_('Articles 226 items 11 to 15 Directive 2006/112/EN'))
+                return create_dict(tax_category_code='E')
             elif tax.has_negative_factor:
                 # Special case: Purchase reverse-charge taxes for self-billed invoices.
                 # From the buyer's perspective, this is a standard tax with a non-zero percentage but
@@ -306,7 +307,7 @@ class AccountEdiCommon(models.AbstractModel):
         if tax.amount != 0:
             return create_dict(tax_category_code='S')
         else:
-            return create_dict(tax_category_code='E', tax_exemption_reason=_('Articles 226 items 11 to 15 Directive 2006/112/EN'))
+            return create_dict(tax_category_code='E')
 
     def _get_tax_category_code(self, customer, supplier, tax):
         if not tax:
@@ -447,7 +448,12 @@ class AccountEdiCommon(models.AbstractModel):
             self._correct_invoice_tax_amount(tree, invoice)
 
         # Set XML as ubl_cii_xml_file (XML used to import)
-        file_data['attachment'].res_field = 'ubl_cii_xml_file'
+        if invoice.is_purchase_document(include_receipts=True):
+            file_data['attachment'].write({
+                'res_field': 'ubl_cii_xml_file',
+                'res_model': invoice._name,
+                'res_id': invoice.id,
+            })
 
         attachments = self._import_attachments(invoice, tree)
         if attachments:
@@ -508,6 +514,9 @@ class AccountEdiCommon(models.AbstractModel):
                             'zip': zip_code, 'city': city, 'is_company': True}
             if peppol_eas and peppol_endpoint:
                 partner_vals.update({'peppol_eas': peppol_eas, 'peppol_endpoint': peppol_endpoint})
+            if country_code == 'GB':
+                # While the code is gb, the xml_id is uk
+                country_code = 'UK'
             country = self.env.ref(f'base.{country_code.lower()}', raise_if_not_found=False) if country_code else False
             if country:
                 partner_vals['country_id'] = country.id
@@ -684,7 +693,7 @@ class AccountEdiCommon(models.AbstractModel):
             }
 
         line_vals = self._retrieve_line_vals(tree, document_type, qty_factor)
-        if line_vals is None:
+        if not line_vals.get('price_subtotal'):
             return None
 
         return {
@@ -711,7 +720,7 @@ class AccountEdiCommon(models.AbstractModel):
         charges = []
         discount_amount = 0
         for allowance_charge_node in tree.iterfind(xpath_dict['allowance_charge']):
-            charge_indicator = allowance_charge_node.findtext(xpath_dict['allowance_charge_indicator'])
+            charge_indicator = allowance_charge_node.findtext(xpath_dict['allowance_charge_indicator']) or 'false'
             amount = float(allowance_charge_node.findtext(xpath_dict['allowance_charge_amount'], default='0'))
             reason_code = allowance_charge_node.findtext(xpath_dict['allowance_charge_reason_code'], default='')
             reason = allowance_charge_node.findtext(xpath_dict['allowance_charge_reason'], default='')
@@ -792,11 +801,9 @@ class AccountEdiCommon(models.AbstractModel):
             delivered_qty = float(quantity_node.text)
             uom_xml = quantity_node.attrib.get('unitCode')
             if uom_xml:
-                uom_infered_xmlid = [
-                    odoo_xmlid for odoo_xmlid, uom_unece in UOM_TO_UNECE_CODE.items() if uom_unece == uom_xml
-                ]
+                uom_infered_xmlid = {v: k for k, v in UOM_TO_UNECE_CODE.items()}.get(uom_xml)
                 if uom_infered_xmlid:
-                    product_uom = self.env.ref(uom_infered_xmlid[0], raise_if_not_found=False) or self.env['uom.uom']
+                    product_uom = self.env.ref(uom_infered_xmlid, raise_if_not_found=False) or self.env['uom.uom']
         if product and product_uom and product_uom.category_id != product.product_tmpl_id.uom_id.category_id:
             # uom incompatibility
             product_uom = self.env['uom.uom']
@@ -804,11 +811,8 @@ class AccountEdiCommon(models.AbstractModel):
         # line_net_subtotal (mandatory)
         price_subtotal = None
         line_total_amount_node = tree.find(xpath_dict['line_total_amount'])
-        if line_total_amount_node is None or line_total_amount_node.text is None or not line_total_amount_node.text.strip():
-            return None
-        price_subtotal = float(line_total_amount_node.text)
-        if price_subtotal == 0:
-            return None
+        if line_total_amount_node is not None and line_total_amount_node.text and line_total_amount_node.text.strip():
+            price_subtotal = float(line_total_amount_node.text)
 
         # quantity
         quantity = delivered_qty * qty_factor
@@ -829,7 +833,7 @@ class AccountEdiCommon(models.AbstractModel):
         elif price_subtotal is not None:
             price_unit = (price_subtotal + allow_charge_amount) / (delivered_qty or 1)
         else:
-            raise UserError(_("No gross price, net price nor line subtotal amount found for line in xml"))
+            price_unit = 0
 
         # discount
         discount = 0
@@ -844,7 +848,11 @@ class AccountEdiCommon(models.AbstractModel):
         #   * unit price = 1, qty = 0, but price_subtotal = -200
         # for instance, when filling a down payment as an document line. The equation in the docstring is not
         # respected, and the result will not be correct, so we just follow the simple rule below:
-        if net_price_unit is not None and float_compare(price_subtotal, net_price_unit * (delivered_qty / basis_qty) - allow_charge_amount, currency.decimal_places):
+        if (
+            net_price_unit is not None
+            and price_subtotal is not None
+            and float_compare(price_subtotal, net_price_unit * (delivered_qty / basis_qty) - allow_charge_amount, currency.decimal_places)
+        ):
             if net_price_unit == 0 and delivered_qty == 0:
                 quantity = 1
                 price_unit = price_subtotal
@@ -863,6 +871,7 @@ class AccountEdiCommon(models.AbstractModel):
             'discount': discount,
             'tax_nodes': self._get_tax_nodes(tree),  # see `_retrieve_taxes`
             'charges': charges,  # see `_retrieve_line_charges`
+            'price_subtotal': price_subtotal,
         }
 
     def _import_product(self, **product_vals):
@@ -950,6 +959,9 @@ class AccountEdiCommon(models.AbstractModel):
         """
         charges_vals = []
         for charge in line_values.pop('charges'):
+            if not charge['line_quantity']:
+                continue
+
             if charge['reason_code'] == 'AEO':
                 # a 1 eur fixed tax on a line with quantity=2 will yield an AllowanceCharge with amount = 2
                 charge_copy = charge.copy()
@@ -959,12 +971,12 @@ class AccountEdiCommon(models.AbstractModel):
                     if tax.price_include:
                         line_values['price_unit'] += tax.amount
                     continue
-            charges_vals.append([
-                charge['reason_code'] + " " + charge['reason'],
-                1,
-                charge['amount'],
-                taxes,
-            ])
+
+            price_subtotal_before = line_values['price_unit'] * charge['line_quantity'] * (1.0 - line_values['discount'] / 100.0)
+            price_subtotal_after = price_subtotal_before + charge['amount']
+            line_values['price_unit'] += charge['amount'] / charge['line_quantity']
+            new_price_subtotal_before_discount = line_values['price_unit'] * charge['line_quantity']
+            line_values['discount'] = (1 - (price_subtotal_after / new_price_subtotal_before_discount)) * 100.0
         return record._get_line_vals_list(charges_vals)
 
     def _get_document_allowance_charge_xpaths(self):

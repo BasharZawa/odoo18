@@ -445,13 +445,15 @@ class AccountEdiXmlUBL20(models.AbstractModel):
         if self._context.get('convert_fixed_taxes'):
             for grouping_key, tax_details in tax_values_list['tax_details'].items():
                 if grouping_key['tax_amount_type'] == 'fixed':
+                    is_charge = tax_details['tax_amount_currency'] >= 0
                     fixed_tax_charge_vals_list.append({
                         'currency_name': line.currency_id.name,
                         'currency_dp': self._get_currency_decimal_places(line.currency_id),
-                        'charge_indicator': 'true',
-                        'allowance_charge_reason_code': 'AEO',
+                        'charge_indicator': 'true' if is_charge else 'false',
+                        'allowance_charge_reason_code': 'AEO' if is_charge else '100',
                         'allowance_charge_reason': grouping_key['tax_name'],
-                        'amount': tax_details['tax_amount_currency'],
+                        'amount': abs(tax_details['tax_amount_currency']),
+                        'from_fixed_tax': True,
                     })
 
             if not line.discount:
@@ -539,9 +541,9 @@ class AccountEdiXmlUBL20(models.AbstractModel):
 
         uom = self._get_uom_unece_code(line.product_uom_id)
         total_fixed_tax_amount = sum(
-            vals['amount']
+            vals['amount'] if vals.get('charge_indicator') == 'true' else -vals['amount']
             for vals in allowance_charge_vals_list
-            if vals.get('charge_indicator') == 'true'
+            if vals.get('from_fixed_tax')
         )
         period_vals = {}
         # deferred_start_date & deferred_end_date are enterprise-only fields
@@ -633,6 +635,10 @@ class AccountEdiXmlUBL20(models.AbstractModel):
             grouping_key['tax_name'] = tax.name
         return grouping_key
 
+    def _enumerate_invoice_lines(self, invoice, start=0):
+        invoice_lines = invoice.invoice_line_ids.filtered(lambda line: line.display_type not in ('line_note', 'line_section') and line._check_edi_line_tax_required())
+        return enumerate(invoice_lines, start=start)
+
     def _export_invoice_vals(self, invoice):
         # Old helper used only for non-BIS3 UBLs, removed in saas-18.4.
         # If you change this method, please change the corresponding new helper as well (at the end of this file).
@@ -663,10 +669,9 @@ class AccountEdiXmlUBL20(models.AbstractModel):
         # Compute values for invoice lines.
         line_extension_amount = 0.0
 
-        invoice_lines = invoice.invoice_line_ids.filtered(lambda line: line.display_type not in ('line_note', 'line_section') and line._check_edi_line_tax_required())
         document_allowance_charge_vals_list = self._get_document_allowance_charge_vals_list(invoice, taxes_vals)
         invoice_line_vals_list = []
-        for line_id, line in enumerate(invoice_lines):
+        for line_id, line in self._enumerate_invoice_lines(invoice):
             line_taxes_vals = taxes_vals['tax_details_per_record'][line]
             line_vals = self._get_invoice_line_vals(line, line_id, {**line_taxes_vals, 'invoice_line': line})
             invoice_line_vals_list.append(line_vals)
@@ -1117,14 +1122,15 @@ class AccountEdiXmlUBL20(models.AbstractModel):
                 else 'credit_note' if invoice.move_type == 'out_refund'
                 else 'invoice',
 
+            'company': invoice.company_id,
+            'journal': invoice.journal_id,
+
             'supplier': supplier,
             'customer': customer,
             'partner_shipping': partner_shipping,
 
             'currency_id': invoice.currency_id,
             'company_currency_id': invoice.company_id.currency_id,
-            'company': invoice.company_id,
-            'journal': invoice.journal_id,
 
             'use_company_currency': False,  # If true, use the company currency for the amounts instead of the invoice currency
             'fixed_taxes_as_allowance_charges': True,  # If true, include fixed taxes as AllowanceCharges on lines instead of as taxes
@@ -1543,12 +1549,12 @@ class AccountEdiXmlUBL20(models.AbstractModel):
         base_lines_aggregated_tax_details = self.env['account.tax']._aggregate_base_lines_tax_details(vals['base_lines'], non_fixed_total_grouping_function)
         aggregated_tax_details = self.env['account.tax']._aggregate_base_lines_aggregated_values(base_lines_aggregated_tax_details)
         for currency_suffix in ['', '_currency']:
-            vals[f'tax_inclusive_amount{currency_suffix}'] = vals[f'tax_exclusive_amount{currency_suffix}'] \
-                + sum(
+            vals[f'total_tax_amount{currency_suffix}'] = sum(
                     tax_details[f'tax_amount{currency_suffix}']
                     for grouping_key, tax_details in aggregated_tax_details.items()
                     if grouping_key
                 )
+            vals[f'tax_inclusive_amount{currency_suffix}'] = vals[f'tax_exclusive_amount{currency_suffix}'] + vals[f'total_tax_amount{currency_suffix}']
 
         # Cash rounding for 'add_invoice_line' cash rounding strategy
         # (For the 'biggest_tax' strategy the amounts are directly included in the tax amounts.)
@@ -1993,7 +1999,7 @@ class AccountEdiXmlUBL20(models.AbstractModel):
             tax = tax_data['tax']
             allowance_charge_nodes.append({
                 'cbc:ChargeIndicator': {'_text': 'true' if tax_data[f'tax_amount{currency_suffix}'] > 0 else 'false'},
-                'cbc:AllowanceChargeReasonCode': {'_text': 'AEO'},
+                'cbc:AllowanceChargeReasonCode': {'_text': 'AEO' if tax_data[f'tax_amount{currency_suffix}'] > 0 else '100'},
                 'cbc:AllowanceChargeReason': {'_text': tax.name},
                 'cbc:Amount': {
                     '_text': self.format_float(

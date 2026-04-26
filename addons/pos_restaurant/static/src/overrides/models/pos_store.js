@@ -177,9 +177,9 @@ patch(PosStore.prototype, {
     async getServerOrders() {
         if (this.config.module_pos_restaurant) {
             const tableIds = [].concat(
-                ...this.models["restaurant.floor"].map((floor) =>
-                    floor.table_ids.map((table) => table.id)
-                )
+                ...this.config.floor_ids
+                    .filter((floor) => floor.active)
+                    .map((floor) => floor.table_ids.map((table) => table.id))
             );
             await this.syncAllOrders({ table_ids: tableIds });
         }
@@ -335,6 +335,7 @@ patch(PosStore.prototype, {
                     if (preparationLine) {
                         const preparationLineCopy = { ...preparationLine };
                         preparationLineCopy.order_id = destinationOrder.id;
+                        preparationLineCopy.uuid = newOrderLine.uuid;
                         destinationOrder.last_order_preparation_change.lines[
                             newOrderLine.preparationKey
                         ] = preparationLineCopy;

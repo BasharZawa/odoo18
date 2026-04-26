@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-20 18:37+0000\n"
-"PO-Revision-Date: 2026-02-14 09:13+0000\n"
+"POT-Creation-Date: 2026-04-10 18:37+0000\n"
+"PO-Revision-Date: 2026-04-24 07:53+0000\n"
 "Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
 "Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/"
 "point_of_sale/ja/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.17\n"
 
 #. module: point_of_sale
 #. odoo-python
@@ -167,93 +167,8 @@ msgstr "+ 新規のショップ"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "0.00"
-msgstr "0.00"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.ticket_request_with_code
-msgid "00014-001-0001"
-msgstr "00014-001-0001"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "10"
-msgstr "10"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "100.00"
-msgstr "100.00"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "1000"
-msgstr "1000"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "10000"
-msgstr "10000"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "10000.00"
-msgstr "10000.00"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "11.11"
-msgstr "11.11"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "123.45"
-msgstr "123.45"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.report_userlabel
-msgid "1234567890"
-msgstr "1234567890"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
 msgid "2-03-2000 9:00 AM"
 msgstr "2-03-2000 9:00 AM"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "38.83"
-msgstr "38.83"
-
-#. module: point_of_sale
-#: model:product.attribute.value,name:point_of_sale.product_attribute_value_39
-msgid "39"
-msgstr "39"
-
-#. module: point_of_sale
-#: model:product.attribute.value,name:point_of_sale.product_attribute_value_40
-msgid "40"
-msgstr "40"
-
-#. module: point_of_sale
-#: model:product.attribute.value,name:point_of_sale.product_attribute_value_41
-msgid "41"
-msgstr "41"
-
-#. module: point_of_sale
-#: model:product.attribute.value,name:point_of_sale.product_attribute_value_42
-msgid "42"
-msgstr "42"
-
-#. module: point_of_sale
-#: model:product.attribute.value,name:point_of_sale.product_attribute_value_43
-msgid "43"
-msgstr "43"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "45"
-msgstr "45"
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_order__ticket_code
@@ -270,41 +185,6 @@ msgstr "コットン・デニムの5ポケット・ジーンズ。"
 #: model:product.template,description_sale:point_of_sale.blue_denim_jeans_slim_template
 msgid "5-pocket jeans in cotton denim.."
 msgstr "コットンデニムの5ポケット・ジーンズ。"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "5.00"
-msgstr "5.00"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "50.00"
-msgstr "50.00"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "567789"
-msgstr "567789"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "7897"
-msgstr "7897"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "95.00"
-msgstr "95.00"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "987657"
-msgstr "987657"
-
-#. module: point_of_sale
-#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
-msgid "99.99"
-msgstr "99.99"
 
 #. module: point_of_sale
 #: model:mail.template,body_html:point_of_sale.pos_email_marketing_template
@@ -484,6 +364,12 @@ msgstr "<strong>合計</strong>"
 #: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_screen.js:0
 msgid "? Clicking \"Confirm\" will validate the payment."
 msgstr "? \"確定\" をクリックすると、支払いが検証されます。"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt/order_receipt.xml:0
+msgid "A"
+msgstr ""
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_config__uuid
@@ -1461,18 +1347,6 @@ msgid "Cannot return change without a cash payment method"
 msgstr "現金支払い方法なしで変更を戻すことはできません"
 
 #. module: point_of_sale
-#. odoo-javascript
-#: code:addons/point_of_sale/static/src/app/screens/scale_screen/scale_service.js:0
-msgid "Cannot weigh product - IoT Box is disconnected"
-msgstr "プロダクトの計量ができません - IoT Boxが接続されていません。"
-
-#. module: point_of_sale
-#. odoo-javascript
-#: code:addons/point_of_sale/static/src/app/screens/scale_screen/scale_service.js:0
-msgid "Cannot weigh product - Scale is not connected to IoT Box"
-msgstr "プロダクトの計量ができません - スケールがIoT Boxに接続されていません"
-
-#. module: point_of_sale
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_config.py:0
 msgid "Card"
@@ -1942,7 +1816,7 @@ msgstr "クロージング管理"
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_session__stop_at
 #: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_session_search
 msgid "Closing Date"
-msgstr "クローズ日"
+msgstr "締め日時"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__is_closing_entry_by_product
@@ -2546,6 +2420,12 @@ msgstr "1日のセッションは、POSからの売上を保持します。"
 #: model:ir.ui.menu,name:point_of_sale.menu_pos_dashboard
 msgid "Dashboard"
 msgstr "ダッシュボード"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/models/utils/indexed_db.js:0
+msgid "Database Connection Lost"
+msgstr ""
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -3887,6 +3767,11 @@ msgid "Kpi Pos Total Value"
 msgstr "KpiPos合計金額"
 
 #. module: point_of_sale
+#: model:product.attribute.value,name:point_of_sale.product_attribute_value_l
+msgid "L"
+msgstr "L"
+
+#. module: point_of_sale
 #: model:product.template,name:point_of_sale.led_lamp_product_template
 msgid "LED Lamp"
 msgstr "LEDランプ"
@@ -4148,6 +4033,11 @@ msgstr "ロット/シリアル番号"
 #: model:pos.category,name:point_of_sale.pos_category_lower
 msgid "Lower body"
 msgstr "下半身"
+
+#. module: point_of_sale
+#: model:product.attribute.value,name:point_of_sale.product_attribute_value_m
+msgid "M"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.magnetic_board_product_template
@@ -5280,7 +5170,7 @@ msgstr "決済端末"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__transaction_id
 msgid "Payment Transaction ID"
-msgstr "支払トランザクションID"
+msgstr "支払取引ID"
 
 #. module: point_of_sale
 #. odoo-python
@@ -5313,7 +5203,7 @@ msgstr "支払要求は保留中"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_lines/payment_lines.xml:0
 msgid "Payment reversed"
-msgstr "支払が取消されました"
+msgstr "支払取消済"
 
 #. module: point_of_sale
 #. odoo-python
@@ -6548,6 +6438,12 @@ msgid "Related Session: %(link)s"
 msgstr "関連セッション:%(link)s"
 
 #. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/models/utils/indexed_db.js:0
+msgid "Reload"
+msgstr "リロード"
+
+#. module: point_of_sale
 #: model:ir.actions.client,name:point_of_sale.action_client_pos_menu
 msgid "Reload POS Menu"
 msgstr "POSメニューを再ロード"
@@ -6681,19 +6577,19 @@ msgstr "端末に送信された取り消し要求"
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_lines/payment_lines.xml:0
 msgid "Reverse"
-msgstr "逆仕訳"
+msgstr "取消"
 
 #. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_lines/payment_lines.xml:0
 msgid "Reverse Payment"
-msgstr "逆払い"
+msgstr "支払を取消"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_account_bank_statement_line__reversed_pos_order_id
 #: model:ir.model.fields,field_description:point_of_sale.field_account_move__reversed_pos_order_id
 msgid "Reversed POS Order"
-msgstr "逆転済POSオーダ"
+msgstr "取消済POSオーダ"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -6743,16 +6639,21 @@ msgid "Rye Bread"
 msgstr "ライ麦パン"
 
 #. module: point_of_sale
+#: model:product.attribute.value,name:point_of_sale.product_attribute_value_s
+msgid "S"
+msgstr ""
+
+#. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order__message_has_sms_error
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "SMS送信エラー"
+msgstr "SMS配信エラー"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__module_pos_sms
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_module_pos_sms
 msgid "SMS Enabled"
-msgstr "SMSが有効化されました"
+msgstr "SMSを有効化"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -7749,6 +7650,14 @@ msgid ""
 msgstr "POS%(pos)sの丸め方針は以下である必要があります: '%(value)s'"
 
 #. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/models/utils/indexed_db.js:0
+msgid ""
+"The connection to the local database was lost. Reloading the page will "
+"restore it and prevent any loss of unsaved orders."
+msgstr ""
+
+#. module: point_of_sale
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_config.py:0
 msgid "The default pricelist must be included in the available pricelists."
@@ -8074,8 +7983,8 @@ msgid ""
 "The transactions are processed by Six. Set the IP address of the terminal on "
 "the related payment method."
 msgstr ""
-"トランザクションはSixによって処理されます。関連する支払い方法で端末のIPアドレ"
-"スを設定します。"
+"取引はSixによって処理されます。関連する支払い方法で端末のIPアドレスを設定しま"
+"す。"
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_res_config_settings__module_pos_stripe
@@ -8546,7 +8455,7 @@ msgstr "支払総額。"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__total_cost
 msgid "Total cost"
-msgstr "原価合計:"
+msgstr "原価合計"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_order_line
@@ -9035,6 +8944,11 @@ msgid "With a"
 msgstr "とともに"
 
 #. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
+msgid "X"
+msgstr "X"
+
+#. module: point_of_sale
 #: model:product.attribute.value,name:point_of_sale.product_attribute_value_xl
 msgid "XL"
 msgstr "XL"
@@ -9333,6 +9247,11 @@ msgstr ""
 "                                以下を確認して下さい:"
 
 #. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
+msgid "Z"
+msgstr ""
+
+#. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/app/components/product_info_banner/product_info_banner.xml:0
 #: code:addons/point_of_sale/static/src/app/screens/product_screen/product_info_popup/product_info_popup.xml:0
@@ -9518,6 +9437,92 @@ msgstr "ボタンを有効化します。"
 #: model_terms:ir.ui.view,arch_db:point_of_sale.report_invoice_document
 msgid "using"
 msgstr "支払方法:"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/generic_components/orderline/orderline.xml:0
+#: code:addons/point_of_sale/static/src/app/navbar/sale_details_button/sales_detail_report.xml:0
+msgid "x"
+msgstr ""
+
+#~ msgid "0.00"
+#~ msgstr "0.00"
+
+#~ msgid "00014-001-0001"
+#~ msgstr "00014-001-0001"
+
+#~ msgid "10"
+#~ msgstr "10"
+
+#~ msgid "100.00"
+#~ msgstr "100.00"
+
+#~ msgid "1000"
+#~ msgstr "1000"
+
+#~ msgid "10000"
+#~ msgstr "10000"
+
+#~ msgid "10000.00"
+#~ msgstr "10000.00"
+
+#~ msgid "11.11"
+#~ msgstr "11.11"
+
+#~ msgid "123.45"
+#~ msgstr "123.45"
+
+#~ msgid "1234567890"
+#~ msgstr "1234567890"
+
+#~ msgid "38.83"
+#~ msgstr "38.83"
+
+#~ msgid "39"
+#~ msgstr "39"
+
+#~ msgid "40"
+#~ msgstr "40"
+
+#~ msgid "41"
+#~ msgstr "41"
+
+#~ msgid "42"
+#~ msgstr "42"
+
+#~ msgid "43"
+#~ msgstr "43"
+
+#~ msgid "45"
+#~ msgstr "45"
+
+#~ msgid "5.00"
+#~ msgstr "5.00"
+
+#~ msgid "50.00"
+#~ msgstr "50.00"
+
+#~ msgid "567789"
+#~ msgstr "567789"
+
+#~ msgid "7897"
+#~ msgstr "7897"
+
+#~ msgid "95.00"
+#~ msgstr "95.00"
+
+#~ msgid "987657"
+#~ msgstr "987657"
+
+#~ msgid "99.99"
+#~ msgstr "99.99"
+
+#~ msgid "Cannot weigh product - IoT Box is disconnected"
+#~ msgstr "プロダクトの計量ができません - IoT Boxが接続されていません。"
+
+#~ msgid "Cannot weigh product - Scale is not connected to IoT Box"
+#~ msgstr ""
+#~ "プロダクトの計量ができません - スケールがIoT Boxに接続されていません"
 
 #~ msgid "Please register the voucher number"
 #~ msgstr "クーポン番号を登録して下さい。"

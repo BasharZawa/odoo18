@@ -10,16 +10,16 @@
 # Wil Odoo, 2025
 # Junko Augias, 2025
 # "Junko Augias (juau)" <juau@odoo.com>, 2025, 2026.
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 # Yoshi Tashiro <tashiro@quartile.co>, 2025.
 # "Tiffany Chang (tic)" <tic@odoo.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-27 18:36+0000\n"
-"PO-Revision-Date: 2026-02-14 09:25+0000\n"
-"Last-Translator: \"Tiffany Chang (tic)\" <tic@odoo.com>\n"
+"POT-Creation-Date: 2026-04-24 17:38+0000\n"
+"PO-Revision-Date: 2026-04-24 07:53+0000\n"
+"Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
 "Language-Team: Japanese <https://translate.odoo.com/projects/odoo-18/account/"
 "ja/>\n"
 "Language: ja\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.17\n"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__type
@@ -79,6 +79,8 @@ msgid ""
 "\n"
 "Please contact your administrator."
 msgstr ""
+"\n"
+"管理者にお問い合わせください。"
 
 #. module: account
 #. odoo-python
@@ -373,19 +375,9 @@ msgid "/ if not applicable"
 msgstr "/ 該当しない場合"
 
 #. module: account
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_template
-msgid "1.05"
-msgstr "1.05"
-
-#. module: account
 #: model:account.payment.term,name:account.account_payment_term_30_days_end_month_the_10
 msgid "10 Days after End of Next Month"
 msgstr "末日締め翌々月10日払い"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "100.0"
-msgstr "100.0"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
@@ -393,95 +385,14 @@ msgid "100.00 USD"
 msgstr "100.00 USD"
 
 #. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "1000.0"
-msgstr "1000.0"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "11.05"
-msgstr "11.05"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "12345"
-msgstr "12345"
-
-#. module: account
 #: model:account.payment.term,name:account.account_payment_term_15days
 msgid "15 Days"
 msgstr "15日以内"
 
 #. module: account
-#: model:account.tax,name:account.1_purchase_tax_template
-#: model:account.tax,name:account.1_sale_tax_template
-msgid "15%"
-msgstr "15%"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "1500.0"
-msgstr "1500.0"
-
-#. module: account
 #: model:account.payment.term,name:account.account_payment_term_30days_early_discount
 msgid "2/7 Net 30"
 msgstr "期間は30日内、7日内で支払う場合は2%値引"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "20.00"
-msgstr "20.00"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "2021-09-19"
-msgstr "2021-09-19"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
-msgid "2023-01-01"
-msgstr "2023-01-01"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
-msgid "2023-01-05"
-msgstr "2023-01-05"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "2023-08-11"
-msgstr "2023-08-11"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "2023-08-15"
-msgstr "2023-08-15"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "2023-08-31"
-msgstr "2023-08-31"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "2023-09-12"
-msgstr "2023-09-12"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "2023-09-25"
-msgstr "2023-09-25"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "2023-10-31"
-msgstr "2023-10-31"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "2024-01-01"
-msgstr "2024-01-01"
 
 #. module: account
 #: model:account.payment.term,name:account.account_payment_term_21days
@@ -499,18 +410,6 @@ msgid "25.00 USD"
 msgstr "25.00 USD"
 
 #. module: account
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_company_currency_template
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_template
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "27.00"
-msgstr "27.00"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "3.00"
-msgstr "3.00"
-
-#. module: account
 #: model:account.payment.term,name:account.account_payment_term_30days
 msgid "30 Days"
 msgstr "30日以内"
@@ -526,24 +425,6 @@ msgid "30% Now, Balance 60 Days"
 msgstr "まずは30%、残りは60日以内"
 
 #. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "30.00"
-msgstr "30.00"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_company_currency_template
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_template
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "31.05"
-msgstr "31.05"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_company_currency_template
-#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_template
-msgid "4.05"
-msgstr "4.05"
-
-#. module: account
 #: model:account.payment.term,name:account.account_payment_term_45days
 msgid "45 Days"
 msgstr "45日以内"
@@ -557,16 +438,6 @@ msgstr "50 USD"
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
 msgid "50.00 EUR"
 msgstr "50.00 EUR"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_statement
-msgid "534677881234"
-msgstr "534677881234"
-
-#. module: account
-#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
-msgid "9.00"
-msgstr "9.00"
 
 #. module: account
 #: model:account.payment.term,name:account.account_payment_term_90days_on_the_10th
@@ -917,8 +788,8 @@ msgid ""
 msgstr ""
 "<i class=\"fa fa-fw fa-check\" aria-label=\"Reversed\" title=\"Reversed\" "
 "role=\"img\"/>\n"
-"                                    <span class=\"d-none d-md-inline\"> 予約"
-"済</span>"
+"                                    <span class=\"d-none d-md-inline\"> 逆仕"
+"訳済</span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
@@ -2673,7 +2544,7 @@ msgstr "詳細オプション"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
 msgid "Advanced Settings"
-msgstr "構成設定"
+msgstr "詳細設定"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax__include_base_amount
@@ -3765,7 +3636,7 @@ msgstr "Odoo銀行"
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
 msgid "Bank settings"
-msgstr ""
+msgstr "銀行設定"
 
 #. module: account
 #: model:ir.model,name:account.model_account_setup_bank_manual_config
@@ -4054,8 +3925,8 @@ msgid ""
 "By default, we always unfold the lines that can be. If this is checked, the "
 "line won't be unfolded by default, and a folding button will be displayed."
 msgstr ""
-"折り畳まれる全ての明細はデフォルトで折り畳みます。チェックした場合は、デフォ"
-"ルトで折り畳みません。折り畳みボタンは表示されます。"
+"デフォルトでは、折りたたみ可能な明細行は常に展開されます。これにチェックを入"
+"れると、その行はデフォルトで展開されず、折りたたみボタンが表示されます。"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_fiscal_position__active
@@ -4073,6 +3944,12 @@ msgid ""
 msgstr ""
 "有効化フィールドを解除することで、使用しないインコタームズを非表示することが"
 "できます。"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_automatic_entry_wizard.py:0
+msgid "C"
+msgstr "C"
 
 #. module: account
 #. odoo-python
@@ -5834,6 +5711,12 @@ msgid "Cut-off {label} {percent}%"
 msgstr "カットオフ {label} {percent}%"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_automatic_entry_wizard.py:0
+msgid "D"
+msgstr "D"
+
+#. module: account
 #: model:account.incoterms,name:account.incoterm_DAP
 msgid "DELIVERED AT PLACE"
 msgstr "DELIVERED AT PLACE"
@@ -6387,7 +6270,7 @@ msgstr "マージボタンを無効化"
 #: model:ir.model.fields.selection,name:account.selection__account_report__filter_multi_company__disabled
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Disabled"
-msgstr "無効にします"
+msgstr "無効"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -7332,6 +7215,11 @@ msgstr "費用"
 #: model:ir.model.fields.selection,name:account.selection__account_lock_exception__state__expired
 msgid "Expired"
 msgstr "契約期間終了済"
+
+#. module: account
+#: model:ir.actions.server,name:account.action_move_export_zip
+msgid "Export ZIP"
+msgstr "ZIPをエクスポート"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_column__expression_label
@@ -8639,7 +8527,7 @@ msgstr "支払処理中"
 #: model:ir.model.fields.selection,name:account.selection__account_payment__state__in_process
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_search
 msgid "In Process"
-msgstr "プロセス中"
+msgstr "処理中"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_default_terms_and_conditions
@@ -9727,7 +9615,7 @@ msgstr "残高に関わらず、会計で消込が許可されている仕訳帳
 #. odoo-python
 #: code:addons/account/wizard/account_move_reversal.py:0
 msgid "Journal should be the same type as the reversed entry."
-msgstr "仕訳は、反対仕訳と同じ種類を使用する必要があります。"
+msgstr "仕訳帳は、逆仕訳対象の仕訳と同じ種類である必要があります。"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_res_company__automatic_entry_default_journal_id
@@ -10840,6 +10728,12 @@ msgid "Need Cancel Request"
 msgstr "要求をキャンセルする必要があります"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/chart_template.py:0
+msgid "Need to update"
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__needed_terms
 #: model:ir.model.fields,field_description:account.field_account_move__needed_terms
 msgid "Needed Terms"
@@ -11174,6 +11068,12 @@ msgstr "仕入先請求書から簡単かつ直接に仕入先クレジットノ
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position__note
 msgid "Notes"
 msgstr "ノート"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Nothing to export."
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__res_company__fiscalyear_last_month__11
@@ -11567,7 +11467,7 @@ msgstr "並び順"
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__invoice_origin
 #: model:ir.model.fields,field_description:account.field_account_move__invoice_origin
 msgid "Origin"
-msgstr "移動元"
+msgstr "参照元"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_external_value__carryover_origin_expression_label
@@ -12239,7 +12139,7 @@ msgstr "支払タイプ"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Payment terms"
-msgstr "支払期限"
+msgstr "支払条件"
 
 #. module: account
 #: model_terms:account.payment.term,note:account.account_payment_term_30_days_end_month_the_10
@@ -13311,11 +13211,6 @@ msgid "Responsible User"
 msgstr "担当ユーザ"
 
 #. module: account
-#: model:ir.model.fields,help:account.field_account_tax__tax_scope
-msgid "Restrict the use of taxes to a type of product."
-msgstr "指定されたプロダクトタイプへの税の使用を制限します。"
-
-#. module: account
 #: model:ir.model.fields,help:account.field_account_reconcile_model__match_same_currency
 msgid ""
 "Restrict to propositions having the same currency as the statement line."
@@ -13408,7 +13303,7 @@ msgstr "逆仕訳"
 #. odoo-python
 #: code:addons/account/wizard/account_move_reversal.py:0
 msgid "Reverse Moves"
-msgstr "逆仕訳"
+msgstr "逆仕訳を作成"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_reversal
@@ -13429,7 +13324,7 @@ msgstr "逆仕訳済"
 #: code:addons/account/static/src/components/account_payment_field/account_payment.xml:0
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "Reversed on"
-msgstr "取消日"
+msgstr "逆仕訳日"
 
 #. module: account
 #. odoo-python
@@ -13531,7 +13426,7 @@ msgstr "消込モデルの規則"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__running_balance
 msgid "Running Balance"
-msgstr "現行残高"
+msgstr "累計残高"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__module_account_iso20022
@@ -13555,7 +13450,7 @@ msgstr "SEPA Direct Debit (SDD)"
 #: model:ir.model.fields,field_description:account.field_res_company__message_has_sms_error
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "SMS送信エラー"
+msgstr "SMS配信エラー"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
@@ -15439,6 +15334,8 @@ msgid ""
 "The bank account of your company is not trusted. Please ask an admin or "
 "someone with approval rights to check it."
 msgstr ""
+"御社の銀行口座は信頼されていません。管理者または承認権限を持つ者に確認を依頼"
+"してください。"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__statement_id
@@ -15513,6 +15410,9 @@ msgid ""
 "trusted. Go to the Bank Settings, double-check that it is yours or correct "
 "the number, and click on Send Money to trust it."
 msgstr ""
+"この請求書に紐づいている会社の銀行口座(%(account_number)s)は、信頼済みとして"
+"登録されていません。銀行設定に移動して、それが自社の口座であることを再確認す"
+"るか口座番号を修正し、「送金」をクリックして信頼済みにしてください。"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax_repartition_line__company_id
@@ -15677,6 +15577,8 @@ msgid ""
 "The entry is using accounts (%(accounts_codes_names)s) from a different "
 "company."
 msgstr ""
+"この仕訳では、別の会社の勘定科目(%(accounts_codes_names)s)が使用されていま"
+"す。"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_product_category__property_account_expense_categ_id
@@ -16010,7 +15912,7 @@ msgid ""
 "        * Amount Paid: Only applied when paying an amount.\n"
 "        * Amount Paid/Received: Applied in both cases."
 msgstr ""
-"消込のモデルは、選択したトランザクションタイプに適用されます。\n"
+"消込のモデルは、選択した取引タイプに適用されます。\n"
 "*受領額:金額を受領した場合にのみ適用されます。\n"
 "*支払額：金額を支払う場合にのみ適用されます。\n"
 "*支払額/受領額：両方の場合に適用されます。"
@@ -16069,9 +15971,9 @@ msgid ""
 "        * Not Contains: Negation of \"Contains\".\n"
 "        * Match Regex: Define your own regular expression."
 msgstr ""
-"消込モデルは、トランザクションタイプが次の場合にのみ適用されます。\n"
-"*含まれるもの：プロポジショントランザクションタイプには、この文字列が含まれて"
-"いる必要があります（大文字と小文字は区別されません）。\n"
+"消込モデルは、取引タイプが次の場合にのみ適用されます。\n"
+"*含まれるもの：プロポジション取引タイプには、この文字列が含まれている必要があ"
+"ります（大文字と小文字は区別されません）。\n"
 "*含まない：「含む」の否定。\n"
 "*一致する正規表現：独自の正規表現を定義します。"
 
@@ -16132,7 +16034,7 @@ msgstr "会社通貨で表示される仕訳明細の残額。"
 #. odoo-python
 #: code:addons/account/models/account_bank_statement.py:0
 msgid "The running balance (%s) doesn't match the specified ending balance."
-msgstr "残高（%s）が、指定された終了残高と一致しない。"
+msgstr "累計残高（%s）が、指定された終了残高と一致しません。"
 
 #. module: account
 #. odoo-python
@@ -16141,6 +16043,8 @@ msgid ""
 "The scheduled action 'Send Invoices automatically' is archived. You won't be "
 "able to send invoices in batch."
 msgstr ""
+"スケジュールアクション「請求書を自動送信」がアーカイブされています。一括で請"
+"求書を送信できません。"
 
 #. module: account
 #. odoo-python
@@ -17473,6 +17377,12 @@ msgstr "条件の更新"
 #: code:addons/account/models/res_config_settings.py:0
 msgid "Update Terms & Conditions"
 msgstr "取引条件を更新"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/chart_template.py:0
+msgid "Update app"
+msgstr ""
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -19094,6 +19004,12 @@ msgid "dates for"
 msgstr "以下に対する日付:"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "documents"
+msgstr "ドキュメント"
+
+#. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "due if paid before"
 msgstr "以下の期限内に支払われた場合"
@@ -19470,6 +19386,84 @@ msgid ""
 "{{ object.company_id.name }} Payment Receipt (Ref {{ object.name or 'n/a' }})"
 msgstr ""
 "{{ object.company_id.name }} 支払受領書 (Ref {{ object.name or 'n/a' }})"
+
+#~ msgid "Restrict the use of taxes to a type of product."
+#~ msgstr "指定されたプロダクトタイプへの税の使用を制限します。"
+
+#~ msgid "1.05"
+#~ msgstr "1.05"
+
+#~ msgid "100.0"
+#~ msgstr "100.0"
+
+#~ msgid "1000.0"
+#~ msgstr "1000.0"
+
+#~ msgid "11.05"
+#~ msgstr "11.05"
+
+#~ msgid "12345"
+#~ msgstr "12345"
+
+#~ msgid "15%"
+#~ msgstr "15%"
+
+#~ msgid "1500.0"
+#~ msgstr "1500.0"
+
+#~ msgid "20.00"
+#~ msgstr "20.00"
+
+#~ msgid "2021-09-19"
+#~ msgstr "2021-09-19"
+
+#~ msgid "2023-01-01"
+#~ msgstr "2023-01-01"
+
+#~ msgid "2023-01-05"
+#~ msgstr "2023-01-05"
+
+#~ msgid "2023-08-11"
+#~ msgstr "2023-08-11"
+
+#~ msgid "2023-08-15"
+#~ msgstr "2023-08-15"
+
+#~ msgid "2023-08-31"
+#~ msgstr "2023-08-31"
+
+#~ msgid "2023-09-12"
+#~ msgstr "2023-09-12"
+
+#~ msgid "2023-09-25"
+#~ msgstr "2023-09-25"
+
+#~ msgid "2023-10-31"
+#~ msgstr "2023-10-31"
+
+#~ msgid "2024-01-01"
+#~ msgstr "2024-01-01"
+
+#~ msgid "27.00"
+#~ msgstr "27.00"
+
+#~ msgid "3.00"
+#~ msgstr "3.00"
+
+#~ msgid "30.00"
+#~ msgstr "30.00"
+
+#~ msgid "31.05"
+#~ msgstr "31.05"
+
+#~ msgid "4.05"
+#~ msgstr "4.05"
+
+#~ msgid "534677881234"
+#~ msgstr "534677881234"
+
+#~ msgid "9.00"
+#~ msgstr "9.00"
 
 #~ msgid "You cannot switch the type of a document which has been posted once."
 #~ msgstr "一度記帳されたドキュメントの種類を変更することはできません。"

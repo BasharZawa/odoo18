@@ -590,6 +590,7 @@ export class Composer extends Component {
             default_res_ids: [this.thread.id],
             default_subtype_xmlid: this.props.type === "note" ? "mail.mt_note" : "mail.mt_comment",
             mail_post_autofollow: this.thread.hasWriteAccess,
+            body_contains_signature_only: !body || body.trim().length === 0,
         };
         const action = {
             name: this.props.type === "note" ? _t("Log note") : _t("Compose Email"),
@@ -792,7 +793,8 @@ export class Composer extends Component {
         }
     }
 
-    onFocusin() {
+    onFocusin(ev) {
+        ev.stopPropagation();
         const composer = toRaw(this.props.composer);
         composer.isFocused = true;
         composer.thread?.markAsRead();

@@ -42,12 +42,13 @@
 # Wil Odoo, 2025
 # Jessica Jakara, 2025
 # Saara Hakanen <sahak@odoo.com>, 2026.
+# Weblate <noreply-mt-weblate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-29 18:36+0000\n"
-"PO-Revision-Date: 2026-02-26 14:42+0000\n"
+"POT-Creation-Date: 2026-04-10 18:37+0000\n"
+"PO-Revision-Date: 2026-03-30 15:09+0000\n"
 "Last-Translator: Saara Hakanen <sahak@odoo.com>\n"
 "Language-Team: Finnish <https://translate.odoo.com/projects/odoo-18/stock/fi/"
 ">\n"
@@ -56,7 +57,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. module: stock
 #. odoo-python
@@ -81,6 +82,16 @@ msgid ""
 msgstr ""
 "\n"
 "(%(serial_number)s) on olemassa paikassa %(location)s"
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/stock_move.py:0
+msgid ""
+"\n"
+"Package: %s"
+msgstr ""
+"\n"
+"Paketti: %s"
 
 #. module: stock
 #. odoo-python
@@ -470,46 +481,9 @@ msgid "1 Week"
 msgstr "1 Viikko"
 
 #. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-msgid "12.0"
-msgstr "12.0"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_generic_barcode
-msgid "1234567890"
-msgstr "1234567890"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_lot_label
-msgid "12345678901"
-msgstr "12345678901"
-
-#. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__stock_picking_type__product_label_format__2x7xprice
 msgid "2 x 7 with price"
 msgstr "2 x 7 ja hinta"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-msgid "2021-9-01"
-msgstr "2021-9-01"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_small
-msgid "2023-01-01"
-msgstr "2023-01-01"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_picking
-msgid "2023-09-24"
-msgstr "2023-09-24"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_delivery_document
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-#: model_terms:ir.ui.view,arch_db:stock.report_picking
-msgid "3.00"
-msgstr "3.00"
 
 #. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__lot_label_layout__print_format__4x12
@@ -536,11 +510,6 @@ msgstr "4 x 12 hinnalla"
 #: model:ir.model.fields.selection,name:stock.selection__stock_picking_type__product_label_format__4x7xprice
 msgid "4 x 7 with price"
 msgstr "4 x 7 hinnalla"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
-msgid "54326786758"
-msgstr "54326786758"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.stock_warn_insufficient_qty_form_view
@@ -1129,7 +1098,8 @@ msgstr "Lisää uusi varastointikategoria"
 #: model_terms:ir.ui.view,arch_db:stock.view_picking_form
 msgid ""
 "Add an internal note that will be printed on the Picking Operations sheet"
-msgstr "Lisää sisäinen viesti, joka näytetään keräilylistalla"
+msgstr ""
+"Lisää sisäinen merkintä, joka tulostetaan keräilytoimintojen lomakkeelle"
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_res_config_settings__group_stock_adv_location
@@ -1178,7 +1148,7 @@ msgstr "Lisää laadunvarmistus siirtotoimenpiteisiisi"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_picking_form
 msgid "Additional Info"
-msgstr "Lisätietoa"
+msgstr "Lisätiedot"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_location__comment
@@ -4563,7 +4533,7 @@ msgstr "Tuotekoodi"
 #. module: stock
 #: model:ir.model.fields.selection,name:stock.selection__stock_picking_type__code__internal
 msgid "Internal Transfer"
-msgstr "Tee sisäinen tilisiirto"
+msgstr "Sisäinen siirto"
 
 #. module: stock
 #. odoo-python
@@ -4576,12 +4546,12 @@ msgstr "Sisäiset siirrot"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_res_company__internal_transit_location_id
 msgid "Internal Transit Location"
-msgstr "Sisäinen siirtymäpaikka"
+msgstr "Sisäisen siirron sijainti"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_warehouse__int_type_id
 msgid "Internal Type"
-msgstr "Sisäisten siirtojen tyyppi"
+msgstr "Sisäinen tyyppi"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_location__child_internal_location_ids
@@ -5999,12 +5969,12 @@ msgstr "Ei-torkutetut"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_picking_form
 msgid "Note"
-msgstr "Muistiinpano"
+msgstr "Merkintä"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking__note
 msgid "Notes"
-msgstr "Muistiinpanot"
+msgstr "Merkinnät"
 
 #. module: stock
 #. odoo-python
@@ -7938,7 +7908,7 @@ msgstr "Täydennysraportin haku"
 #. module: stock
 #: model:ir.model,name:stock.model_ir_actions_report
 msgid "Report Action"
-msgstr "Raporttin"
+msgstr "Raporttitoiminto"
 
 #. module: stock
 #. odoo-javascript
@@ -8272,7 +8242,7 @@ msgstr "S0001"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_res_config_settings__module_stock_sms
 msgid "SMS Confirmation"
-msgstr "SMS-vahvistus"
+msgstr "Tekstiviestivahvistus"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_lot__message_has_sms_error
@@ -9861,8 +9831,8 @@ msgid ""
 "This note is added to internal transfer orders (e.g. where to pick the "
 "product in the warehouse)."
 msgstr ""
-"Tämä huomautus lisätään sisäisiin siirtotilauksiin (esim. mihin tuote "
-"noudetaan varastosta)."
+"Tämä merkintä lisätään sisäisiin siirtotilauksiin (esim. mistä tuote "
+"noudetaan varastossa)."
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_template_property_form
@@ -9870,8 +9840,8 @@ msgid ""
 "This note is added to receipt orders (e.g. where to store the product in the "
 "warehouse)."
 msgstr ""
-"Tämä huomautus lisätään vastaanottotilauksiin (esim. missä tuote "
-"varastoidaan varastossa)."
+"Tämä merkintä lisätään vastaanottotilauksiin (esim. mihin tuote laitetaan "
+"varastossa)."
 
 #. module: stock
 #. odoo-python
@@ -12009,6 +11979,30 @@ msgid ""
 msgstr ""
 "{{ object.company_id.name }} Toimitustilaus (viite {{ object.name or 'n/"
 "a' }})"
+
+#~ msgid "12.0"
+#~ msgstr "12.0"
+
+#~ msgid "1234567890"
+#~ msgstr "1234567890"
+
+#~ msgid "12345678901"
+#~ msgstr "12345678901"
+
+#~ msgid "2021-9-01"
+#~ msgstr "2021-9-01"
+
+#~ msgid "2023-01-01"
+#~ msgstr "2023-01-01"
+
+#~ msgid "2023-09-24"
+#~ msgstr "2023-09-24"
+
+#~ msgid "3.00"
+#~ msgstr "3.00"
+
+#~ msgid "54326786758"
+#~ msgstr "54326786758"
 
 #~ msgid ""
 #~ "You cannot validate a transfer if no quantities are reserved. To force "

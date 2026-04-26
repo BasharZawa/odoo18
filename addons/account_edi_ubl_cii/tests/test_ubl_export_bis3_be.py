@@ -12,6 +12,11 @@ from odoo.tests import tagged
 @tagged('post_install_l10n', 'post_install', '-at_install', *TestUblBis3Common.extra_tags)
 class TestUblExportBis3BE(TestUblBis3Common, TestUblCiiBECommon):
 
+    @classmethod
+    def subfolders(cls):
+        subfolder_format, _subfolder_document, subfolder_country = super().subfolders()
+        return subfolder_format, 'invoice', subfolder_country
+
     def test_invoice_item_description_name(self):
         tax_21 = self.percent_tax(21.0)
         product = self._create_product(
@@ -98,6 +103,22 @@ class TestUblExportBis3BE(TestUblBis3Common, TestUblCiiBECommon):
 
         self._generate_invoice_ubl_file(invoice)
         self._assert_invoice_ubl_file(invoice, 'test_invoice_BR_CO_10_line_extension_amount_sum_lines')
+
+    def test_invoice_PEPPOL_EN16931_R120_line_extension_amount_huge_number_of_decimals(self):
+        """ [PEPPOL-EN16931-R120]-Invoice line net amount MUST equal (Invoiced quantity * (Item net price/item price base quantity)
+        + Sum of invoice line charge amount - sum of invoice line allowance amount
+        """
+        tax_21 = self.percent_tax(21.0)
+        product = self._create_product(lst_price=0.01110515963896, taxes_id=tax_21)
+        invoice = self._create_invoice_one_line(
+            product_id=product,
+            quantity=278362.5,
+            partner_id=self.partner_be,
+            post=True,
+        )
+
+        self._generate_invoice_ubl_file(invoice)
+        self._assert_invoice_ubl_file(invoice, 'test_invoice_PEPPOL_EN16931_R120_line_extension_amount_huge_number_of_decimals')
 
     def test_invoice_price_amount_rounding_precision_with_price_included_taxes(self):
         tax_21 = self.percent_tax(21.0, price_include_override='tax_included')
@@ -304,6 +325,38 @@ class TestUblExportBis3BE(TestUblBis3Common, TestUblCiiBECommon):
         self._generate_invoice_ubl_file(invoice)
         self._assert_invoice_ubl_file(invoice, 'test_invoice_multiple_fixed_tax_emptying_turned_as_extra_invoice_lines')
 
+    def test_invoice_with_fixed_tax_on_negative_line(self):
+        """ CASE 5: simple invoice with a recupel tax, with one negative line.
+        1) Subtotal (price without taxes): (10+1) * 5 + (10+1) * -3 = 22.00
+        2) Taxes:
+            - recupel = 5 - 3 = 2
+            - VAT = (20 + 2) * 0.21 = 4.62
+        3) Total = 20 + 2 + 4.62 = 26.62
+        """
+        tax_emptying = self.fixed_tax(1.0, name="RECUPEL", include_base_amount=True)
+        tax_21 = self.percent_tax(21.0)
+        invoice = self._create_invoice(
+            partner_id=self.partner_be,
+            invoice_line_ids=[
+                self._prepare_invoice_line(
+                    product_id=self.product_a,
+                    price_unit=10.0,
+                    quantity=5.0,
+                    tax_ids=tax_emptying + tax_21,
+                ),
+                self._prepare_invoice_line(
+                    product_id=self.product_a,
+                    price_unit=10.0,
+                    quantity=-3.0,
+                    tax_ids=tax_emptying + tax_21,
+                ),
+            ],
+            post=True,
+        )
+        self.assertEqual(invoice.amount_total, 26.62)
+        self._generate_invoice_ubl_file(invoice)
+        self._assert_invoice_ubl_file(invoice, 'test_invoice_with_fixed_tax_on_negative_line')
+
     def test_invoice_custom_tax_emptying_turned_as_extra_invoice_lines(self):
         """ Ensure the emptying taxes (a.k.a 'vidange') are turned into extra invoice lines inside the xml. """
         tax_emptying = self.python_tax("quantity * 0.10", name="Vidange")
@@ -329,6 +382,34 @@ class TestUblExportBis3BE(TestUblBis3Common, TestUblCiiBECommon):
 
         self._generate_invoice_ubl_file(invoice)
         self._assert_invoice_ubl_file(invoice, 'test_invoice_custom_tax_emptying_turned_as_extra_invoice_lines')
+
+    def test_invoice_fixed_tax_emptying_return_turned_as_extra_invoice_lines(self):
+        """ Ensure the emptying taxes (a.k.a 'vidange') works on line with negative quantity for when the clients return the 'vidange'."""
+        tax_emptying = self.fixed_tax(1.0, name="Vidange")
+        tax_21 = self.percent_tax(21.0)
+        tax_0 = self.percent_tax(0)
+        invoice = self._create_invoice(
+            partner_id=self.partner_be,
+            invoice_line_ids=[
+                self._prepare_invoice_line(
+                    product_id=self.product_a,
+                    price_unit=5.0,
+                    quantity=2.0,
+                    tax_ids=tax_emptying + tax_21,
+                ),
+                # line with price zero used for returning 'vidange'.
+                self._prepare_invoice_line(
+                    product_id=self.product_a,
+                    price_unit=0.0,
+                    quantity=-1.0,
+                    tax_ids=tax_emptying + tax_0,
+                ),
+            ],
+            post=True,
+        )
+
+        self._generate_invoice_ubl_file(invoice)
+        self._assert_invoice_ubl_file(invoice, 'test_invoice_fixed_tax_emptying_return_turned_as_extra_invoice_lines')
 
     def test_invoice_manual_tax_amount(self):
         tax_12 = self.percent_tax(12.0)
@@ -769,3 +850,45 @@ class TestUblExportBis3BE(TestUblBis3Common, TestUblCiiBECommon):
             partner=self.partner_nl,
             test_file='test_invoice_customer_party_identifiers_partner_nl_vat_eas_oin_company_registry',
         )
+
+    def test_invoice_BR_E_08_line_extension_amount(self):
+        """ [BR-E-08] In a VAT breakdown (BG-23) where the VAT category code (BT-118) is "Exempt from VAT"
+            the VAT category taxable amount (BT-116) shall equal the sum of Invoice line net amounts (BT-131)
+            minus the sum of Document level allowance amounts (BT-92) plus the sum of Document level charge
+            amounts (BT-99) where the VAT category codes (BT-151, BT-95, BT-102) are "Exempt from VAT".
+        """
+        tax_0 = self.percent_tax(0.0)
+        tax_6 = self.percent_tax(6.0)
+        product_1 = self._create_product(lst_price=90.30, taxes_id=tax_0)
+        product_2 = self._create_product(lst_price=2.54, taxes_id=tax_6)
+        product_3 = self._create_product(lst_price=6.87, taxes_id=tax_6)
+        invoice = self._create_invoice(
+            partner_id=self.partner_be,
+            invoice_line_ids=[
+                self._prepare_invoice_line(product_id=product_1),
+                self._prepare_invoice_line(product_id=product_2, quantity=0.45),
+                self._prepare_invoice_line(product_id=product_3, quantity=0.28),
+            ],
+            post=True,
+        )
+
+        self._generate_invoice_ubl_file(invoice)
+        self._assert_invoice_ubl_file(invoice, 'test_invoice_BR_E_08_line_extension_amount')
+
+    def test_invoice_tax_subtotal_exempt_amount(self):
+        """ Test that the taxable amount for exempt taxes is correctly computed,
+        regardless of the tax calculation rounding method.
+        """
+        tax_0 = self.percent_tax(0.0)
+        for rounding_method in ('round_per_line', 'round_globally'):
+            self.env.company.tax_calculation_rounding_method = rounding_method
+            invoice = self._create_invoice(
+                partner_id=self.partner_be,
+                invoice_line_ids=[
+                    self._prepare_invoice_line(product_id=self.product_a, price_unit=39.615, quantity=4.0, discount=20.0, tax_ids=tax_0),
+                    self._prepare_invoice_line(product_id=self.product_a, price_unit=0.84, quantity=4.0, discount=20.0, tax_ids=tax_0),
+                ],
+                post=True,
+            )
+            self._generate_invoice_ubl_file(invoice)
+            self._assert_invoice_ubl_file(invoice, f'test_invoice_tax_subtotal_exempt_amount_{rounding_method}')
