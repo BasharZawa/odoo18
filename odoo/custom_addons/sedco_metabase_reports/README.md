@@ -1,363 +1,423 @@
-# SEDCO Metabase Reports
+# SEDCO Metabase Reports | تقارير سيدكو في أودو
 
-## Overview
+Simple guide for the `sedco_metabase_reports` Odoo 18 module.
 
-`sedco_metabase_reports` embeds selected Metabase dashboards inside Odoo 18 under a dedicated **Reports** menu.
+دليل بسيط لموديول ربط تقارير Metabase داخل Odoo.
 
-The module is designed around two access-control layers:
+---
 
-1. Odoo group-based access decides which users can see a dashboard entry.
-2. A signed Metabase embed JWT can lock dashboard parameters to the current Odoo user, so the same dashboard can show user-specific data.
+## 1. Big Idea | الفكرة
 
-This module uses Metabase signed static embedding and does not depend on Metabase Pro or Enterprise features.
+This module shows Metabase dashboards inside Odoo under **Reports**.
 
-## What the Module Provides
+الموديول يعرض داشبوردات Metabase داخل Odoo من قائمة **Reports / التقارير**.
 
-- A top-level **Reports** menu in Odoo.
-- A reports index page at `/metabase/reports`.
-- One embed route per dashboard at `/metabase/embed/<code>`.
-- A configurable model, `metabase.dashboard`, for dashboard metadata and permissions.
-- A registry model, `metabase.sync.model`, for Odoo models that may be refreshed before rendering a dashboard.
-- Optional on-demand sync with UXServer before an iframe is shown.
+It does three main things:
 
-## Module Structure
+| EN | AR |
+| --- | --- |
+| Shows dashboards inside Odoo | يعرض الداشبورد داخل أودو |
+| Controls who can open each dashboard | يحدد من يستطيع فتح كل تقرير |
+| Sends a signed JWT to Metabase for secure embed and optional row filters | يرسل توقيع JWT آمن مع فلتر اختياري حسب المستخدم |
 
-- `__manifest__.py`: module metadata and loaded XML files.
-- `controllers/main.py`: routes, permission checks, JWT creation, and sync trigger.
-- `models/metabase_dashboard.py`: dashboard configuration model.
-- `models/metabase_sync_model.py`: syncable model registry.
-- `security/metabase_groups.xml`: security groups.
-- `security/ir.model.access.csv`: model ACLs.
-- `views/metabase_templates.xml`: reports index and embed templates.
-- `views/metabase_dashboard_views.xml`: configuration UI for dashboards.
-- `views/menus.xml`: reports menu tree and URL actions.
-- `data/ir_config_parameter.xml`: seeded system parameter placeholder.
-- `data/metabase_sync_models.xml`: seeded sync model registry.
-- `data/metabase_dashboards.xml`: seeded dashboard records.
+---
 
-## Main User Flow
+## 2. Quick Map | خريطة سريعة
 
-1. A logged-in Odoo user opens **Reports** or visits `/metabase/reports`.
-2. The controller loads active `metabase.dashboard` records with `sudo()`.
-3. The controller filters them against the real user’s `groups_id`.
-4. When the user opens `/metabase/embed/<code>`, the controller:
-   - finds the matching active dashboard,
-   - verifies access again,
-   - reads Metabase config from `ir.config_parameter`,
-   - optionally triggers UXServer sync,
-   - computes locked Metabase parameters,
-   - signs a short-lived JWT,
-   - renders an iframe pointing to Metabase’s signed embed URL.
-
-## Security Model
-
-### 1. Menu-Level Access
-
-Menus are gated by Odoo groups in `views/menus.xml`.
-
-Seeded groups:
-
-- `group_mb_viewer`: standard business dashboards.
-- `group_mb_manager`: implies viewer access and can manage dashboard configuration.
-- `group_mb_ops`: operational dashboards such as sync/health views.
-
-### 2. Controller-Level Access
-
-Even if a user knows a dashboard URL, the controller still checks:
-
-- the dashboard exists,
-- it is active,
-- the user belongs to at least one allowed group for that dashboard.
-
-If not, the route returns `403 Forbidden`.
-
-### 3. Row-Level Access in Metabase
-
-For dashboards with filtering enabled, the JWT payload includes locked parameters.
-
-Current filter modes:
-
-- `none`: no locked parameters are sent.
-- `salesperson`: always lock the configured parameter to the current Odoo user ID.
-- `salesperson_bypass_manager`: same as above, except users in `bypass_group_id` receive an empty array and therefore bypass the row filter.
-
-The default locked parameter name is `owner_id`, but each dashboard can override it with names such as `salesperson_id`.
-
-## Configuration
-
-### Required System Parameters
-
-Set these in **Settings -> Technical -> Parameters -> System Parameters**:
-
-- `sedco_metabase_reports.site_url`
-  - Base URL of Metabase, for example `https://metabase.example.com`
-- `sedco_metabase_reports.jwt_secret`
-  - Metabase embedding secret used to sign JWTs
-
-### Optional System Parameters
-
-These enable on-demand sync before dashboard render:
-
-- `sedco_metabase_reports.uxserver_url`
-  - Base URL of UXServer
-- `sedco_metabase_reports.uxserver_sync_api_key`
-  - API key sent as `X-API-KEY` to the reload endpoint
-
-### Seeded Parameter Behavior
-
-Only `sedco_metabase_reports.site_url` is seeded, with a placeholder value of `http://localhost:3000`.
-
-The JWT secret and UXServer settings are intentionally not seeded. This avoids silently passing validation with fake values.
-
-## Data Models
-
-### `metabase.dashboard`
-
-This is the core configuration model for embedded dashboards.
-
-Important fields:
-
-- `name`: display label shown in Odoo.
-- `code`: stable route key used in `/metabase/embed/<code>`.
-- `metabase_id`: numeric Metabase dashboard ID.
-- `allowed_group_ids`: Odoo groups allowed to access the dashboard.
-- `filter_mode`: whether row-level filtering is applied.
-- `locked_parameter_name`: parameter name expected by Metabase.
-- `bypass_group_id`: group that bypasses row-level filtering for bypass modes.
-- `active`: controls visibility and route availability.
-- `sequence`: ordering in UI.
-- `sync_model_ids`: models to request from UXServer before opening the dashboard.
-- `sync_timeout_seconds`: timeout for sync request.
-
-Constraint:
-
-- `code` must be unique.
-
-### `metabase.sync.model`
-
-This is a registry of Odoo model names that UXServer understands.
-
-Important fields:
-
-- `name`: technical model name such as `sale.order`.
-- `display`: friendly label for the configuration form.
-- `active`: enable/disable the registry record.
-
-Constraint:
-
-- `name` must be unique.
-
-## Seeded Dashboards
-
-The module seeds five dashboard records:
-
-- `sales_orders`
-  - Viewer + Manager access
-  - Filtered by `salesperson_id`
-  - Managers bypass the row filter
-  - Triggers sync for sales-related models
-- `accounts`
-  - Viewer + Manager access
-  - No row-level filter
-  - Triggers sync for partner/account-related lookup models
-- `contacts`
-  - Viewer + Manager access
-  - No row-level filter
-  - Triggers sync for contact-related data
-- `migration_kpis`
-  - Manager + Ops access
-  - No sync on open
-- `sync_health`
-  - Ops access only
-  - No sync on open
-
-The records are loaded with `noupdate="1"`, which is important:
-
-- module upgrades do not overwrite edited dashboard definitions,
-- real `metabase_id` values are preserved after operators set them,
-- dashboards can be safely tuned in production from the Odoo UI.
-
-## On-Demand Sync
-
-Before rendering the iframe, the controller may call:
-
-- `POST <uxserver_url>/api/OdooSyncReload`
-
-Request body:
-
-```json
-{
-  "models": ["sale.order", "sale.order.line", "res.partner"]
-}
+```mermaid
+flowchart LR
+    U[Odoo User<br/>مستخدم أودو] --> M[Reports Menu<br/>قائمة التقارير]
+    M --> C[Odoo Controller<br/>كنترولر أودو]
+    C --> A{Allowed Group?<br/>هل عنده صلاحية؟}
+    A -- No / لا --> F[403 Forbidden]
+    A -- Yes / نعم --> S{Sync Needed?<br/>هل نحتاج تحديث بيانات؟}
+    S -- Yes / نعم --> X[UXServer Sync<br/>تحديث UXServer]
+    S -- No / لا --> J[Create JWT<br/>إنشاء التوقيع]
+    X --> J
+    J --> MB[Metabase Embed<br/>عرض الداشبورد]
 ```
 
-Request headers:
+---
 
-- `Content-Type: application/json`
-- `X-API-KEY: <uxserver_sync_api_key>`
+## 3. What We Built So Far | ماذا تم إنجازه؟
 
-Behavior:
+| Area | Done | Simple meaning |
+| --- | --- | --- |
+| Odoo menu | Yes | Added **Reports** menu and dashboard menu entries |
+| Embed pages | Yes | `/metabase/reports` and `/metabase/embed/<code>` |
+| Dashboard config model | Yes | Managers can configure dashboards from Odoo |
+| Security groups | Yes | Viewer, Manager, Ops |
+| JWT signing | Yes | Odoo signs short-lived Metabase embed tokens |
+| Row filter modes | Yes | No filter, salesperson filter, manager bypass |
+| Sync on open | Yes | Manager chooses No sync, Full reload, or Incremental per dashboard |
+| Scheduled sync jobs | Yes | Managers can refresh selected models on a timing schedule |
+| Incremental state | Yes | Last successful sync time is tracked per dashboard/job and model |
+| Seeded dashboards | Yes | Sales Orders, Accounts, Contacts, Migration KPIs, Sync Health |
+| Seeded sync models | Yes | Odoo model registry for UXServer refresh calls |
 
-- If `uxserver_url` or `uxserver_sync_api_key` is missing, sync is skipped.
-- If the dashboard has no `sync_model_ids`, sync is skipped.
-- If sync succeeds, the dashboard renders normally.
-- If sync times out or returns an HTTP error, the dashboard still renders, but the page shows a stale-data warning.
+---
 
-This is a deliberate degrade-but-alive design.
+## 4. User Journey | رحلة المستخدم
 
-## JWT Payload
+1. User opens **Reports** in Odoo.
+   المستخدم يفتح **Reports / التقارير**.
 
-The JWT created by the controller contains:
+2. Odoo loads active dashboard records.
+   أودو يقرأ الداشبوردات الفعالة.
 
-- `resource.dashboard`: the Metabase dashboard ID
-- `params`: locked parameter values, if any
-- `exp`: expiration time
+3. Odoo checks the user's groups.
+   أودو يتأكد من صلاحيات المستخدم.
 
-Token lifetime is currently 600 seconds.
+4. User clicks a dashboard.
+   المستخدم يختار التقرير.
 
-The signature algorithm is `HS256`.
+5. Odoo optionally asks UXServer to refresh data.
+   أودو ممكن يطلب تحديث البيانات من UXServer.
 
-## UI and Routes
+6. Odoo creates a signed Metabase JWT.
+   أودو ينشئ توقيع Metabase آمن.
 
-### Routes
+7. The dashboard opens in an iframe.
+   الداشبورد تظهر داخل الصفحة.
 
-- `/metabase/reports`
-  - Reports landing page listing dashboards the user can access
-- `/metabase/embed/<code>`
-  - Embed page for a single dashboard
+---
 
-Both routes use `auth='user'`, so anonymous users cannot access them.
+## 5. Roles | الصلاحيات
 
-### Odoo Menus
+| Role | Arabic | Can see | Can configure |
+| --- | --- | --- | --- |
+| Viewer | مشاهد | Sales Orders, Accounts, Contacts | No |
+| Manager | مدير | Viewer dashboards + Migration KPIs | Yes |
+| Ops | تشغيل | Migration KPIs, Sync Health | No |
 
-The module adds:
+Important: menu access is not the only protection.
 
-- a root **Reports** menu,
-- one menu item per seeded dashboard,
-- a **Configuration** submenu for managers.
+مهم: إخفاء القائمة ليس الحماية الوحيدة.
 
-The configuration menu opens the `metabase.dashboard` list/form view.
+The controller checks access again before creating the embed URL.
 
-## How to Add a New Dashboard
+الكنترولر يتأكد من الصلاحية مرة ثانية قبل إنشاء رابط Metabase.
 
-### In Metabase
+---
 
-1. Create and publish the dashboard in Metabase.
-2. If row-level filtering is needed, add a locked embed parameter with a stable slug such as `salesperson_id`.
-3. Note the numeric Metabase dashboard ID.
+## 6. Main Files | الملفات المهمة
 
-### In Odoo
+| File | What it does | شرح بسيط |
+| --- | --- | --- |
+| `__manifest__.py` | Module metadata and loaded XML | تعريف الموديول والملفات |
+| `controllers/main.py` | Routes, permissions, sync, JWT | الراوتات والصلاحيات والتوقيع |
+| `models/metabase_dashboard.py` | Dashboard configuration model | إعدادات الداشبورد |
+| `models/metabase_sync_model.py` | Sync model registry | قائمة الموديلات التي يمكن تحديثها |
+| `models/metabase_sync_line.py` | Per-model sync mode | نوع التحديث لكل موديل |
+| `models/metabase_sync_schedule.py` | Scheduled sync jobs | وظائف التحديث المجدول |
+| `models/metabase_sync_state.py` | Last successful sync time | وقت آخر تحديث ناجح |
+| `security/metabase_groups.xml` | Viewer, Manager, Ops groups | مجموعات الصلاحيات |
+| `views/metabase_templates.xml` | Reports page and iframe page | صفحات عرض التقارير |
+| `views/metabase_dashboard_views.xml` | Manager configuration UI | شاشة إعدادات المدير |
+| `views/metabase_sync_schedule_views.xml` | Scheduled sync configuration UI | شاشة إعدادات التحديث المجدول |
+| `views/menus.xml` | Odoo menus and URL actions | قوائم أودو |
+| `data/metabase_dashboards.xml` | Seed dashboard records | داشبوردات جاهزة كبداية |
+| `data/metabase_sync_models.xml` | Seed sync model records | موديلات التحديث الجاهزة |
+| `data/metabase_sync_schedule_cron.xml` | Cron that runs due schedules | كرون يشغل الجداول المستحقة |
 
-1. Open **Reports -> Configuration -> Metabase Dashboards**.
-2. Create a new dashboard record.
-3. Set:
-   - `name`
-   - `code`
-   - `metabase_id`
-   - `allowed_group_ids`
-   - `filter_mode`
-   - `locked_parameter_name` if filtering is used
-   - `bypass_group_id` if using a bypass mode
-   - `sync_model_ids` if the dashboard should request fresh data on open
-4. Save the record.
+---
 
-### If You Want a Dedicated Menu Entry
+## 7. Configuration Checklist | قائمة الإعداد
 
-The dashboard record alone makes the route work, but the menu tree in this module is still XML-defined. To expose a dedicated sidebar entry for a new dashboard, add:
+Set these in:
 
-1. an `ir.actions.act_url` record pointing to `/metabase/embed/<code>`,
-2. a `menuitem` referencing that action and the correct groups.
+`Settings -> Technical -> Parameters -> System Parameters`
 
-This is currently not fully data-driven.
+اضبط هذه القيم من إعدادات أودو:
 
-## How Row-Level Filtering Must Align
+| Parameter | Required? | Example | Meaning |
+| --- | --- | --- | --- |
+| `sedco_metabase_reports.site_url` | Yes | `http://localhost:3000` | Metabase URL |
+| `sedco_metabase_reports.jwt_secret` | Yes | secret from Metabase | Embed signing secret |
+| `sedco_metabase_reports.uxserver_url` | Optional | `https://uxserver.sedco.co` | UXServer URL for refresh |
+| `sedco_metabase_reports.uxserver_sync_api_key` | Optional | API key | Key for `/api/OdooSyncReload` |
 
-For filtering to work correctly, the same parameter concept must line up in three places:
+Only `site_url` is seeded with `http://localhost:3000`.
 
-1. `locked_parameter_name` on the Odoo dashboard record
-2. the Metabase dashboard embed parameter slug
-3. the underlying Metabase SQL/dashboard filter logic
+تم وضع `site_url` فقط كقيمة أولية. السر وبيانات UXServer لا يتم وضعها تلقائيا.
+
+---
+
+## 8. Dashboard Records | سجلات الداشبورد
+
+Each dashboard is a record in `metabase.dashboard`.
+
+كل داشبورد عبارة عن سجل داخل `metabase.dashboard`.
+
+| Field | Simple meaning | معنى بسيط |
+| --- | --- | --- |
+| `name` | Display name | اسم التقرير |
+| `code` | URL key, for example `sales_orders` | كود الرابط |
+| `metabase_id` | Real dashboard ID from Metabase | رقم الداشبورد في Metabase |
+| `allowed_group_ids` | Who can open it | من يستطيع فتحه |
+| `filter_mode` | Filter behavior | طريقة الفلترة |
+| `locked_parameter_name` | Metabase locked parameter name | اسم البراميتر المقفل في Metabase |
+| `bypass_group_id` | Group that skips row filter | المجموعة التي تتجاوز الفلتر |
+| `open_sync_mode` | No sync, Full reload, or Incremental | بدون تحديث، تحديث كامل، أو تحديث الفروقات |
+| `sync_line_ids` | Per-model refresh rules | قواعد التحديث لكل موديل |
+
+### Seeded Dashboards | الداشبوردات الجاهزة
+
+| Code | Name | Access | Filter | Sync |
+| --- | --- | --- | --- | --- |
+| `sales_orders` | Sales Orders | Viewer, Manager | `salesperson_id`, manager bypass | Yes |
+| `accounts` | Accounts | Viewer, Manager | No | Yes |
+| `contacts` | Contacts | Viewer, Manager | No | Yes |
+| `migration_kpis` | Migration KPIs | Manager, Ops | No | No |
+| `sync_health` | Sync Health | Ops | No | No |
+
+These records use `noupdate="1"`.
+
+هذه السجلات تستخدم `noupdate="1"` حتى لا يتم مسح أرقام Metabase الحقيقية عند تحديث الموديول.
+
+---
+
+## 9. Interactive Sections | افتح القسم الذي تحتاجه
+
+<details>
+<summary><strong>How JWT security works | كيف يعمل JWT؟</strong></summary>
+
+Odoo creates a short-lived token before showing the iframe.
+
+أودو ينشئ توكن قصير المدة قبل عرض الداشبورد.
+
+The token includes:
+
+| Key | Meaning |
+| --- | --- |
+| `resource.dashboard` | Metabase dashboard ID |
+| `params` | Locked filter values |
+| `exp` | Expiry time |
+
+Token lifetime is `600` seconds.
+
+مدة التوكن الحالية `600` ثانية.
+
+The algorithm is `HS256`.
+
+</details>
+
+<details>
+<summary><strong>How row filtering works | كيف تعمل فلترة الصفوف؟</strong></summary>
+
+The same name must match in three places:
+
+لازم نفس الاسم يكون مطابقا في ثلاثة أماكن:
+
+1. Odoo field: `locked_parameter_name`
+2. Metabase locked parameter slug
+3. Metabase SQL or dashboard filter
 
 Example:
 
-- Odoo sends `{"salesperson_id": 42}`
-- Metabase dashboard expects locked parameter `salesperson_id`
-- the query or filter logic restricts results to that user
+```json
+{
+  "salesperson_id": 42
+}
+```
 
-If these names do not match exactly, the dashboard may render but ignore the intended filter.
+If names do not match, the dashboard may open but show wrong data.
 
-## Permissions and ACLs
+إذا الأسماء غير متطابقة، ممكن التقرير يفتح لكن يعرض بيانات غير صحيحة.
 
-Model access is intentionally narrow:
+</details>
 
-- Viewer and Ops can read dashboard and sync-model records.
-- Manager can read, create, write, and delete both models.
+<details>
+<summary><strong>How scheduled sync works | كيف يعمل التحديث المجدول؟</strong></summary>
 
-The controller uses `sudo()` only for reading configuration and metadata, then performs authorization checks against the actual request user. This avoids accidental ACL failures while still enforcing real access control.
+Managers can create scheduled sync jobs from:
 
-## Failure Modes and Troubleshooting
+يمكن للمدير إنشاء وظائف تحديث مجدولة من:
 
-### "Embed not configured"
+`Reports -> Configuration -> Scheduled Sync Jobs`
 
-Check:
+Each job has:
 
-- `sedco_metabase_reports.site_url` is set correctly
-- `sedco_metabase_reports.jwt_secret` is set
-- `metabase_id` is greater than `0`
+كل وظيفة تحتوي على:
 
-### User sees `403 Forbidden`
+| Field | Meaning |
+| --- | --- |
+| `sync_line_ids` | Models to refresh, each with Full or Incremental |
+| `interval_number` + `interval_type` | How often it runs |
+| `next_run` | Next planned run time |
+| `last_status` | Last result |
+| `last_message` | Last UXServer message |
+| `Run Now` | Manual test button |
 
-Check:
+A fixed Odoo cron checks due jobs every minute and calls UXServer with the selected models.
 
-- the dashboard is active,
-- the user belongs to one of the dashboard’s `allowed_group_ids`,
-- the user also has the relevant menu group if you expect the menu item to appear.
+كرون ثابت في أودو يفحص الوظائف المستحقة كل دقيقة ويرسل الموديلات المختارة إلى UXServer.
 
-### Dashboard opens but shows unexpected data
+`sync_line_ids` is the source of truth. One job can mix modes:
 
-Check:
+`sync_line_ids` هو المصدر المعتمد. نفس الوظيفة يمكن أن تجمع أكثر من نوع:
 
-- `filter_mode`
-- `locked_parameter_name`
-- the Metabase embed parameter slug
-- whether the user belongs to the bypass group
+| Model | Mode |
+| --- | --- |
+| `sale.order` | `full` |
+| `res.partner` | `incremental` |
 
-### Dashboard opens with stale-data warning
+`Full reload` means: delete/rebuild the selected SQL tables.
 
-Check:
+`Incremental` means: compare Odoo `write_date` with the saved `last_synced_at`, then update only changed records.
 
-- UXServer URL and API key
-- dashboard `sync_model_ids`
-- UXServer endpoint health
-- dashboard sync timeout value
+`Full reload` يعني: إعادة بناء الجداول المختارة بالكامل.
 
-## Developer Notes
+`Incremental` يعني: تحديث السجلات التي تغيرت فقط بعد آخر تحديث ناجح.
 
-### Why Dashboard Data Uses `noupdate="1"`
+Use scheduled sync for heavy or shared models such as `res.partner`, `res.users`, `res.country`, `res.currency`, and lookup tables.
 
-Operator-managed values such as real `metabase_id` must survive module upgrades. Without `noupdate="1"`, a module update could reset production dashboards back to placeholder IDs.
+استخدم التحديث المجدول للموديلات الكبيرة أو المشتركة مثل العملاء والمستخدمين والدول والعملات.
 
-### Why the Controller Rechecks Access
+</details>
 
-Menu visibility alone is not sufficient protection. Users can hit routes directly, so the controller enforces the same authorization again before generating the embed URL.
+<details>
+<summary><strong>How on-demand sync works | كيف يعمل تحديث البيانات؟</strong></summary>
 
-### Why Sync Failures Do Not Block Rendering
+Each dashboard uses per-model `sync_line_ids`:
 
-The module treats live sync as a freshness optimization, not a hard dependency. Reports remain available even when UXServer is slow or unavailable.
+كل داشبورد يستخدم قواعد لكل موديل `sync_line_ids`:
 
-## Current Limitations
+| Row mode | Meaning | معنى |
+| --- | --- | --- |
+| Empty lines | Do not sync when opening | لا تحدث عند الفتح |
+| `full` | Rebuild this model before opening | أعد بناء هذا الموديل قبل العرض |
+| `incremental` | Sync changed records for this model only | حدث التغييرات لهذا الموديل فقط |
 
-- Menu entries are seeded in XML and are not auto-generated from dashboard records.
-- The module embeds dashboards only; it does not manage Metabase content lifecycle.
-- JWT row filters are based on the current Odoo `res.users.id`, so Metabase queries must be designed around that identity.
+For mixed mode, use sync lines:
 
-## Recommended Operational Checklist
+لدمج النوعين، استخدم سطور التحديث:
 
-After installing or updating this module:
+| Model | Mode |
+| --- | --- |
+| `sale.order` | `full` |
+| `res.partner` | `incremental` |
 
-1. Set `site_url` and `jwt_secret`.
-2. Publish each Metabase dashboard and enter its real `metabase_id`.
-3. Assign Odoo users to the correct Metabase groups.
-4. Verify row-level filtering with a viewer user and a manager user.
-5. If using live sync, verify UXServer connectivity and timeout behavior.
-6. Open each reports menu entry and confirm it renders as expected.
+If UXServer settings exist and the dashboard has visible sync lines, Odoo sends:
+
+إذا إعدادات UXServer موجودة والداشبورد فيه سطور تحديث ظاهرة، أودو يرسل:
+
+```http
+POST <uxserver_url>/api/OdooSyncReload
+Content-Type: application/json
+X-API-KEY: <uxserver_sync_api_key>
+```
+
+Body:
+
+```json
+{
+  "models": ["sale.order", "sale.order.line", "res.partner"],
+  "mode": "full"
+}
+```
+
+Incremental body:
+
+```json
+{
+  "models": ["res.partner"],
+  "mode": "incremental",
+  "since": {
+    "res.partner": "2026-04-25 09:00:00"
+  }
+}
+```
+
+If sync fails or times out, the dashboard still opens with a stale-data warning.
+
+إذا فشل التحديث أو أخذ وقت طويل، التقرير يفتح مع تحذير أن البيانات قديمة.
+
+For production, prefer scheduled sync for common data and keep on-demand sync only for reports that truly need refresh-before-open.
+
+للإنتاج، الأفضل استخدام التحديث المجدول للبيانات المشتركة، وترك التحديث عند فتح التقرير فقط للتقارير التي تحتاج ذلك فعلا.
+
+</details>
+
+<details>
+<summary><strong>How to add a dashboard | كيف تضيف داشبورد؟</strong></summary>
+
+In Metabase:
+
+1. Create the dashboard.
+2. Publish it for signed embedding.
+3. Copy the numeric dashboard ID.
+4. If needed, add a locked parameter such as `salesperson_id`.
+
+In Odoo:
+
+1. Go to **Reports -> Configuration -> Metabase Dashboards**.
+2. Create a new record.
+3. Fill `name`, `code`, `metabase_id`, and `allowed_group_ids`.
+4. Choose `filter_mode`.
+5. Add `locked_parameter_name` if filtering is used.
+6. Add `sync_line_ids` if data should refresh before opening.
+7. Choose `full` or `incremental` for each model line.
+8. Leave `sync_line_ids` empty if the dashboard should open without sync.
+
+Note: menu entries are currently XML-defined. A new dashboard record makes the route work, but a dedicated menu item still needs XML.
+
+ملاحظة: القوائم حاليا معرفة في XML. إضافة سجل داشبورد تجعل الرابط يعمل، لكن ظهور عنصر قائمة جديد يحتاج XML.
+
+</details>
+
+<details>
+<summary><strong>Troubleshooting | حل المشاكل</strong></summary>
+
+| Problem | Check |
+| --- | --- |
+| `Embed not configured` | `site_url`, `jwt_secret`, and `metabase_id > 0` |
+| `403 Forbidden` | User group, dashboard active, allowed groups |
+| Wrong data | `filter_mode`, parameter name, Metabase filter slug |
+| Stale-data warning | UXServer URL, API key, endpoint health, timeout |
+| Menu not visible | User group and menu XML group |
+
+</details>
+
+---
+
+## 10. Current Limitations | الحدود الحالية
+
+| Limitation | Meaning |
+| --- | --- |
+| Menus are XML-defined | New dashboards do not automatically create menu entries |
+| Full sync can still run during page open | Use scheduled sync or incremental mode for common/heavy data |
+| Incremental sync does not detect hard deletes | Run periodic full reload for cleanup |
+| Metabase content is external | This module embeds dashboards but does not create Metabase dashboards |
+
+See `TASKS.md` for the hardening backlog.
+
+راجع `TASKS.md` لمهام التحسين القادمة.
+
+---
+
+## 11. Install / Update Checklist | خطوات التثبيت أو التحديث
+
+- [ ] Install or update the module.
+- [ ] Set `site_url`.
+- [ ] Set `jwt_secret`.
+- [ ] Publish dashboards in Metabase.
+- [ ] Enter real `metabase_id` values in Odoo.
+- [ ] Assign users to Viewer, Manager, or Ops.
+- [ ] Create scheduled sync jobs for shared/heavy models.
+- [ ] Test with one Viewer user.
+- [ ] Test with one Manager user.
+- [ ] Test UXServer sync if enabled.
+- [ ] Open every menu item and confirm the iframe renders.
+
+---
+
+## 12. One-Minute Explanation | شرح بدقيقة
+
+`sedco_metabase_reports` is the bridge between Odoo users and Metabase dashboards.
+
+هو جسر بين مستخدمي Odoo وتقارير Metabase.
+
+Odoo decides **who** can open a report. Metabase shows **the dashboard**. The JWT connects them securely.
+
+أودو يقرر **من** يفتح التقرير. Metabase يعرض **الداشبورد**. و JWT يربط الاثنين بشكل آمن.

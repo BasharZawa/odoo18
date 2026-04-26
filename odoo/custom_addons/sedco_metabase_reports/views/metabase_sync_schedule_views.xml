@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_metabase_sync_schedule_tree" model="ir.ui.view">
+        <field name="name">metabase.sync.schedule.tree</field>
+        <field name="model">metabase.sync.schedule</field>
+        <field name="arch" type="xml">
+            <list string="Scheduled Sync Jobs">
+                <field name="name"/>
+                <field name="active"/>
+                <field name="interval_number"/>
+                <field name="interval_type"/>
+                <field name="next_run"/>
+                <field name="last_status"/>
+                <field name="last_run"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_metabase_sync_schedule_form" model="ir.ui.view">
+        <field name="name">metabase.sync.schedule.form</field>
+        <field name="model">metabase.sync.schedule</field>
+        <field name="arch" type="xml">
+            <form string="Scheduled Sync Job">
+                <header>
+                    <button name="action_run_now"
+                            type="object"
+                            string="Run Now"
+                            class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Sales data every 15 minutes"/></h1>
+                    </div>
+                    <group>
+                        <group string="Schedule">
+                            <field name="active"/>
+                            <field name="interval_number"/>
+                            <field name="interval_type"/>
+                            <field name="next_run"/>
+                            <field name="sync_timeout_seconds"/>
+                        </group>
+                        <group string="Last Run">
+                            <field name="last_status" readonly="1"/>
+                            <field name="last_run" readonly="1"/>
+                            <field name="last_duration_seconds" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Models to Refresh">
+                        <field name="sync_line_ids"
+                               nolabel="1"
+                               help="Choose full or incremental sync per model.">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="sync_model_id" options="{'no_create': True}"/>
+                                <field name="sync_mode"/>
+                            </list>
+                        </field>
+                    </group>
+                    <group string="Last Message">
+                        <field name="last_message" nolabel="1" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_metabase_sync_schedule" model="ir.actions.act_window">
+        <field name="name">Scheduled Sync Jobs</field>
+        <field name="res_model">metabase.sync.schedule</field>
+        <field name="view_mode">list,form</field>
+        <field name="groups_id" eval="[(4, ref('group_mb_manager'))]"/>
+    </record>
+
+</odoo>

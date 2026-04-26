@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'SEDCO Metabase Reports',
-    'version': '18.0.2.0.0',
+    'version': '18.0.5.0.0',
     'category': 'Reporting',
     'summary': 'Embed Metabase dashboards inside Odoo with per-user permissions',
     'description': """
@@ -25,8 +25,10 @@ Uses Metabase OSS signed static embedding; no Pro/Enterprise features required.
         'security/ir.model.access.csv',
         'views/metabase_templates.xml',
         'views/metabase_dashboard_views.xml',
+        'views/metabase_sync_schedule_views.xml',
         'views/menus.xml',
         'data/ir_config_parameter.xml',
+        'data/metabase_sync_schedule_cron.xml',
         'data/metabase_sync_models.xml',
         'data/metabase_dashboards.xml',
     ],

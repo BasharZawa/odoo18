@@ -5,8 +5,6 @@ import hmac
 import json
 import logging
 import time
-import urllib.error
-import urllib.request
 
 from odoo import http
 from odoo.http import request
@@ -75,7 +73,8 @@ class MetabaseEmbedController(http.Controller):
             )
             return request.make_response('Embed not configured', status=403)
 
-        sync_warning = self._run_on_demand_sync(dashboard)
+        sync_success, sync_message = dashboard._run_dashboard_sync()
+        sync_warning = None if sync_success else f"{sync_message} Showing last available data."
 
         locked_params = self._compute_locked_params(dashboard, user)
         token = self._sign_jwt(dashboard.metabase_id, locked_params, secret)
@@ -93,54 +92,6 @@ class MetabaseEmbedController(http.Controller):
                 'can_configure': user.has_group('sedco_metabase_reports.group_mb_manager'),
             },
         )
-
-    @staticmethod
-    def _run_on_demand_sync(dashboard):
-        """POST to UXServer and wait for a sync to complete.
-
-        Returns None on success or if sync is not configured/needed.
-        Returns a warning string on timeout or HTTP error — the caller
-        must still render the page (degrade-but-alive).
-        """
-        ICP = request.env['ir.config_parameter'].sudo()
-        uxserver_url = (ICP.get_param('sedco_metabase_reports.uxserver_url') or '').strip()
-        api_key = (ICP.get_param('sedco_metabase_reports.uxserver_sync_api_key') or '').strip()
-
-        # If either config value is absent, sync is disabled — not an error.
-        if not uxserver_url or not api_key:
-            return None
-
-        model_names = dashboard.sync_model_ids.mapped('name')
-        if not model_names:
-            return None
-
-        url = uxserver_url.rstrip('/') + '/api/OdooSyncReload'
-        body = json.dumps({'models': model_names}).encode()
-        req = urllib.request.Request(
-            url,
-            data=body,
-            headers={
-                'Content-Type': 'application/json',
-                'X-API-KEY': api_key,
-            },
-            method='POST',
-        )
-        timeout = max(1, dashboard.sync_timeout_seconds or 25)
-        try:
-            with urllib.request.urlopen(req, timeout=timeout):
-                pass
-            return None
-        except urllib.error.HTTPError as exc:
-            _logger.warning(
-                "On-demand sync failed for dashboard %s (code=%s): %s",
-                dashboard.code, exc.code, exc.reason,
-            )
-            return f"Live sync failed (HTTP {exc.code}). Showing last available data."
-        except Exception as exc:
-            _logger.warning(
-                "On-demand sync error for dashboard %s: %s", dashboard.code, exc,
-            )
-            return "Live sync timed out. Showing last available data."
 
     @staticmethod
     def _compute_locked_params(dashboard, user):

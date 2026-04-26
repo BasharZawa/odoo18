@@ -95,4 +95,11 @@
               sequence="10"
               groups="group_mb_manager"/>
 
+    <menuitem id="menu_metabase_sync_schedule_config"
+              parent="menu_reports_config"
+              name="Scheduled Sync Jobs"
+              action="action_metabase_sync_schedule"
+              sequence="20"
+              groups="group_mb_manager"/>
+
 </odoo>
