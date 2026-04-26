@@ -21,7 +21,7 @@ This document is written to be short, operational, and easy to scan during imple
 
 ## 2) Project Layout (Custom Modules)
 
-Custom work typically lives in `odoo/custom_addons/` (SEDCO modules like `sedco_*`, `x_*`, `quote_management`, etc.).
+Custom work typically lives in `custom_addons/custom_addons/` and `custom_addons/ent_addons/` via the external `custom_addons` submodule.
 
 Required module structure pattern:
 

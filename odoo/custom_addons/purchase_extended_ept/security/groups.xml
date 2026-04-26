@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <record id="group_purchase_order_create" model="res.groups">
-        <field name="name">Purchase Order Creation</field>
-        <field name="category_id" ref="base.module_category_inventory_purchase"/>
-        <field name="comment">Users in this group can create Purchase Orders.</field>
-    </record>
-</odoo>

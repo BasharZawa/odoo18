@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_api.sent.invoice,access_api.sent.invoice,orchida_uae_e_invoicing.model_api_sent_invoice,base.group_user,1,1,0,0
-
-
-
-
-

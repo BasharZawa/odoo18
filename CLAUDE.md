@@ -2,7 +2,7 @@
 
 ## Rules
 
-- **Search before building.** Always search `odoo/custom_addons/` for existing functionality before creating anything new.
+- **Search before building.** Always search `custom_addons/custom_addons/` for existing functionality before creating anything new.
 - **Use `approval.request`** for all approval workflows. Never create custom approval models.
 - **Follow EPT naming:** `*_extended_ept` (extends standard module), `*_management_ept` (new features), `sedco_*` (company-specific).
 - **Present a plan before coding.** Show what exists, what you'll reuse, and your approach.
@@ -13,11 +13,11 @@
 - **Odoo:** 18.0 Enterprise fork
 - **Database:** OdooE (PostgreSQL) — user: admin, password: admin
 - **URL:** http://localhost:8069
-- **Addons path:** addons, odoo/addons, custom_addons, odoo/custom_addons, odoo/ent_addons
+- **Addons path:** addons, odoo/addons, custom_addons/custom_addons, custom_addons/ent_addons
 - **MCP server:** `odoo_mcp_server.py` (50+ tools, FastMCP, config in `~/.config/Claude/claude_desktop_config.json`)
 - **n8n:** http://localhost:5678 — local instance, REST API via `X-N8N-API-KEY` header, MCP server in `.mcp.json`
 
-## Custom Modules (18 total in `odoo/custom_addons/` and `custom_addons/`)
+## Custom Modules (18 total in `custom_addons/custom_addons/`)
 
 ### Sales & Finance
 | Module | What it does |
@@ -52,7 +52,7 @@
 ### Reporting & Integration
 | Module | What it does |
 |--------|-------------|
-| test_report | Database view model pattern (pivot/list/form, in `custom_addons/`) |
+| test_report | Database view model pattern (pivot/list/form, in `custom_addons/custom_addons/`) |
 | orchida_uae_e_invoicing | UAE e-invoicing compliance |
 
 ### Utilities

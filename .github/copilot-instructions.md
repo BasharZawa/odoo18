@@ -6,8 +6,8 @@ This is an **Odoo 18** ERP codebase with a modular addon architecture:
 
 - **`odoo/`** - Core framework: ORM (`models.py`, `fields.py`), API (`api.py`), HTTP layer
 - **`addons/`** - Official Odoo community modules (CRM, Sale, Stock, etc.)
-- **`odoo/ent_addons/`** - Enterprise addons
-- **`odoo/custom_addons/`** - Custom SEDCO modules (primary development area)
+- **`custom_addons/ent_addons/`** - Enterprise addons from the external submodule repo
+- **`custom_addons/custom_addons/`** - Custom SEDCO modules (primary development area)
 
 Custom modules follow the pattern: `sedco_*`, `custom_*`, `x_*`, `quote_management`, etc.
 
@@ -93,7 +93,7 @@ access_product_line_user,product.line.user,model_product_line,base.group_user,1,
 source venv/bin/activate
 
 # Scaffold new module
-./odoo-bin scaffold module_name odoo/custom_addons
+./odoo-bin scaffold module_name custom_addons/custom_addons
 
 # Start server (uses odoo.conf)
 ./odoo-bin
@@ -108,12 +108,12 @@ source venv/bin/activate
 ## Configuration
 
 `odoo.conf` defines:
-- `addons_path`: `addons,odoo/addons,custom_addons,odoo/custom_addons,odoo/ent_addons`
+- `addons_path`: `addons,odoo/addons,custom_addons/custom_addons,custom_addons/ent_addons`
 - Database: PostgreSQL on localhost:5432
 
 ## Custom SEDCO Modules
 
-Key custom modules in `odoo/custom_addons/`:
+Key custom modules in `custom_addons/custom_addons/`:
 
 - **`sedco_crm`** - CRM extensions: lead lifecycle, SLA escalation, stage logging
 - **`sedco_bpm_engine`** - BPMN workflow engine with visual editor

@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_line_ept,access.product.line.ept,model_product_line_ept,,1,1,1,1
-access_product_nature_ept,access.product.nature.ept,model_product_nature_ept,,1,1,1,1

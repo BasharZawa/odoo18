@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_quality_check_bulk_wizard,quality.check.bulk.wizard,model_quality_check_bulk_wizard,quality.group_quality_user,1,1,1,1
-access_quality_check_bulk_wizard_line,quality.check.bulk.wizard.line,model_quality_check_bulk_wizard_line,quality.group_quality_user,1,1,1,1

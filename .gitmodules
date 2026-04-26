@@ -1,0 +1,4 @@
+[submodule "custom_addons"]
+	path = custom_addons
+	url = git@github.com:BasharZawa/custom_addons.git
+	branch = main

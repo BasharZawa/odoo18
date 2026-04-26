@@ -1,5 +1,0 @@
-# -*- coding: utf-8 -*-
-
-from . import sale_order
-from . import crm_tags
-from . import request_approval
