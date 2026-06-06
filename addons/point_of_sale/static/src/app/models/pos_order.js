@@ -1095,7 +1095,7 @@ export class PosOrder extends Base {
                 name: pl.payment_method_id.name,
                 amount: formatCurrency(pl.get_amount(), this.currency),
             })),
-            change: this.get_change() && formatCurrency(this.get_change(), this.currency),
+            change: this.get_change() && formatCurrency(-this.get_change(), this.currency),
             generalNote: this.general_note || "",
             qrPaymentData: toRaw(this.get_selected_paymentline()?.qrPaymentData),
         };

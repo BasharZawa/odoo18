@@ -1,3 +1,4 @@
+from odoo import Command
 from odoo.addons.account_edi_ubl_cii.tests.test_ubl_import_bis3_invoice_be import TestUblImportBis3InvoiceBE
 from odoo.tests import tagged
 
@@ -22,8 +23,8 @@ class TestUblImportBis3InvoiceBERetrieveTax(TestUblImportBis3InvoiceBE):
                     'tax_ids': [],
                 },
                 {
-                    'quantity': 1.0,
-                    'price_unit': 500.0,
+                    'quantity': 5.0,
+                    'price_unit': 100.0,
                     'tax_ids': [],
                 },
             ],
@@ -54,8 +55,8 @@ class TestUblImportBis3InvoiceBERetrieveTax(TestUblImportBis3InvoiceBE):
                     'tax_ids': tax_21.ids,
                 },
                 {
-                    'quantity': 1.0,
-                    'price_unit': 500.0,
+                    'quantity': 5.0,
+                    'price_unit': 100.0,
                     'tax_ids': tax_21.ids,
                 },
             ],
@@ -160,8 +161,8 @@ class TestUblImportBis3InvoiceBERetrieveTax(TestUblImportBis3InvoiceBE):
                     'tax_ids': tax_21_1.ids,
                 },
                 {
-                    'quantity': 1.0,
-                    'price_unit': 500.0,
+                    'quantity': 5.0,
+                    'price_unit': 100.0,
                     'tax_ids': tax_21_2.ids,
                 },
             ],
@@ -171,6 +172,70 @@ class TestUblImportBis3InvoiceBERetrieveTax(TestUblImportBis3InvoiceBE):
             [
                 {
                     'partner_id': self.partner_be.id,
+                    'amount_untaxed': 1000.0,
+                    'amount_tax': 210.01,
+                    'amount_total': 1210.01,
+                },
+            ],
+        )
+
+    def test_import_foreign_tax(self):
+        tax_21 = self.percent_tax(21.0, type_tax_use='sale')
+        tax_21_foreign = self.percent_tax(21.0, type_tax_use='sale')
+
+        domestic = self.env['account.fiscal.position'].create({
+            'name': 'Domestic',
+            'company_id': self.company_data['company'].id,
+        })
+        foreign_trade = self.env['account.fiscal.position'].create({
+            'name': 'Foreign Trade',
+            'company_id': self.company_data['company'].id,
+            'tax_ids': [Command.create({'tax_src_id': tax_21.id, 'tax_dest_id': tax_21_foreign.id})],
+        })
+
+        self.partner_be.property_account_position_id = foreign_trade
+        bill = self._import_invoice_as_attachment_on(
+            test_name='test_partial_import_tax_manual_tax_amounts',
+            journal=self.company_data['default_journal_sale'],
+        )
+        self.assertEqual(bill.invoice_line_ids.tax_ids, tax_21_foreign)
+
+        self.partner_be.property_account_position_id = domestic
+        bill = self._import_invoice_as_attachment_on(
+            test_name='test_partial_import_tax_manual_tax_amounts',
+            journal=self.company_data['default_journal_sale'],
+        )
+        self.assertEqual(bill.invoice_line_ids.tax_ids, tax_21)
+
+    def test_partial_import_tax_included_invoice(self):
+        tax_21 = self.percent_tax(21.0, price_include_override='tax_included')
+
+        invoice = self._import_invoice_as_attachment_on(
+            test_name='test_partial_import_tax_manual_tax_amounts',
+            journal=self.company_data['default_journal_sale'],
+        )
+
+        self.assertRecordValues(
+            invoice.invoice_line_ids,
+            [
+                {
+                    'quantity': 1.0,
+                    'price_unit': 605.0,
+                    'discount': 0.0,
+                    'tax_ids': tax_21.ids,
+                },
+                {
+                    'quantity': 5.0,
+                    'price_unit': 121.0,
+                    'discount': 0.0,
+                    'tax_ids': tax_21.ids,
+                },
+            ],
+        )
+        self.assertRecordValues(
+            invoice,
+            [
+                {
                     'amount_untaxed': 1000.0,
                     'amount_tax': 210.01,
                     'amount_total': 1210.01,

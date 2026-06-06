@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-17 18:37+0000\n"
-"PO-Revision-Date: 2026-04-18 14:00+0000\n"
+"POT-Creation-Date: 2026-05-29 17:38+0000\n"
+"PO-Revision-Date: 2026-05-30 09:30+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Spanish (Latin America) <https://translate.odoo.com/projects/"
 "odoo-18/base_vat/es_419/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
 "0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17\n"
 
 #. module: base_vat
 #. odoo-python
@@ -212,8 +212,8 @@ msgstr ""
 #. module: base_vat
 #. odoo-python
 #: code:addons/base_vat/models/res_partner.py:0
-msgid "The Intra-Community validity has been updated."
-msgstr "La validez intracomunitaria se actualizó."
+msgid "The Intra-Community validity has been updated to: %s."
+msgstr "La validez intracomunitaria se ha actualizado a %s."
 
 #. module: base_vat
 #. odoo-python
@@ -283,8 +283,8 @@ msgstr ""
 #. module: base_vat
 #. odoo-python
 #: code:addons/base_vat/models/res_partner.py:0
-msgid "either 11 digits for CPF or 14 digits for CNPJ"
-msgstr "ya sea 11 dígitos para CPF o 14 dígitos para CNPJ"
+msgid "either 11 digits for CPF or 14 characters for CNPJ"
+msgstr "ya sea 11 dígitos para CPF o 14 caracteres para CNPJ"
 
 #. module: base_vat
 #. odoo-python
@@ -297,6 +297,12 @@ msgstr "posición fiscal [%s]"
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "partner [%s]"
 msgstr "contacto [%s]"
+
+#~ msgid "The Intra-Community validity has been updated."
+#~ msgstr "La validez intracomunitaria se actualizó."
+
+#~ msgid "either 11 digits for CPF or 14 digits for CNPJ"
+#~ msgstr "ya sea 11 dígitos para CPF o 14 dígitos para CNPJ"
 
 #~ msgid ""
 #~ "Connection with the VIES server failed. The VAT number %s could not be "

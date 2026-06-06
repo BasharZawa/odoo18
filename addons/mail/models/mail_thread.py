@@ -2078,10 +2078,15 @@ class MailThread(models.AbstractModel):
                     self.env.user.partner_id == p,           # prioritize user
                     p.company_id in records[company_fname],  # then partner associated w/ records
                     not p.company_id,                        # else pick partner w/out company_id
+                    -p.id,                                   # finally use a deterministic id ASC tie-breaker
                 )
         else:
             def sort_key(p):
-                return (self.env.user.partner_id == p, not p.company_id)
+                return (
+                    self.env.user.partner_id == p,          # prioritize user
+                    not p.company_id,                       # else pick partner w/out company_id
+                    -p.id,                                  # finally use a deterministic id ASC tie-breaker
+                )
 
         done_partners.sort(key=sort_key, reverse=True)  # reverse because False < True
 
@@ -4685,6 +4690,8 @@ class MailThread(models.AbstractModel):
             msg_values.update({
                 'partner_ids': list(partner_ids or [])
             })
+        if "subject" in kwargs:
+            msg_values["subject"] = kwargs["subject"]
         if msg_values:
             message.write(msg_values)
 
@@ -4710,6 +4717,8 @@ class MailThread(models.AbstractModel):
             "recipients": Store.many(message.partner_ids, fields=["avatar_128", "name"]),
             "write_date": message.write_date,
         }
+        if "subject" in kwargs:
+            res["subject"] = message.subject
         if body is not None:
             # sudo: mail.message.translation - discarding translations of message after editing it
             self.env["mail.message.translation"].sudo().search([("message_id", "=", message.id)]).unlink()
@@ -4800,7 +4809,7 @@ class MailThread(models.AbstractModel):
 
     @api.model
     def _get_allowed_message_update_params(self):
-        return {"attachment_ids", "body", "partner_ids"}
+        return {"attachment_ids", "body", "partner_ids", "subject"}
 
     @api.model
     def _get_thread_with_access(self, thread_id, mode="read", **kwargs):

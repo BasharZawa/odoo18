@@ -1225,7 +1225,7 @@ class TestPoSSale(TestPointOfSaleHttpCommon):
         self.assertEqual(order.order_line.qty_delivered, 1)
 
         pos_order = self.main_pos_config.session_ids.order_ids
-        self.assertEqual(pos_order.picking_ids.move_line_ids.qty_done, 1)
+        self.assertEqual(pos_order.picking_ids.move_line_ids.quantity, 1)
         refund_action = pos_order.refund()
         refund_order = self.env['pos.order'].browse(refund_action['res_id'])
 
@@ -1236,7 +1236,7 @@ class TestPoSSale(TestPointOfSaleHttpCommon):
         })
         refund_payment.with_context(**payment_context).check()
 
-        self.assertEqual(refund_order.picking_ids.move_line_ids.qty_done, 1)
+        self.assertEqual(refund_order.picking_ids.move_line_ids.quantity, 1)
 
     def test_pos_order_and_invoice_amounts(self):
         payment_term = self.env['account.payment.term'].create({
@@ -1290,6 +1290,44 @@ class TestPoSSale(TestPointOfSaleHttpCommon):
         self.assertFalse(invoice.invoice_payment_term_id)
 
         self.assertAlmostEqual(order.amount_total, invoice.amount_total, places=2, msg="Order and Invoice amounts do not match.")
+
+    def test_settle_cancelled_sale_order(self):
+        """When settling a cancelled (reset to draft) SO in PoS,
+        the PoS picking should include moves for its products."""
+
+        product_a = self.env['product.product'].create({
+            'name': 'Product A',
+            'available_in_pos': True,
+            'is_storable': True,
+            'lst_price': 10.0,
+            'taxes_id': [odoo.Command.clear()],
+        })
+        product_b = self.env['product.product'].create({
+            'name': 'Product B',
+            'available_in_pos': True,
+            'is_storable': True,
+            'lst_price': 20.0,
+            'taxes_id': [odoo.Command.clear()],
+        })
+        partner = self.env['res.partner'].create({'name': 'Test Partner'})
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': partner.id,
+            'order_line': [
+                odoo.Command.create({'product_id': product_a.id, 'product_uom_qty': 1}),
+                odoo.Command.create({'product_id': product_b.id, 'product_uom_qty': 1}),
+            ],
+        })
+        sale_order.action_confirm()
+        sale_order._action_cancel()
+        sale_order.action_draft()
+
+        self.main_pos_config.open_ui()
+        self.start_pos_tour('test_settle_cancelled_sale_order', login="accountman")
+
+        pos_order = sale_order.pos_order_line_ids.order_id
+        pos_shipped_products = pos_order.picking_ids.filtered(lambda p: p.state == 'done').move_ids.product_id
+        self.assertEqual(pos_shipped_products, product_a | product_b)
 
     def test_settle_order_with_lot(self):
         warehouse = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
@@ -2234,6 +2272,52 @@ class TestPoSSale(TestPointOfSaleHttpCommon):
         invoice.action_post()
 
         self.assertEqual(sale_order.amount_unpaid, 0.0)
+
+    def test_settle_so_custom_attribute_value(self):
+        """When settling a sale order (e.g. from the website) in POS, free-text custom
+        attribute values must appear in the orderline's product name via
+        constructFullProductName, not just the placeholder (e.g. 'Custom').
+        """
+        attr = self.env['product.attribute'].create({
+            'name': 'Inscription',
+            'create_variant': 'no_variant',
+        })
+        attr_value = self.env['product.attribute.value'].create({
+            'name': 'Custom',
+            'attribute_id': attr.id,
+            'is_custom': True,
+        })
+        product_tmpl = self.env['product.template'].create({
+            'name': 'Custom Product',
+            'available_in_pos': True,
+            'type': 'service',
+            'list_price': 10.0,
+            'taxes_id': [],
+            'attribute_line_ids': [Command.create({
+                'attribute_id': attr.id,
+                'value_ids': [Command.link(attr_value.id)],
+            })],
+        })
+        ptav = product_tmpl.attribute_line_ids.product_template_value_ids
+        product = product_tmpl.product_variant_ids[0]
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.env['res.partner'].create({'name': 'Website Customer'}).id,
+            'order_line': [Command.create({
+                'product_id': product.id,
+                'product_uom_qty': 1,
+                'price_unit': 10.0,
+                'product_no_variant_attribute_value_ids': [Command.link(ptav.id)],
+                'product_custom_attribute_value_ids': [Command.create({
+                    'custom_product_template_attribute_value_id': ptav.id,
+                    'custom_value': 'Value',
+                })],
+            })],
+        })
+        sale_order.action_confirm()
+
+        self.main_pos_config.open_ui()
+        self.start_pos_tour('test_settle_so_custom_attribute_value', login="accountman")
 
 
 @odoo.tests.tagged('post_install', '-at_install')

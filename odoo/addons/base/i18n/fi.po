@@ -52,7 +52,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-16 16:38+0000\n"
-"PO-Revision-Date: 2026-04-24 14:32+0000\n"
+"PO-Revision-Date: 2026-05-29 14:15+0000\n"
 "Last-Translator: Saara Hakanen <sahak@odoo.com>\n"
 "Language-Team: Finnish <https://translate.odoo.com/projects/odoo-18/base/fi/>"
 "\n"
@@ -2676,7 +2676,7 @@ msgid ""
 "Adds fleet data to documents\n"
 msgstr ""
 "\n"
-"Lisää kulkuneuvojen tietoja asiakirjoihin\n"
+"Lisää Kuljetuskaluston tiedot asiakirjoihin\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_quality_repair
@@ -5115,7 +5115,7 @@ msgid ""
 "Disallowed Expenses Fleet Data for Belgium\n"
 msgstr ""
 "\n"
-"Hyväksymättömät menot Belgian laivastoa koskevat tiedot\n"
+"Kuljetuskaluston kiellettyjen kulujen tiedot Belgiassa\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_helpdesk_fsm_report
@@ -11186,6 +11186,9 @@ msgid ""
 "This bridge module allows the user to input Ecpay information in ecommerce "
 "for sending their invoices to the Ecpay system\n"
 msgstr ""
+"\n"
+"Tämän siltamoduulin avulla käyttäjä voi syöttää Ecpay-tiedot verkkokauppaan "
+"lähettääkseen laskunsa Ecpay-järjestelmään\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_mrp_subcontracting_dropshipping
@@ -11986,6 +11989,10 @@ msgid ""
 "categorisation of products sold to be included in the details of the line of "
 "an invoice.\n"
 msgstr ""
+"\n"
+"Tämä on moduuli, jolla lisätään CPV-tunnusnumero tuotteeseen.\n"
+"Romanian CIUS-RO-muoto vaatii joissakin tapauksissa myytyjen tuotteiden "
+"tarkan luokittelun sisällyttämistä laskun rivitietoihin.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_ro
@@ -13140,6 +13147,9 @@ msgid ""
 "This module also provides the possibility to generate the JPK_KR_PD in xml, "
 "for Poland.\n"
 msgstr ""
+"\n"
+"Tämä moduuli tarjoaa myös mahdollisuuden luoda JPK_KR_PD-tiedoston xml-"
+"muodossa Puolaa varten.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_hr_hourly_cost
@@ -13480,6 +13490,17 @@ msgid ""
 "    3.Configuration of withholding reasons and exemption reasons\n"
 "    4.Addition of Tax Offices.\n"
 msgstr ""
+"\n"
+"Tämä moduuli parantaa Nilveran ydinintegraatiota lisäämällä turkkilaisen "
+"sähköisen laskutuksen vaatimustenmukaisuuden edellyttämiä laskutustilanteita "
+"ja -tyyppejä.\n"
+"\n"
+"Ominaisuudet:\n"
+"    1. Tuki laskutustilanteille: Perus, Vienti ja Julkinen sektori\n"
+"    2. Tuki laskutustyypeille: Myynti, Ennakonpidätys, Verovapaa ja Vientiin "
+"rekisteröity\n"
+"    3. Ennakonpidätys- ja verovapautusperusteiden määrittäminen\n"
+"    4. Verotoimistojen lisääminen.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_ch_hr_payroll_elm_transmission_5_3
@@ -13490,6 +13511,11 @@ msgid ""
 "- Possibility to attribute LPP amounts in %\n"
 "- Add custom amounts for employer parts for LAAC and IJM\n"
 msgstr ""
+"\n"
+"Tämä moduuli laajentaa sertifioinnin versioon ELM 5.1, ja ELM 5.3 lisää "
+"erilaisia käyttömukavuuden parannuksia, kuten: \n"
+"- Mahdollisuus määrittää LPP-määrät %:ssa \n"
+"- Lisää mukautetut määrät työnantajan osuuksiin LAAC:ssa ja IJM:ssa\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_ch_hr_payroll_elm_transmission
@@ -15049,21 +15075,20 @@ msgid ""
 "* Analysis graph for costs\n"
 msgstr ""
 "\n"
-"Kulkuneuvot, leasing, vakuutukset, kustannukset\n"
+"Ajoneuvot, leasing, vakuutukset, kustannukset\n"
 "==================================\n"
-"Tämän moduulin avulla Odoo auttaa sinua hallinnoimaan kaikkia "
-"kulkuneuvojasi, \n"
-"ajoneuvoihin liittyviä sopimuksia sekä palveluita, kustannuksia\n"
-"ja monia muita ominaisuuksia, jotka ovat välttämättömiä kalustosi "
-"hallinnoinnissa\n"
-"kulkuneuvoja\n"
+"Tämän moduulin kautta Odoo auttaa sinua hallinnoimaan kaikkia ajoneuvojasi, "
 "\n"
-"Tärkeimmät ominaisuudet\n"
+"niihin liittyviä sopimuksia sekä palveluita, kustannuksia\n"
+"sekä monia muita ominaisuuksia, jotka ovat välttämättömiä kuljetuskalustosi\n"
+"hallinnoimiseksi\n"
+"\n"
+"Keskeiset ominaisuudet\n"
 "-------------\n"
-"* Ajoneuvojen lisääminen ajoneuvokantaan\n"
-"* Ajoneuvojen sopimusten hallinta\n"
-"* Muistutus, kun sopimus saavuttaa päättymispäivämääränsä\n"
-"* Lisää palveluita, matkamittarin arvot kaikille ajoneuvoille\n"
+"* Lisää ajoneuvoja kuljetuskalustoosi\n"
+"* Hallinnoi ajoneuvojen sopimuksia\n"
+"* Muistutus, kun sopimus saavuttaa eräpäivänsä\n"
+"* Lisää palveluita sekä matkamittarin arvoja kaikille ajoneuvoille\n"
 "* Näytä kaikki ajoneuvoon tai palvelutyyppiin liittyvät kustannukset\n"
 "* Kustannusten analyysikaavio\n"
 
@@ -15814,6 +15839,8 @@ msgid ""
 "5th and 6th Set Financial Reports. Inventory and Balance 3.1-3.7, 3.11-3.18, "
 "3.20,3.24 and 3.25"
 msgstr ""
+"5. ja 6. taloudelliset raportit. Varastointi ja tase 3.1–3.7, 3.11–3.18, "
+"3.20, 3.24 ja 3.25"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_lang_form
@@ -15904,7 +15931,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_server_action_form
 msgid "<code>record</code>: record on which the action is triggered"
-msgstr "<code>record</code>: tietue, johon toiminto kohdistuu"
+msgstr "<code>record</code>: tietue, jossa toiminto käynnistetään"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_server_action_form
@@ -17226,7 +17253,7 @@ msgstr "Brasilia - Kirjanpitoraportit"
 #: model:ir.module.module,shortdesc:base.module_account_accountant_fleet
 #: model:ir.module.module,shortdesc:base.module_account_fleet
 msgid "Accounting/Fleet bridge"
-msgstr "Kirjanpito / Kulkuneuvojen silta"
+msgstr "Kirjanpidon/Kuljetuskaluston silta"
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_2
@@ -17237,6 +17264,10 @@ msgid ""
 "productive,\n"
 "                responsive and profitable."
 msgstr ""
+"Acme Corporation suunnittelee, kehittää, integroi ja tukee "
+"henkilöstöhallintoa sekä\n"
+"                 toimitusketjua parantaaksemme asiakkaidemme tuottavuutta,\n"
+"                 reagointikykyä ja kannattavuutta."
 
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_2
@@ -17246,6 +17277,9 @@ msgid ""
 "Chain processes in order to make our customers more productive, responsive "
 "and profitable."
 msgstr ""
+"Acme Corporation suunnittelee, kehittää, integroi ja tukee "
+"henkilöstöhallintoa sekä toimitusketjua parantaaksemme asiakkaidemme "
+"tuottavuutta, reagointikykyä ja kannattavuutta."
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_2
@@ -17255,6 +17289,11 @@ msgid ""
 "                with Open Sources software to manage their businesses. Our\n"
 "                consultants are experts in the following areas:"
 msgstr ""
+"Acme Corporation integroi ERP-järjestelmiä globaaleille yrityksille ja tukee "
+"pk-yrityksiä\n"
+"                avoimen lähdekoodin ohjelmistoilla niiden liiketoiminnan "
+"hallitsemiseksi. Konsulttimme\n"
+"                ovat asiantuntijoita seuraavissa aihealueissa:"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__act_window_id
@@ -17465,7 +17504,7 @@ msgstr "Lisää OdooBot keskusteluihin"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_add_gln
 msgid "Add Partner GLN"
-msgstr ""
+msgstr "Lisää kumppanin GLN"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_crm_sms
@@ -17674,7 +17713,7 @@ msgstr "Lisätään"
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_address_31
 msgid "Addison Olson is a mighty sales representative at Acme Corporation."
-msgstr ""
+msgstr "Addison Olson on Acme Corporationin myyntiedustaja."
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_address_31
@@ -19536,6 +19575,8 @@ msgid ""
 "An error occurred while evaluating the domain:\n"
 "%(error)s"
 msgstr ""
+"Domainin arvioinnin aikana tapahtui virhe:\n"
+"%(error)s"
 
 #. module: base
 #. odoo-python
@@ -20459,7 +20500,7 @@ msgstr "Omistusten hallinta"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_asset_fleet
 msgid "Assets/Fleet bridge"
-msgstr "Kiinteät omaisuuserät / kulkuneuvojen silta"
+msgstr "Omaisuuserien/Kuljetuskaluston silta"
 
 #. module: base
 #: model_terms:ir.actions.act_window,help:base.action_partner_category_form
@@ -20936,7 +20977,7 @@ msgstr "Avatax Brasilia"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_edi_fiscal_reform
 msgid "Avatax Brazil Fiscal Reform"
-msgstr ""
+msgstr "Avatax Brasilian verouudistuksessa"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_avatax_sale
@@ -20946,12 +20987,12 @@ msgstr "Avatax Brasilian myynti"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_edi_sale_fiscal_reform
 msgid "Avatax Brazil Sale Fiscal Reform"
-msgstr ""
+msgstr "Avatax Brasilian Myynnin verouudistuksessa"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_website_sale_fiscal_reform
 msgid "Avatax Brazil eCommerce Fiscal Reform"
-msgstr ""
+msgstr "Avatax Brasilian Verkkokaupan verouudistuksessa"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_avatax_stock
@@ -21531,7 +21572,7 @@ msgstr "Belgia - Hylätyt menot - Tiedot"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_account_disallowed_expenses_fleet
 msgid "Belgium - Disallowed Expenses Fleet"
-msgstr "Belgia - Hylätyt kulut - Kulkuneuvot"
+msgstr "Belgia - Kuljetuskaluston kielletyt kulut"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_coda
@@ -21591,7 +21632,7 @@ msgstr "Belgia - Palkanlaskenta - Vienti UCM:ään"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_hr_payroll_fleet
 msgid "Belgium - Payroll - Fleet"
-msgstr "Belgia - Palkanlaskenta - Kulkuneuvot"
+msgstr "Belgia - Palkanlaskenta - Kuljetuskalusto"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_hr_payroll_account
@@ -23916,6 +23957,8 @@ msgid ""
 "have a 'company_id' or 'company_ids' field, and isn't company-dependent "
 "either."
 msgstr ""
+"Yrityskohtaista kenttää %s ei voitu luoda. Mallissa ei ole kenttää "
+"'company_id' tai 'company_ids', eikä se ole myöskään yrityskohtainen."
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model__count
@@ -24768,7 +24811,7 @@ msgstr "DIN 5008"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_din5008_expense
 msgid "DIN 5008 - Expenses"
-msgstr ""
+msgstr "DIN 5008 - Kulut"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_din5008_industry_fsm
@@ -25110,6 +25153,8 @@ msgid ""
 "Deleting the public user is not allowed. Deleting this profile will "
 "compromise critical functionalities."
 msgstr ""
+"Julkisen käyttäjän poistaminen ei ole sallittua. Tämän profiilin poistaminen "
+"vaarantaa kriittisiä toimintoja."
 
 #. module: base
 #. odoo-python
@@ -25969,7 +26014,7 @@ msgstr "Dong"
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_address_3
 msgid "Douglas Fletcher is a mighty functional consultant at Acme Corporation"
-msgstr ""
+msgstr "Douglas Fletcher on Acme Corporationin toiminnallinen konsultti"
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_address_3
@@ -26109,7 +26154,7 @@ msgstr "EC Sales (ICP) SBR hollantilaista lokalisointia varten"
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_tw_edi_ecpay_website_sale
 msgid "ECpay E-invoice bridge module for Ecommerce"
-msgstr ""
+msgstr "ECpay sähköisen laskutuksen siltamoduuli Verkkokaupalle"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_accounting_localizations_edi
@@ -26595,6 +26640,9 @@ msgid ""
 "(e-Remitos) for Uruguay. This module integrates with the EDI system to "
 "generate e-Remitos according to Uruguayan fiscal requirements."
 msgstr ""
+"Parantaa varaston keräilytoimintoja Uruguayn vaatimusten mukaisilla "
+"sähköisillä toimitusohjeilla (e-Remitos). Tämä moduuli integroituu EDI-"
+"järjestelmään e-Remitoksen luomiseksi Uruguayn verovaatimusten mukaisesti."
 
 #. module: base
 #: model:ir.module.module,summary:base.module_crm_iap_enrich
@@ -27627,7 +27675,7 @@ msgstr "Vienti tehty"
 #: model:ir.module.module,description:base.module_l10n_pl_edi
 msgid ""
 "Export FA(3) compliant XML invoices and prepare for integration with KSeF."
-msgstr ""
+msgstr "Vie FA(3)-yhteensopivia XML-laskuja ja valmistaudu KSeF-integraatioon."
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_exports__export_fields
@@ -28485,12 +28533,12 @@ msgstr "Kuljetuskalusto"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_fleet
 msgid "Fleet History"
-msgstr "Laivueen historia"
+msgstr "Kuljetuskaluston historia"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_documents_fleet
 msgid "Fleet from documents"
-msgstr "Laivue dokumenteilta"
+msgstr "Kuljetuskalusto asiakirjoista"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_florist
@@ -28505,7 +28553,7 @@ msgstr "Floristi, Puutarha, Kukat, Luonto, Vihreä, Kauneus, Myymälät"
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_address_4
 msgid "Floyd Steward is a mighty analyst at Acme Corporation."
-msgstr ""
+msgstr "Floyd Steward on Acme Corporationin analyytikko."
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_address_4
@@ -31342,7 +31390,7 @@ msgstr "Integrointi"
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_payroll_fleet
 msgid "Integration between Payroll and Fleet."
-msgstr "Palkanlaskennan ja kulkuneuvojen integrointi."
+msgstr "Palkanlaskennan ja Kuljetuskaluston välinen integraatio."
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_it_pos
@@ -33181,7 +33229,7 @@ msgstr "Lokalisointi"
 #. module: base
 #: model:ir.module.category,name:base.module_category_website_sale_localizations
 msgid "Localizations"
-msgstr "Lokalisointi"
+msgstr "Lokalisaatiot"
 
 #. module: base
 #: model:ir.module.module,description:base.module_theme_loftspace
@@ -33764,12 +33812,12 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_account_accountant_fleet
 msgid "Manage accounting with fleet features"
-msgstr "Hallitse kirjanpitoa ajoneuvojen ominaisuuksien mukaan"
+msgstr "Hallitse kirjanpitoa kuljetuskaluston ominaisuuksilla"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account_fleet
 msgid "Manage accounting with fleets"
-msgstr "Hallitse kirjanpitoa ja kulkuneuvoja"
+msgstr "Hallitse kirjanpitoa kuljetuskalustoilla"
 
 #. module: base
 #: model_terms:ir.actions.act_window,help:base.grant_menu_access
@@ -33794,7 +33842,7 @@ msgstr "Alusta verkko-oppimisen hallintaan ja julkaisuihin"
 #. module: base
 #: model:ir.module.module,summary:base.module_account_asset_fleet
 msgid "Manage assets with fleets"
-msgstr "Hallitse omaisuuseriä ja kulkuneuvoja"
+msgstr "Hallitse omaisuuseriä kuljetuskalustoilla"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_certificate
@@ -33948,7 +33996,7 @@ msgstr "Hallitse työntekijöidesi aikataulua"
 #. module: base
 #: model:ir.module.module,summary:base.module_fleet
 msgid "Manage your fleet and track car costs"
-msgstr "Hallitse kulkuneuvojasi ja seuraa autojen kustannuksia"
+msgstr "Hallinnoi kuljetuskalustoasi ja seuraa autojen kustannuksia"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_mail_group
@@ -34188,7 +34236,7 @@ msgstr "Mauritania - Kirjanpito"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_mr_reports
 msgid "Mauritania - Accounting Reports"
-msgstr ""
+msgstr "Mauritania - Kirjanpitoraportit"
 
 #. module: base
 #: model:res.country,name:base.mu
@@ -34284,7 +34332,7 @@ msgstr "Yhdistä kumppanin rivi"
 #. module: base
 #: model:ir.model,name:base.model_base_partner_merge_automatic_wizard
 msgid "Merge Partner Wizard"
-msgstr "Kumppanin yhdistämistyökalu"
+msgstr "Ohjattu kumppaneiden yhdistämistoiminto"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.base_partner_merge_automatic_wizard_form
@@ -34610,7 +34658,7 @@ msgstr "Neiti"
 #. odoo-python
 #: code:addons/template_inheritance.py:0
 msgid "Missing 'expr' attribute in xpath specification"
-msgstr ""
+msgstr "'expr'-attribuutti puuttuu xpath-määrittelystä"
 
 #. module: base
 #. odoo-python
@@ -35545,6 +35593,8 @@ msgstr "Mikään ryhmä ei tällä hetkellä salli tätä toimintoa."
 #: code:addons/fields.py:0
 msgid "No inverse field \"%(inverse_field)s\" found for \"%(comodel)s\""
 msgstr ""
+"Käänteistä kenttää \"%(inverse_field)s\" ei löytynyt kohteelle \"%(comodel)"
+"s\""
 
 #. module: base
 #. odoo-python
@@ -39924,7 +39974,7 @@ msgstr "Palkanlaskenta - Läsnäolo"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_payroll_fleet
 msgid "Payroll - Fleet"
-msgstr "Palkanlaskenta - Ajoneuvot"
+msgstr "Palkanlaskenta - Kuljetuskalusto"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_payroll_planning
@@ -39993,7 +40043,7 @@ msgstr "Peru - Kirjanpitoraportit"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_pe_reports_lib
 msgid "Peru - Inventory and Balance Reports"
-msgstr ""
+msgstr "Peru - Varastointi- ja taseraportit"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_pe_reports_stock
@@ -40333,7 +40383,7 @@ msgstr "Puola - Palkanlaskenta ja kirjanpito"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_pl_reports_account_saft
 msgid "Poland - SAFT Income Tax Report (JPK KR PD)"
-msgstr ""
+msgstr "Puola - SAFT-tuloveroraportti (JPK KR PD)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_pl_taxable_supply_date
@@ -42263,7 +42313,7 @@ msgstr "Romania - Kirjanpitoraportit"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ro_cpv_code
 msgid "Romania - CPV Code"
-msgstr ""
+msgstr "Romania - CPV-koodi"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ro_edi_stock
@@ -43102,7 +43152,7 @@ msgstr "Aikataulutetut toiminnot"
 #: model:ir.actions.act_window,name:base.ir_cron_trigger_action
 #: model:ir.ui.menu,name:base.ir_cron_trigger_menu
 msgid "Scheduled Actions Triggers"
-msgstr "Aikataulutetut toiminnot laukaisijat"
+msgstr "Aikataulutettujen toimintojen laukaisijat"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_cron__user_id
@@ -44015,8 +44065,8 @@ msgid ""
 "`company_id` or `company_ids` field!"
 msgstr ""
 "Yritystarkastuksen ohittaminen mallin %(model_name)s osalta. Sen kentät %"
-"(field_names)s on asetettu yritysriippuvaisiksi, mutta mallissa ei ole "
-"`company_id`- tai `company_ids`-kenttää!"
+"(field_names)s on määritetty yrityksestä riippuvaisiksi, mutta mallissa ei "
+"ole `company_id` tai `company_ids`kenttää!"
 
 #. module: base
 #. odoo-python
@@ -44115,7 +44165,7 @@ msgstr "Some LinkedIn"
 #: model:ir.module.category,name:base.module_category_marketing_social_marketing
 #: model:ir.module.module,shortdesc:base.module_social
 msgid "Social Marketing"
-msgstr "Some-markkinointi"
+msgstr "Somemarkkinointi"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_social_media
@@ -44947,7 +44997,7 @@ msgstr "Toimitusketju"
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_pl_edi
 msgid "Support for FA(3) electronic invoices in Poland via KSeF"
-msgstr ""
+msgstr "Tuki sähköisille FA(3) laskuille Puolassa KSeF:n kautta"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_event_track_live
@@ -45034,7 +45084,7 @@ msgstr "Swissdec-sertifioitu palkanlaskenta (ELM 5.0)"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_ch_hr_payroll_elm_transmission_5_3
 msgid "Swissdec Certified Payroll ELM 5.3"
-msgstr ""
+msgstr "Swissdec-sertifioitu palkanlaskenta ELM 5.3"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.language_install_view_form_lang_switch
@@ -45203,7 +45253,7 @@ msgstr "Taiwan - Sähköinen laskutus"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_tw_edi_ecpay_website_sale
 msgid "Taiwan - E-invoicing Ecommerce"
-msgstr ""
+msgstr "Taiwan - Sähköinen laskutus Verkkokauppa"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__res_company__font__tajawal
@@ -46028,7 +46078,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/models.py:0
 msgid "The following languages are not activated: %(missing_names)s"
-msgstr "Seuraavia kieliä ei aktivoida: %(missing_names)s"
+msgstr "Seuraavat kielet ei ole aktivoitu: %(missing_names)s"
 
 #. module: base
 #. odoo-python
@@ -46868,6 +46918,10 @@ msgid ""
 "UBL/CII eInvoices (but not only). The module is intended be merged with "
 "account, later on, in master"
 msgstr ""
+"Tämä moduuli lisää kumppaniin globaalin sijaintinumeron. Sitä käytetään "
+"toimitusosoitteissa sekä varastosijaintien tunnistamiseen ja se on "
+"pakollinen UBL/CII-sähköisissä laskuissa (mutta ei ainoastaan niissä). "
+"Moduuli on tarkoitettu yhdistettäväksi myöhemmin tilitietoihin pääkirjassa"
 
 #. module: base
 #: model:ir.module.module,description:base.module_mail_bot_hr
@@ -47744,15 +47798,14 @@ msgstr "Käännökset"
 msgid ""
 "Translations for model translated fields only accept falsy values and str"
 msgstr ""
-"Malliin käännettyjen kenttien käännökset hyväksyvät vain virheelliset arvot "
-"ja merkkijonot"
+"Mallin käännettyjen kenttien käännökset hyväksyvät vain falsy- ja str-arvot"
 
 #. module: base
 #: model:ir.module.module,description:base.module_stock_fleet
 msgid "Transport Management: organize packs in your fleet, or carriers."
 msgstr ""
-"Kuljetusten hallinta: organisoi kuljetustesi tai kuljetusliikkeiden "
-"pakkaukset."
+"Kuljetusten hallinta: järjestä kuljetuskaluston tai kuljetusliikkeiden "
+"paketit."
 
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_H
@@ -47779,7 +47832,7 @@ msgstr ""
 #. module: base
 #: model:ir.model,name:base.model_ir_cron_trigger
 msgid "Triggered actions"
-msgstr "Liipaisintoimenpiteet"
+msgstr "Laukaistut toiminnot"
 
 #. module: base
 #: model:res.country,name:base.tt
@@ -47947,7 +48000,7 @@ msgstr "Turkki - Nilvera E-laskujen toimittaminen"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_tr_nilvera_einvoice_extended
 msgid "Türkiye - Nilvera E-Invoice Extended"
-msgstr ""
+msgstr "Turkki - Laajennettu Nilvera sähköinen laskutus"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_tr_hr_payroll
@@ -48032,7 +48085,7 @@ msgstr "URL-koodi"
 #. odoo-python
 #: code:addons/base/models/ir_attachment.py:0
 msgid "URL attachment (%s) shouldn't be migrated to local."
-msgstr ""
+msgstr "URL-liitettä (%s) ei pitäisi siirtää paikalliseen."
 
 #. module: base
 #: model:ir.model.fields,help:base.field_ir_actions_server__webhook_url
@@ -48133,8 +48186,7 @@ msgstr "Ukraina - Kirjanpito"
 msgid ""
 "Unable to delete %(record)s because it is used as the default value of %"
 "(field)s"
-msgstr ""
-"Ei voida poistaa %(record)s, koska sitä käytetään %(field)s oletusarvona"
+msgstr "%(record)s ei voi poistaa, koska sitä käytetään %(field)s oletusarvona"
 
 #. module: base
 #. odoo-python
@@ -48541,7 +48593,7 @@ msgstr "Uruguay - Kirjanpito"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_uy_edi_stock
 msgid "Uruguay - E-Remitos"
-msgstr ""
+msgstr "Uruguay - E-Remitos"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_uy_edi

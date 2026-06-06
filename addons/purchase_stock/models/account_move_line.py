@@ -50,7 +50,7 @@ class AccountMoveLine(models.Model):
             new_svl_vals_list, new_aml_vals_list = line._generate_price_difference_vals(layers)
             svl_vals_list += new_svl_vals_list
             aml_vals_list += new_aml_vals_list
-        return self.env['stock.valuation.layer'].sudo().create(svl_vals_list), self.env['account.move.line'].sudo().create(aml_vals_list)
+        return self.env['stock.valuation.layer'].sudo().create(svl_vals_list), self.env['account.move.line'].sudo().with_context(skip_invoice_sync=True).create(aml_vals_list)
 
     def _generate_price_difference_vals(self, layers):
         """
@@ -301,6 +301,7 @@ class AccountMoveLine(models.Model):
                 'account_id': account.id,
                 'analytic_distribution': self.analytic_distribution,
                 'display_type': 'cogs',
+                'tax_ids': [],
             })
         return vals_list
 
@@ -365,3 +366,10 @@ class AccountMoveLine(models.Model):
             relevant_qty = self._get_out_and_not_invoiced_qty(valuation_stock_moves)
 
         return price_unit_val_dif, relevant_qty
+
+    def _related_analytic_distribution(self):
+        # EXTENDS 'account'
+        vals = super()._related_analytic_distribution()
+        if not self.purchase_line_id and not self.analytic_distribution and self.move_id.stock_move_id.purchase_line_id:
+            vals |= self.move_id.stock_move_id.purchase_line_id.analytic_distribution or {}
+        return vals

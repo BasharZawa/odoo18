@@ -260,7 +260,7 @@ class AccountFiscalPosition(models.Model):
             vat_exclusion = company.vat[:2] == partner.vat[:2]
 
         # If company and partner have the same vat prefix (and are both within the EU), use invoicing
-        if not delivery or (intra_eu and vat_exclusion):
+        if not delivery or (intra_eu and vat_exclusion and partner.country_id == company.country_id):
             delivery = partner
 
         # partner manually set fiscal position always win
@@ -972,6 +972,18 @@ class ResPartner(models.Model):
         }
 
     @api.model
+    def _import_retrieve_customer_from_bank_account_number(self, customer_values):
+        account_numbers = customer_values.get('account_numbers')
+        if not account_numbers:
+            return
+
+        return {
+            'criteria': [{
+                'domain': [('bank_ids.acc_number', 'in', account_numbers)],
+            }]
+        }
+
+    @api.model
     def _import_retrieve_customer_from_phone(self, customer_values):
         phone = customer_values.get('phone')
         if not phone:
@@ -1003,7 +1015,7 @@ class ResPartner(models.Model):
 
         return {
             'criteria': [{
-                'domain': [('name', 'ilike', name)],
+                'domain': [('name', '=ilike', name)],
             }],
         }
 
@@ -1042,7 +1054,7 @@ class ResPartner(models.Model):
                         full_domain = expression.AND([static_domain, domain])
                         partner = self.search(
                             full_domain,
-                            order='company_id, parent_id DESC, id DESC',
+                            order='is_company DESC, supplier_rank DESC, company_id, parent_id DESC, id DESC',
                             limit=1,
                         )
                     elif search_method:

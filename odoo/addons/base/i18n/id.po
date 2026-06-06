@@ -7,12 +7,13 @@
 # Wil Odoo, 2025
 # Abe Manyo, 2025
 # Weblate <noreply-mt-weblate@weblate.org>, 2026.
+# "Nurul Aini Akrima Sabila (nuaas)" <nuaas@odoo.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-16 16:38+0000\n"
-"PO-Revision-Date: 2026-02-25 12:25+0000\n"
+"PO-Revision-Date: 2026-05-16 09:02+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Indonesian <https://translate.odoo.com/projects/odoo-18/base/"
 "id/>\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.17\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_at_reports
@@ -7501,7 +7502,7 @@ msgstr ""
 "Modul ini memungkinkan line-level addresses saat mengambil pajak dari "
 "avatax.\n"
 "\n"
-"Batasan saat ini adalah single order line dengan lebih dari satu pergerakkan "
+"Batasan saat ini adalah single order line dengan lebih dari satu pergerakan "
 "stok (misal 10 unit \n"
 "produk A, 2 dikirim dari gudang #1 dan 8 dari gudang #2). Pada kasus ini "
 "sale order harus dipisah\n"
@@ -8361,6 +8362,11 @@ msgid ""
 "-Profit and Loss\n"
 "-Balance Sheet\n"
 msgstr ""
+"\n"
+"Laporan akuntansi Mauritania.\n"
+"====================================================\n"
+"- Laporan Laba Rugi\n"
+"- Neraca Keuangan\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_mr
@@ -8369,6 +8375,8 @@ msgid ""
 "Mauritania basic package that contains the chart of accounts, the taxes, tax "
 "reports, etc.\n"
 msgstr ""
+"\n"
+"Paket dasar Mauritania yang berisi bagan akun, pajak, laporan pajak, dll.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_mx_hr_payroll
@@ -8679,7 +8687,7 @@ msgstr ""
 "\n"
 "File SAF-T adalah laporan akuntansi standar yang bisnis di beberapa negara "
 "harus serahkan ke otoritas pajak.\n"
-"Modul ini memungkinkan impor akun, jurnal, partner, pajak dan pergerakkan "
+"Modul ini memungkinkan impor akun, jurnal, partner, pajak dan pergerakan "
 "dari file-file ini.\n"
 
 #. module: base
@@ -12801,7 +12809,7 @@ msgstr ""
 "\n"
 "Modul ini memungkinkan Anda untuk dengan mudah menambahkan biaya tambahan "
 "pada manufacturing order \n"
-"dan menentukan pemisahan biaya ini di antara pergerakkan stok untuk\n"
+"dan menentukan pemisahan biaya ini di antara pergerakan stok untuk\n"
 "mempertimbangkan mereka di valuasi stok Anda.\n"
 
 #. module: base
@@ -14854,7 +14862,7 @@ msgid ""
 "======================================\n"
 msgstr ""
 "\n"
-"Validasikan pergerakkan stok untuk Layanan Lapangan\n"
+"Validasikan pergerakan stok untuk Layanan Lapangan\n"
 "======================================\n"
 
 #. module: base
@@ -15077,6 +15085,8 @@ msgid ""
 "\n"
 "e-invoicing for Croatia\n"
 msgstr ""
+"\n"
+"e-faktur untuk Kroasia\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_rs_edi
@@ -17051,6 +17061,10 @@ msgid ""
 "productive,\n"
 "                responsive and profitable."
 msgstr ""
+"Acme Corporation merancang, mengembangkan, mengintegrasikan, dan mendukung "
+"HR serta proses-proses Supply\n"
+"                Chain agar memastikan pelanggan kami lebih produktif,\n"
+"                responsif, dan untung."
 
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_2
@@ -17060,6 +17074,9 @@ msgid ""
 "Chain processes in order to make our customers more productive, responsive "
 "and profitable."
 msgstr ""
+"Acme Corporation merancang, mengembangkan, mengintegrasikan, dan mendukung "
+"HR serta proses-proses Supply Chain agar memastikan pelanggan kami lebih "
+"produktif, responsif, dan untung."
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_2
@@ -17069,6 +17086,11 @@ msgid ""
 "                with Open Sources software to manage their businesses. Our\n"
 "                consultants are experts in the following areas:"
 msgstr ""
+"Acme Corporation mengintegrasikan ERP untuk Perusahaan-Perusahaan Global dan "
+"mendukung PME\n"
+"               dengan software Open Source untuk mengelola bisnis mereka. "
+"Konsultan\n"
+"                kami adalah pakar ahli di bidang-bidang berikut:"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__act_window_id
@@ -17484,6 +17506,7 @@ msgstr "Menambahkan"
 #: model:res.partner,website_short_description:base.res_partner_address_31
 msgid "Addison Olson is a mighty sales representative at Acme Corporation."
 msgstr ""
+"Addison Olson adalah sales representative yang andal di Acme Corporation."
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_address_31
@@ -20728,7 +20751,7 @@ msgstr "Avatax Brazil"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_edi_fiscal_reform
 msgid "Avatax Brazil Fiscal Reform"
-msgstr ""
+msgstr "Reformasi Pajak Avatax Brasil"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_avatax_sale
@@ -20738,12 +20761,12 @@ msgstr "Avatax Brazil Sale"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_edi_sale_fiscal_reform
 msgid "Avatax Brazil Sale Fiscal Reform"
-msgstr ""
+msgstr "Reformasi Fiskal Sale Avatax Brasil"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_br_website_sale_fiscal_reform
 msgid "Avatax Brazil eCommerce Fiscal Reform"
-msgstr ""
+msgstr "Reformasi Fiskal eCommerce Avatax Brasil"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_avatax_stock
@@ -23704,6 +23727,9 @@ msgid ""
 "have a 'company_id' or 'company_ids' field, and isn't company-dependent "
 "either."
 msgstr ""
+"Tidak dapat menghasilkan domain yang bergantung pada perusahaan untuk field "
+"%s. Model tersebut tidak memiliki field 'company_id' atau 'company_ids', dan "
+"juga tidak bergantung pada perusahaan."
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model__count
@@ -24230,7 +24256,7 @@ msgstr "Croatia - Accounting Reports"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_hr_edi
 msgid "Croatia - e-invoicing"
-msgstr ""
+msgstr "Kroasia - e-faktur"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_cron_progress__cron_id
@@ -25758,6 +25784,7 @@ msgstr "Dong"
 #: model:res.partner,website_short_description:base.res_partner_address_3
 msgid "Douglas Fletcher is a mighty functional consultant at Acme Corporation"
 msgstr ""
+"Douglas Fletcher adalah functional consultant yang andal di Acme Corporation"
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_address_3
@@ -27411,6 +27438,7 @@ msgstr "Ekspor Selesai"
 msgid ""
 "Export FA(3) compliant XML invoices and prepare for integration with KSeF."
 msgstr ""
+"Ekspor faktur XML yang mematuhi FA(3) dan siapkan integrasi dengan KSeF."
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_exports__export_fields
@@ -28283,7 +28311,7 @@ msgstr "Florist, Gardens, Flowers, Nature, Green, Beauty, Stores"
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_address_4
 msgid "Floyd Steward is a mighty analyst at Acme Corporation."
-msgstr ""
+msgstr "Floyd Steward adalah analis andal di Acme Corporation."
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_address_4
@@ -31475,7 +31503,7 @@ msgstr "Xmlid %(xmlid)s tidak valid untuk tombol dari type action."
 #: model:ir.module.module,shortdesc:base.module_stock
 #: model_terms:ir.ui.view,arch_db:base.user_groups_view
 msgid "Inventory"
-msgstr "Stok Persediaan"
+msgstr "Inventaris"
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_2
@@ -31486,7 +31514,7 @@ msgstr "Manajemen Inventaris dan Gudang"
 #. module: base
 #: model:ir.module.module,summary:base.module_stock_account
 msgid "Inventory, Logistic, Valuation, Accounting"
-msgstr "Stok Persediaan. Logistik, Pemeriksaan, Akuntansi"
+msgstr "Inventaris. Logistik, Pemeriksaan, Akuntansi"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_currency_rate__inverse_company_rate
@@ -33950,12 +33978,12 @@ msgstr "Mauritania"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_mr
 msgid "Mauritania - Accounting"
-msgstr ""
+msgstr "Mauritania - Akuntansi"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_mr_reports
 msgid "Mauritania - Accounting Reports"
-msgstr ""
+msgstr "Mauritania - Laporan Akuntansi"
 
 #. module: base
 #: model:res.country,name:base.mu
@@ -34369,7 +34397,7 @@ msgstr "Ibu"
 #. odoo-python
 #: code:addons/template_inheritance.py:0
 msgid "Missing 'expr' attribute in xpath specification"
-msgstr ""
+msgstr "Atribut 'expr' masih kosong di spesifikasi xpath"
 
 #. module: base
 #. odoo-python
@@ -35304,6 +35332,7 @@ msgstr "Tidak ada kelompok yang saat ini mengizinkan operasi ini."
 #: code:addons/fields.py:0
 msgid "No inverse field \"%(inverse_field)s\" found for \"%(comodel)s\""
 msgstr ""
+"Inverse field \"%(inverse_field)s\" tidak ditemukan untuk \"%(comodel)s\""
 
 #. module: base
 #. odoo-python
@@ -40084,7 +40113,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_pl_edi
 msgid "Polish E-Invoicing FA(3)"
-msgstr ""
+msgstr "E-Faktur Polandia FA(3)"
 
 #. module: base
 #: model:res.groups,name:base.group_portal
@@ -43150,7 +43179,7 @@ msgstr "Kirim pesan teks sebagai pengingat acara"
 #: model:ir.module.module,description:base.module_stock_sms
 #: model:ir.module.module,summary:base.module_stock_sms
 msgid "Send text messages when final stock move"
-msgstr "Kirim pesan teks saat pergerakkan stok final"
+msgstr "Kirim pesan teks saat pergerakan stok final"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_industry_fsm_sms
@@ -43167,7 +43196,7 @@ msgstr "Kirim pesan teks saat project/task pindah tahap"
 #: model:ir.module.module,description:base.module_helpdesk_sms
 #: model:ir.module.module,summary:base.module_helpdesk_sms
 msgid "Send text messages when ticket stage move"
-msgstr "Kirim pesan teks saat pergerakkan tahap tiket"
+msgstr "Kirim pesan teks saat pergerakan tahap tiket"
 
 #. module: base
 #: model:ir.module.module,description:base.module_delivery_easypost
@@ -44676,7 +44705,7 @@ msgstr "Supply Chain"
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_pl_edi
 msgid "Support for FA(3) electronic invoices in Poland via KSeF"
-msgstr ""
+msgstr "Dukungan untuk faktur elektronik FA(3) di Polandia via KSeF"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_event_track_live
@@ -48690,7 +48719,7 @@ msgid ""
 "Validate stock moves for product added on sales orders through Field Service "
 "Management App"
 msgstr ""
-"Validasikan pergerakkan stok untuk produk yang ditambahkan pada sale order "
+"Validasikan pergerakan stok untuk produk yang ditambahkan pada sale order "
 "melalui App Manajemen Layanan Lapangan"
 
 #. module: base

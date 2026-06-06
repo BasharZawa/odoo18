@@ -848,17 +848,23 @@ class StockMoveLine(models.Model):
         move_line_to_unlink.unlink()
         move_to_reassign._action_assign()
 
+    def _get_aggregated_description(self, move):
+        return move.description_picking or ""
+
+    def _get_aggregated_line_key(self, move, product, uom, description):
+        return f'{product.id}_{product.display_name}_{description or ""}_{uom.id}_{move.product_packaging_id or ""}'
+
     def _get_aggregated_properties(self, move_line=False, move=False):
         move = move or move_line.move_id
         uom = move.product_uom or move_line.product_uom_id
         name = move.product_id.display_name
-        description = move.description_picking or ""
+        description = self._get_aggregated_description(move)
         product = move.product_id
         if description.startswith(name):
             description = description.removeprefix(name).strip()
         elif description.startswith(product.name):
             description = description.removeprefix(product.name).strip()
-        line_key = f'{product.id}_{product.display_name}_{description or ""}_{uom.id}_{move.product_packaging_id or ""}'
+        line_key = self._get_aggregated_line_key(move, product, uom, description)
         return {
             'line_key': line_key,
             'name': name,
@@ -1009,7 +1015,7 @@ class StockMoveLine(models.Model):
     def action_put_in_pack(self):
         if len(self.picking_id) > 1:
             raise UserError(_("You cannot directly pack quantities from different transfers into the same package through this view. Try adding them to a batch picking and pack it there."))
-        return self.picking_id.action_put_in_pack(move_lines_to_pack=self)
+        return self.with_context(selected_smls_to_pack=self.ids).picking_id.action_put_in_pack(move_lines_to_pack=self)
 
     def _get_revert_inventory_move_values(self):
         self.ensure_one()

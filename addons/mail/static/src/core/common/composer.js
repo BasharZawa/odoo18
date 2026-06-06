@@ -62,6 +62,7 @@ export class Composer extends Component {
         NavigableList,
     };
     static defaultProps = {
+        autofocus: 0,
         mode: "normal",
         className: "",
         sidebar: true,
@@ -591,6 +592,7 @@ export class Composer extends Component {
             default_subtype_xmlid: this.props.type === "note" ? "mail.mt_note" : "mail.mt_comment",
             mail_post_autofollow: this.thread.hasWriteAccess,
             body_contains_signature_only: !body || body.trim().length === 0,
+            is_thread_composer: true,
         };
         const action = {
             name: this.props.type === "note" ? _t("Log note") : _t("Compose Email"),
@@ -765,9 +767,10 @@ export class Composer extends Component {
                 MessageConfirmDialog,
                 {
                     message: composer.message,
-                    onConfirm: this.message.remove({
-                        removeFromThread: this.shouldHideFromMessageListOnDelete,
-                    }),
+                    onConfirm: () =>
+                        this.message.remove({
+                            removeFromThread: this.shouldHideFromMessageListOnDelete,
+                        }),
                     prompt: _t("Are you sure you want to delete this message?"),
                 },
                 { context: this }
