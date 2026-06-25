@@ -1263,7 +1263,9 @@ class PosOrder(models.Model):
                 PosOrderLineLot = self.env['pos.pack.operation.lot']
                 for pack_lot in line.pack_lot_ids:
                     PosOrderLineLot += pack_lot.copy()
-                line.copy(line._prepare_refund_data(refund_order, PosOrderLineLot))
+                line_copy = line.copy(line._prepare_refund_data(refund_order, PosOrderLineLot))
+                line_copy._onchange_amount_line_all()
+            refund_order._onchange_amount_all()
             refund_orders |= refund_order
         refund_orders._compute_prices()
         return refund_orders
@@ -1487,6 +1489,7 @@ class PosOrderLine(models.Model):
             'pack_lot_ids': PosOrderLineLot,
             'is_total_cost_computed': False,
             'refunded_orderline_id': self.id,
+            'uuid': str(uuid4()),
         }
 
     @api.model_create_multi

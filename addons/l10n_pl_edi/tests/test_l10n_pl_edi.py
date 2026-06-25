@@ -193,6 +193,33 @@ class TestL10nPlEdi(AccountTestInvoicingCommon, CronMixinCase):
         self._assert_export_invoice(credit_note, 'standerd_fa3_credit_note.xml')
 
     @freeze_time('2026-01-23')
+    def test_ksef_fa3_reverse_charge(self):
+        invoice = self._create_invoice(
+                invoice_date=fields.Date.today(),
+                partner_id=self.partner_pl,
+                invoice_line_ids=[
+                    Command.create({
+                        'product_id': self.product.id,
+                        'price_unit': 1000.0,
+                        'tax_ids': [Command.set(self.env['account.chart.template'].ref('vs_dostu').ids)],
+                    }),
+                    Command.create({
+                        'product_id': self.product.id,
+                        'price_unit': 1000.0,
+                        'tax_ids': [Command.set(self.env['account.chart.template'].ref('vs_kraj_8').ids)],
+                    }),
+                ],
+                post=True,
+        )
+
+        self._assert_export_invoice(invoice, 'standard_fa3_format_invoice_reverse_charge.xml')
+
+        credit_note = invoice._reverse_moves()
+        credit_note.action_post()
+
+        self._assert_export_invoice(credit_note, 'standard_fa3_format_credit_note_reverse_charge.xml')
+
+    @freeze_time('2026-01-23')
     def test_payment_logic_partial_mixed_methods(self):
         """
         Test the <Platnosc> block for a Partially Paid invoice with mixed methods.
@@ -444,6 +471,34 @@ class TestL10nPlEdi(AccountTestInvoicingCommon, CronMixinCase):
         })
         invoice.action_post()
         self._assert_export_invoice(invoice, 'fa3_invoice_foreign_currency.xml')
+
+    @freeze_time('2026-01-23')
+    def test_prefiks_podatnika_for_eu_transactions(self):
+        """
+        Verification that PrefiksPodatnika ('PL') is included in Podmiot1 for invoices
+        documenting intra-Community supply of goods (K_21), EU B2B services (K_12),
+        or simplified triangular transactions (Triangular Sale), as required by
+        Art. 97 sec. 10 items 2-3 and Art. 136 sec. 1 item 3 of the Polish VAT Act.
+        """
+        invoices = self.env['account.move'].create([
+            {
+                'move_type': 'out_invoice',
+                'partner_id': self.partner_pl.id,
+                'invoice_date': fields.Date.today(),
+                'invoice_line_ids': [Command.create({
+                    'product_id': self.product_a.id,
+                    'price_unit': 100.0,
+                    'tax_ids': self.env['account.chart.template'].ref(tax_ref).ids,
+                })],
+            } for tax_ref in ['vs_unia', 'vs_dostu', 'vs_unia_triangular']
+        ])
+        invoices.action_post()
+        for invoice in invoices:
+            xml = invoice._l10n_pl_edi_render_xml()
+            self.assertEqual(
+                self._get_xml_value(xml, "//ns:Podmiot1/ns:PrefiksPodatnika"),
+                'PL',
+            )
 
     @freeze_time('2026-01-23')
     def test_scenario_correction_values_are_negative(self):
@@ -704,6 +759,22 @@ class TestL10nPlEdi(AccountTestInvoicingCommon, CronMixinCase):
                 'price_unit': 5.0,
                 'price_total': 21.0,
                 'tax_ids': self.env['account.chart.template'].ref('vz_kraj_5').ids,
+            },
+        ])
+
+    def test_import_invoice_with_zero_value_line_missing_unit_prices(self):
+        self._assert_import_invoice('invoice_with_zero_value_line_missing_unit_prices.xml', [
+            {
+                'name': '[FURN_0006] Podstawka pod monitor',
+                'price_unit': 3.19,
+                'price_total': 3.92,
+                'tax_ids': self.env['account.chart.template'].ref('vz_kraj_23').ids,
+            },
+            {
+                'name': '[ZERO] Transport',
+                'price_unit': 0.0,
+                'price_total': 0.0,
+                'tax_ids': self.env['account.chart.template'].ref('vz_kraj_zw').ids,
             },
         ])
 
