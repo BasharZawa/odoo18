@@ -2964,7 +2964,7 @@ class AccountEdiUBL(models.AbstractModel):
         line_extension_amount = line_extension_amount_str and float(line_extension_amount_str) * file_document_sign
         price_amount = price_amount_str and float(price_amount_str)
         invoiced_quantity = invoiced_quantity_str and float(invoiced_quantity_str) * file_document_sign
-        base_quantity = base_quantity_str and float(base_quantity_str) * file_document_sign
+        base_quantity = base_quantity_str and float(base_quantity_str)
 
         total_allowances = sum(allowance['amount'] for allowance in collected_values['allowances'])
         total_charges = sum(charge['amount'] for charge in collected_values['charges'])
@@ -3018,7 +3018,10 @@ class AccountEdiUBL(models.AbstractModel):
             # discount_amount = 250.0
             if not currency.is_zero(price_subtotal):
                 quantity = subtotal * price_quantity / (price_subtotal - price_discount_amount)
-                price_unit = (subtotal / quantity) + (price_discount_amount / price_quantity)
+                if quantity:
+                    price_unit = (subtotal / quantity) + (price_discount_amount / price_quantity)
+                else:
+                    price_unit = price_amount
                 discount_amount += price_discount_amount * quantity / price_quantity
 
         elif (
@@ -3418,10 +3421,15 @@ class AccountEdiUBL(models.AbstractModel):
 
     def _import_ubl_retrieve_products_search_plan(self, collected_values):
         ProductProduct = self.env['product.product']
+        company = collected_values['company']
+        predict_by_name = (
+            not self.module_installed('account_accountant')
+            or company.predict_bill_product
+        )
         return [
             ProductProduct._import_retrieve_product_from_barcode,
             ProductProduct._import_retrieve_product_from_default_code,
-            ProductProduct._import_retrieve_product_from_name,
+            *([ProductProduct._import_retrieve_product_from_name] if predict_by_name else []),
             ProductProduct._import_retrieve_product_from_invoice_predictive,
         ]
 

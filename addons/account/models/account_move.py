@@ -964,12 +964,15 @@ class AccountMove(models.Model):
         unposted = self.filtered(lambda move: move.sequence_number != 0 and move.state != 'posted')
         unposted.made_sequence_gap = True
         for (journal, prefix), moves in (self - unposted).grouped(lambda m: (m.journal_id, m.sequence_prefix)).items():
-            previous_numbers = set(self.env['account.move'].sudo().search([
-                ('journal_id', '=', journal.id),
-                ('sequence_prefix', '=', prefix),
-                ('sequence_number', '>=', min(moves.mapped('sequence_number')) - 1),
-                ('sequence_number', '<=', max(moves.mapped('sequence_number')) - 1),
-            ]).mapped('sequence_number'))
+            expected_previous_numbers = [n - 1 for n in moves.mapped('sequence_number') if n > 1]
+            previous_numbers = set(self.env['account.move'].sudo().search_fetch(
+                domain=[
+                    ('journal_id', '=', journal.id),
+                    ('sequence_prefix', '=', prefix),
+                    ('sequence_number', 'in', expected_previous_numbers),
+                ],
+                field_names=['sequence_number'],
+            ).mapped('sequence_number'))
             for move in moves:
                 move.made_sequence_gap = move.sequence_number > 1 and (move.sequence_number - 1) not in previous_numbers
 
@@ -1352,7 +1355,7 @@ class AccountMove(models.Model):
                         untaxed_amount = invoice.amount_untaxed_signed
                     invoice_payment_terms = invoice.invoice_payment_term_id._compute_terms(
                         date_ref=invoice.invoice_date or invoice.date or fields.Date.context_today(invoice),
-                        currency=invoice.currency_id,
+                        currency=invoice.currency_id or invoice.journal_id.currency_id or invoice.company_currency_id,
                         tax_amount_currency=tax_amount_currency,
                         tax_amount=tax_amount,
                         untaxed_amount_currency=untaxed_amount_currency,
@@ -3384,6 +3387,8 @@ class AccountMove(models.Model):
     def _get_protected_vals(self, vals, records):
         protected = set()
         for fname in vals:
+            if fname == 'tax_totals':
+                continue  # Skip protecting tax_totals since it is updated explicitly after create/write
             field = records._fields[fname]
             if field.inverse or (field.compute and not field.readonly):
                 protected.update(self.pool.field_computed.get(field, [field]))
@@ -6088,7 +6093,7 @@ class AccountMove(models.Model):
                 line[2]['partner_id'] = self.env['res.partner'].browse(line[2]['partner_id']).sudo().display_name
             line[2]['account_id'] = self.env['account.account'].browse(line[2]['account_id']).display_name or _('Destination Account')
             line[2]['debit'] = currency_id and formatLang(self.env, line[2]['debit'], currency_obj=currency_id) or line[2]['debit']
-            line[2]['credit'] = currency_id and formatLang(self.env, line[2]['credit'], currency_obj=currency_id) or line[2]['debit']
+            line[2]['credit'] = currency_id and formatLang(self.env, line[2]['credit'], currency_obj=currency_id) or line[2]['credit']
         return preview_vals
 
     def _generate_qr_code(self, silent_errors=False):
@@ -6231,6 +6236,14 @@ class AccountMove(models.Model):
         if not report_id.print_report_name:
             return False
         file_name = safe_eval(report_id.print_report_name, {'object': self})
+        return f"{file_name.replace('/', '_')}.{extension}"
+
+    def _get_invoice_mail_template_dynamic_report_filename(self, report, extension='pdf'):
+        """ Get the filename of the generated invoice report for a dynamic report. """
+        self.ensure_one()
+        if not report.print_report_name:
+            return False
+        file_name = safe_eval(report.print_report_name, {'object': self})
         return f"{file_name.replace('/', '_')}.{extension}"
 
     def _get_invoice_proforma_pdf_report_filename(self):
@@ -6491,6 +6504,8 @@ class AccountMove(models.Model):
             attachments_in_invoices += attachment
         # Unlink the unused attachments (prevents storing marketing images sent with emails)
         if self._context.get('from_alias'):
+            if not attachments_in_invoices:
+                attachments_in_invoices += attachments.filtered(lambda att: att.mimetype in ALLOWED_MIMETYPES)
             (attachments - attachments_in_invoices).unlink()
         return move_per_decodable_attachment
 
